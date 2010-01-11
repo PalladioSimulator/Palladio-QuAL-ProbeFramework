@@ -2,6 +2,8 @@ package de.uka.ipd.sdq.probespec.framework.probes;
 
 import javax.measure.quantity.Duration;
 
+import org.jscience.mathematics.number.Number;
+
 import de.uka.ipd.sdq.probespec.framework.ProbeSample;
 
 /**
@@ -16,7 +18,8 @@ public abstract class ATakeCurrentTimeStrategy implements IProbeStrategy {
 	/**
 	 * {@inheritDoc}
 	 */
-	public abstract ProbeSample<Long, Duration> takeSample(String probeId,
+	@SuppressWarnings("unchecked")
+	public abstract ProbeSample<? extends Number, Duration> takeSample(String probeId,
 			Object... o);
 
 }
