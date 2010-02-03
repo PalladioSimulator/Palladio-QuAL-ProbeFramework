@@ -2,7 +2,6 @@ package de.uka.ipd.sdq.probespec.framework;
 
 import javax.measure.Measure;
 import javax.measure.quantity.Quantity;
-import org.jscience.mathematics.number.Number;
 
 /**
  * Represents a sample which is taken for a probe.
@@ -17,10 +16,10 @@ import org.jscience.mathematics.number.Number;
  * @author pmerkle
  * 
  */
-public class ProbeSample<V extends Number<V>, Q extends Quantity> {
+public class ProbeSample<V, Q extends Quantity> {
 
 	/** the measured value and its quantity. */
-	private NumberMeasure<V, Q> measure;
+	private Measure<V, Q> measure;
 
 	private String probeID;
 
@@ -39,7 +38,7 @@ public class ProbeSample<V extends Number<V>, Q extends Quantity> {
 	 * @see Measure
 	 * @see ProbeType
 	 */
-	public ProbeSample(final NumberMeasure<V, Q> measure, final String probeID,
+	public ProbeSample(final Measure<V, Q> measure, final String probeID,
 			final ProbeType probeType) {
 		super();
 		this.measure = measure;
@@ -52,9 +51,9 @@ public class ProbeSample<V extends Number<V>, Q extends Quantity> {
 	 * {@link Quantity}.
 	 * 
 	 * @return the measured value and its quantity
-	 * @see NumberMeasure
+	 * @see Measure
 	 */
-	public NumberMeasure<V, Q> getMeasure() {
+	public Measure<V, Q> getMeasure() {
 		return measure;
 	}
 
