@@ -16,7 +16,7 @@ public abstract class ATakeCurrentTimeStrategy implements IProbeStrategy {
 	/**
 	 * {@inheritDoc}
 	 */
-	public abstract ProbeSample<Long, Duration> takeSample(String probeId,
+	public abstract ProbeSample<Double, Duration> takeSample(String probeId,
 			Object... o);
 
 }
