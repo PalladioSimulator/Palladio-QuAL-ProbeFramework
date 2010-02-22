@@ -13,6 +13,12 @@ import de.uka.ipd.sdq.probespec.framework.exceptions.CalculatorException;
 /**
  * This class is the abstract super class for all Calculator implementations.
  * All specific Calculators have to inherit from this class.
+ * <p>
+ * Calculators observe the {@link SampleBlackboard} for probe set samples
+ * (Observer Pattern). As soon as a new probe set sample is published at the
+ * blackboard, the {@link #execute(ProbeSetSample)} method is invoked. The
+ * calculator have to decide, whether the probe set sample is of interest for
+ * the calculation.
  * 
  * @author Faber
  * 

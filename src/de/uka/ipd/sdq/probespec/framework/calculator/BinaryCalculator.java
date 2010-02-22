@@ -13,13 +13,23 @@ import de.uka.ipd.sdq.probespec.framework.SampleBlackboard;
 import de.uka.ipd.sdq.probespec.framework.exceptions.CalculatorException;
 
 /**
+ * This abstract class represents a binary calculator. A binary calculator expects
+ * two probe sets, which are represented by their particular ID. The first probe
+ * set is denoted start probe set, the latter is denoted end probe set.
+ * <p>
+ * As soon as a sample arrives that originates from the end probe set, the
+ * binary calculator does its calculation by invoking
+ * {@link #calculate(ProbeSetSample, ProbeSetSample)}. When a sample originating
+ * from the start probe set arrives, the calculator does nothing.
  * 
  * @author Philipp Merkle
- *
+ * @see Calculator
+ * 
  */
 public abstract class BinaryCalculator extends Calculator {
 
 	private String startProbeSetID;
+	
 	private String endProbeSetID;
 
 	public BinaryCalculator(SampleBlackboard blackboard,
@@ -35,7 +45,7 @@ public abstract class BinaryCalculator extends Calculator {
 
 	@Override
 	abstract protected Vector<MeasurementMetric> getConcreteMeasurementMetrics();
-	
+
 	/**
 	 * This method is called by the
 	 * {@link #update(java.util.Observable, Object)} method as soon as a new
