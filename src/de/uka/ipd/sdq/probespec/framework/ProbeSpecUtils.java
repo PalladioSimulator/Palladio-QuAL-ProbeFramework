@@ -19,4 +19,19 @@ public class ProbeSpecUtils {
 		return pss;
 	}
 
+	public static ProbeSetSample buildProbeSetSample(
+			ProbeSample<?, ? extends Quantity> sample1,
+			ProbeSample<?, ? extends Quantity> sample2,
+			String requestContextID, String modelElementId, String probeSetId) {
+		Vector<ProbeSample<?, ? extends Quantity>> probeSampleVector = new Vector<ProbeSample<?, ? extends Quantity>>();
+		probeSampleVector.add(sample1);
+		probeSampleVector.add(sample2);
+
+		ProbeSetSample pss = new ProbeSetSample(probeSampleVector,
+				new RequestContextID(requestContextID), modelElementId,
+				probeSetId);
+		pss.addToTimeToLive(1);
+		return pss;
+	}
+
 }
