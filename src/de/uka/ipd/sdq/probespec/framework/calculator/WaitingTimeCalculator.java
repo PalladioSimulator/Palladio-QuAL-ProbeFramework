@@ -7,15 +7,13 @@ import javax.measure.unit.SI;
 import de.uka.ipd.sdq.pipesandfilters.framework.CaptureType;
 import de.uka.ipd.sdq.pipesandfilters.framework.MeasurementMetric;
 import de.uka.ipd.sdq.pipesandfilters.framework.Scale;
-import de.uka.ipd.sdq.probespec.framework.ProbeType;
 import de.uka.ipd.sdq.probespec.framework.SampleBlackboard;
 
 /**
- * Calculates a time span representing the waiting time. It expects two
- * ProbeSets each containing at least a {@link ProbeType#CURRENT_TIME} probe.
+ * Calculates a time span representing the waiting time.
  * 
  * @author Faber, Philipp Merkle
- * @see BinaryCalculator
+ * @see UnaryCalculator
  * @see Calculator
  */
 public class WaitingTimeCalculator extends TimeSpanCalculator {
@@ -27,15 +25,62 @@ public class WaitingTimeCalculator extends TimeSpanCalculator {
 	 * 
 	 * @param blackboard
 	 *            the blackboard this calculator will observe
-	 * @param startProbeSetID
-	 *            ID of the start probe set element from the model
-	 * @param endProbeSetID
-	 *            ID of the end probe set element from the model
+	 * @param startWaitingProbeSetID
+	 *            references the ProbeSet which represents the starting point
+	 *            for the waiting time measurement
+	 * @param stopWaitingProbeSetID
+	 *            references the ProbeSet which represents the final point for
+	 *            the waiting time measurement
 	 */
 	public WaitingTimeCalculator(SampleBlackboard blackboard,
-			String startProbeSetID, String endProbeSetID) {
-		super(blackboard, startProbeSetID, endProbeSetID);
+			String startWaitingProbeSetID, String stopWaitingProbeSetID) {
+		super(blackboard, startWaitingProbeSetID, stopWaitingProbeSetID);
 	}
+
+	// @SuppressWarnings("unchecked")
+	// @Override
+	// protected Vector<Measure<?, ? extends Quantity>> calculate(
+	// ProbeSetSample sample) throws CalculatorException {
+	// // Obtain measured resource response time
+	// IMatchRule[] rules = new IMatchRule[1];
+	// rules[0] = new ProbeTypeMatchRule(ProbeType.CPU_RESPONSE_TIME);
+	// Vector<ProbeSample<?, ? extends Quantity>> result = sample
+	// .getProbeSamples(rules);
+	// ProbeSample<Double, Duration> responseTimeSample = null;
+	// double responseTime = -1;
+	// if (result != null && result.size() > 0) {
+	// responseTimeSample = (ProbeSample<Double, Duration>) result.get(0);
+	// responseTime = responseTimeSample.getMeasure().doubleValue(
+	// responseTimeSample.getMeasure().getUnit());
+	// }
+	//
+	// // Obtain measured demand
+	// rules[0] = new ProbeTypeMatchRule(ProbeType.CPU_RESOURCE_DEMAND);
+	// result = sample.getProbeSamples(rules);
+	// ProbeSample<Double, Duration> demandSample = null;
+	// double demand = -1;
+	// if (result != null && result.size() > 0) {
+	// demandSample = (ProbeSample<Double, Duration>) result.get(0);
+	// demand = demandSample.getMeasure().doubleValue(
+	// responseTimeSample.getMeasure().getUnit());
+	// }
+	//
+	// if (responseTimeSample != null && demandSample != null) {
+	// // Create result tuple
+	// double waitTime = responseTime - demand;
+	//
+	// Measure<Double, Duration> waitTimeMeasure = Measure.valueOf(
+	// waitTime, responseTimeSample.getMeasure().getUnit());
+	// Vector<Measure<?, ? extends Quantity>> resultTuple = new
+	// Vector<Measure<?, ? extends Quantity>>();
+	// resultTuple.add(waitTimeMeasure);
+	//
+	// return resultTuple;
+	// } else {
+	// throw new CalculatorException(
+	// "Could not access all needed probe samples.");
+	// }
+	// }
 
 	/**
 	 * Initializes the metric information for the result of this calculator

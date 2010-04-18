@@ -4,7 +4,11 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Vector;
 
+import javax.measure.Measure;
+import javax.measure.quantity.Quantity;
+
 import de.uka.ipd.sdq.pipesandfilters.framework.MeasurementMetric;
+import de.uka.ipd.sdq.pipesandfilters.framework.PipeData;
 import de.uka.ipd.sdq.pipesandfilters.framework.PipesAndFiltersManager;
 import de.uka.ipd.sdq.probespec.framework.ProbeSetSample;
 import de.uka.ipd.sdq.probespec.framework.SampleBlackboard;
@@ -90,5 +94,23 @@ public abstract class Calculator implements Observer {
 			throws CalculatorException;
 
 	abstract protected Vector<MeasurementMetric> getConcreteMeasurementMetrics();
+
+	/**
+	 * Create PipeData object containing the result tuple and pass it to the
+	 * pipes-and-filters chain.
+	 * 
+	 * @param resultTuple
+	 * @throws CalculatorException
+	 */
+	protected void passToPipe(Vector<Measure<?, ? extends Quantity>> resultTuple) throws CalculatorException {
+		PipeData pipeData = new PipeData(resultTuple);
+		if (pipesAndFiltersManager != null) {
+			pipesAndFiltersManager.processData(pipeData);
+		} else {
+			throw new CalculatorException(
+					"No PipesAndFilterManager is set. Could not pass "
+							+ "the result to the PipesAndFilterManager.");
+		}
+	}
 
 }

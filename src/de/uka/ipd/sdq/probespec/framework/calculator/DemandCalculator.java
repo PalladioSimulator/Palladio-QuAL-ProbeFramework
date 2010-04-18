@@ -9,7 +9,6 @@ import javax.measure.unit.SI;
 
 import de.uka.ipd.sdq.pipesandfilters.framework.CaptureType;
 import de.uka.ipd.sdq.pipesandfilters.framework.MeasurementMetric;
-import de.uka.ipd.sdq.pipesandfilters.framework.PipeData;
 import de.uka.ipd.sdq.pipesandfilters.framework.Scale;
 import de.uka.ipd.sdq.probespec.framework.IMatchRule;
 import de.uka.ipd.sdq.probespec.framework.ProbeSample;
@@ -25,12 +24,11 @@ import de.uka.ipd.sdq.probespec.framework.exceptions.CalculatorException;
  * tuple element). It needs one ProbeSet containing at least a CURRENT_TIME
  * probe and an CPU_RESOURCE_DEMAND probe.
  * 
- * @author Faber
+ * @author Faber, Philipp Merkle
  * 
  */
-public class CPUDemandCalculator extends Calculator {
+public class DemandCalculator extends UnaryCalculator {
 
-	private String probeSetID;
 	private static Vector<MeasurementMetric> concreteMeasurementMetrics;
 
 	/**
@@ -43,57 +41,41 @@ public class CPUDemandCalculator extends Calculator {
 	 * @param probeSetID
 	 *            ID of the probe set element from the model
 	 */
-	public CPUDemandCalculator(SampleBlackboard blackboard, String probeSetID) {
-		super(blackboard);
-		this.probeSetID = probeSetID;
+	public DemandCalculator(SampleBlackboard blackboard, String probeSetID) {
+		super(blackboard, probeSetID);
 	}
 
-	/**
-	 * This method is called by the update method (Observer pattern) of the
-	 * superclass. The method extracts the necessary ProbeSamples and then
-	 * composes the PipeData. Finally it passes this PipeData to the pipe and
-	 * filter chain.
-	 * 
-	 * @param pss
-	 *            The last ProbeSetSample which was added to the
-	 *            SampleBlackboard and so triggered this Calculator.
-	 */
 	@Override
-	protected void execute(ProbeSetSample pss) throws CalculatorException {
-		if (probeSetID.equals(pss.getProbeSetSampleID().getProbeSetID())) {
-			ProbeSample<?, ? extends Quantity> time = null;
-			ProbeSample<?, ? extends Quantity> cpu = null;
+	public Vector<Measure<?, ? extends Quantity>> calculate(
+			ProbeSetSample sample) throws CalculatorException {
+		// Obtain measurement time
+		ProbeSample<?, ? extends Quantity> measurementTime = null;
+		IMatchRule[] rules = new IMatchRule[1];
+		rules[0] = new ProbeTypeMatchRule(ProbeType.CURRENT_TIME);
+		Vector<ProbeSample<?, ? extends Quantity>> result = sample
+				.getProbeSamples(rules);
+		if (result != null && result.size() > 0)
+			measurementTime = result.get(0);
 
-			IMatchRule[] rules = new IMatchRule[1];
-			rules[0] = new ProbeTypeMatchRule(ProbeType.CURRENT_TIME);
-			Vector<ProbeSample<?, ? extends Quantity>> result = pss
-					.getProbeSamples(rules);
-			if (result != null && result.size() > 0)
-				time = result.get(0);
+		// Obtain demand
+		ProbeSample<?, ? extends Quantity> demand = null;
+		rules[0] = new ProbeTypeMatchRule(ProbeType.RESOURCE_DEMAND);
+		result = sample.getProbeSamples(rules);
+		if (result != null && result.size() > 0)
+			demand = result.get(0);
 
-			rules[0] = new ProbeTypeMatchRule(ProbeType.CPU_RESOURCE_DEMAND);
-			result = pss.getProbeSamples(rules);
-			if (result != null && result.size() > 0)
-				cpu = result.get(0);
+		if (measurementTime != null && demand != null) {
+			Vector<Measure<?, ? extends Quantity>> resultTuple = new Vector<Measure<?, ? extends Quantity>>();
 
-			if (time != null && cpu != null) {
-				Vector<Measure<?, ? extends Quantity>> resultTuple = new Vector<Measure<?, ? extends Quantity>>();
+			resultTuple.add(measurementTime.getMeasure());
+			resultTuple.add(demand.getMeasure());
 
-				resultTuple.add(time.getMeasure());
-				resultTuple.add(cpu.getMeasure());
-
-				PipeData pd = new PipeData(resultTuple);
-				if (pipesAndFiltersManager != null) {
-					pipesAndFiltersManager.processData(pd);
-				} else {
-					throw new CalculatorException(
-							"No PipesAndFilterManager is set. Could not pass the result to the PipesAndFilterManager.");
-				}
-			} else {
-				throw new CalculatorException(
-						"Could not access all needed probe samples.");
-			}
+			return resultTuple;
+		} else {
+			throw new CalculatorException(
+					"Could not access all needed probe samples.");
 		}
+
 	}
 
 	/**
@@ -108,7 +90,7 @@ public class CPUDemandCalculator extends Calculator {
 					CaptureType.NATURAL_NUMBER, SI.MILLI(SI.SECOND),
 					Scale.ORDINAL);
 			mm
-					.setDescription("This meausre represents the point of time when the value is taken");
+					.setDescription("This measure represents the point of time when the value is taken");
 			mm.setMonotonic(false);
 			mm.setName("Point of time");
 			mm.setStrongMonotonic(false);

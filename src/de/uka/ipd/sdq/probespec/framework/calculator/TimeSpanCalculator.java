@@ -29,7 +29,7 @@ public abstract class TimeSpanCalculator extends BinaryCalculator {
 	}
 
 	/**
-	 * Calculates the response time.
+	 * Calculates the time span.
 	 * 
 	 * @param start
 	 *            the ProbeSample of the start ProbeSet (ProbeType.CURRENT_TIME)
@@ -56,7 +56,7 @@ public abstract class TimeSpanCalculator extends BinaryCalculator {
 			throw new CalculatorException("Could not access end probe sample.");
 		}
 
-		// Calculate response time
+		// Calculate time span
 		double endTime = endTimeSample.getMeasure().doubleValue(
 				startTimeSample.getMeasure().getUnit());
 		double startTime = startTimeSample.getMeasure().doubleValue(

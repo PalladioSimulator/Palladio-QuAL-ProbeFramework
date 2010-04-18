@@ -72,7 +72,7 @@ public class PassiveResourceCalculator extends Calculator {
 			if (result != null && result.size() > 0)
 				time = result.get(0);
 
-			rules[0] = new ProbeTypeMatchRule(ProbeType.PASSIVE_RESOURCE_STATE);
+			rules[0] = new ProbeTypeMatchRule(ProbeType.RESOURCE_STATE);
 			result = pss.getProbeSamples(rules);
 			if (result != null && result.size() > 0)
 				passive = result.get(0);

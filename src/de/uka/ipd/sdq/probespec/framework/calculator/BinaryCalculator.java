@@ -6,16 +6,16 @@ import javax.measure.Measure;
 import javax.measure.quantity.Quantity;
 
 import de.uka.ipd.sdq.pipesandfilters.framework.MeasurementMetric;
-import de.uka.ipd.sdq.pipesandfilters.framework.PipeData;
 import de.uka.ipd.sdq.probespec.framework.ProbeSetSample;
 import de.uka.ipd.sdq.probespec.framework.ProbeSetSampleID;
 import de.uka.ipd.sdq.probespec.framework.SampleBlackboard;
 import de.uka.ipd.sdq.probespec.framework.exceptions.CalculatorException;
 
 /**
- * This abstract class represents a binary calculator. A binary calculator expects
- * two probe sets, which are represented by their particular ID. The first probe
- * set is denoted start probe set, the latter is denoted end probe set.
+ * This abstract class represents a binary calculator. A binary calculator
+ * expects two probe sets, which are represented by their particular ID. The
+ * first probe set is denoted start probe set, the latter is denoted end probe
+ * set.
  * <p>
  * As soon as a sample arrives that originates from the end probe set, the
  * binary calculator does its calculation by invoking
@@ -29,7 +29,7 @@ import de.uka.ipd.sdq.probespec.framework.exceptions.CalculatorException;
 public abstract class BinaryCalculator extends Calculator {
 
 	private String startProbeSetID;
-	
+
 	private String endProbeSetID;
 
 	public BinaryCalculator(SampleBlackboard blackboard,
@@ -84,16 +84,7 @@ public abstract class BinaryCalculator extends Calculator {
 				Vector<Measure<?, ? extends Quantity>> resultTuple = calculate(
 						startSetSample, endSetSample);
 
-				// Create PipeData object containing the result tuple and pass
-				// it to the pipes-and-filters chain.
-				PipeData pipeData = new PipeData(resultTuple);
-				if (pipesAndFiltersManager != null) {
-					pipesAndFiltersManager.processData(pipeData);
-				} else {
-					throw new CalculatorException(
-							"No PipesAndFilterManager is set. Could not pass "
-									+ "the result to the PipesAndFilterManager.");
-				}
+				passToPipe(resultTuple);
 			} else {
 				throw new CalculatorException(
 						"Could not access the corresponding start ProbeSetSample.");
