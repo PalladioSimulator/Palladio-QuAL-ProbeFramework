@@ -90,10 +90,10 @@ public class SampleBlackboard extends Observable {
 	 * 
 	 */
 	private boolean reduceLifetime(ProbeSetSample pss) {
-		if (pss != null) {
-			pss.decrementTimeToLive();
-			return (pss.getTimeToLive() <= 0);
-		}
+//		if (pss != null) {
+//			pss.decrementTimeToLive();
+//			return (pss.getTimeToLive() <= 0);
+//		}
 		return false;
 	}
 
