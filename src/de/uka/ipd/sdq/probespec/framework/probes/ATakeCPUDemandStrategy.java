@@ -1,6 +1,6 @@
 package de.uka.ipd.sdq.probespec.framework.probes;
 
-import javax.measure.quantity.Dimensionless;
+import javax.measure.quantity.Duration;
 
 import de.uka.ipd.sdq.probespec.framework.ProbeSample;
 
@@ -20,7 +20,7 @@ public abstract class ATakeCPUDemandStrategy implements IProbeStrategy {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public abstract ProbeSample<Double, Dimensionless> takeSample(
+	public abstract ProbeSample<Double, Duration> takeSample(
 			String probeId, Object... o);
 
 }
