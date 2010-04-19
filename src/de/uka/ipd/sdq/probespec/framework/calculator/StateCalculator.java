@@ -20,9 +20,9 @@ import de.uka.ipd.sdq.probespec.framework.exceptions.CalculatorException;
 
 /**
  * This class is a specific Calculator which composes a 2-tuple containing a
- * time stamp (first tuple element) and the state of the CPU resource (second
- * tuple element). It needs one ProbeSet containing at least a CURRENT_TIME
- * probe and an CPU_RESOURCE_STATE probe.
+ * time stamp (first tuple element) and the state of a resource (second tuple
+ * element). It needs one ProbeSet containing at least a CURRENT_TIME probe and
+ * an {@link ProbeType#RESOURCE_STATE} probe.
  * 
  * @author Faber, Philipp Merkle
  * 
@@ -32,8 +32,8 @@ public class StateCalculator extends UnaryCalculator {
 	private static Vector<MeasurementMetric> concreteMeasurementMetrics;
 
 	/**
-	 * Constructor for the CPUResourceStateCalculator. It takes a reference of
-	 * the blackboard and the ID of the probe set element taken from the model.
+	 * Constructor. It takes a reference of the blackboard and the ID of the
+	 * probe set element taken from the model.
 	 * 
 	 * @param blackboard
 	 *            A reference to the blackboard which this calculator will
@@ -60,15 +60,15 @@ public class StateCalculator extends UnaryCalculator {
 		// Obtain measured state
 		rules[0] = new ProbeTypeMatchRule(ProbeType.RESOURCE_STATE);
 		result = sample.getProbeSamples(rules);
-		ProbeSample<?, ? extends Quantity> cpu = null;
+		ProbeSample<?, ? extends Quantity> resourceState = null;
 		if (result != null && result.size() > 0)
-			cpu = result.get(0);
+			resourceState = result.get(0);
 
-		if (time != null && cpu != null) {
+		if (time != null && resourceState != null) {
 			// Create result tuple
 			Vector<Measure<?, ? extends Quantity>> resultTuple = new Vector<Measure<?, ? extends Quantity>>();
 			resultTuple.add(time.getMeasure());
-			resultTuple.add(cpu.getMeasure());
+			resultTuple.add(resourceState.getMeasure());
 
 			return resultTuple;
 		} else {
