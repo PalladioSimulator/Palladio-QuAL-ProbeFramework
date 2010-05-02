@@ -19,7 +19,7 @@ public interface IProbeStrategy {
 	 * implementing class.
 	 * <p>
 	 * You can pass optional {@link Object}s when additional information is
-	 * needed to take the measurement. For instance the measured object can be
+	 * needed to take the measurement. For instance the measured entity can be
 	 * passed.
 	 * 
 	 * @param probeId
