@@ -16,6 +16,7 @@ package de.uka.ipd.sdq.probespec.framework.probes;
  * @author pmerkle
  * @see IProbeStrategy
  */
+@Deprecated
 abstract public class AProbeStrategyFactory {
 
 	/**

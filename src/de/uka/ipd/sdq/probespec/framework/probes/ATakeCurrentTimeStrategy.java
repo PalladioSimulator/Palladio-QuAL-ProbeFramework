@@ -11,6 +11,7 @@ import de.uka.ipd.sdq.probespec.framework.ProbeSample;
  * @author pmerkle
  * 
  */
+@Deprecated
 public abstract class ATakeCurrentTimeStrategy implements IProbeStrategy {
 
 	/**

@@ -13,6 +13,5 @@ public enum ProbeType {
 	SEFF_PARAMETER, 
 	CURRENT_TIME,
 	STOEX,
-	RESPONSE_TIME;
 	
 }
