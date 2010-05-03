@@ -3,6 +3,7 @@ package de.uka.ipd.sdq.probespec.framework.calculator;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Vector;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.measure.Measure;
 import javax.measure.quantity.Quantity;
@@ -33,10 +34,14 @@ public abstract class Calculator implements Observer {
 
 	private Vector<MeasurementMetric> measurementMetrics = null;
 
+	// copy on write enables listeners to unregister during event processing.
+	private CopyOnWriteArrayList<ICalculatorListener> listeners;
+
 	protected Calculator(SampleBlackboard blackboard) {
 		super();
 		this.blackboard = blackboard;
 		this.measurementMetrics = getConcreteMeasurementMetrics();
+		listeners = new CopyOnWriteArrayList<ICalculatorListener>();
 		blackboard.addObserver(this);
 	}
 
@@ -102,7 +107,8 @@ public abstract class Calculator implements Observer {
 	 * @param resultTuple
 	 * @throws CalculatorException
 	 */
-	protected void passToPipe(Vector<Measure<?, ? extends Quantity>> resultTuple) throws CalculatorException {
+	protected void passToPipe(Vector<Measure<?, ? extends Quantity>> resultTuple)
+			throws CalculatorException {
 		PipeData pipeData = new PipeData(resultTuple);
 		if (pipesAndFiltersManager != null) {
 			pipesAndFiltersManager.processData(pipeData);
@@ -110,6 +116,17 @@ public abstract class Calculator implements Observer {
 			throw new CalculatorException(
 					"No PipesAndFilterManager is set. Could not pass "
 							+ "the result to the PipesAndFilterManager.");
+		}
+	}
+
+	public void addCalculatorListener(ICalculatorListener l) {
+		listeners.add(l);
+	}
+
+	protected void fireCalculated(
+			Vector<Measure<?, ? extends Quantity>> resultTuple) {
+		for (ICalculatorListener l : listeners) {
+			l.calculated(resultTuple);
 		}
 	}
 

@@ -85,6 +85,7 @@ public abstract class BinaryCalculator extends Calculator {
 						startSetSample, endSetSample);
 
 				passToPipe(resultTuple);
+				fireCalculated(resultTuple);
 			} else {
 				throw new CalculatorException(
 						"Could not access the corresponding start ProbeSetSample.");
