@@ -29,8 +29,8 @@ import de.uka.ipd.sdq.probespec.framework.exceptions.CalculatorException;
  * 
  */
 public abstract class Calculator implements Observer {
-	protected SampleBlackboard blackboard;
-	protected PipesAndFiltersManager pipesAndFiltersManager;
+	private SampleBlackboard blackboard;
+	private PipesAndFiltersManager pipesAndFiltersManager;
 
 	private Vector<MeasurementMetric> measurementMetrics = null;
 
@@ -109,6 +109,7 @@ public abstract class Calculator implements Observer {
 	 */
 	protected void passToPipe(Vector<Measure<?, ? extends Quantity>> resultTuple)
 			throws CalculatorException {
+		fireCalculated(resultTuple);
 		PipeData pipeData = new PipeData(resultTuple);
 		if (pipesAndFiltersManager != null) {
 			pipesAndFiltersManager.processData(pipeData);
@@ -123,11 +124,15 @@ public abstract class Calculator implements Observer {
 		listeners.add(l);
 	}
 
-	protected void fireCalculated(
+	private void fireCalculated(
 			Vector<Measure<?, ? extends Quantity>> resultTuple) {
 		for (ICalculatorListener l : listeners) {
 			l.calculated(resultTuple);
 		}
+	}
+
+	protected SampleBlackboard getBlackboard() {
+		return blackboard;
 	}
 
 }

@@ -77,7 +77,7 @@ public abstract class BinaryCalculator extends Calculator {
 		 */
 		if (endProbeSetID.equals(pss.getProbeSetSampleID().getProbeSetID())) {
 			ProbeSetSample endSetSample = pss;
-			ProbeSetSample startSetSample = blackboard
+			ProbeSetSample startSetSample = getBlackboard()
 					.getProbeSetSample(new ProbeSetSampleID(startProbeSetID,
 							pss.getProbeSetSampleID().getCtxID()));
 			if (startSetSample != null) {
@@ -85,7 +85,6 @@ public abstract class BinaryCalculator extends Calculator {
 						startSetSample, endSetSample);
 
 				passToPipe(resultTuple);
-				fireCalculated(resultTuple);
 			} else {
 				throw new CalculatorException(
 						"Could not access the corresponding start ProbeSetSample.");

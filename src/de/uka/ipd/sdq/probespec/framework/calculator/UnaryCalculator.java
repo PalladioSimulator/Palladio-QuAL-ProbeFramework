@@ -31,7 +31,6 @@ public abstract class UnaryCalculator extends Calculator {
 		if (probeSetID.equals(pss.getProbeSetSampleID().getProbeSetID())) {
 			Vector<Measure<?, ? extends Quantity>> resultTuple = calculate(pss);
 			passToPipe(resultTuple);
-			fireCalculated(resultTuple);
 		}
 	}
 
