@@ -7,14 +7,14 @@ import javax.measure.quantity.Quantity;
 public class ProbeSpecUtils {
 
 	public static ProbeSetSample buildProbeSetSample(
-			ProbeSample<?, ? extends Quantity> sample, String requestContextID,
-			String modelElementId, String probeSetId) {
+			ProbeSample<?, ? extends Quantity> sample,
+			RequestContextID requestContextID, String modelElementId,
+			String probeSetId) {
 		Vector<ProbeSample<?, ? extends Quantity>> probeSampleVector = new Vector<ProbeSample<?, ? extends Quantity>>();
 		probeSampleVector.add(sample);
 
 		ProbeSetSample pss = new ProbeSetSample(probeSampleVector,
-				new RequestContextID(requestContextID), modelElementId,
-				probeSetId);
+				requestContextID, modelElementId, probeSetId);
 		pss.addToTimeToLive(1);
 		return pss;
 	}
@@ -22,14 +22,14 @@ public class ProbeSpecUtils {
 	public static ProbeSetSample buildProbeSetSample(
 			ProbeSample<?, ? extends Quantity> sample1,
 			ProbeSample<?, ? extends Quantity> sample2,
-			String requestContextID, String modelElementId, String probeSetId) {
+			RequestContextID requestContextID, String modelElementId,
+			String probeSetId) {
 		Vector<ProbeSample<?, ? extends Quantity>> probeSampleVector = new Vector<ProbeSample<?, ? extends Quantity>>();
 		probeSampleVector.add(sample1);
 		probeSampleVector.add(sample2);
 
 		ProbeSetSample pss = new ProbeSetSample(probeSampleVector,
-				new RequestContextID(requestContextID), modelElementId,
-				probeSetId);
+				requestContextID, modelElementId, probeSetId);
 		pss.addToTimeToLive(1);
 		return pss;
 	}

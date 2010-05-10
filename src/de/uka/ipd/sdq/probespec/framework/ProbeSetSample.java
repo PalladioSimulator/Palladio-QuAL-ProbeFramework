@@ -56,6 +56,8 @@ public class ProbeSetSample {
 
 		this.probeSamples = probeSamples;
 		this.probeSetSampleID = new ProbeSetSampleID(probeSetID, ctxID);
+		
+		// TODO modelElementId really needed?
 		this.modelElementID = modelElementID;
 	}
 

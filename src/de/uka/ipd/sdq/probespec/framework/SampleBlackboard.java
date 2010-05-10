@@ -12,7 +12,7 @@ import java.util.Observable;
  * Internally the storage is structured as HashMaps which maps the
  * ProbeSetSampleID to the ProbeSetSample (ProbeSetSampleID -> ProbeSetSample).
  * <p>
- * This SampleBlackboard also realizes a simple implementation of a garbage
+ * TODO This SampleBlackboard also realizes a simple implementation of a garbage
  * collection to delete ProbeSetSamples which are not needed any more. For now
  * this is done by a counter for each ProbeSetSample which can be seen as a
  * "time to life" field (To set the field correctly see the ProbeSetSample
@@ -27,8 +27,9 @@ import java.util.Observable;
  * 
  */
 public class SampleBlackboard extends Observable {
-	// ProbeSetSampleID -> ProbeSetSample)
-	private HashMap<ProbeSetSampleID, ProbeSetSample> pssMaps = new HashMap<ProbeSetSampleID, ProbeSetSample>();
+	
+	// ProbeSetSampleID -> ProbeSetSample
+	private HashMap<ProbeSetSampleID, ProbeSetSample> pssMap = new HashMap<ProbeSetSampleID, ProbeSetSample>();
 
 	/**
 	 * This method allows to add a ProbeSetSample to the SampleBlackboard. It is
@@ -41,9 +42,9 @@ public class SampleBlackboard extends Observable {
 	 *            distributed to all Calculators (observer pattern).
 	 */
 	public void addProbeSetSample(ProbeSetSample pss) {
-		// only add this ProbeSetSample if the TTL field is greater than 0
-		if (!reduceLifetime(pss))
-			pssMaps.put(pss.getProbeSetSampleID(), pss);
+//		// only add this ProbeSetSample if the TTL field is greater than 0
+//		if (!reduceLifetime(pss))
+			pssMap.put(pss.getProbeSetSampleID(), pss);
 
 		// Notify listeners
 		setChanged();
@@ -51,51 +52,78 @@ public class SampleBlackboard extends Observable {
 	}
 
 	/**
-	 * This method extracts a ProbeSetSample from the internal structure and
-	 * returns this to the caller. After the extraction the tryCleanUp method is
-	 * called to eventually remove the ProbeSetSample from the HashMap.
+	 * Returns the ProbeSetSample for the specified pair of probeID and
+	 * {@link RequestContextID}, if there is any. The probeId and
+	 * RequestContextID are encapsulated by a {@link ProbeSetSampleID}.
+	 * <p>
+	 * If no ProbeSetSample can be found for the RequestContextID and the
+	 * RequestContextID has a parent context, the search will be performed for
+	 * this parent context too. More precisely, for the pair of probeID and
+	 * parent ProbeSetSampleID. This continues recursively until a
+	 * RequestContextID with no parent context is reached.
+	 * <p>
+	 * This recursive search is useful for e.g. finding the start ProbeSetSample
+	 * (taken before a fork) for a given end ProbeSetSample (taken within a
+	 * fork).
+	 * 
+	 * TODO After the extraction the tryCleanUp method is called to eventually
+	 * remove the ProbeSetSample from the HashMap.
 	 * 
 	 * @param probeSetSampleID
-	 *            ID which identifies the ProbeSetSample
-	 * @return Extracted ProbeSetSample
+	 *            the encapsulated probeId and RequestContextID
+	 * @return the ProbeSetSample for the probeSetSampleID, if there is any;
+	 *         else null.
 	 */
 	public ProbeSetSample getProbeSetSample(ProbeSetSampleID probeSetSampleID) {
-		// TODO For stacks of IDs (after a fork) first extract the ID of the
-		// StartProbeSet (by reducing the Stack)
-		ProbeSetSample pss = pssMaps.get(probeSetSampleID);
-		tryCleanUp(pss);
-		return pss;
-	}
-
-	/**
-	 * This method calls the notAlive and then removes the ProbeSetSample from
-	 * the HashMap, if notAlive returns true.
-	 * 
-	 * @param pss
-	 *            The ProbeSetSample which eventually will be removed.
-	 */
-	private void tryCleanUp(ProbeSetSample pss) {
-		if (reduceLifetime(pss)) {
-			pssMaps.remove(pss.getProbeSetSampleID());
+		// try to find the ProbeSetSample in the specified context
+		if (pssMap.containsKey(probeSetSampleID)) {	
+			return pssMap.get(probeSetSampleID);
 		}
+		
+		// try to find the ProbeSetSample in a parent context
+		RequestContextID ctx = probeSetSampleID.getCtxID().getParentContext();
+		String probeSetID = probeSetSampleID.getProbeSetID();
+		while (ctx != null) {
+			ProbeSetSampleID pssID = new ProbeSetSampleID(probeSetID, ctx);
+			ProbeSetSample pss = pssMap.get(pssID);
+			// tryCleanUp(pss);
+			if (pss != null) {
+				return pss;
+			}
+			ctx = ctx.getParentContext();
+		}
+		return null;
 	}
 
-	/**
-	 * This method decrements the TTL field for the ProbeSetSample and then
-	 * returns true, if it is equal or less than zero.
-	 * 
-	 * @param pss
-	 *            ProbeSetSample whose TTL counter is decremented
-	 * @return true if the ProbeSetSample is not alive; else false
-	 * 
-	 */
-	private boolean reduceLifetime(ProbeSetSample pss) {
+//	/**
+//	 * This method calls the notAlive and then removes the ProbeSetSample from
+//	 * the HashMap, if notAlive returns true.
+//	 * 
+//	 * @param pss
+//	 *            The ProbeSetSample which eventually will be removed.
+//	 */
+//	private void tryCleanUp(ProbeSetSample pss) {
+//		if (reduceLifetime(pss)) {
+//			pssMap.remove(pss.getProbeSetSampleID());
+//		}
+//	}
+
+//	/**
+//	 * This method decrements the TTL field for the ProbeSetSample and then
+//	 * returns true, if it is equal or less than zero.
+//	 * 
+//	 * @param pss
+//	 *            ProbeSetSample whose TTL counter is decremented
+//	 * @return true if the ProbeSetSample is not alive; else false
+//	 * 
+//	 */
+//	private boolean reduceLifetime(ProbeSetSample pss) {
 //		if (pss != null) {
 //			pss.decrementTimeToLive();
 //			return (pss.getTimeToLive() <= 0);
 //		}
-		return false;
-	}
+//		return false;
+//	}
 
 	/**
 	 * Returns the size of the HashMap which stores all ProbeSetSamples. This is
@@ -106,7 +134,8 @@ public class SampleBlackboard extends Observable {
 	 *         stored in the HashMap
 	 */
 	public int getHashMapSize() {
-		return pssMaps.size();
+		return pssMap.size();
 	}
+	
 
 }

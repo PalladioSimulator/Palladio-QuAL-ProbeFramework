@@ -36,35 +36,43 @@ public class ProbeSetSampleID {
 		return ctxID;
 	}
 
-	/**
-	 * Checks if the this ProbeSetSampleID is equal to the ProbeSetSampleID
-	 * passed as argument
-	 * 
-	 * @param obj
-	 *            The instance with which this instance should be compared with
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj instanceof ProbeSetSampleID) {
-			ProbeSetSampleID other = (ProbeSetSampleID) obj;
-			return (ctxID.equals(other.getCtxID()) && probeSetID.equals(other
-					.getProbeSetID()));
-		}
-		return false;
-	}
-
-	/**
-	 * Generates a hash code for this ProbeSetSampleID. It is used to hash the
-	 * ProbeSetSample in the HashMap of the SampleBlackboard.
-	 * 
-	 * @return hash code for this instance.
-	 */
 	@Override
 	public int hashCode() {
-		String temp = probeSetID + "-" + ctxID.toString();
-		return temp.hashCode();
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((ctxID == null) ? 0 : ctxID.hashCode());
+		result = prime * result
+				+ ((probeSetID == null) ? 0 : probeSetID.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof ProbeSetSampleID)) {
+			return false;
+		}
+		ProbeSetSampleID other = (ProbeSetSampleID) obj;
+		if (ctxID == null) {
+			if (other.ctxID != null) {
+				return false;
+			}
+		} else if (!ctxID.equals(other.ctxID)) {
+			return false;
+		}
+		if (probeSetID == null) {
+			if (other.probeSetID != null) {
+				return false;
+			}
+		} else if (!probeSetID.equals(other.probeSetID)) {
+			return false;
+		}
+		return true;
 	}
 
 	/**
