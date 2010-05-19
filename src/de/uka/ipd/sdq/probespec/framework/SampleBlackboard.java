@@ -2,6 +2,8 @@ package de.uka.ipd.sdq.probespec.framework;
 
 import java.util.HashMap;
 import java.util.Observable;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * This class realizes the blackboard pattern to store all ProbeSetSamples and
@@ -24,12 +26,26 @@ import java.util.Observable;
  * (Observer pattern).
  * 
  * @author Faber
+ * @author Philipp Merkle
  * 
  */
 public class SampleBlackboard extends Observable {
 	
 	// ProbeSetSampleID -> ProbeSetSample
 	private HashMap<ProbeSetSampleID, ProbeSetSample> pssMap = new HashMap<ProbeSetSampleID, ProbeSetSample>();
+
+	// Lock for the map containing the probe set samples
+	private Lock mapLock = new ReentrantLock();
+	
+	private IGarbageCollector garbageCollector;
+	
+	public SampleBlackboard() {
+		this(new BasicGarbageCollector());
+	}
+	
+	public SampleBlackboard(IGarbageCollector garbageCollector) {
+		this.garbageCollector = garbageCollector;
+	}
 
 	/**
 	 * This method allows to add a ProbeSetSample to the SampleBlackboard. It is
@@ -44,23 +60,34 @@ public class SampleBlackboard extends Observable {
 	public void addProbeSetSample(ProbeSetSample pss) {
 //		// only add this ProbeSetSample if the TTL field is greater than 0
 //		if (!reduceLifetime(pss))
+		
+		// ensure synchronised access to the map
+		mapLock.lock();
+		try {
 			pssMap.put(pss.getProbeSetSampleID(), pss);
+		} finally {
+			mapLock.unlock();
+		}
+		
+		// inform garbage collector
+		garbageCollector.provide(pss.getProbeSetSampleID()
+				.getCtxID(), pss.getProbeSetSampleID());
 
-		// Notify listeners
+		// notify listeners
 		setChanged();
 		notifyObservers(pss);
 	}
 
 	/**
 	 * Returns the ProbeSetSample for the specified pair of probeID and
-	 * {@link RequestContextID}, if there is any. The probeId and
+	 * {@link RequestContext}, if there is any. The probeId and
 	 * RequestContextID are encapsulated by a {@link ProbeSetSampleID}.
 	 * <p>
 	 * If no ProbeSetSample can be found for the RequestContextID and the
 	 * RequestContextID has a parent context, the search will be performed for
 	 * this parent context too. More precisely, for the pair of probeID and
 	 * parent ProbeSetSampleID. This continues recursively until a
-	 * RequestContextID with no parent context is reached.
+	 * RequestContextID with missing parent context is reached.
 	 * <p>
 	 * This recursive search is useful for e.g. finding the start ProbeSetSample
 	 * (taken before a fork) for a given end ProbeSetSample (taken within a
@@ -76,16 +103,17 @@ public class SampleBlackboard extends Observable {
 	 */
 	public ProbeSetSample getProbeSetSample(ProbeSetSampleID probeSetSampleID) {
 		// try to find the ProbeSetSample in the specified context
-		if (pssMap.containsKey(probeSetSampleID)) {	
-			return pssMap.get(probeSetSampleID);
+		ProbeSetSample sample = obtainSample(probeSetSampleID);
+		if (sample != null) {
+			return sample;
 		}
 		
 		// try to find the ProbeSetSample in a parent context
-		RequestContextID ctx = probeSetSampleID.getCtxID().getParentContext();
+		RequestContext ctx = probeSetSampleID.getCtxID().getParentContext();
 		String probeSetID = probeSetSampleID.getProbeSetID();
 		while (ctx != null) {
 			ProbeSetSampleID pssID = new ProbeSetSampleID(probeSetID, ctx);
-			ProbeSetSample pss = pssMap.get(pssID);
+			ProbeSetSample pss = obtainSample(pssID);
 			// tryCleanUp(pss);
 			if (pss != null) {
 				return pss;
@@ -93,6 +121,24 @@ public class SampleBlackboard extends Observable {
 			ctx = ctx.getParentContext();
 		}
 		return null;
+	}
+	
+	/**
+	 * Provides synchronised access to the map containing the probe set samples.
+	 * Hereby potential race conditions are avoided.
+	 * 
+	 * @param probeSetSampleID
+	 * @return
+	 */
+	private ProbeSetSample obtainSample(ProbeSetSampleID probeSetSampleID) {
+		mapLock.lock();
+		ProbeSetSample sample = null;
+		try {
+			sample = pssMap.get(probeSetSampleID);
+		} finally {
+			mapLock.unlock();
+		}
+		return sample;
 	}
 
 //	/**

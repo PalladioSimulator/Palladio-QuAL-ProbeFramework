@@ -8,9 +8,9 @@ package de.uka.ipd.sdq.probespec.framework;
 public class ProbeSetSampleID {
 
 	private String probeSetID;
-	private RequestContextID ctxID;
+	private RequestContext ctxID;
 
-	public ProbeSetSampleID(String probeSetID, RequestContextID ctxID) {
+	public ProbeSetSampleID(String probeSetID, RequestContext ctxID) {
 		super();
 		this.probeSetID = probeSetID;
 		this.ctxID = ctxID;
@@ -30,9 +30,9 @@ public class ProbeSetSampleID {
 	 * samples have been taken.
 	 * 
 	 * @return the context identifier
-	 * @see RequestContextID
+	 * @see RequestContext
 	 */
-	public RequestContextID getCtxID() {
+	public RequestContext getCtxID() {
 		return ctxID;
 	}
 

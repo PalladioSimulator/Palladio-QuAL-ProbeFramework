@@ -47,11 +47,11 @@ public class ProbeSetSample {
 	 *            underlying probe set
 	 * @param probeSetID
 	 *            the id of the probe set according to the underlying model
-	 * @see RequestContextID
+	 * @see RequestContext
 	 */
 	public ProbeSetSample(
 			Vector<ProbeSample<?, ? extends Quantity>> probeSamples,
-			RequestContextID ctxID, String modelElementID, String probeSetID) {
+			RequestContext ctxID, String modelElementID, String probeSetID) {
 		super();
 
 		this.probeSamples = probeSamples;
