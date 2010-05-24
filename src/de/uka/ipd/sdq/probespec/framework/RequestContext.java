@@ -120,6 +120,14 @@ public class RequestContext {
 				getParentContext());
 	}
 	
+	public RequestContext rootContext() {
+		RequestContext context = this;
+		while (context.getParentContext() != null) {
+			context = context.getParentContext();
+		}
+		return context;
+	}
+	
 	@Override
 	public String toString() {
 		return parentContext != null ? parentContext.toString() + " called "

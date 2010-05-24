@@ -6,7 +6,8 @@ import java.util.Vector;
 import javax.measure.quantity.Quantity;
 
 /**
- * Represents a sample which is taken for a probe set.
+ * Represents a sample which is taken for a ProbeSet in a {@link RequestContext}
+ * .
  * <p>
  * The probe set sample is the result of a probe set measurement. It contains
  * one or more probe samples; one for each probe assigned to the underlying
@@ -25,9 +26,7 @@ public class ProbeSetSample {
 
 	private Collection<ProbeSample<?, ? extends Quantity>> probeSamples;
 
-	private ProbeSetSampleID probeSetSampleID;
-
-	private int timeToLive = 1;
+	private ProbeSetAndRequestContext probeSetAndRequestContext;
 
 	/** The id of the annotated model element */
 	private String modelElementID;
@@ -55,8 +54,9 @@ public class ProbeSetSample {
 		super();
 
 		this.probeSamples = probeSamples;
-		this.probeSetSampleID = new ProbeSetSampleID(probeSetID, ctxID);
-		
+		this.probeSetAndRequestContext = new ProbeSetAndRequestContext(
+				probeSetID, ctxID);
+
 		// TODO modelElementId really needed?
 		this.modelElementID = modelElementID;
 	}
@@ -96,60 +96,17 @@ public class ProbeSetSample {
 	}
 
 	/**
-	 * This method returns the ProbeSetSampleID for this ProbeSetSample. The
-	 * ProbeSetSampleID contains the ContextID and the ID of the ProbeSet. For
-	 * more detailed information see the documentation for ProbeSetSampleID.
+	 * This method returns the (ProbeSet, RequestContext)-pair for this sample.
+	 * It indicates
+	 * <ul>
+	 * <li>from which ProbeSet the sample originates</li>
+	 * <li>the {@link RequestContext} in which the sample has been taken</li>
+	 * </ul>
 	 * 
-	 * @return ProbeSetSampleID for this ProbeSetSample
+	 * @return the originating ProbeSet and {@link RequestContext}
 	 */
-	public ProbeSetSampleID getProbeSetSampleID() {
-		return probeSetSampleID;
-	}
-
-	/**
-	 * This method returns the TimeToLive value. The value represents how often
-	 * this ProbeSetSample is read from the SampleBlackboard. The first read is
-	 * directly when this ProbeSetSample is added to the SampleBlackboard
-	 * because of the Observer pattern. This method is used by the
-	 * SampleBlackboard to determine when the ProbeSetSample can be deleted from
-	 * the HashMap.
-	 * 
-	 * @return Number of reads until deletion
-	 * @see SampleBlackboard
-	 */
-	public int getTimeToLive() {
-		return timeToLive;
-	}
-
-	/**
-	 * This method should be used to increase the TimeToLive. Let n be the
-	 * number of binary Calculators where this ProbeSetSample is the start
-	 * ProbeSetSample. Then this method should be used with n as the parameter.
-	 * (For unary Calculator and end Probes nothing needs to be done here
-	 * because in this case the Calculator receives this ProbeSetSample with the
-	 * update method of the Observer pattern).
-	 * <p>
-	 * TODO For the Fork/Join topic the TTL value must also be modified
-	 * appropriately.
-	 * 
-	 * @param Number
-	 *            of Calculators for which this ProbeSetSample is used as the
-	 *            start ProbeSetSample.
-	 * @see SampleBlackboard
-	 */
-	public void addToTimeToLive(int toAdd) {
-		this.timeToLive += toAdd;
-	}
-
-	/**
-	 * This method is called by the SampleBlackboard when it is added to the
-	 * SampleBlackboard and then each time a Calculator wants to get
-	 * ProbeSetSample from the SampleBlackboard.
-	 * 
-	 * @see SampleBlackboard
-	 */
-	public void decrementTimeToLive() {
-		this.timeToLive--;
+	public ProbeSetAndRequestContext getProbeSetAndRequestContext() {
+		return probeSetAndRequestContext;
 	}
 
 }

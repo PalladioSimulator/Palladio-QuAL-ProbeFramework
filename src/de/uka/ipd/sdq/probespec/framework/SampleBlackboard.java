@@ -32,20 +32,10 @@ import java.util.concurrent.locks.ReentrantLock;
 public class SampleBlackboard extends Observable {
 	
 	// ProbeSetSampleID -> ProbeSetSample
-	private HashMap<ProbeSetSampleID, ProbeSetSample> pssMap = new HashMap<ProbeSetSampleID, ProbeSetSample>();
+	private HashMap<ProbeSetAndRequestContext, ProbeSetSample> pssMap = new HashMap<ProbeSetAndRequestContext, ProbeSetSample>();
 
 	// Lock for the map containing the probe set samples
 	private Lock mapLock = new ReentrantLock();
-	
-	private IGarbageCollector garbageCollector;
-	
-	public SampleBlackboard() {
-		this(new BasicGarbageCollector());
-	}
-	
-	public SampleBlackboard(IGarbageCollector garbageCollector) {
-		this.garbageCollector = garbageCollector;
-	}
 
 	/**
 	 * This method allows to add a ProbeSetSample to the SampleBlackboard. It is
@@ -58,30 +48,33 @@ public class SampleBlackboard extends Observable {
 	 *            distributed to all Calculators (observer pattern).
 	 */
 	public void addProbeSetSample(ProbeSetSample pss) {
-//		// only add this ProbeSetSample if the TTL field is greater than 0
-//		if (!reduceLifetime(pss))
-		
 		// ensure synchronised access to the map
 		mapLock.lock();
 		try {
-			pssMap.put(pss.getProbeSetSampleID(), pss);
+			pssMap.put(pss.getProbeSetAndRequestContext(), pss);
 		} finally {
 			mapLock.unlock();
 		}
-		
-		// inform garbage collector
-		garbageCollector.provide(pss.getProbeSetSampleID()
-				.getCtxID(), pss.getProbeSetSampleID());
 
 		// notify listeners
 		setChanged();
 		notifyObservers(pss);
 	}
+	
+	public void deleteProbeSetSample(ProbeSetAndRequestContext pss) {
+		// ensure synchronised access to the map
+		mapLock.lock();
+		try {
+			pssMap.remove(pss);
+		} finally {
+			mapLock.unlock();
+		}
+	}
 
 	/**
 	 * Returns the ProbeSetSample for the specified pair of probeID and
 	 * {@link RequestContext}, if there is any. The probeId and
-	 * RequestContextID are encapsulated by a {@link ProbeSetSampleID}.
+	 * RequestContextID are encapsulated by a {@link ProbeSetAndRequestContext}.
 	 * <p>
 	 * If no ProbeSetSample can be found for the RequestContextID and the
 	 * RequestContextID has a parent context, the search will be performed for
@@ -101,7 +94,7 @@ public class SampleBlackboard extends Observable {
 	 * @return the ProbeSetSample for the probeSetSampleID, if there is any;
 	 *         else null.
 	 */
-	public ProbeSetSample getProbeSetSample(ProbeSetSampleID probeSetSampleID) {
+	public ProbeSetSample getProbeSetSample(ProbeSetAndRequestContext probeSetSampleID) {
 		// try to find the ProbeSetSample in the specified context
 		ProbeSetSample sample = obtainSample(probeSetSampleID);
 		if (sample != null) {
@@ -112,9 +105,8 @@ public class SampleBlackboard extends Observable {
 		RequestContext ctx = probeSetSampleID.getCtxID().getParentContext();
 		String probeSetID = probeSetSampleID.getProbeSetID();
 		while (ctx != null) {
-			ProbeSetSampleID pssID = new ProbeSetSampleID(probeSetID, ctx);
+			ProbeSetAndRequestContext pssID = new ProbeSetAndRequestContext(probeSetID, ctx);
 			ProbeSetSample pss = obtainSample(pssID);
-			// tryCleanUp(pss);
 			if (pss != null) {
 				return pss;
 			}
@@ -130,7 +122,7 @@ public class SampleBlackboard extends Observable {
 	 * @param probeSetSampleID
 	 * @return
 	 */
-	private ProbeSetSample obtainSample(ProbeSetSampleID probeSetSampleID) {
+	private ProbeSetSample obtainSample(ProbeSetAndRequestContext probeSetSampleID) {
 		mapLock.lock();
 		ProbeSetSample sample = null;
 		try {
@@ -140,36 +132,6 @@ public class SampleBlackboard extends Observable {
 		}
 		return sample;
 	}
-
-//	/**
-//	 * This method calls the notAlive and then removes the ProbeSetSample from
-//	 * the HashMap, if notAlive returns true.
-//	 * 
-//	 * @param pss
-//	 *            The ProbeSetSample which eventually will be removed.
-//	 */
-//	private void tryCleanUp(ProbeSetSample pss) {
-//		if (reduceLifetime(pss)) {
-//			pssMap.remove(pss.getProbeSetSampleID());
-//		}
-//	}
-
-//	/**
-//	 * This method decrements the TTL field for the ProbeSetSample and then
-//	 * returns true, if it is equal or less than zero.
-//	 * 
-//	 * @param pss
-//	 *            ProbeSetSample whose TTL counter is decremented
-//	 * @return true if the ProbeSetSample is not alive; else false
-//	 * 
-//	 */
-//	private boolean reduceLifetime(ProbeSetSample pss) {
-//		if (pss != null) {
-//			pss.decrementTimeToLive();
-//			return (pss.getTimeToLive() <= 0);
-//		}
-//		return false;
-//	}
 
 	/**
 	 * Returns the size of the HashMap which stores all ProbeSetSamples. This is

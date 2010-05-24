@@ -32,9 +32,9 @@ public class ProbeSample<V, Q extends Quantity> {
 	 * @param measure
 	 *            the measured value in conjunction with its {@link Quantity}
 	 * @param probeID
-	 *            the id of the probe according to the underlying model
+	 *            the id of the probe
 	 * @param probeType
-	 *            the type of the probe according to the underlying model
+	 *            the type of the probe
 	 * @see Measure
 	 * @see ProbeType
 	 */

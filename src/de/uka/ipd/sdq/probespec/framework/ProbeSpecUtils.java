@@ -15,7 +15,6 @@ public class ProbeSpecUtils {
 
 		ProbeSetSample pss = new ProbeSetSample(probeSampleVector,
 				requestContextID, modelElementId, probeSetId);
-		pss.addToTimeToLive(1);
 		return pss;
 	}
 
@@ -30,7 +29,6 @@ public class ProbeSpecUtils {
 
 		ProbeSetSample pss = new ProbeSetSample(probeSampleVector,
 				requestContextID, modelElementId, probeSetId);
-		pss.addToTimeToLive(1);
 		return pss;
 	}
 

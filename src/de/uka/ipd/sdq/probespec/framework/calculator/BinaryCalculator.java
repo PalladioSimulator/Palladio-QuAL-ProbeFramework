@@ -7,7 +7,7 @@ import javax.measure.quantity.Quantity;
 
 import de.uka.ipd.sdq.pipesandfilters.framework.MeasurementMetric;
 import de.uka.ipd.sdq.probespec.framework.ProbeSetSample;
-import de.uka.ipd.sdq.probespec.framework.ProbeSetSampleID;
+import de.uka.ipd.sdq.probespec.framework.ProbeSetAndRequestContext;
 import de.uka.ipd.sdq.probespec.framework.SampleBlackboard;
 import de.uka.ipd.sdq.probespec.framework.exceptions.CalculatorException;
 
@@ -75,11 +75,11 @@ public abstract class BinaryCalculator extends Calculator {
 		 * assumption that the start ProbeSetSample always arrives before the
 		 * end ProbeSetSample. See JavaDoc comment above.
 		 */
-		if (endProbeSetID.equals(pss.getProbeSetSampleID().getProbeSetID())) {
+		if (endProbeSetID.equals(pss.getProbeSetAndRequestContext().getProbeSetID())) {
 			ProbeSetSample endSetSample = pss;
 			ProbeSetSample startSetSample = getBlackboard()
-					.getProbeSetSample(new ProbeSetSampleID(startProbeSetID,
-							pss.getProbeSetSampleID().getCtxID()));
+					.getProbeSetSample(new ProbeSetAndRequestContext(startProbeSetID,
+							pss.getProbeSetAndRequestContext().getCtxID()));
 			if (startSetSample != null) {
 				Vector<Measure<?, ? extends Quantity>> resultTuple = calculate(
 						startSetSample, endSetSample);
@@ -87,7 +87,9 @@ public abstract class BinaryCalculator extends Calculator {
 				passToPipe(resultTuple);
 			} else {
 				throw new CalculatorException(
-						"Could not access the corresponding start ProbeSetSample.");
+						"Could not find sample for ProbeSetID \""
+								+ startProbeSetID + "\" within context \""
+								+ pss.getProbeSetAndRequestContext().getCtxID() + "\"");
 			}
 		}
 	}

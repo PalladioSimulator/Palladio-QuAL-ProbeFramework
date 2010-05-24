@@ -28,7 +28,7 @@ public abstract class UnaryCalculator extends Calculator {
 
 	@Override
 	protected void execute(ProbeSetSample pss) throws CalculatorException {
-		if (probeSetID.equals(pss.getProbeSetSampleID().getProbeSetID())) {
+		if (probeSetID.equals(pss.getProbeSetAndRequestContext().getProbeSetID())) {
 			Vector<Measure<?, ? extends Quantity>> resultTuple = calculate(pss);
 			passToPipe(resultTuple);
 		}

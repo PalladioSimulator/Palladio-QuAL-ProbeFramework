@@ -60,7 +60,7 @@ public class StoExCalculator extends Calculator {
 	 */
 	@Override
 	protected void execute(ProbeSetSample pss) throws CalculatorException {
-		if (probeSetID.equals(pss.getProbeSetSampleID().getProbeSetID())) {
+		if (probeSetID.equals(pss.getProbeSetAndRequestContext().getProbeSetID())) {
 			ProbeSample<?, ? extends Quantity> time = null;
 			ProbeSample<?, ? extends Quantity> stoex = null;
 
