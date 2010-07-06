@@ -6,6 +6,7 @@ import javax.measure.Measure;
 import javax.measure.quantity.Quantity;
 
 import de.uka.ipd.sdq.pipesandfilters.framework.MeasurementMetric;
+import de.uka.ipd.sdq.probespec.framework.BlackboardVote;
 import de.uka.ipd.sdq.probespec.framework.ProbeSetSample;
 import de.uka.ipd.sdq.probespec.framework.SampleBlackboard;
 import de.uka.ipd.sdq.probespec.framework.exceptions.CalculatorException;
@@ -17,6 +18,7 @@ public abstract class UnaryCalculator extends Calculator {
 	protected UnaryCalculator(SampleBlackboard blackboard, String probeSetID) {
 		super(blackboard);
 		this.probeSetID = probeSetID;
+		blackboard.addBlackboardListener(this, probeSetID);
 	}
 	
 	abstract protected Vector<Measure<?, ? extends Quantity>> calculate(
@@ -27,12 +29,12 @@ public abstract class UnaryCalculator extends Calculator {
 	abstract protected Vector<MeasurementMetric> getConcreteMeasurementMetrics();
 
 	@Override
-	protected void execute(ProbeSetSample pss) throws CalculatorException {
+	protected BlackboardVote execute(ProbeSetSample pss) throws CalculatorException {
 		if (probeSetID.equals(pss.getProbeSetAndRequestContext().getProbeSetID())) {
 			Vector<Measure<?, ? extends Quantity>> resultTuple = calculate(pss);
-			passToPipe(resultTuple);
+			fireCalculated(resultTuple);
 		}
+		return BlackboardVote.DISCARD;
 	}
-
 
 }

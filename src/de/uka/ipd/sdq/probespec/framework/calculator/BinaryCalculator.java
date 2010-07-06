@@ -6,6 +6,7 @@ import javax.measure.Measure;
 import javax.measure.quantity.Quantity;
 
 import de.uka.ipd.sdq.pipesandfilters.framework.MeasurementMetric;
+import de.uka.ipd.sdq.probespec.framework.BlackboardVote;
 import de.uka.ipd.sdq.probespec.framework.ProbeSetSample;
 import de.uka.ipd.sdq.probespec.framework.ProbeSetAndRequestContext;
 import de.uka.ipd.sdq.probespec.framework.SampleBlackboard;
@@ -37,6 +38,7 @@ public abstract class BinaryCalculator extends Calculator {
 		super(blackboard);
 		this.startProbeSetID = startProbeSetID;
 		this.endProbeSetID = endProbeSetID;
+		blackboard.addBlackboardListener(this, startProbeSetID, endProbeSetID);
 	}
 
 	abstract protected Vector<Measure<?, ? extends Quantity>> calculate(
@@ -69,7 +71,7 @@ public abstract class BinaryCalculator extends Calculator {
 	 *            SampleBlackboard and so triggered this Calculator.
 	 */
 	@Override
-	protected void execute(ProbeSetSample pss) throws CalculatorException {
+	protected BlackboardVote execute(ProbeSetSample pss) throws CalculatorException {
 		/*
 		 * Execute only if second ProbeSetSample arrives. Here we make the
 		 * assumption that the start ProbeSetSample always arrives before the
@@ -77,20 +79,26 @@ public abstract class BinaryCalculator extends Calculator {
 		 */
 		if (endProbeSetID.equals(pss.getProbeSetAndRequestContext().getProbeSetID())) {
 			ProbeSetSample endSetSample = pss;
-			ProbeSetSample startSetSample = getBlackboard()
-					.getProbeSetSample(new ProbeSetAndRequestContext(startProbeSetID,
-							pss.getProbeSetAndRequestContext().getCtxID()));
+			ProbeSetSample startSetSample = getBlackboard().getSample(
+					new ProbeSetAndRequestContext(startProbeSetID, pss
+							.getProbeSetAndRequestContext().getCtxID()));
 			if (startSetSample != null) {
 				Vector<Measure<?, ? extends Quantity>> resultTuple = calculate(
 						startSetSample, endSetSample);
 
-				passToPipe(resultTuple);
+				fireCalculated(resultTuple);
 			} else {
 				throw new CalculatorException(
 						"Could not find sample for ProbeSetID \""
 								+ startProbeSetID + "\" within context \""
-								+ pss.getProbeSetAndRequestContext().getCtxID() + "\"");
+								+ pss.getProbeSetAndRequestContext().getCtxID()
+								+ "\"");
 			}
+			return BlackboardVote.DISCARD;
+		} else if (startProbeSetID.equals(pss.getProbeSetAndRequestContext().getProbeSetID())) {
+			return BlackboardVote.RETAIN;
+		} else {
+			return BlackboardVote.DISCARD;
 		}
 	}
 

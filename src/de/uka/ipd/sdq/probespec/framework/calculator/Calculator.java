@@ -11,6 +11,8 @@ import javax.measure.quantity.Quantity;
 import de.uka.ipd.sdq.pipesandfilters.framework.MeasurementMetric;
 import de.uka.ipd.sdq.pipesandfilters.framework.PipeData;
 import de.uka.ipd.sdq.pipesandfilters.framework.PipesAndFiltersManager;
+import de.uka.ipd.sdq.probespec.framework.BlackboardVote;
+import de.uka.ipd.sdq.probespec.framework.IBlackboardListener;
 import de.uka.ipd.sdq.probespec.framework.ProbeSetSample;
 import de.uka.ipd.sdq.probespec.framework.SampleBlackboard;
 import de.uka.ipd.sdq.probespec.framework.exceptions.CalculatorException;
@@ -28,7 +30,7 @@ import de.uka.ipd.sdq.probespec.framework.exceptions.CalculatorException;
  * @author Faber
  * 
  */
-public abstract class Calculator implements Observer {
+public abstract class Calculator implements IBlackboardListener {
 	private SampleBlackboard blackboard;
 	private PipesAndFiltersManager pipesAndFiltersManager;
 
@@ -42,7 +44,7 @@ public abstract class Calculator implements Observer {
 		this.blackboard = blackboard;
 		this.measurementMetrics = getConcreteMeasurementMetrics();
 		listeners = new CopyOnWriteArrayList<ICalculatorListener>();
-		blackboard.addObserver(this);
+//		blackboard.addObserver(this);
 	}
 
 	/**
@@ -55,31 +57,44 @@ public abstract class Calculator implements Observer {
 		return measurementMetrics;
 	}
 
-	/**
-	 * The update method is called by the SampleBlackboard (observable entity)
-	 * containing all ProbeSetSamples. The method casts the two objects and then
-	 * calls the execute method of the specific calculator
-	 * 
-	 * TODO If a logging framework is added to this project, handle the
-	 * exception below correctly.
-	 * 
-	 * @param o
-	 *            The observable object (SampleBlackboard)
-	 * @param arg
-	 *            The ProbeSetSample object written on the SampleBlackboard
-	 */
-	@Override
-	public void update(Observable o, Object arg) {
-		if (o instanceof SampleBlackboard && arg instanceof ProbeSetSample) {
-			ProbeSetSample pss = (ProbeSetSample) arg;
-			try {
-				execute(pss);
-			} catch (CalculatorException e) {
-				e.printStackTrace();
-			}
+//	/**
+//	 * The update method is called by the SampleBlackboard (observable entity)
+//	 * containing all ProbeSetSamples. The method casts the two objects and then
+//	 * calls the execute method of the specific calculator
+//	 * 
+//	 * TODO If a logging framework is added to this project, handle the
+//	 * exception below correctly.
+//	 * 
+//	 * @param o
+//	 *            The observable object (SampleBlackboard)
+//	 * @param arg
+//	 *            The ProbeSetSample object written on the SampleBlackboard
+//	 */
+//	@Override
+//	public void update(Observable o, Object arg) {
+//		if (o instanceof SampleBlackboard && arg instanceof ProbeSetSample) {
+//			ProbeSetSample pss = (ProbeSetSample) arg;
+//			try {
+//				execute(pss);
+//			} catch (CalculatorException e) {
+//				e.printStackTrace();
+//			}
+//
+//		}
+//	}
 
+	@Override
+	public BlackboardVote sampleArrived(ProbeSetSample pss) {
+		try {
+			return execute(pss);
+		} catch (CalculatorException e) {
+			e.printStackTrace();
 		}
+//		return decideBlackboardVote();
+		return BlackboardVote.DISCARD;
 	}
+	
+//	public abstract BlackboardVote decideBlackboardVote();
 
 	/**
 	 * This method should be used to set the manager for the pipe and filter
@@ -95,36 +110,16 @@ public abstract class Calculator implements Observer {
 		this.pipesAndFiltersManager = pipesAndFiltersManager;
 	}
 
-	abstract protected void execute(ProbeSetSample pss)
+	abstract protected BlackboardVote execute(ProbeSetSample pss)
 			throws CalculatorException;
 
 	abstract protected Vector<MeasurementMetric> getConcreteMeasurementMetrics();
-
-	/**
-	 * Create PipeData object containing the result tuple and pass it to the
-	 * pipes-and-filters chain.
-	 * 
-	 * @param resultTuple
-	 * @throws CalculatorException
-	 */
-	protected void passToPipe(Vector<Measure<?, ? extends Quantity>> resultTuple)
-			throws CalculatorException {
-		fireCalculated(resultTuple);
-		PipeData pipeData = new PipeData(resultTuple);
-		if (pipesAndFiltersManager != null) {
-			pipesAndFiltersManager.processData(pipeData);
-		} else {
-			throw new CalculatorException(
-					"No PipesAndFilterManager is set. Could not pass "
-							+ "the result to the PipesAndFilterManager.");
-		}
-	}
 
 	public void addCalculatorListener(ICalculatorListener l) {
 		listeners.add(l);
 	}
 
-	private void fireCalculated(
+	protected void fireCalculated(
 			Vector<Measure<?, ? extends Quantity>> resultTuple) {
 		for (ICalculatorListener l : listeners) {
 			l.calculated(resultTuple);

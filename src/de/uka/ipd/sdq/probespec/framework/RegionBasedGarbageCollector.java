@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Observable;
-import java.util.Observer;
+
+import org.apache.log4j.Logger;
 
 import de.uka.ipd.sdq.probespec.framework.calculator.Calculator;
 
@@ -34,18 +34,15 @@ import de.uka.ipd.sdq.probespec.framework.calculator.Calculator;
  * 
  */
 public abstract class RegionBasedGarbageCollector<T> implements
-		IRegionBasedGarbageCollector<T>, Observer {
+		IRegionBasedGarbageCollector<T> {
 
+	public static Logger logger = Logger
+			.getLogger(RegionBasedGarbageCollector.class);
+	
 	// Counts how often a regions has been entered but not left yet (the
 	// region's population)
 	// Maps regionId to process count within region.
 	private Map<T, Integer> regionCountMap;
-
-	// Contains the probe samples taken within a particular region.
-	// Maps regionId to (ProbeSet, RequestContext)-pairs within region.
-	private Map<T, List<ProbeSetAndRequestContext>> regionProbeSetsMap;
-
-	private SampleBlackboard blackboard;
 
 	/**
 	 * Default constructor. Constructs a garbage collector for the specified
@@ -55,15 +52,9 @@ public abstract class RegionBasedGarbageCollector<T> implements
 	 *            the blackboard which is to keep clean by the garbage
 	 *            collector.
 	 */
-	public RegionBasedGarbageCollector(SampleBlackboard blackboard) {
-		this.blackboard = blackboard;
-
+	public RegionBasedGarbageCollector() {
 		// initialise maps
 		regionCountMap = new HashMap<T, Integer>();
-		regionProbeSetsMap = new HashMap<T, List<ProbeSetAndRequestContext>>();
-
-		// observe the blackboard for new probe samples
-		blackboard.addObserver(this);
 	}
 
 	/**
@@ -85,12 +76,14 @@ public abstract class RegionBasedGarbageCollector<T> implements
 	@Override
 	public void enterRegion(T regionId) {
 		if (increasePopulation(regionId) == 1) {
-			System.out.println("Region " + regionId + " opened.");
+			logger.debug("Region " + regionId + " opened.");
 		}
 	}
 
 	/**
 	 * Informs the garbage collector that the specified region has been left.
+	 * 
+	 * As soon as the population reaches 0, the cleanup starts.
 	 * 
 	 * @param regionId
 	 *            the id representing the left region
@@ -100,6 +93,7 @@ public abstract class RegionBasedGarbageCollector<T> implements
 		if (decreasePopulation(regionId) == 0) {
 			collectRegionSamples(regionId);
 			System.out.println("Region " + regionId + " closed.");
+			logger.debug("Region " + regionId + " closed.");
 		}
 	}
 
@@ -108,11 +102,6 @@ public abstract class RegionBasedGarbageCollector<T> implements
 	 * eventually needs to be collected. Only the observed blackboard should
 	 * call this method.
 	 */
-	@Override
-	public void update(Observable obs, Object obj) {
-		ProbeSetSample pss = (ProbeSetSample) obj;
-		insertIntoRegion(pss.getProbeSetAndRequestContext());
-	}
 
 	/**
 	 * Deletes all probe samples taken within the specified region from the
@@ -121,39 +110,7 @@ public abstract class RegionBasedGarbageCollector<T> implements
 	 * @param regionId
 	 *            the region id whose probe samples are to be deleted
 	 */
-	private void collectRegionSamples(T regionId) {
-		if (regionProbeSetsMap.containsKey(regionId)) {
-			// remove probe samples from blackboard
-			List<ProbeSetAndRequestContext> probeSampleList = regionProbeSetsMap
-					.get(regionId);
-			for (ProbeSetAndRequestContext p : probeSampleList) {
-				blackboard.deleteProbeSetSample(p);
-			}
-
-			regionProbeSetsMap.remove(regionId);
-		}
-	}
-
-	/**
-	 * Adds the specified {@link ProbeSetAndRequestContext} to the appropriate
-	 * region.
-	 * 
-	 * @param c
-	 */
-	private void insertIntoRegion(ProbeSetAndRequestContext c) {
-		List<ProbeSetAndRequestContext> probeSetSampleList = null;
-		// does the map already contain the region id?
-		if (!regionProbeSetsMap.containsKey(obtainRegionId(c))) {
-			probeSetSampleList = new ArrayList<ProbeSetAndRequestContext>();
-			// add new region to map
-			regionProbeSetsMap.put(obtainRegionId(c), probeSetSampleList);
-		} else {
-			// obtain existing region from map
-			probeSetSampleList = regionProbeSetsMap.get(obtainRegionId(c));
-		}
-
-		probeSetSampleList.add(c);
-	}
+	public abstract void collectRegionSamples(T regionId);
 
 	/**
 	 * Changes the population count of the specified region.

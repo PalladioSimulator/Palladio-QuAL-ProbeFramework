@@ -11,7 +11,7 @@ package de.uka.ipd.sdq.probespec.framework;
  * In order to represent a sequence of requests so that request1 spawned
  * request2, which in turn spawned request3 and so forth, a parent context can
  * be specified by using constructor
- * {@link #RequestContextID(String, RequestContext)}. In this way the
+ * {@link #RequestContext(String, RequestContext)}. In this way the
  * execution of forks can be represented.
  * 
  * @author Faber
@@ -20,6 +20,8 @@ package de.uka.ipd.sdq.probespec.framework;
  */
 public class RequestContext {
 
+	public static final RequestContext EMPTY_REQUEST_CONTEXT = new RequestContext("");
+	
 	// unique identifier of the request context
 	private String requestContextId;
 

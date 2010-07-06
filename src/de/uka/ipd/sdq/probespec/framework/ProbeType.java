@@ -12,6 +12,6 @@ public enum ProbeType {
 	RESOURCE_DEMAND,
 	SEFF_PARAMETER, 
 	CURRENT_TIME,
-	STOEX,
+	STOEX
 	
 }

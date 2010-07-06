@@ -1,9 +1,11 @@
 package de.uka.ipd.sdq.probespec.framework;
 
+import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Observable;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * This class realizes the blackboard pattern to store all ProbeSetSamples and
@@ -29,14 +31,21 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author Philipp Merkle
  * 
  */
-public class SampleBlackboard extends Observable {
+public class SampleBlackboard {
+	
+	// copy on write enables listeners to unregister during event processing.
+	private List<IBlackboardListener> listeners;
+	
+	private HashMap<String, ArrayList<IBlackboardListener>> topicToListenersMap;
 	
 	// ProbeSetSampleID -> ProbeSetSample
-	private HashMap<ProbeSetAndRequestContext, ProbeSetSample> pssMap = new HashMap<ProbeSetAndRequestContext, ProbeSetSample>();
+	private HashMap<RequestContext, HashMap<ProbeSetAndRequestContext, ProbeSetSample>> sampleMap = new HashMap<RequestContext, HashMap<ProbeSetAndRequestContext, ProbeSetSample>>();
 
-	// Lock for the map containing the probe set samples
-	private Lock mapLock = new ReentrantLock();
-
+	public SampleBlackboard() {
+		listeners = new ArrayList<IBlackboardListener>();
+		topicToListenersMap = new HashMap<String, ArrayList<IBlackboardListener>>();
+	}
+	
 	/**
 	 * This method allows to add a ProbeSetSample to the SampleBlackboard. It is
 	 * only added to the HashMap, if the TTL field is still greater than zero.
@@ -47,27 +56,47 @@ public class SampleBlackboard extends Observable {
 	 *            ProbeSetSample which is added to the SampleBlackboard and then
 	 *            distributed to all Calculators (observer pattern).
 	 */
-	public void addProbeSetSample(ProbeSetSample pss) {
-		// ensure synchronised access to the map
-		mapLock.lock();
-		try {
-			pssMap.put(pss.getProbeSetAndRequestContext(), pss);
-		} finally {
-			mapLock.unlock();
-		}
+	public void addSample(ProbeSetSample pss) {
+		// notify listeners and obtain deletion vote
+		BlackboardVote deletionVote = fireSampleArrived(pss);
 
-		// notify listeners
-		setChanged();
-		notifyObservers(pss);
+		// retain sample if at least one retain-vote exists
+		if (deletionVote.equals(BlackboardVote.RETAIN)) {
+			RequestContext context = pss.getProbeSetAndRequestContext()
+					.getCtxID();
+			HashMap<ProbeSetAndRequestContext, ProbeSetSample> contextMap = sampleMap
+					.get(context);
+			// create hash map for request context if not done yet
+			if (contextMap == null) {
+				contextMap = new HashMap<ProbeSetAndRequestContext, ProbeSetSample>();
+				sampleMap.put(context, contextMap);
+			}
+			contextMap.put(pss.getProbeSetAndRequestContext(), pss);
+		}
 	}
 	
-	public void deleteProbeSetSample(ProbeSetAndRequestContext pss) {
-		// ensure synchronised access to the map
-		mapLock.lock();
-		try {
-			pssMap.remove(pss);
-		} finally {
-			mapLock.unlock();
+	/**
+	 * Deletes the probe sample specified by the
+	 * {@link ProbeSetAndRequestContext}.
+	 * 
+	 * @param pss
+	 */
+	public void deleteSample(ProbeSetAndRequestContext pss) {
+		sampleMap.get(pss.getCtxID()).remove(pss);
+	}
+	
+	/**
+	 * Deletes all samples contained in the specified request context.
+	 * 
+	 * @param requestContext
+	 *            the request context whose samples will be deleted.
+	 */
+	public void deleteSamplesInRequestContext(RequestContext requestContext) {
+		HashMap<ProbeSetAndRequestContext, ProbeSetSample> contextMap = sampleMap
+				.get(requestContext);
+		if (contextMap != null) {
+			contextMap.clear();
+			sampleMap.remove(requestContext);
 		}
 	}
 
@@ -94,18 +123,19 @@ public class SampleBlackboard extends Observable {
 	 * @return the ProbeSetSample for the probeSetSampleID, if there is any;
 	 *         else null.
 	 */
-	public ProbeSetSample getProbeSetSample(ProbeSetAndRequestContext probeSetSampleID) {
+	public ProbeSetSample getSample(ProbeSetAndRequestContext probeSetSampleID) {
 		// try to find the ProbeSetSample in the specified context
 		ProbeSetSample sample = obtainSample(probeSetSampleID);
 		if (sample != null) {
 			return sample;
 		}
-		
+
 		// try to find the ProbeSetSample in a parent context
 		RequestContext ctx = probeSetSampleID.getCtxID().getParentContext();
 		String probeSetID = probeSetSampleID.getProbeSetID();
 		while (ctx != null) {
-			ProbeSetAndRequestContext pssID = new ProbeSetAndRequestContext(probeSetID, ctx);
+			ProbeSetAndRequestContext pssID = new ProbeSetAndRequestContext(
+					probeSetID, ctx);
 			ProbeSetSample pss = obtainSample(pssID);
 			if (pss != null) {
 				return pss;
@@ -123,27 +153,89 @@ public class SampleBlackboard extends Observable {
 	 * @return
 	 */
 	private ProbeSetSample obtainSample(ProbeSetAndRequestContext probeSetSampleID) {
-		mapLock.lock();
-		ProbeSetSample sample = null;
-		try {
-			sample = pssMap.get(probeSetSampleID);
-		} finally {
-			mapLock.unlock();
+		HashMap<ProbeSetAndRequestContext, ProbeSetSample> x = sampleMap.get(probeSetSampleID.getCtxID());
+		if (x != null) {
+			return x.get(probeSetSampleID);		
 		}
-		return sample;
+		return null;
 	}
 
 	/**
-	 * Returns the size of the HashMap which stores all ProbeSetSamples. This is
-	 * mainly used by TestCases for the garbage collection. Later it could also
-	 * be used to supervise the state/utilization of the blackboard.
+	 * Returns the number of {@link ProbeSetSample}s in this blackboard.
 	 * 
-	 * @return Integer which represents the number of ProbeSetSamples which are
-	 *         stored in the HashMap
+	 * @return
 	 */
-	public int getHashMapSize() {
-		return pssMap.size();
+	public int size() {
+		int i = 0;
+//		Enumeration<ConcurrentHashMap<ProbeSetAndRequestContext, ProbeSetSample>> e = sampleMap
+//				.elements();
+//		while (e.hasMoreElements()) {
+//			ConcurrentHashMap<ProbeSetAndRequestContext, ProbeSetSample> contextMap = e
+//					.nextElement();
+//			i += contextMap.size();
+//		}
+		return i;
 	}
 	
+	/**
+	 * Registers a listener which gets notified of blackboard events.
+	 * 
+	 * @param l
+	 */
+	public void addBlackboardListener(IBlackboardListener l, String... topics) {
+		if (topics.length == 0) {
+			listeners.add(l);
+		}
+		else {
+			// add listener for each topic
+			for (String t : topics) {
+				ArrayList<IBlackboardListener> listeners = topicToListenersMap.get(t);
+				if (listeners == null) {
+					listeners = new ArrayList<IBlackboardListener>();
+					topicToListenersMap.put(t, listeners);
+				}
+				listeners.add(l);
+			}
+		}
+		
+	}
+	
+	/**
+	 * Notifies all registered listeners of a new {@link ProbeSetSample}.
+	 * 
+	 * @param pss
+	 * @return
+	 */
+	private BlackboardVote fireSampleArrived(ProbeSetSample pss, List<IBlackboardListener> listeners) {
+//	private BlackboardVote fireSampleArrived(ProbeSetSample pss) {
+		BlackboardVote deletionVote = BlackboardVote.DISCARD;
+		for (IBlackboardListener l : listeners) {
+			if (l.sampleArrived(pss).equals(BlackboardVote.RETAIN)) {
+				deletionVote = BlackboardVote.RETAIN;
+			}
+		}
+		return deletionVote;
+	}
+	
+	private BlackboardVote fireSampleArrived(ProbeSetSample pss) {
+		// notify listeners that are not registered for a specific topic
+		BlackboardVote firstDeletionVote = fireSampleArrived(pss, listeners);
+
+		// notify listeners that are registered for the sample's topic
+		String topic = pss.getProbeSetAndRequestContext().getProbeSetID();
+		List<IBlackboardListener> listeners = topicToListenersMap
+				.get(topic);
+		BlackboardVote secondDeletionVote = null;
+		if (listeners != null) {
+			secondDeletionVote = fireSampleArrived(pss, listeners);
+		}
+
+		if (firstDeletionVote.equals(BlackboardVote.DISCARD)
+				&& (secondDeletionVote == null || secondDeletionVote
+						.equals(BlackboardVote.DISCARD))) {
+			return BlackboardVote.DISCARD;
+		}
+		return BlackboardVote.RETAIN;
+	}
 
 }

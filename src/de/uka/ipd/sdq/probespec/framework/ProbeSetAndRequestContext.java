@@ -3,6 +3,8 @@ package de.uka.ipd.sdq.probespec.framework;
 /**
  * Represents a (ProbeSet, {@link RequestContext})-pair. The ProbeSet is
  * identified by its ID.
+ * <p>
+ * It is used to uniquely identify {@link ProbeSetSample}.
  * 
  * @author Faber
  * @author Philipp Merkle
@@ -24,7 +26,8 @@ public class ProbeSetAndRequestContext {
 	 * @param requestContext
 	 *            the RequestContext
 	 */
-	public ProbeSetAndRequestContext(String probeSetId, RequestContext requestContext) {
+	public ProbeSetAndRequestContext(String probeSetId,
+			RequestContext requestContext) {
 		this.probeSetId = probeSetId;
 		this.requestContext = requestContext;
 	}
