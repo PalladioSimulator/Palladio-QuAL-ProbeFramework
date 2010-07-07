@@ -8,20 +8,20 @@ import de.uka.ipd.sdq.probespec.framework.calculator.WaitingTimeCalculator;
 public interface ICalculatorFactory {
 
 	public abstract Calculator buildResponseTimeCalculator(
-			String calculatorName, String startProbeSetID, String endProbeSetID);
+			String calculatorName, Integer startProbeSetID, Integer endProbeSetID);
 
 	public abstract WaitingTimeCalculator buildDemandBasedWaitingTimeCalculator(
-			String calculatorName, String startWaitingProbeSetID,
-			String stopProcessingProbeSetID);
+			String calculatorName, Integer startWaitingProbeSetID,
+			Integer stopProcessingProbeSetID);
 
 	public abstract WaitingTimeCalculator buildWaitingTimeCalculator(
-			String calculatorName, String startWaitingProbeSetID,
-			String stopWaitingProbeSetID);
+			String calculatorName, Integer startWaitingProbeSetID,
+			Integer stopWaitingProbeSetID);
 
 	public abstract StateCalculator buildStateCalculator(String calculatorName,
-			String probeSetId);
+			Integer probeSetId);
 
 	public abstract DemandCalculator buildDemandCalculator(
-			String calculatorName, String probeSetID);
+			String calculatorName, Integer probeSetID);
 
 }

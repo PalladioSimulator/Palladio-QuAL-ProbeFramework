@@ -13,9 +13,9 @@ import de.uka.ipd.sdq.probespec.framework.exceptions.CalculatorException;
 
 public abstract class UnaryCalculator extends Calculator {
 
-	private String probeSetID;
+	private Integer probeSetID;
 	
-	protected UnaryCalculator(SampleBlackboard blackboard, String probeSetID) {
+	protected UnaryCalculator(SampleBlackboard blackboard, Integer probeSetID) {
 		super(blackboard);
 		this.probeSetID = probeSetID;
 		blackboard.addBlackboardListener(this, probeSetID);

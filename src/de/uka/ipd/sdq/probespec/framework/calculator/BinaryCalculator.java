@@ -29,12 +29,12 @@ import de.uka.ipd.sdq.probespec.framework.exceptions.CalculatorException;
  */
 public abstract class BinaryCalculator extends Calculator {
 
-	private String startProbeSetID;
+	private Integer startProbeSetID;
 
-	private String endProbeSetID;
+	private Integer endProbeSetID;
 
 	public BinaryCalculator(SampleBlackboard blackboard,
-			String startProbeSetID, String endProbeSetID) {
+			Integer startProbeSetID, Integer endProbeSetID) {
 		super(blackboard);
 		this.startProbeSetID = startProbeSetID;
 		this.endProbeSetID = endProbeSetID;

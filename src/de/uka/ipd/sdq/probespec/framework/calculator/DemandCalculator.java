@@ -41,7 +41,7 @@ public class DemandCalculator extends UnaryCalculator {
 	 * @param probeSetID
 	 *            ID of the probe set element from the model
 	 */
-	public DemandCalculator(SampleBlackboard blackboard, String probeSetID) {
+	public DemandCalculator(SampleBlackboard blackboard, Integer probeSetID) {
 		super(blackboard, probeSetID);
 	}
 

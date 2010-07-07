@@ -13,7 +13,7 @@ package de.uka.ipd.sdq.probespec.framework;
 public class ProbeSetAndRequestContext {
 
 	// the ID representing the ProbeSet
-	private String probeSetId;
+	private Integer probeSetId;
 
 	private RequestContext requestContext;
 
@@ -26,7 +26,7 @@ public class ProbeSetAndRequestContext {
 	 * @param requestContext
 	 *            the RequestContext
 	 */
-	public ProbeSetAndRequestContext(String probeSetId,
+	public ProbeSetAndRequestContext(Integer probeSetId,
 			RequestContext requestContext) {
 		this.probeSetId = probeSetId;
 		this.requestContext = requestContext;
@@ -37,7 +37,7 @@ public class ProbeSetAndRequestContext {
 	 * 
 	 * @return The ID representing the ProbeSet
 	 */
-	public String getProbeSetID() {
+	public Integer getProbeSetID() {
 		return probeSetId;
 	}
 

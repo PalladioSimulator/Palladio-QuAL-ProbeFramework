@@ -33,7 +33,7 @@ public class WaitingTimeCalculator extends TimeSpanCalculator {
 	 *            the waiting time measurement
 	 */
 	public WaitingTimeCalculator(SampleBlackboard blackboard,
-			String startWaitingProbeSetID, String stopWaitingProbeSetID) {
+			Integer startWaitingProbeSetID, Integer stopWaitingProbeSetID) {
 		super(blackboard, startWaitingProbeSetID, stopWaitingProbeSetID);
 	}
 

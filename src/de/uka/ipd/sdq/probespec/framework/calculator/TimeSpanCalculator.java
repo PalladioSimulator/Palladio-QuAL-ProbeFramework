@@ -24,7 +24,7 @@ import de.uka.ipd.sdq.probespec.framework.exceptions.CalculatorException;
 public abstract class TimeSpanCalculator extends BinaryCalculator {
 
 	public TimeSpanCalculator(SampleBlackboard blackboard,
-			String startProbeSetID, String endProbeSetID) {
+			Integer startProbeSetID, Integer endProbeSetID) {
 		super(blackboard, startProbeSetID, endProbeSetID);
 	}
 

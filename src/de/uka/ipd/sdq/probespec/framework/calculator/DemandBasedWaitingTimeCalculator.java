@@ -34,7 +34,7 @@ import de.uka.ipd.sdq.probespec.framework.exceptions.CalculatorException;
 public class DemandBasedWaitingTimeCalculator extends WaitingTimeCalculator {
 
 	public DemandBasedWaitingTimeCalculator(SampleBlackboard blackboard,
-			String startWaitingProbeSetID, String stopProcessingProbeSetID) {
+			Integer startWaitingProbeSetID, Integer stopProcessingProbeSetID) {
 		super(blackboard, startWaitingProbeSetID, stopProcessingProbeSetID);
 	}
 

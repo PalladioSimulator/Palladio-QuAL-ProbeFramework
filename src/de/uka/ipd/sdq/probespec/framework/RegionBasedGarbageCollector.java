@@ -92,7 +92,7 @@ public abstract class RegionBasedGarbageCollector<T> implements
 	public void leaveRegion(T regionId) {
 		if (decreasePopulation(regionId) == 0) {
 			collectRegionSamples(regionId);
-			System.out.println("Region " + regionId + " closed.");
+//			System.out.println("Region " + regionId + " closed.");
 			logger.debug("Region " + regionId + " closed.");
 		}
 	}

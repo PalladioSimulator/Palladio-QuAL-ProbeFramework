@@ -15,4 +15,5 @@ Export-Package: de.uka.ipd.sdq.probespec.framework,
  de.uka.ipd.sdq.probespec.framework.calculator,
  de.uka.ipd.sdq.probespec.framework.concurrency,
  de.uka.ipd.sdq.probespec.framework.exceptions,
- de.uka.ipd.sdq.probespec.framework.probes
+ de.uka.ipd.sdq.probespec.framework.probes,
+ de.uka.ipd.sdq.probespec.framework.utils

@@ -36,14 +36,14 @@ public class SampleBlackboard {
 	// copy on write enables listeners to unregister during event processing.
 	private List<IBlackboardListener> listeners;
 	
-	private HashMap<String, ArrayList<IBlackboardListener>> topicToListenersMap;
+	private HashMap<Integer, ArrayList<IBlackboardListener>> topicToListenersMap;
 	
 	// ProbeSetSampleID -> ProbeSetSample
 	private HashMap<RequestContext, HashMap<ProbeSetAndRequestContext, ProbeSetSample>> sampleMap = new HashMap<RequestContext, HashMap<ProbeSetAndRequestContext, ProbeSetSample>>();
 
 	public SampleBlackboard() {
 		listeners = new ArrayList<IBlackboardListener>();
-		topicToListenersMap = new HashMap<String, ArrayList<IBlackboardListener>>();
+		topicToListenersMap = new HashMap<Integer, ArrayList<IBlackboardListener>>();
 	}
 	
 	/**
@@ -132,7 +132,7 @@ public class SampleBlackboard {
 
 		// try to find the ProbeSetSample in a parent context
 		RequestContext ctx = probeSetSampleID.getCtxID().getParentContext();
-		String probeSetID = probeSetSampleID.getProbeSetID();
+		Integer probeSetID = probeSetSampleID.getProbeSetID();
 		while (ctx != null) {
 			ProbeSetAndRequestContext pssID = new ProbeSetAndRequestContext(
 					probeSetID, ctx);
@@ -182,13 +182,13 @@ public class SampleBlackboard {
 	 * 
 	 * @param l
 	 */
-	public void addBlackboardListener(IBlackboardListener l, String... topics) {
+	public void addBlackboardListener(IBlackboardListener l, Integer... topics) {
 		if (topics.length == 0) {
 			listeners.add(l);
 		}
 		else {
 			// add listener for each topic
-			for (String t : topics) {
+			for (Integer t : topics) {
 				ArrayList<IBlackboardListener> listeners = topicToListenersMap.get(t);
 				if (listeners == null) {
 					listeners = new ArrayList<IBlackboardListener>();
@@ -222,7 +222,7 @@ public class SampleBlackboard {
 		BlackboardVote firstDeletionVote = fireSampleArrived(pss, listeners);
 
 		// notify listeners that are registered for the sample's topic
-		String topic = pss.getProbeSetAndRequestContext().getProbeSetID();
+		Integer topic = pss.getProbeSetAndRequestContext().getProbeSetID();
 		List<IBlackboardListener> listeners = topicToListenersMap
 				.get(topic);
 		BlackboardVote secondDeletionVote = null;

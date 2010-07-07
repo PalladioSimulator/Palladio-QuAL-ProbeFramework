@@ -41,7 +41,7 @@ public class StateCalculator extends UnaryCalculator {
 	 * @param probeSetID
 	 *            ID of the probe set element from the model
 	 */
-	public StateCalculator(SampleBlackboard blackboard, String probeSetID) {
+	public StateCalculator(SampleBlackboard blackboard, Integer probeSetID) {
 		super(blackboard, probeSetID);
 	}
 

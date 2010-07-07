@@ -9,7 +9,7 @@ public class ProbeSpecUtils {
 	public static ProbeSetSample buildProbeSetSample(
 			ProbeSample<?, ? extends Quantity> sample,
 			RequestContext requestContextID, String modelElementId,
-			String probeSetId) {
+			Integer probeSetId) {
 		Vector<ProbeSample<?, ? extends Quantity>> probeSampleVector = new Vector<ProbeSample<?, ? extends Quantity>>();
 		probeSampleVector.add(sample);
 
@@ -22,7 +22,7 @@ public class ProbeSpecUtils {
 			ProbeSample<?, ? extends Quantity> sample1,
 			ProbeSample<?, ? extends Quantity> sample2,
 			RequestContext requestContextID, String modelElementId,
-			String probeSetId) {
+			Integer probeSetId) {
 		Vector<ProbeSample<?, ? extends Quantity>> probeSampleVector = new Vector<ProbeSample<?, ? extends Quantity>>();
 		probeSampleVector.add(sample1);
 		probeSampleVector.add(sample2);

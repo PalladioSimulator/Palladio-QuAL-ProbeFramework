@@ -2,6 +2,7 @@ package de.uka.ipd.sdq.probespec.framework;
 
 import de.uka.ipd.sdq.probespec.framework.concurrency.ThreadManager;
 import de.uka.ipd.sdq.probespec.framework.probes.IProbeStrategyRegistry;
+import de.uka.ipd.sdq.probespec.framework.utils.ProbeSetIDGenerator;
 
 public class ProbeSpecContext {
 
@@ -15,10 +16,13 @@ public class ProbeSpecContext {
 	
 	private ThreadManager threadManager;
 	
+	private ProbeSetIDGenerator probeSetIdGenerator;
+	
 	private IRegionBasedGarbageCollector<RequestContext> blackboardGarbageCollector;
 	
 	private ProbeSpecContext() {
 		threadManager = new ThreadManager();
+		probeSetIdGenerator = new ProbeSetIDGenerator();
 	}
 	
 	public void initialise(
@@ -34,6 +38,14 @@ public class ProbeSpecContext {
 	
 	public static ProbeSpecContext instance() {
 		return instance;
+	}
+	
+	public void setHighestProbeSetID(Integer id) {
+		probeSetIdGenerator.setHighestId(id);
+	}
+	
+	public Integer obtainProbeSetId(String probeSetId) {
+		return probeSetIdGenerator.obtainId(probeSetId);
 	}
 
 	public IProbeStrategyRegistry getProbeStrategyRegistry() {

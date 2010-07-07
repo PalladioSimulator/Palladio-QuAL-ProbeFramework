@@ -33,7 +33,7 @@ public class ResponseTimeCalculator extends TimeSpanCalculator {
 	 *            ID of the end probe set element from the model
 	 */
 	public ResponseTimeCalculator(SampleBlackboard blackboard,
-			String startProbeSetID, String endProbeSetID) {
+			Integer startProbeSetID, Integer endProbeSetID) {
 		super(blackboard, startProbeSetID, endProbeSetID);
 	}
 

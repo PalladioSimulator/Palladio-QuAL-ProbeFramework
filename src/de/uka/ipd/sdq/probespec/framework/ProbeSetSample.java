@@ -50,7 +50,7 @@ public class ProbeSetSample {
 	 */
 	public ProbeSetSample(
 			Vector<ProbeSample<?, ? extends Quantity>> probeSamples,
-			RequestContext ctxID, String modelElementID, String probeSetID) {
+			RequestContext ctxID, String modelElementID, Integer probeSetID) {
 		super();
 
 		this.probeSamples = probeSamples;
