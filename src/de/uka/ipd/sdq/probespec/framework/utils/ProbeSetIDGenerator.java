@@ -14,7 +14,7 @@ public class ProbeSetIDGenerator {
 
 	private Map<String, Integer> idMap = new HashMap<String, Integer>();
 
-	private int highestId = -1;
+	private int highestId = 1000;
 
 	public ProbeSetIDGenerator() {
 		idMap = new HashMap<String, Integer>();
