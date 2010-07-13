@@ -29,15 +29,18 @@ import de.uka.ipd.sdq.probespec.framework.exceptions.CalculatorException;
  */
 public abstract class BinaryCalculator extends Calculator {
 
+	private SampleBlackboard blackboard; 
+	
 	private Integer startProbeSetID;
 
 	private Integer endProbeSetID;
 
 	public BinaryCalculator(SampleBlackboard blackboard,
 			Integer startProbeSetID, Integer endProbeSetID) {
-		super(blackboard);
+		this.blackboard = blackboard;
 		this.startProbeSetID = startProbeSetID;
 		this.endProbeSetID = endProbeSetID;
+		
 		blackboard.addBlackboardListener(this, startProbeSetID, endProbeSetID);
 	}
 
@@ -79,7 +82,7 @@ public abstract class BinaryCalculator extends Calculator {
 		 */
 		if (endProbeSetID.equals(pss.getProbeSetAndRequestContext().getProbeSetID())) {
 			ProbeSetSample endSetSample = pss;
-			ProbeSetSample startSetSample = getBlackboard().getSample(
+			ProbeSetSample startSetSample = blackboard.getSample(
 					new ProbeSetAndRequestContext(startProbeSetID, pss
 							.getProbeSetAndRequestContext().getCtxID()));
 			if (startSetSample != null) {

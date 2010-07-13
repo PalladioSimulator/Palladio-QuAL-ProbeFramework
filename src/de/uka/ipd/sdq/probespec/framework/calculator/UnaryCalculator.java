@@ -16,7 +16,6 @@ public abstract class UnaryCalculator extends Calculator {
 	private Integer probeSetID;
 	
 	protected UnaryCalculator(SampleBlackboard blackboard, Integer probeSetID) {
-		super(blackboard);
 		this.probeSetID = probeSetID;
 		blackboard.addBlackboardListener(this, probeSetID);
 	}

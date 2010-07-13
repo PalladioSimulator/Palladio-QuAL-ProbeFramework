@@ -1,7 +1,5 @@
 package de.uka.ipd.sdq.probespec.framework.calculator;
 
-import java.util.Observable;
-import java.util.Observer;
 import java.util.Vector;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -9,8 +7,6 @@ import javax.measure.Measure;
 import javax.measure.quantity.Quantity;
 
 import de.uka.ipd.sdq.pipesandfilters.framework.MeasurementMetric;
-import de.uka.ipd.sdq.pipesandfilters.framework.PipeData;
-import de.uka.ipd.sdq.pipesandfilters.framework.PipesAndFiltersManager;
 import de.uka.ipd.sdq.probespec.framework.BlackboardVote;
 import de.uka.ipd.sdq.probespec.framework.IBlackboardListener;
 import de.uka.ipd.sdq.probespec.framework.ProbeSetSample;
@@ -31,20 +27,15 @@ import de.uka.ipd.sdq.probespec.framework.exceptions.CalculatorException;
  * 
  */
 public abstract class Calculator implements IBlackboardListener {
-	private SampleBlackboard blackboard;
-	private PipesAndFiltersManager pipesAndFiltersManager;
 
 	private Vector<MeasurementMetric> measurementMetrics = null;
 
 	// copy on write enables listeners to unregister during event processing.
 	private CopyOnWriteArrayList<ICalculatorListener> listeners;
 
-	protected Calculator(SampleBlackboard blackboard) {
-		super();
-		this.blackboard = blackboard;
+	protected Calculator() {
 		this.measurementMetrics = getConcreteMeasurementMetrics();
 		listeners = new CopyOnWriteArrayList<ICalculatorListener>();
-//		blackboard.addObserver(this);
 	}
 
 	/**
@@ -96,20 +87,6 @@ public abstract class Calculator implements IBlackboardListener {
 	
 //	public abstract BlackboardVote decideBlackboardVote();
 
-	/**
-	 * This method should be used to set the manager for the pipe and filter
-	 * chain. The specific Calculator will use this reference as receiver for
-	 * the result tuple.
-	 * 
-	 * @param pipesAndFiltersManager
-	 *            This is a reference to the manager of the pipe and filter
-	 *            chain.
-	 */
-	public void setPipesAndFiltersManager(
-			PipesAndFiltersManager pipesAndFiltersManager) {
-		this.pipesAndFiltersManager = pipesAndFiltersManager;
-	}
-
 	abstract protected BlackboardVote execute(ProbeSetSample pss)
 			throws CalculatorException;
 
@@ -124,10 +101,6 @@ public abstract class Calculator implements IBlackboardListener {
 		for (ICalculatorListener l : listeners) {
 			l.calculated(resultTuple);
 		}
-	}
-
-	protected SampleBlackboard getBlackboard() {
-		return blackboard;
 	}
 
 }
