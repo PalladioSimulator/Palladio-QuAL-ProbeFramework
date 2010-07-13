@@ -7,19 +7,19 @@ By means of ProbeSpecification models virtually arbitrary (ECore based) software
 <p>
 As mentioned above this framework can be adopted to other simulation frameworks (like SimuCom in the picture) by using a specialized {@link de.uka.ipd.sdq.probespec.framework.probes.AProbeStrategyFactory}. This Factory implements methods how to take a measure and then uses the probe spec framework to process and store the results.
 
-<h3>Terminology</h3>
+<h3>Concepts</h3>
 <h4>Probe</h4>
-A probe describes <b>what</b> should be measured (CPUState, CurrentTime, etc.). 
-<p>
-<b>Notice</b> that there are no Probes on the framework level. Within the framework a Probe is represented by ProbeSamples. The ProbeSample class encapsulates an atomic measurement of a particular type.
+A probe describes <b>what</b> should be measured. Examples are the waiting time for a resource and the current (simulated) time.
+<p>Notice that there are no Probes on the framework level. Within the framework a Probe is represented by ProbeSamples. The ProbeSample class encapsulates an atomic measurement of a particular type.
 <h4>ProbeSet</h4>
 A ProbeSet contains several Probes and defines the point <b>where</b> the sample is taken.
 <p>
 <b>Notice</b> that there are no ProbeSets on the framework level. Within the framework a ProbeSet is represented by ProbeSetSamples. The ProbeSetSample class encapsulates several ProbeSamples. Thus the ProbeSetSample represents a set of various measurements [taken simultaneously] for the same model element. Afterwards it is added to a blackboard which stores all ProbeSetSamples.
 <h4>Calculator</h4>
-The Calculators are notified if a new ProbeSetSample is added to the blackboard (by an observer pattern). Then they combine ProbeSetSamples (e.g. calculates the difference) or select the needed ProbeSamples from the ProbeSetSample. Afterwards they combine these information to a so called result tuple and pass it to the Pipes-and-Filters chain.
-A Calculator also adds semantic information to the result tuple. E.g. a ResponseTimeCalculator holds describing information about the result tuple (e.g. description, name, scale,...). Without this information this Calculator would just return an undescribed time difference.
-
+<p>A Calculator is responsible for <strong>calculating the result</strong> from one or more measurements taken at different positions. This concept is motivated by the measurement of response times. In order to measure the response time of a service call it is necessary to take measurements at two different positions: When the service is called and when the service is finished. For this purpose at each position a ProbeSet gets mounted that measures the current time. The calculator gets notified of measurements originating from these ProbeSets (these measurements are called ProbeSetSamples) and calculates the response time when both samples have arrived.</p>
+<p>The notification is conducted by means of the observer pattern. Each time when a new ProbeSetSample is added to the blackboard the Calculator gets notified. Then they combine ProbeSetSamples (e.g. calculates the difference) or select the needed ProbeSamples from the ProbeSetSample. Afterwards they combine these information to a so called result tuple and pass it to the Pipes-and-Filters chain.
+A Calculator also adds semantic information to the result tuple. E.g. a ResponseTimeCalculator holds describing information about the result tuple (e.g. description, name, scale,...). Without this information this Calculator would just return an undescribed time difference. </p>
+<p>In certain cases the ProbeSetSample is already the result where no further calculation is desired. Here some kind of pass-through Calculator should be used.</p>
 <h3>Transformation</h3>
 <table border="1">
 	<tr><th>Model Element</th><th>Related Framework Class</th><th>Representation of the Result</th></tr>

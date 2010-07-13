@@ -1,43 +1,42 @@
 package de.uka.ipd.sdq.probespec.framework;
 
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * This class realizes the blackboard pattern to store all ProbeSetSamples and
- * allows the Calculators to access this data. This makes it to a central class
- * in the ProbeSpec framework. An observer pattern is used to notify the
- * Calculator about the arrival of a new ProbeSetSample.
+ * The blackboard is a mediator between entities producing samples (
+ * {@link ProbeSetSample}s) and entities consuming samples. Producers offer
+ * their samples by calling {@link #addSample(ProbeSetSample)}. Consumers
+ * implement the {@link IBlackboardListener} interface and register themselves
+ * at the blackboard. Afterwards they receive all samples they are interested
+ * in.
  * <p>
- * Internally the storage is structured as HashMaps which maps the
- * ProbeSetSampleID to the ProbeSetSample (ProbeSetSampleID -> ProbeSetSample).
+ * Consumers can express their interest by passing one or more topics while
+ * registering as observer. When no topics are passed, the consumer gets
+ * notified of all arriving samples.
  * <p>
- * TODO This SampleBlackboard also realizes a simple implementation of a garbage
- * collection to delete ProbeSetSamples which are not needed any more. For now
- * this is done by a counter for each ProbeSetSample which can be seen as a
- * "time to life" field (To set the field correctly see the ProbeSetSample
- * documentation). Every time a ProbeSetSample is read, the counter is
- * decremented and finally the ProbeSetSample is deleted, if the counter is
- * equal or less than zero. Note that the first time the TTL field is
- * decremented is, when the ProbeSetSample is added to the blackboard. This is
- * because the Calculators then receive the ProbeSetSample for the first time
- * (Observer pattern).
+ * Published samples can be stored at the blackboard. When a consumer gets
+ * notified of a new samples, it has to vote whether to keep (store) the sample.
+ * A single {@link BlackboardVote#RETAIN}-vote is sufficient to store the
+ * sample. Only when all consumers vote {@link BlackboardVote#DISCARD} the
+ * sample gets discarded.
+ * <p>
+ * Samples are unique identified by a pair of a ProbeSetID and a
+ * {@link RequestContext}, encapsulated by a {@link ProbeSetAndRequestContext}.
+ * Thereby the blackboard can store several samples originating from the same
+ * ProbeSet, one for each RequestContext.
  * 
  * @author Faber
  * @author Philipp Merkle
  * 
  */
 public class SampleBlackboard {
-	
-	// copy on write enables listeners to unregister during event processing.
+
 	private List<IBlackboardListener> listeners;
-	
+
 	private HashMap<Integer, ArrayList<IBlackboardListener>> topicToListenersMap;
-	
+
 	// ProbeSetSampleID -> ProbeSetSample
 	private HashMap<RequestContext, HashMap<ProbeSetAndRequestContext, ProbeSetSample>> sampleMap = new HashMap<RequestContext, HashMap<ProbeSetAndRequestContext, ProbeSetSample>>();
 
@@ -45,7 +44,7 @@ public class SampleBlackboard {
 		listeners = new ArrayList<IBlackboardListener>();
 		topicToListenersMap = new HashMap<Integer, ArrayList<IBlackboardListener>>();
 	}
-	
+
 	/**
 	 * This method allows to add a ProbeSetSample to the SampleBlackboard. It is
 	 * only added to the HashMap, if the TTL field is still greater than zero.
@@ -74,7 +73,7 @@ public class SampleBlackboard {
 			contextMap.put(pss.getProbeSetAndRequestContext(), pss);
 		}
 	}
-	
+
 	/**
 	 * Deletes the probe sample specified by the
 	 * {@link ProbeSetAndRequestContext}.
@@ -84,7 +83,7 @@ public class SampleBlackboard {
 	public void deleteSample(ProbeSetAndRequestContext pss) {
 		sampleMap.get(pss.getCtxID()).remove(pss);
 	}
-	
+
 	/**
 	 * Deletes all samples contained in the specified request context.
 	 * 
@@ -101,22 +100,18 @@ public class SampleBlackboard {
 	}
 
 	/**
-	 * Returns the ProbeSetSample for the specified pair of probeID and
-	 * {@link RequestContext}, if there is any. The probeId and
-	 * RequestContextID are encapsulated by a {@link ProbeSetAndRequestContext}.
+	 * Returns the ProbeSetSample for the specified pair of ProbeSetId and
+	 * {@link RequestContext}, if there is any. The ProbeSetId and
+	 * RequestContext are encapsulated by a {@link ProbeSetAndRequestContext}.
 	 * <p>
-	 * If no ProbeSetSample can be found for the RequestContextID and the
-	 * RequestContextID has a parent context, the search will be performed for
-	 * this parent context too. More precisely, for the pair of probeID and
-	 * parent ProbeSetSampleID. This continues recursively until a
-	 * RequestContextID with missing parent context is reached.
+	 * If no ProbeSetSample can be found for the RequestContext and the
+	 * RequestContext has a parent context, the search will be performed for
+	 * that parent context too. This continues recursively until a
+	 * RequestContext with missing parent context is reached.
 	 * <p>
 	 * This recursive search is useful for e.g. finding the start ProbeSetSample
 	 * (taken before a fork) for a given end ProbeSetSample (taken within a
 	 * fork).
-	 * 
-	 * TODO After the extraction the tryCleanUp method is called to eventually
-	 * remove the ProbeSetSample from the HashMap.
 	 * 
 	 * @param probeSetSampleID
 	 *            the encapsulated probeId and RequestContextID
@@ -144,18 +139,20 @@ public class SampleBlackboard {
 		}
 		return null;
 	}
-	
+
 	/**
-	 * Provides synchronised access to the map containing the probe set samples.
-	 * Hereby potential race conditions are avoided.
+	 * Returns the {@link ProbeSetSample} for the specified
+	 * {@link ProbeSetAndRequestContext}.
 	 * 
 	 * @param probeSetSampleID
 	 * @return
 	 */
-	private ProbeSetSample obtainSample(ProbeSetAndRequestContext probeSetSampleID) {
-		HashMap<ProbeSetAndRequestContext, ProbeSetSample> x = sampleMap.get(probeSetSampleID.getCtxID());
-		if (x != null) {
-			return x.get(probeSetSampleID);		
+	private ProbeSetSample obtainSample(
+			ProbeSetAndRequestContext probeSetSampleID) {
+		HashMap<ProbeSetAndRequestContext, ProbeSetSample> contextMap = sampleMap
+				.get(probeSetSampleID.getCtxID());
+		if (contextMap != null) {
+			return contextMap.get(probeSetSampleID);
 		}
 		return null;
 	}
@@ -167,29 +164,33 @@ public class SampleBlackboard {
 	 */
 	public int size() {
 		int i = 0;
-//		Enumeration<ConcurrentHashMap<ProbeSetAndRequestContext, ProbeSetSample>> e = sampleMap
-//				.elements();
-//		while (e.hasMoreElements()) {
-//			ConcurrentHashMap<ProbeSetAndRequestContext, ProbeSetSample> contextMap = e
-//					.nextElement();
-//			i += contextMap.size();
-//		}
+		// TODO
+		// Enumeration<ConcurrentHashMap<ProbeSetAndRequestContext,
+		// ProbeSetSample>> e = sampleMap
+		// .elements();
+		// while (e.hasMoreElements()) {
+		// ConcurrentHashMap<ProbeSetAndRequestContext, ProbeSetSample>
+		// contextMap = e
+		// .nextElement();
+		// i += contextMap.size();
+		// }
 		return i;
 	}
-	
+
 	/**
-	 * Registers a listener which gets notified of blackboard events.
+	 * Registers a listener for blackboard events.
 	 * 
 	 * @param l
+	 *            the listener
 	 */
 	public void addBlackboardListener(IBlackboardListener l, Integer... topics) {
 		if (topics.length == 0) {
 			listeners.add(l);
-		}
-		else {
+		} else {
 			// add listener for each topic
 			for (Integer t : topics) {
-				ArrayList<IBlackboardListener> listeners = topicToListenersMap.get(t);
+				ArrayList<IBlackboardListener> listeners = topicToListenersMap
+						.get(t);
 				if (listeners == null) {
 					listeners = new ArrayList<IBlackboardListener>();
 					topicToListenersMap.put(t, listeners);
@@ -197,17 +198,21 @@ public class SampleBlackboard {
 				listeners.add(l);
 			}
 		}
-		
+
 	}
-	
+
 	/**
-	 * Notifies all registered listeners of a new {@link ProbeSetSample}.
+	 * Notifies all specified listeners of a new {@link ProbeSetSample}.
 	 * 
 	 * @param pss
-	 * @return
+	 * @param listeners
+	 *            the listeners that are to be notified
+	 * @return {@link BlackboardVote#RETAIN} when the sample has to be stored;
+	 *         {@link BlackboardVote#DISCARD} else.
 	 */
-	private BlackboardVote fireSampleArrived(ProbeSetSample pss, List<IBlackboardListener> listeners) {
-//	private BlackboardVote fireSampleArrived(ProbeSetSample pss) {
+	private BlackboardVote fireSampleArrived(ProbeSetSample pss,
+			List<IBlackboardListener> listeners) {
+		// private BlackboardVote fireSampleArrived(ProbeSetSample pss) {
 		BlackboardVote deletionVote = BlackboardVote.DISCARD;
 		for (IBlackboardListener l : listeners) {
 			if (l.sampleArrived(pss).equals(BlackboardVote.RETAIN)) {
@@ -216,15 +221,23 @@ public class SampleBlackboard {
 		}
 		return deletionVote;
 	}
-	
+
+	/**
+	 * Notifies all listeners of a new {@link ProbeSetSample}. Both listeners
+	 * that are not registered for a specific topic and listeners interested in
+	 * one or more topics get notified of the new ProbeSetSample.
+	 * 
+	 * @param pss
+	 * @return {@link BlackboardVote#RETAIN} when the sample has to be stored;
+	 *         {@link BlackboardVote#DISCARD} else.
+	 */
 	private BlackboardVote fireSampleArrived(ProbeSetSample pss) {
 		// notify listeners that are not registered for a specific topic
 		BlackboardVote firstDeletionVote = fireSampleArrived(pss, listeners);
 
 		// notify listeners that are registered for the sample's topic
 		Integer topic = pss.getProbeSetAndRequestContext().getProbeSetID();
-		List<IBlackboardListener> listeners = topicToListenersMap
-				.get(topic);
+		List<IBlackboardListener> listeners = topicToListenersMap.get(topic);
 		BlackboardVote secondDeletionVote = null;
 		if (listeners != null) {
 			secondDeletionVote = fireSampleArrived(pss, listeners);
