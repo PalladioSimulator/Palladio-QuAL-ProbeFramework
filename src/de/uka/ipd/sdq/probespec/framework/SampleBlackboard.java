@@ -3,6 +3,7 @@ package de.uka.ipd.sdq.probespec.framework;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 /**
  * The blackboard is a mediator between entities producing samples (
@@ -17,10 +18,10 @@ import java.util.List;
  * notified of all arriving samples.
  * <p>
  * Published samples can be stored at the blackboard. When a consumer gets
- * notified of a new samples, it has to vote whether to keep (store) the sample.
- * A single {@link BlackboardVote#RETAIN}-vote is sufficient to store the
- * sample. Only when all consumers vote {@link BlackboardVote#DISCARD} the
- * sample gets discarded.
+ * notified of a new samples, it has to vote whether the blackboard is supposed
+ * to keep (store) the sample. A single {@link BlackboardVote#RETAIN}-vote is
+ * sufficient to store the sample. Only when all consumers vote
+ * {@link BlackboardVote#DISCARD} the sample gets discarded.
  * <p>
  * Samples are unique identified by a pair of a ProbeSetID and a
  * {@link RequestContext}, encapsulated by a {@link ProbeSetAndRequestContext}.
@@ -37,7 +38,8 @@ public class SampleBlackboard {
 
 	private HashMap<Integer, ArrayList<IBlackboardListener>> topicToListenersMap;
 
-	// ProbeSetSampleID -> ProbeSetSample
+	// stores the samples
+	// maps RequestContext to map (ProbeSetAndRequestContext -> ProbeSetSample)
 	private HashMap<RequestContext, HashMap<ProbeSetAndRequestContext, ProbeSetSample>> sampleMap = new HashMap<RequestContext, HashMap<ProbeSetAndRequestContext, ProbeSetSample>>();
 
 	public SampleBlackboard() {
@@ -46,26 +48,23 @@ public class SampleBlackboard {
 	}
 
 	/**
-	 * This method allows to add a ProbeSetSample to the SampleBlackboard. It is
-	 * only added to the HashMap, if the TTL field is still greater than zero.
-	 * See class description for detailed information about the storage
-	 * structure and its garbage collection.
+	 * Publishes a sample on the blackboard. Interested observers gets notified
+	 * of the published sample.
 	 * 
 	 * @param pss
-	 *            ProbeSetSample which is added to the SampleBlackboard and then
-	 *            distributed to all Calculators (observer pattern).
+	 *            the sample
 	 */
 	public void addSample(ProbeSetSample pss) {
 		// notify listeners and obtain deletion vote
 		BlackboardVote deletionVote = fireSampleArrived(pss);
 
-		// retain sample if at least one retain-vote exists
+		// retain sample if at least one RETAIN-vote exists
 		if (deletionVote.equals(BlackboardVote.RETAIN)) {
 			RequestContext context = pss.getProbeSetAndRequestContext()
 					.getCtxID();
 			HashMap<ProbeSetAndRequestContext, ProbeSetSample> contextMap = sampleMap
 					.get(context);
-			// create hash map for request context if not done yet
+			// create hash map for request context, if not done yet
 			if (contextMap == null) {
 				contextMap = new HashMap<ProbeSetAndRequestContext, ProbeSetSample>();
 				sampleMap.put(context, contextMap);
@@ -75,17 +74,17 @@ public class SampleBlackboard {
 	}
 
 	/**
-	 * Deletes the probe sample specified by the
-	 * {@link ProbeSetAndRequestContext}.
+	 * Deletes the sample specified by the {@link ProbeSetAndRequestContext}.
 	 * 
 	 * @param pss
+	 *            the sample
 	 */
 	public void deleteSample(ProbeSetAndRequestContext pss) {
 		sampleMap.get(pss.getCtxID()).remove(pss);
 	}
 
 	/**
-	 * Deletes all samples contained in the specified request context.
+	 * Deletes all samples contained in the specified requestContext.
 	 * 
 	 * @param requestContext
 	 *            the request context whose samples will be deleted.
@@ -107,7 +106,7 @@ public class SampleBlackboard {
 	 * If no ProbeSetSample can be found for the RequestContext and the
 	 * RequestContext has a parent context, the search will be performed for
 	 * that parent context too. This continues recursively until a
-	 * RequestContext with missing parent context is reached.
+	 * RequestContext is reached that does not have a parent context.
 	 * <p>
 	 * This recursive search is useful for e.g. finding the start ProbeSetSample
 	 * (taken before a fork) for a given end ProbeSetSample (taken within a
@@ -164,16 +163,10 @@ public class SampleBlackboard {
 	 */
 	public int size() {
 		int i = 0;
-		// TODO
-		// Enumeration<ConcurrentHashMap<ProbeSetAndRequestContext,
-		// ProbeSetSample>> e = sampleMap
-		// .elements();
-		// while (e.hasMoreElements()) {
-		// ConcurrentHashMap<ProbeSetAndRequestContext, ProbeSetSample>
-		// contextMap = e
-		// .nextElement();
-		// i += contextMap.size();
-		// }
+		for (Entry<RequestContext, HashMap<ProbeSetAndRequestContext, ProbeSetSample>> e : sampleMap
+				.entrySet()) {
+			i += e.getValue().size();
+		}
 		return i;
 	}
 

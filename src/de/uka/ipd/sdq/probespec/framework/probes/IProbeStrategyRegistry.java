@@ -3,9 +3,8 @@ package de.uka.ipd.sdq.probespec.framework.probes;
 import de.uka.ipd.sdq.probespec.framework.ProbeType;
 
 /**
- * Classes implementing this interface are the central point to obtain a
- * concrete {@link IProbeStrategy}, suitable for a particular measuring
- * environment.
+ * Provides {@link IProbeStrategy}s, suitable for taking a specified measurement
+ * at a specified entity.
  * <p>
  * In general there are different ProbeStrategies for different types of
  * measurement (compare {@link ProbeType}). Moreover, for a fixed type of

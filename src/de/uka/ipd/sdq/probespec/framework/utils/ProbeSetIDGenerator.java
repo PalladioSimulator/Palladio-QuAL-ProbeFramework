@@ -14,6 +14,14 @@ public class ProbeSetIDGenerator {
 
 	private Map<String, Integer> idMap = new HashMap<String, Integer>();
 
+	/*
+	 * While transforming the PCM models to simulation code, SimuCom already
+	 * generates some IDs, starting by 1. But SimuCom does not use this class.
+	 * Thus the highest assigned ID is not known here and we have to assume it
+	 * is lower than a constant value, e.g. 1000.
+	 * 
+	 * TODO: Use setHighestId after SimuCom generated the simulation code
+	 */
 	private int highestId = 1000;
 
 	public ProbeSetIDGenerator() {

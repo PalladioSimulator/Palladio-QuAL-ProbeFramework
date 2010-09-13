@@ -10,13 +10,13 @@ import javax.measure.unit.SI;
 import de.uka.ipd.sdq.pipesandfilters.framework.CaptureType;
 import de.uka.ipd.sdq.pipesandfilters.framework.MeasurementMetric;
 import de.uka.ipd.sdq.pipesandfilters.framework.Scale;
-import de.uka.ipd.sdq.probespec.framework.IMatchRule;
 import de.uka.ipd.sdq.probespec.framework.ProbeSample;
 import de.uka.ipd.sdq.probespec.framework.ProbeSetSample;
 import de.uka.ipd.sdq.probespec.framework.ProbeType;
-import de.uka.ipd.sdq.probespec.framework.ProbeTypeMatchRule;
 import de.uka.ipd.sdq.probespec.framework.SampleBlackboard;
 import de.uka.ipd.sdq.probespec.framework.exceptions.CalculatorException;
+import de.uka.ipd.sdq.probespec.framework.matching.IMatchRule;
+import de.uka.ipd.sdq.probespec.framework.matching.ProbeTypeMatchRule;
 
 /**
  * This class is a specific Calculator which composes a 2-tuple containing a

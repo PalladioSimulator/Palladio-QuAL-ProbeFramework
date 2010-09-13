@@ -5,6 +5,8 @@ import java.util.Vector;
 
 import javax.measure.quantity.Quantity;
 
+import de.uka.ipd.sdq.probespec.framework.matching.IMatchRule;
+
 /**
  * Represents a sample which is taken for a ProbeSet in a {@link RequestContext}
  * .

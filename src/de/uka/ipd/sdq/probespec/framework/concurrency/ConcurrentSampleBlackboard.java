@@ -182,9 +182,6 @@ public class ConcurrentSampleBlackboard extends SampleBlackboard {
 
 	}
 
-	/**
-	 *
-	 */
 	private class DeleteSamplesInRequestContextAction implements QueuedAction {
 
 		private RequestContext requestContext;

@@ -1,4 +1,4 @@
-package de.uka.ipd.sdq.probespec.framework;
+package de.uka.ipd.sdq.probespec.framework.garbagecollection;
 
 
 public interface IRegionBasedGarbageCollector<T> {

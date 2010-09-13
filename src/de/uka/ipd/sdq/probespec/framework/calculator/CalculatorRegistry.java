@@ -10,15 +10,12 @@ import java.util.HashMap;
  */
 public class CalculatorRegistry {
 
-	private static final CalculatorRegistry instance = new CalculatorRegistry();
-
 	private HashMap<String, Calculator> calculators;
 
 	/**
-	 * Default constructor. This class is a singleton, thus the constructor is
-	 * private.
+	 * Default constructor.
 	 */
-	private CalculatorRegistry() {
+	public CalculatorRegistry() {
 		calculators = new HashMap<String, Calculator>();
 	}
 
@@ -32,10 +29,6 @@ public class CalculatorRegistry {
 
 	public Calculator getCalculatorForId(String calculatorId) {
 		return calculators.get(calculatorId);
-	}
-
-	public static CalculatorRegistry getInstance() {
-		return instance;
 	}
 
 }

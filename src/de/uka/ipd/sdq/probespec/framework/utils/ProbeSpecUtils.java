@@ -1,8 +1,12 @@
-package de.uka.ipd.sdq.probespec.framework;
+package de.uka.ipd.sdq.probespec.framework.utils;
 
 import java.util.Vector;
 
 import javax.measure.quantity.Quantity;
+
+import de.uka.ipd.sdq.probespec.framework.ProbeSample;
+import de.uka.ipd.sdq.probespec.framework.ProbeSetSample;
+import de.uka.ipd.sdq.probespec.framework.RequestContext;
 
 public class ProbeSpecUtils {
 

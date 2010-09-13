@@ -6,13 +6,13 @@ import javax.measure.Measure;
 import javax.measure.quantity.Duration;
 import javax.measure.quantity.Quantity;
 
-import de.uka.ipd.sdq.probespec.framework.IMatchRule;
 import de.uka.ipd.sdq.probespec.framework.ProbeSample;
 import de.uka.ipd.sdq.probespec.framework.ProbeSetSample;
 import de.uka.ipd.sdq.probespec.framework.ProbeType;
-import de.uka.ipd.sdq.probespec.framework.ProbeTypeMatchRule;
 import de.uka.ipd.sdq.probespec.framework.SampleBlackboard;
 import de.uka.ipd.sdq.probespec.framework.exceptions.CalculatorException;
+import de.uka.ipd.sdq.probespec.framework.matching.IMatchRule;
+import de.uka.ipd.sdq.probespec.framework.matching.ProbeTypeMatchRule;
 
 /**
  * Calculates a time span. It expects two ProbeSets each containing at least a

@@ -1,4 +1,4 @@
-package de.uka.ipd.sdq.probespec.framework;
+package de.uka.ipd.sdq.probespec.framework.garbagecollection;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,6 +7,8 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import de.uka.ipd.sdq.probespec.framework.ProbeSetAndRequestContext;
+import de.uka.ipd.sdq.probespec.framework.SampleBlackboard;
 import de.uka.ipd.sdq.probespec.framework.calculator.Calculator;
 
 /**

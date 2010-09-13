@@ -1,9 +1,5 @@
-package de.uka.ipd.sdq.probespec.framework;
+package de.uka.ipd.sdq.probespec.framework.calculator;
 
-import de.uka.ipd.sdq.probespec.framework.calculator.Calculator;
-import de.uka.ipd.sdq.probespec.framework.calculator.DemandCalculator;
-import de.uka.ipd.sdq.probespec.framework.calculator.StateCalculator;
-import de.uka.ipd.sdq.probespec.framework.calculator.WaitingTimeCalculator;
 
 public interface ICalculatorFactory {
 

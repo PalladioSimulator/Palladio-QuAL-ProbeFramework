@@ -1,12 +1,15 @@
 package de.uka.ipd.sdq.probespec.framework;
 
+import de.uka.ipd.sdq.probespec.framework.calculator.CalculatorRegistry;
+import de.uka.ipd.sdq.probespec.framework.calculator.ICalculatorFactory;
 import de.uka.ipd.sdq.probespec.framework.concurrency.ThreadManager;
+import de.uka.ipd.sdq.probespec.framework.garbagecollection.IRegionBasedGarbageCollector;
 import de.uka.ipd.sdq.probespec.framework.probes.IProbeStrategyRegistry;
 import de.uka.ipd.sdq.probespec.framework.utils.ProbeSetIDGenerator;
 
 public class ProbeSpecContext {
 
-	private static final ProbeSpecContext instance = new ProbeSpecContext();
+	private static ProbeSpecContext instance = new ProbeSpecContext();
 	
 	private IProbeStrategyRegistry probeStrategyRegistry;
 	
@@ -20,9 +23,10 @@ public class ProbeSpecContext {
 	
 	private IRegionBasedGarbageCollector<RequestContext> blackboardGarbageCollector;
 	
+	private CalculatorRegistry calculatorRegistry;
+	
 	private ProbeSpecContext() {
-		threadManager = new ThreadManager();
-		probeSetIdGenerator = new ProbeSetIDGenerator();
+		initialise(null, null, null, null);
 	}
 	
 	public void initialise(
@@ -30,6 +34,10 @@ public class ProbeSpecContext {
 			IRegionBasedGarbageCollector<RequestContext> blackboardGarbageCollector,
 			IProbeStrategyRegistry probeStrategyRegistry,
 			ICalculatorFactory calculatorFactory) {
+		threadManager = new ThreadManager();
+		probeSetIdGenerator = new ProbeSetIDGenerator();
+		calculatorRegistry = new CalculatorRegistry();
+		
 		setSampleBlackboard(sampleBlackboard);
 		setBlackboardGarbageCollector(blackboardGarbageCollector);
 		setProbeStrategyRegistry(probeStrategyRegistry);
@@ -86,6 +94,8 @@ public class ProbeSpecContext {
 		return threadManager;
 	}
 	
-	
+	public CalculatorRegistry getCalculatorRegistry() {
+		return calculatorRegistry;
+	}
 	
 }

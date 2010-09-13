@@ -1,6 +1,8 @@
-package de.uka.ipd.sdq.probespec.framework;
+package de.uka.ipd.sdq.probespec.framework.matching;
 
 import javax.measure.quantity.Quantity;
+
+import de.uka.ipd.sdq.probespec.framework.ProbeSample;
 
 /**
  * This MatchRule is able to decide whether the passed {@link ProbeSample}
