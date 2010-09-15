@@ -6,6 +6,7 @@ import javax.measure.quantity.Quantity;
 
 import de.uka.ipd.sdq.probespec.framework.ProbeSample;
 import de.uka.ipd.sdq.probespec.framework.ProbeSetSample;
+import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
 import de.uka.ipd.sdq.probespec.framework.RequestContext;
 
 public class ProbeSpecUtils {
@@ -35,5 +36,12 @@ public class ProbeSpecUtils {
 				requestContextID, modelElementId, probeSetId);
 		return pss;
 	}
-
+	
+	public static String ProbeSetIdToString(Integer probeSetId) {
+		return probeSetId
+				+ " <"
+				+ ProbeSpecContext.instance().obtainOriginalProbeSetId(
+						probeSetId) + ">";
+	}
+	
 }

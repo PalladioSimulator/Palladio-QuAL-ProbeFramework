@@ -7,10 +7,11 @@ import javax.measure.quantity.Quantity;
 
 import de.uka.ipd.sdq.pipesandfilters.framework.MeasurementMetric;
 import de.uka.ipd.sdq.probespec.framework.BlackboardVote;
-import de.uka.ipd.sdq.probespec.framework.ProbeSetSample;
 import de.uka.ipd.sdq.probespec.framework.ProbeSetAndRequestContext;
+import de.uka.ipd.sdq.probespec.framework.ProbeSetSample;
 import de.uka.ipd.sdq.probespec.framework.SampleBlackboard;
 import de.uka.ipd.sdq.probespec.framework.exceptions.CalculatorException;
+import de.uka.ipd.sdq.probespec.framework.utils.ProbeSpecUtils;
 
 /**
  * This abstract class represents a binary calculator. A binary calculator
@@ -92,10 +93,11 @@ public abstract class BinaryCalculator extends Calculator {
 				fireCalculated(resultTuple);
 			} else {
 				throw new CalculatorException(
-						"Could not find sample for ProbeSetID \""
-								+ startProbeSetID + "\" within context \""
-								+ pss.getProbeSetAndRequestContext().getCtxID()
-								+ "\"");
+						"Could not find sample for ProbeSetID "
+								+ ProbeSpecUtils
+										.ProbeSetIdToString(startProbeSetID)
+								+ " within context "
+								+ pss.getProbeSetAndRequestContext().getCtxID());
 			}
 			return BlackboardVote.DISCARD;
 		} else if (startProbeSetID.equals(pss.getProbeSetAndRequestContext().getProbeSetID())) {
