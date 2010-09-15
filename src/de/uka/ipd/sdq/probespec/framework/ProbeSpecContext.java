@@ -48,12 +48,12 @@ public class ProbeSpecContext {
 		return instance;
 	}
 	
-	public void setHighestProbeSetID(Integer id) {
-		probeSetIdGenerator.setHighestId(id);
-	}
-	
 	public Integer obtainProbeSetId(String probeSetId) {
 		return probeSetIdGenerator.obtainId(probeSetId);
+	}
+	
+	public String obtainOriginalProbeSetId(Integer probeSetId) {
+		return probeSetIdGenerator.obtainOriginalId(probeSetId);
 	}
 
 	public IProbeStrategyRegistry getProbeStrategyRegistry() {
