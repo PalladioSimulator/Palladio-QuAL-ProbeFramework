@@ -1,5 +1,6 @@
 package de.uka.ipd.sdq.probespec.framework;
 
+import de.uka.ipd.sdq.pipesandfilters.framework.PipesAndFiltersManager;
 import de.uka.ipd.sdq.probespec.framework.calculator.CalculatorRegistry;
 import de.uka.ipd.sdq.probespec.framework.calculator.ICalculatorFactory;
 import de.uka.ipd.sdq.probespec.framework.concurrency.ThreadManager;
@@ -25,6 +26,8 @@ public class ProbeSpecContext {
 	
 	private CalculatorRegistry calculatorRegistry;
 	
+	private Registry<PipesAndFiltersManager> pipeManagerRegisty;
+	
 	private ProbeSpecContext() {
 		initialise(null, null, null, null);
 	}
@@ -37,6 +40,7 @@ public class ProbeSpecContext {
 		threadManager = new ThreadManager();
 		probeSetIdGenerator = new ProbeSetIDGenerator();
 		calculatorRegistry = new CalculatorRegistry();
+		pipeManagerRegisty = new Registry<PipesAndFiltersManager>();
 		
 		setSampleBlackboard(sampleBlackboard);
 		setBlackboardGarbageCollector(blackboardGarbageCollector);
@@ -96,6 +100,20 @@ public class ProbeSpecContext {
 	
 	public CalculatorRegistry getCalculatorRegistry() {
 		return calculatorRegistry;
+	}
+	
+	public Registry<PipesAndFiltersManager> getPipeManagerRegisty() {
+		return pipeManagerRegisty;
+	}
+
+	public void finish() {
+		// flush pipes
+		for(PipesAndFiltersManager p : pipeManagerRegisty) {
+			p.flush();
+		}
+		
+		// stop registered threads
+		getThreadManager().stopThreads();
 	}
 	
 }
