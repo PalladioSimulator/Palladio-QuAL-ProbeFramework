@@ -3,6 +3,7 @@ package de.uka.ipd.sdq.probespec.framework.utils;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * This class supports the generation of numeric probe set ids required when
@@ -13,12 +14,12 @@ import java.util.Map.Entry;
  */
 public class ProbeSetIDGenerator {
 
-	private Map<String, Integer> idMap = new HashMap<String, Integer>();
-
+	private Map<String, Integer> idMap;
+	
 	private int lastId = -1;
 
 	public ProbeSetIDGenerator() {
-		idMap = new HashMap<String, Integer>();
+		idMap = new ConcurrentHashMap<String, Integer>();
 	}
 
 	/**
