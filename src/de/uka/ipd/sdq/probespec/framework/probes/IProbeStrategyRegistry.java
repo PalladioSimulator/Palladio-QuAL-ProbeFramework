@@ -1,6 +1,7 @@
 package de.uka.ipd.sdq.probespec.framework.probes;
 
 import de.uka.ipd.sdq.probespec.framework.ProbeType;
+import de.uka.ipd.sdq.probespec.framework.exceptions.ProbeStrategyNotFoundException;
 
 /**
  * Provides {@link IProbeStrategy}s, suitable for taking a specified measurement
@@ -45,6 +46,6 @@ public interface IProbeStrategyRegistry {
 	 *         been registered.
 	 */
 	public IProbeStrategy getProbeStrategy(ProbeType type,
-			Object measurableEntity);
+			Object measurableEntity) throws ProbeStrategyNotFoundException;
 
 }

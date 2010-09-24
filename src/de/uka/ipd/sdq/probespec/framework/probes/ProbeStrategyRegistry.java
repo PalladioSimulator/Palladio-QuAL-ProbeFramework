@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.uka.ipd.sdq.probespec.framework.ProbeType;
+import de.uka.ipd.sdq.probespec.framework.exceptions.ProbeStrategyNotFoundException;
 
 /**
  * Basic implementation of the {@link IProbeStrategyRegistry} interface.
@@ -24,7 +25,13 @@ public class ProbeStrategyRegistry implements IProbeStrategyRegistry {
 			Object measurableEntity) {
 		ProbeTypeEntityPair pair = new ProbeTypeEntityPair(type,
 				measurableEntity);
-		return strategiesMap.get(pair);
+		IProbeStrategy strategy = strategiesMap.get(pair); 
+		if (strategy == null)
+			throw new ProbeStrategyNotFoundException(
+					"Could not find a ProbeStrategy for probe type "
+							+ type.name() + " that is able to measure a "
+							+ measurableEntity.getClass().getSimpleName());
+		return strategy;
 	}
 
 	@Override
