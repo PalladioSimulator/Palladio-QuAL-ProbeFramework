@@ -13,6 +13,10 @@ public interface ICalculatorFactory {
 	public abstract WaitingTimeCalculator buildWaitingTimeCalculator(
 			String calculatorName, Integer startWaitingProbeSetID,
 			Integer stopWaitingProbeSetID);
+	
+	public abstract HoldTimeCalculator buildHoldTimeCalculator(
+			String calculatorName, Integer startWaitingProbeSetID,
+			Integer stopWaitingProbeSetID);
 
 	public abstract StateCalculator buildStateCalculator(String calculatorName,
 			Integer probeSetId);
