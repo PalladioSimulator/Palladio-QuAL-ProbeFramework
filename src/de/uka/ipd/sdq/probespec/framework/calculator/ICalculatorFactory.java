@@ -20,6 +20,9 @@ public interface ICalculatorFactory {
 
 	public abstract StateCalculator buildStateCalculator(String calculatorName,
 			Integer probeSetId);
+	
+	public abstract StateCalculator buildOverallUtilizationCalculator(String calculatorName,
+			Integer probeSetId);
 
 	public abstract DemandCalculator buildDemandCalculator(
 			String calculatorName, Integer probeSetID);
