@@ -16,7 +16,7 @@ public class ProbeSpecContext {
 	
 	private ICalculatorFactory calculatorFactory;
 	
-	private SampleBlackboard sampleBlackboard;
+	private ISampleBlackboard sampleBlackboard;
 	
 	private ThreadManager threadManager;
 	
@@ -33,7 +33,7 @@ public class ProbeSpecContext {
 	}
 	
 	public void initialise(
-			SampleBlackboard sampleBlackboard,
+			ISampleBlackboard sampleBlackboard,
 			IRegionBasedGarbageCollector<RequestContext> blackboardGarbageCollector,
 			IProbeStrategyRegistry probeStrategyRegistry,
 			ICalculatorFactory calculatorFactory) {
@@ -77,11 +77,11 @@ public class ProbeSpecContext {
 		this.calculatorFactory = calculatorFactory;
 	}
 
-	public SampleBlackboard getSampleBlackboard() {
+	public ISampleBlackboard getSampleBlackboard() {
 		return sampleBlackboard;
 	}
 
-	public void setSampleBlackboard(SampleBlackboard sampleBlackboard) {
+	public void setSampleBlackboard(ISampleBlackboard sampleBlackboard) {
 		this.sampleBlackboard = sampleBlackboard;
 	}
 

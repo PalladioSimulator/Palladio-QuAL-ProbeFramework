@@ -10,10 +10,10 @@ import javax.measure.unit.SI;
 import de.uka.ipd.sdq.pipesandfilters.framework.CaptureType;
 import de.uka.ipd.sdq.pipesandfilters.framework.MeasurementMetric;
 import de.uka.ipd.sdq.pipesandfilters.framework.Scale;
+import de.uka.ipd.sdq.probespec.framework.ISampleBlackboard;
 import de.uka.ipd.sdq.probespec.framework.ProbeSample;
 import de.uka.ipd.sdq.probespec.framework.ProbeSetSample;
 import de.uka.ipd.sdq.probespec.framework.ProbeType;
-import de.uka.ipd.sdq.probespec.framework.SampleBlackboard;
 import de.uka.ipd.sdq.probespec.framework.exceptions.CalculatorException;
 import de.uka.ipd.sdq.probespec.framework.matching.IMatchRule;
 import de.uka.ipd.sdq.probespec.framework.matching.ProbeTypeMatchRule;
@@ -41,7 +41,7 @@ public class StateCalculator extends UnaryCalculator {
 	 * @param probeSetID
 	 *            ID of the probe set element from the model
 	 */
-	public StateCalculator(SampleBlackboard blackboard, Integer probeSetID) {
+	public StateCalculator(ISampleBlackboard blackboard, Integer probeSetID) {
 		super(blackboard, probeSetID);
 	}
 

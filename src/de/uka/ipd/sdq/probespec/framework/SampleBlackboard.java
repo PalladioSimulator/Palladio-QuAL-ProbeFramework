@@ -32,7 +32,7 @@ import java.util.Map.Entry;
  * @author Philipp Merkle
  * 
  */
-public class SampleBlackboard {
+public class SampleBlackboard implements ISampleBlackboard {
 
 	private List<IBlackboardListener> listeners;
 
@@ -47,13 +47,7 @@ public class SampleBlackboard {
 		topicToListenersMap = new HashMap<Integer, ArrayList<IBlackboardListener>>();
 	}
 
-	/**
-	 * Publishes a sample on the blackboard. Interested observers gets notified
-	 * of the published sample.
-	 * 
-	 * @param pss
-	 *            the sample
-	 */
+
 	public void addSample(ProbeSetSample pss) {
 		// notify listeners and obtain deletion vote
 		BlackboardVote deletionVote = fireSampleArrived(pss);
@@ -73,22 +67,12 @@ public class SampleBlackboard {
 		}
 	}
 
-	/**
-	 * Deletes the sample specified by the {@link ProbeSetAndRequestContext}.
-	 * 
-	 * @param pss
-	 *            the sample
-	 */
+
 	public void deleteSample(ProbeSetAndRequestContext pss) {
 		sampleMap.get(pss.getCtxID()).remove(pss);
 	}
 
-	/**
-	 * Deletes all samples contained in the specified requestContext.
-	 * 
-	 * @param requestContext
-	 *            the request context whose samples will be deleted.
-	 */
+
 	public void deleteSamplesInRequestContext(RequestContext requestContext) {
 		HashMap<ProbeSetAndRequestContext, ProbeSetSample> contextMap = sampleMap
 				.get(requestContext);
@@ -99,9 +83,7 @@ public class SampleBlackboard {
 	}
 
 	/**
-	 * Returns the ProbeSetSample for the specified pair of ProbeSetId and
-	 * {@link RequestContext}, if there is any. The ProbeSetId and
-	 * RequestContext are encapsulated by a {@link ProbeSetAndRequestContext}.
+	 * {@inheritDoc}
 	 * <p>
 	 * If no ProbeSetSample can be found for the RequestContext and the
 	 * RequestContext has a parent context, the search will be performed for
@@ -156,11 +138,6 @@ public class SampleBlackboard {
 		return null;
 	}
 
-	/**
-	 * Returns the number of {@link ProbeSetSample}s in this blackboard.
-	 * 
-	 * @return
-	 */
 	public int size() {
 		int i = 0;
 		for (Entry<RequestContext, HashMap<ProbeSetAndRequestContext, ProbeSetSample>> e : sampleMap
@@ -170,12 +147,6 @@ public class SampleBlackboard {
 		return i;
 	}
 
-	/**
-	 * Registers a listener for blackboard events.
-	 * 
-	 * @param l
-	 *            the listener
-	 */
 	public void addBlackboardListener(IBlackboardListener l, Integer... topics) {
 		if (topics.length == 0) {
 			listeners.add(l);

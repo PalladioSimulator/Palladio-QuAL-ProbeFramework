@@ -6,6 +6,7 @@ import javax.measure.Measure;
 import javax.measure.quantity.Duration;
 import javax.measure.quantity.Quantity;
 
+import de.uka.ipd.sdq.probespec.framework.ISampleBlackboard;
 import de.uka.ipd.sdq.probespec.framework.ProbeSample;
 import de.uka.ipd.sdq.probespec.framework.ProbeSetSample;
 import de.uka.ipd.sdq.probespec.framework.ProbeType;
@@ -23,7 +24,7 @@ import de.uka.ipd.sdq.probespec.framework.matching.ProbeTypeMatchRule;
  */
 public abstract class TimeSpanCalculator extends BinaryCalculator {
 
-	public TimeSpanCalculator(SampleBlackboard blackboard,
+	public TimeSpanCalculator(ISampleBlackboard blackboard,
 			Integer startProbeSetID, Integer endProbeSetID) {
 		super(blackboard, startProbeSetID, endProbeSetID);
 	}

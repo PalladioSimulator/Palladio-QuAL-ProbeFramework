@@ -7,6 +7,7 @@ import javax.measure.quantity.Duration;
 import javax.measure.quantity.Quantity;
 import javax.measure.unit.Unit;
 
+import de.uka.ipd.sdq.probespec.framework.ISampleBlackboard;
 import de.uka.ipd.sdq.probespec.framework.ProbeSample;
 import de.uka.ipd.sdq.probespec.framework.ProbeSetSample;
 import de.uka.ipd.sdq.probespec.framework.ProbeType;
@@ -33,7 +34,7 @@ import de.uka.ipd.sdq.probespec.framework.matching.ProbeTypeMatchRule;
  */
 public class DemandBasedWaitingTimeCalculator extends WaitingTimeCalculator {
 
-	public DemandBasedWaitingTimeCalculator(SampleBlackboard blackboard,
+	public DemandBasedWaitingTimeCalculator(ISampleBlackboard blackboard,
 			Integer startWaitingProbeSetID, Integer stopProcessingProbeSetID) {
 		super(blackboard, startWaitingProbeSetID, stopProcessingProbeSetID);
 	}

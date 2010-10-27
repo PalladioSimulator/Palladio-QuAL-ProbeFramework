@@ -1,18 +1,16 @@
 package de.uka.ipd.sdq.probespec.framework.garbagecollection;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import de.uka.ipd.sdq.probespec.framework.ISampleBlackboard;
 import de.uka.ipd.sdq.probespec.framework.ProbeSetAndRequestContext;
-import de.uka.ipd.sdq.probespec.framework.SampleBlackboard;
 import de.uka.ipd.sdq.probespec.framework.calculator.Calculator;
 
 /**
- * A garbage collector for the {@link SampleBlackboard}. It cleans up obsolete
+ * A garbage collector for the {@link ISampleBlackboard}. It cleans up obsolete
  * samples stored at the blackboard.
  * <p>
  * Generally a sample is obsolete if there are no {@link Calculator}s interested

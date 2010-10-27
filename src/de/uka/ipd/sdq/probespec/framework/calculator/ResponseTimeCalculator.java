@@ -7,6 +7,7 @@ import javax.measure.unit.SI;
 import de.uka.ipd.sdq.pipesandfilters.framework.CaptureType;
 import de.uka.ipd.sdq.pipesandfilters.framework.MeasurementMetric;
 import de.uka.ipd.sdq.pipesandfilters.framework.Scale;
+import de.uka.ipd.sdq.probespec.framework.ISampleBlackboard;
 import de.uka.ipd.sdq.probespec.framework.ProbeType;
 import de.uka.ipd.sdq.probespec.framework.SampleBlackboard;
 
@@ -32,7 +33,7 @@ public class ResponseTimeCalculator extends TimeSpanCalculator {
 	 * @param endProbeSetID
 	 *            ID of the end probe set element from the model
 	 */
-	public ResponseTimeCalculator(SampleBlackboard blackboard,
+	public ResponseTimeCalculator(ISampleBlackboard blackboard,
 			Integer startProbeSetID, Integer endProbeSetID) {
 		super(blackboard, startProbeSetID, endProbeSetID);
 	}

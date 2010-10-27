@@ -7,7 +7,7 @@ import javax.measure.unit.SI;
 import de.uka.ipd.sdq.pipesandfilters.framework.CaptureType;
 import de.uka.ipd.sdq.pipesandfilters.framework.MeasurementMetric;
 import de.uka.ipd.sdq.pipesandfilters.framework.Scale;
-import de.uka.ipd.sdq.probespec.framework.SampleBlackboard;
+import de.uka.ipd.sdq.probespec.framework.ISampleBlackboard;
 
 /**
  * Calculates a time span representing the hold time.
@@ -30,7 +30,7 @@ public class HoldTimeCalculator extends TimeSpanCalculator {
 	 *            references the ProbeSet which represents the final point for
 	 *            the hold time measurement
 	 */
-	public HoldTimeCalculator(SampleBlackboard blackboard,
+	public HoldTimeCalculator(ISampleBlackboard blackboard,
 			Integer startHoldProbeSetID, Integer stopHoldProbeSetID) {
 		super(blackboard, startHoldProbeSetID, stopHoldProbeSetID);
 	}

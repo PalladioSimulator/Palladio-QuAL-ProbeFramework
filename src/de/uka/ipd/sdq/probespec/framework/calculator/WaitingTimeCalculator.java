@@ -7,6 +7,7 @@ import javax.measure.unit.SI;
 import de.uka.ipd.sdq.pipesandfilters.framework.CaptureType;
 import de.uka.ipd.sdq.pipesandfilters.framework.MeasurementMetric;
 import de.uka.ipd.sdq.pipesandfilters.framework.Scale;
+import de.uka.ipd.sdq.probespec.framework.ISampleBlackboard;
 import de.uka.ipd.sdq.probespec.framework.SampleBlackboard;
 
 /**
@@ -32,7 +33,7 @@ public class WaitingTimeCalculator extends TimeSpanCalculator {
 	 *            references the ProbeSet which represents the final point for
 	 *            the waiting time measurement
 	 */
-	public WaitingTimeCalculator(SampleBlackboard blackboard,
+	public WaitingTimeCalculator(ISampleBlackboard blackboard,
 			Integer startWaitingProbeSetID, Integer stopWaitingProbeSetID) {
 		super(blackboard, startWaitingProbeSetID, stopWaitingProbeSetID);
 	}

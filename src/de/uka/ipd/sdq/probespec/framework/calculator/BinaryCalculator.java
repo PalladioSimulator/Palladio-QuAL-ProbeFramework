@@ -7,6 +7,7 @@ import javax.measure.quantity.Quantity;
 
 import de.uka.ipd.sdq.pipesandfilters.framework.MeasurementMetric;
 import de.uka.ipd.sdq.probespec.framework.BlackboardVote;
+import de.uka.ipd.sdq.probespec.framework.ISampleBlackboard;
 import de.uka.ipd.sdq.probespec.framework.ProbeSetAndRequestContext;
 import de.uka.ipd.sdq.probespec.framework.ProbeSetSample;
 import de.uka.ipd.sdq.probespec.framework.SampleBlackboard;
@@ -30,13 +31,13 @@ import de.uka.ipd.sdq.probespec.framework.utils.ProbeSpecUtils;
  */
 public abstract class BinaryCalculator extends Calculator {
 
-	private SampleBlackboard blackboard; 
+	private ISampleBlackboard blackboard; 
 	
 	private Integer startProbeSetID;
 
 	private Integer endProbeSetID;
 
-	public BinaryCalculator(SampleBlackboard blackboard,
+	public BinaryCalculator(ISampleBlackboard blackboard,
 			Integer startProbeSetID, Integer endProbeSetID) {
 		this.blackboard = blackboard;
 		this.startProbeSetID = startProbeSetID;
