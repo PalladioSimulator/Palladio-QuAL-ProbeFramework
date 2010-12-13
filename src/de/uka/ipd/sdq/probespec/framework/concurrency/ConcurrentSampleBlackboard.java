@@ -40,7 +40,7 @@ public class ConcurrentSampleBlackboard extends SampleBlackboard {
 	}
 
 	private void delegateDeleteSample(ProbeSetAndRequestContext pss) {
-		deleteSample(pss);
+		super.deleteSample(pss);
 	}
 
 	/**
