@@ -74,6 +74,13 @@ public class SampleBlackboard implements ISampleBlackboard {
 
 
 	public void deleteSamplesInRequestContext(RequestContext requestContext) {
+		// delete samples in child contexts, if there are any
+		if (requestContext.getChildContexts() != null) {
+			for (RequestContext child : requestContext.getChildContexts()) {
+				deleteSamplesInRequestContext(child);
+			}
+		}
+		
 		HashMap<ProbeSetAndRequestContext, ProbeSetSample> contextMap = sampleMap
 				.get(requestContext);
 		if (contextMap != null) {

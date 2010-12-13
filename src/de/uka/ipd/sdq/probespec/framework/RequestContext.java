@@ -1,5 +1,9 @@
 package de.uka.ipd.sdq.probespec.framework;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * This class represents the execution context of a request. Normally the
  * execution context of a request is the thread which processes this request.
@@ -26,6 +30,8 @@ public class RequestContext {
 	private String requestContextId;
 
 	private RequestContext parentContext;
+	
+	private List<RequestContext> childContexts;
 
 	/**
 	 * Default Constructor. 
@@ -49,6 +55,10 @@ public class RequestContext {
 		this.requestContextId = requestContextId;
 		this.parentContext = parentContext;
 		
+		if (parentContext != null) {
+			parentContext.addChildContext(this);
+		}
+		
 		if (this.requestContextId == null) {
 			this.requestContextId = "";
 		}
@@ -66,6 +76,20 @@ public class RequestContext {
 
 	public RequestContext getParentContext() {
 		return parentContext;
+	}
+	
+	private void addChildContext(RequestContext context) {
+		if (childContexts == null) {
+			childContexts = new ArrayList<RequestContext>();
+		}
+		childContexts.add(context);
+	}
+	
+	public List<RequestContext> getChildContexts() {
+		if (childContexts == null) {
+			return null;
+		}
+		return Collections.unmodifiableList(childContexts);
 	}
 
 	@Override
