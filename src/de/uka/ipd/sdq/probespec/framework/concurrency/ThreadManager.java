@@ -58,6 +58,9 @@ public class ThreadManager {
 				e.printStackTrace();
 			}
 		}
+		
+		// all threads have stopped, we don't need the thread list anymore
+		runnableThreadList.clear();
 	}
 
 	/**

@@ -29,19 +29,19 @@ public class ProbeSpecContext {
 	private Registry<PipesAndFiltersManager> pipeManagerRegisty;
 	
 	private ProbeSpecContext() {
-		initialise(null, null, null, null);
-	}
-	
-	public void initialise(
-			ISampleBlackboard sampleBlackboard,
-			IRegionBasedGarbageCollector<RequestContext> blackboardGarbageCollector,
-			IProbeStrategyRegistry probeStrategyRegistry,
-			ICalculatorFactory calculatorFactory) {
 		threadManager = new ThreadManager();
 		probeSetIdGenerator = new ProbeSetIDGenerator();
 		calculatorRegistry = new CalculatorRegistry();
 		pipeManagerRegisty = new Registry<PipesAndFiltersManager>();
 		
+		configure(null, null, null, null);
+	}
+	
+	public void configure(
+			ISampleBlackboard sampleBlackboard,
+			IRegionBasedGarbageCollector<RequestContext> blackboardGarbageCollector,
+			IProbeStrategyRegistry probeStrategyRegistry,
+			ICalculatorFactory calculatorFactory) {
 		setSampleBlackboard(sampleBlackboard);
 		setBlackboardGarbageCollector(blackboardGarbageCollector);
 		setProbeStrategyRegistry(probeStrategyRegistry);
@@ -50,6 +50,13 @@ public class ProbeSpecContext {
 	
 	public static ProbeSpecContext instance() {
 		return instance;
+	}
+	
+	public void clean() {
+		// TODO realise "real" clean
+		probeSetIdGenerator = new ProbeSetIDGenerator();
+		calculatorRegistry = new CalculatorRegistry();
+		pipeManagerRegisty = new Registry<PipesAndFiltersManager>();
 	}
 	
 	public Integer obtainProbeSetId(String probeSetId) {
