@@ -114,13 +114,14 @@ public class ProbeSpecContext {
 	}
 
 	public void finish() {
+		// stop registered threads
+		getThreadManager().stopThreads();
+		
 		// flush pipes
 		for(PipesAndFiltersManager p : pipeManagerRegisty) {
 			p.flush();
 		}
 		
-		// stop registered threads
-		getThreadManager().stopThreads();
 	}
 	
 }
