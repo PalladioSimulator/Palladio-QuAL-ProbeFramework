@@ -1,5 +1,6 @@
 package de.uka.ipd.sdq.probespec.framework.calculator;
 
+import java.math.BigDecimal;
 import java.util.Vector;
 
 import javax.measure.Measure;
@@ -58,15 +59,16 @@ public abstract class TimeSpanCalculator extends BinaryCalculator {
 		}
 
 		// Calculate time span
-		double endTime = endTimeSample.getMeasure().doubleValue(
-				startTimeSample.getMeasure().getUnit());
-		double startTime = startTimeSample.getMeasure().doubleValue(
-				startTimeSample.getMeasure().getUnit());
-		double responseTime = endTime - startTime;
+		BigDecimal endTime = BigDecimal.valueOf(endTimeSample.getMeasure().doubleValue(
+				startTimeSample.getMeasure().getUnit()));
+		BigDecimal startTime = BigDecimal.valueOf(startTimeSample.getMeasure().doubleValue(
+				startTimeSample.getMeasure().getUnit()));
+		
+		BigDecimal responseTime = endTime.subtract(startTime);
 
 		// Create result tuple
 		Measure<Double, Duration> timeSpanMeasure = Measure.valueOf(
-				responseTime, startTimeSample.getMeasure().getUnit());
+				responseTime.doubleValue(), startTimeSample.getMeasure().getUnit());
 		Measure<Double, Duration> endTimeMeasure = endTimeSample.getMeasure();
 		Vector<Measure<?, ? extends Quantity>> resultTuple = new Vector<Measure<?, ? extends Quantity>>();
 		resultTuple.add(timeSpanMeasure);
