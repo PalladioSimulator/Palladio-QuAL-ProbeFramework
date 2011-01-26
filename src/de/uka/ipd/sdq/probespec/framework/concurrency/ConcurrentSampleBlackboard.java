@@ -2,6 +2,8 @@ package de.uka.ipd.sdq.probespec.framework.concurrency;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
+import org.apache.log4j.Logger;
+
 import de.uka.ipd.sdq.probespec.framework.ProbeSetAndRequestContext;
 import de.uka.ipd.sdq.probespec.framework.ProbeSetSample;
 import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
@@ -22,6 +24,8 @@ import de.uka.ipd.sdq.probespec.framework.SampleBlackboard;
  */
 public class ConcurrentSampleBlackboard extends SampleBlackboard {
 
+	private static Logger logger = Logger.getLogger(ConcurrentSampleBlackboard.class.getName());
+	
 	private LinkedBlockingQueue<QueuedAction> sampleQueue;
 
 	public ConcurrentSampleBlackboard() {
@@ -123,8 +127,8 @@ public class ConcurrentSampleBlackboard extends SampleBlackboard {
 					e.printStackTrace();
 				}
 			}
-			System.out.println("Runnable " + this.getClass().getSimpleName()
-					+ " stopped running!");
+			logger.debug("Runnable " + this.getClass().getSimpleName()
+					+ " stopped running");
 		}
 
 		@Override
