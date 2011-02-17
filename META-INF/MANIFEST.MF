@@ -18,3 +18,4 @@ Export-Package: de.uka.ipd.sdq.probespec.framework,
  de.uka.ipd.sdq.probespec.framework.matching,
  de.uka.ipd.sdq.probespec.framework.probes,
  de.uka.ipd.sdq.probespec.framework.utils
+Bundle-Vendor: sdq.ipd.uka.de
