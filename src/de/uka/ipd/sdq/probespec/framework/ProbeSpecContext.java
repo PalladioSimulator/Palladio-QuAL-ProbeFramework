@@ -52,11 +52,12 @@ public class ProbeSpecContext {
 		return instance;
 	}
 	
-	public void clean() {
+	public static void clean() {
+		ProbeSpecContext.instance = new ProbeSpecContext();
 		// TODO realise "real" clean
-		probeSetIdGenerator = new ProbeSetIDGenerator();
-		calculatorRegistry = new CalculatorRegistry();
-		pipeManagerRegisty = new Registry<PipesAndFiltersManager>();
+//		probeSetIdGenerator = new ProbeSetIDGenerator();
+//		calculatorRegistry = new CalculatorRegistry();
+//		pipeManagerRegisty = new Registry<PipesAndFiltersManager>();
 	}
 	
 	public Integer obtainProbeSetId(String probeSetId) {
