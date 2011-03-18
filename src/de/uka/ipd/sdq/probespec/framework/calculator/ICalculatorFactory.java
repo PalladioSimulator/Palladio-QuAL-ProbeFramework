@@ -27,4 +27,7 @@ public interface ICalculatorFactory {
 	public abstract DemandCalculator buildDemandCalculator(
 			String calculatorName, Integer probeSetID);
 
+	public abstract ExecutionResultCalculator buildExecutionResultCalculator(
+			String calculatorName, Integer probeSetID);
+
 }
