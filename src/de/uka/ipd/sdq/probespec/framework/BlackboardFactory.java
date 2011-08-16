@@ -12,18 +12,23 @@ import de.uka.ipd.sdq.probespec.framework.concurrency.ConcurrentSampleBlackboard
 public class BlackboardFactory {
 
     /**
-     * Creates a blackboard of the specified type.
+     * Creates a blackboard of the specified type. If a {@link BlackboardType#CONCURRENT} blackboard
+     * is to be created, a <code>probeSpecContext</code> is expected; otherwise, this parameter may
+     * be <code>null</code>.
      * 
      * @param type
-     *            the type of the blackboard that is to be created
+     *            the type of the blackboard to create
+     * @param probeSpecContext
+     *            the {@link ProbeSpecContext}, if creating a {@link BlackboardType#CONCURRENT}
+     *            blackboard; <code>null</code> else
      * @return the created blackboard
      */
-    public static ISampleBlackboard createBlackboard(BlackboardType type) {
+    public static ISampleBlackboard createBlackboard(BlackboardType type, ProbeSpecContext probeSpecContext) {
         switch (type) {
         case SIMPLE:
             return new SampleBlackboard();
         case CONCURRENT:
-            return new ConcurrentSampleBlackboard();
+            return new ConcurrentSampleBlackboard(probeSpecContext);
         case NONE:
             return new NullSampleBlackboard();
         }

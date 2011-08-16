@@ -7,11 +7,10 @@ import javax.measure.Measure;
 import javax.measure.quantity.Duration;
 import javax.measure.quantity.Quantity;
 
-import de.uka.ipd.sdq.probespec.framework.ISampleBlackboard;
 import de.uka.ipd.sdq.probespec.framework.ProbeSample;
 import de.uka.ipd.sdq.probespec.framework.ProbeSetSample;
+import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
 import de.uka.ipd.sdq.probespec.framework.ProbeType;
-import de.uka.ipd.sdq.probespec.framework.SampleBlackboard;
 import de.uka.ipd.sdq.probespec.framework.exceptions.CalculatorException;
 import de.uka.ipd.sdq.probespec.framework.matching.IMatchRule;
 import de.uka.ipd.sdq.probespec.framework.matching.ProbeTypeMatchRule;
@@ -25,10 +24,9 @@ import de.uka.ipd.sdq.probespec.framework.matching.ProbeTypeMatchRule;
  */
 public abstract class TimeSpanCalculator extends BinaryCalculator {
 
-	public TimeSpanCalculator(ISampleBlackboard blackboard,
-			Integer startProbeSetID, Integer endProbeSetID) {
-		super(blackboard, startProbeSetID, endProbeSetID);
-	}
+    public TimeSpanCalculator(ProbeSpecContext ctx, Integer startProbeSetID, Integer endProbeSetID) {
+        super(ctx, startProbeSetID, endProbeSetID);
+    }
 
 	/**
 	 * Calculates the time span.

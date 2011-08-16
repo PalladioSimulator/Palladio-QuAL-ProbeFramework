@@ -9,8 +9,6 @@ import de.uka.ipd.sdq.probespec.framework.probes.IProbeStrategyRegistry;
 import de.uka.ipd.sdq.probespec.framework.utils.ProbeSetIDGenerator;
 
 public class ProbeSpecContext {
-
-	private static ProbeSpecContext instance = new ProbeSpecContext();
 	
 	private IProbeStrategyRegistry probeStrategyRegistry;
 	
@@ -28,36 +26,20 @@ public class ProbeSpecContext {
 	
 	private Registry<PipesAndFiltersManager> pipeManagerRegisty;
 	
-	private ProbeSpecContext() {
+	public ProbeSpecContext(BlackboardType blackboardType,
+            IProbeStrategyRegistry probeStrategyRegistry,
+            ICalculatorFactory calculatorFactory) {
 		threadManager = new ThreadManager();
 		probeSetIdGenerator = new ProbeSetIDGenerator();
 		calculatorRegistry = new CalculatorRegistry();
 		pipeManagerRegisty = new Registry<PipesAndFiltersManager>();
 		
-		configure(null, null, null, null);
-	}
-	
-	public void configure(
-			ISampleBlackboard sampleBlackboard,
-			IRegionBasedGarbageCollector<RequestContext> blackboardGarbageCollector,
-			IProbeStrategyRegistry probeStrategyRegistry,
-			ICalculatorFactory calculatorFactory) {
+		// create a blackboard of the specified type
+        ISampleBlackboard sampleBlackboard = BlackboardFactory.createBlackboard(blackboardType, this);
 		setSampleBlackboard(sampleBlackboard);
-		setBlackboardGarbageCollector(blackboardGarbageCollector);
-		setProbeStrategyRegistry(probeStrategyRegistry);
-		setCalculatorFactory(calculatorFactory);
-	}
-	
-	public static ProbeSpecContext instance() {
-		return instance;
-	}
-	
-	public static void clean() {
-		ProbeSpecContext.instance = new ProbeSpecContext();
-		// TODO realise "real" clean
-//		probeSetIdGenerator = new ProbeSetIDGenerator();
-//		calculatorRegistry = new CalculatorRegistry();
-//		pipeManagerRegisty = new Registry<PipesAndFiltersManager>();
+		
+        setProbeStrategyRegistry(probeStrategyRegistry);
+        setCalculatorFactory(calculatorFactory);
 	}
 	
 	public Integer obtainProbeSetId(String probeSetId) {

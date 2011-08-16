@@ -10,7 +10,7 @@ import de.uka.ipd.sdq.probespec.framework.BlackboardVote;
 import de.uka.ipd.sdq.probespec.framework.ISampleBlackboard;
 import de.uka.ipd.sdq.probespec.framework.ProbeSetAndRequestContext;
 import de.uka.ipd.sdq.probespec.framework.ProbeSetSample;
-import de.uka.ipd.sdq.probespec.framework.SampleBlackboard;
+import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
 import de.uka.ipd.sdq.probespec.framework.exceptions.CalculatorException;
 import de.uka.ipd.sdq.probespec.framework.utils.ProbeSpecUtils;
 
@@ -37,9 +37,9 @@ public abstract class BinaryCalculator extends Calculator {
 
 	private Integer endProbeSetID;
 
-	public BinaryCalculator(ISampleBlackboard blackboard,
-			Integer startProbeSetID, Integer endProbeSetID) {
-		this.blackboard = blackboard;
+    public BinaryCalculator(ProbeSpecContext ctx, Integer startProbeSetID, Integer endProbeSetID) {
+	    super(ctx);
+		this.blackboard = ctx.getSampleBlackboard();
 		this.startProbeSetID = startProbeSetID;
 		this.endProbeSetID = endProbeSetID;
 		
@@ -93,12 +93,9 @@ public abstract class BinaryCalculator extends Calculator {
 
 				fireCalculated(resultTuple);
 			} else {
-				throw new CalculatorException(
-						"Could not find sample for ProbeSetID "
-								+ ProbeSpecUtils
-										.ProbeSetIdToString(startProbeSetID)
-								+ " within context "
-								+ pss.getProbeSetAndRequestContext().getCtxID());
+                throw new CalculatorException("Could not find sample for ProbeSetID "
+                        + ProbeSpecUtils.ProbeSetIdToString(startProbeSetID, this.getProbeSpecContext())
+                        + " within context " + pss.getProbeSetAndRequestContext().getCtxID());
 			}
 			return BlackboardVote.DISCARD;
 		} else if (startProbeSetID.equals(pss.getProbeSetAndRequestContext().getProbeSetID())) {

@@ -11,6 +11,7 @@ import de.uka.ipd.sdq.probespec.framework.BlackboardVote;
 import de.uka.ipd.sdq.probespec.framework.IBlackboardListener;
 import de.uka.ipd.sdq.probespec.framework.ISampleBlackboard;
 import de.uka.ipd.sdq.probespec.framework.ProbeSetSample;
+import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
 import de.uka.ipd.sdq.probespec.framework.exceptions.CalculatorException;
 
 /**
@@ -28,14 +29,16 @@ import de.uka.ipd.sdq.probespec.framework.exceptions.CalculatorException;
  */
 public abstract class Calculator implements IBlackboardListener {
 
-	private Vector<MeasurementMetric> measurementMetrics = null;
+    private ProbeSpecContext probeSpecContext;
+	private Vector<MeasurementMetric> measurementMetrics;
 
 	// copy on write enables listeners to unregister during event processing.
 	private CopyOnWriteArrayList<ICalculatorListener> listeners;
 
-	protected Calculator() {
+	protected Calculator(ProbeSpecContext ctx) {
+	    this.probeSpecContext = ctx;
 		this.measurementMetrics = getConcreteMeasurementMetrics();
-		listeners = new CopyOnWriteArrayList<ICalculatorListener>();
+		this.listeners = new CopyOnWriteArrayList<ICalculatorListener>();
 	}
 
 	/**
@@ -84,6 +87,10 @@ public abstract class Calculator implements IBlackboardListener {
 //		return decideBlackboardVote();
 		return BlackboardVote.DISCARD;
 	}
+	
+    protected ProbeSpecContext getProbeSpecContext() {
+        return probeSpecContext;
+    }
 	
 //	public abstract BlackboardVote decideBlackboardVote();
 

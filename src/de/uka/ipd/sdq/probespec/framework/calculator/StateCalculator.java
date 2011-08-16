@@ -10,9 +10,9 @@ import javax.measure.unit.SI;
 import de.uka.ipd.sdq.pipesandfilters.framework.CaptureType;
 import de.uka.ipd.sdq.pipesandfilters.framework.MeasurementMetric;
 import de.uka.ipd.sdq.pipesandfilters.framework.Scale;
-import de.uka.ipd.sdq.probespec.framework.ISampleBlackboard;
 import de.uka.ipd.sdq.probespec.framework.ProbeSample;
 import de.uka.ipd.sdq.probespec.framework.ProbeSetSample;
+import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
 import de.uka.ipd.sdq.probespec.framework.ProbeType;
 import de.uka.ipd.sdq.probespec.framework.exceptions.CalculatorException;
 import de.uka.ipd.sdq.probespec.framework.matching.IMatchRule;
@@ -31,18 +31,17 @@ public class StateCalculator extends UnaryCalculator {
 
 	private static Vector<MeasurementMetric> concreteMeasurementMetrics;
 
-	/**
-	 * Constructor. It takes a reference of the blackboard and the ID of the
-	 * probe set element taken from the model.
-	 * 
-	 * @param blackboard
-	 *            A reference to the blackboard which this calculator will
-	 *            observe
-	 * @param probeSetID
-	 *            ID of the probe set element from the model
-	 */
-	public StateCalculator(ISampleBlackboard blackboard, Integer probeSetID) {
-		super(blackboard, probeSetID);
+    /**
+     * Constructor. It takes a reference of the blackboard and the ID of the probe set element taken
+     * from the model.
+     * 
+     * @param ctx
+     *            the {@link ProbeSpecContext}
+     * @param probeSetID
+     *            ID of the probe set element from the model
+     */
+	public StateCalculator(ProbeSpecContext ctx, Integer probeSetID) {
+		super(ctx, probeSetID);
 	}
 
 	@Override

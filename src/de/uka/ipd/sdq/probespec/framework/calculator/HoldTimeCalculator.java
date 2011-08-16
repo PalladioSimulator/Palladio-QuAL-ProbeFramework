@@ -7,7 +7,7 @@ import javax.measure.unit.SI;
 import de.uka.ipd.sdq.pipesandfilters.framework.CaptureType;
 import de.uka.ipd.sdq.pipesandfilters.framework.MeasurementMetric;
 import de.uka.ipd.sdq.pipesandfilters.framework.Scale;
-import de.uka.ipd.sdq.probespec.framework.ISampleBlackboard;
+import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
 
 /**
  * Calculates a time span representing the hold time.
@@ -18,22 +18,21 @@ public class HoldTimeCalculator extends TimeSpanCalculator {
 
 	private static Vector<MeasurementMetric> concreteMeasurementMetrics;
 
-	/**
-	 * Default Constructor.
-	 * 
-	 * @param blackboard
-	 *            the blackboard this calculator will observe
-	 * @param startHoldProbeSetID
-	 *            references the ProbeSet which represents the starting point
-	 *            for the hold time measurement
-	 * @param stopHoldProbeSetID
-	 *            references the ProbeSet which represents the final point for
-	 *            the hold time measurement
-	 */
-	public HoldTimeCalculator(ISampleBlackboard blackboard,
-			Integer startHoldProbeSetID, Integer stopHoldProbeSetID) {
-		super(blackboard, startHoldProbeSetID, stopHoldProbeSetID);
-	}
+    /**
+     * Default Constructor.
+     * 
+     * @param ctx
+     *            the {@link ProbeSpecContext}
+     * @param startHoldProbeSetID
+     *            references the ProbeSet which represents the starting point for the hold time
+     *            measurement
+     * @param stopHoldProbeSetID
+     *            references the ProbeSet which represents the final point for the hold time
+     *            measurement
+     */
+    public HoldTimeCalculator(ProbeSpecContext ctx, Integer startHoldProbeSetID, Integer stopHoldProbeSetID) {
+        super(ctx, startHoldProbeSetID, stopHoldProbeSetID);
+    }
 
 	/**
 	 * Initializes the metric information for the result of this calculator

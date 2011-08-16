@@ -7,11 +7,10 @@ import javax.measure.quantity.Duration;
 import javax.measure.quantity.Quantity;
 import javax.measure.unit.Unit;
 
-import de.uka.ipd.sdq.probespec.framework.ISampleBlackboard;
 import de.uka.ipd.sdq.probespec.framework.ProbeSample;
 import de.uka.ipd.sdq.probespec.framework.ProbeSetSample;
+import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
 import de.uka.ipd.sdq.probespec.framework.ProbeType;
-import de.uka.ipd.sdq.probespec.framework.SampleBlackboard;
 import de.uka.ipd.sdq.probespec.framework.exceptions.CalculatorException;
 import de.uka.ipd.sdq.probespec.framework.matching.IMatchRule;
 import de.uka.ipd.sdq.probespec.framework.matching.ProbeTypeMatchRule;
@@ -34,10 +33,10 @@ import de.uka.ipd.sdq.probespec.framework.matching.ProbeTypeMatchRule;
  */
 public class DemandBasedWaitingTimeCalculator extends WaitingTimeCalculator {
 
-	public DemandBasedWaitingTimeCalculator(ISampleBlackboard blackboard,
-			Integer startWaitingProbeSetID, Integer stopProcessingProbeSetID) {
-		super(blackboard, startWaitingProbeSetID, stopProcessingProbeSetID);
-	}
+    public DemandBasedWaitingTimeCalculator(ProbeSpecContext ctx, Integer startWaitingProbeSetID,
+            Integer stopProcessingProbeSetID) {
+        super(ctx, startWaitingProbeSetID, stopProcessingProbeSetID);
+    }
 
 	@SuppressWarnings("unchecked")
 	@Override

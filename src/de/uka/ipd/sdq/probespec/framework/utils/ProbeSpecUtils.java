@@ -37,11 +37,8 @@ public class ProbeSpecUtils {
 		return pss;
 	}
 	
-	public static String ProbeSetIdToString(Integer probeSetId) {
-		return probeSetId
-				+ " <"
-				+ ProbeSpecContext.instance().obtainOriginalProbeSetId(
-						probeSetId) + ">";
+	public static String ProbeSetIdToString(Integer probeSetId, ProbeSpecContext ctx) {
+        return probeSetId + " <" + ctx.obtainOriginalProbeSetId(probeSetId) + ">";
 	}
 	
 }

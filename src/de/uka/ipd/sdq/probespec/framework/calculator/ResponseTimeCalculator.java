@@ -7,9 +7,8 @@ import javax.measure.unit.SI;
 import de.uka.ipd.sdq.pipesandfilters.framework.CaptureType;
 import de.uka.ipd.sdq.pipesandfilters.framework.MeasurementMetric;
 import de.uka.ipd.sdq.pipesandfilters.framework.Scale;
-import de.uka.ipd.sdq.probespec.framework.ISampleBlackboard;
+import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
 import de.uka.ipd.sdq.probespec.framework.ProbeType;
-import de.uka.ipd.sdq.probespec.framework.SampleBlackboard;
 
 /**
  * Calculates a time span representing the response time. It expects two
@@ -23,20 +22,19 @@ public class ResponseTimeCalculator extends TimeSpanCalculator {
 
 	private static Vector<MeasurementMetric> concreteMeasurementMetrics;
 
-	/**
-	 * Default Constructor.
-	 * 
-	 * @param blackboard
-	 *            the blackboard this calculator will observe
-	 * @param startProbeSetID
-	 *            ID of the start probe set element from the model
-	 * @param endProbeSetID
-	 *            ID of the end probe set element from the model
-	 */
-	public ResponseTimeCalculator(ISampleBlackboard blackboard,
-			Integer startProbeSetID, Integer endProbeSetID) {
-		super(blackboard, startProbeSetID, endProbeSetID);
-	}
+    /**
+     * Default Constructor.
+     * 
+     * @param ctx
+     *            the {@link ProbeSpecContext}
+     * @param startProbeSetID
+     *            ID of the start probe set element from the model
+     * @param endProbeSetID
+     *            ID of the end probe set element from the model
+     */
+    public ResponseTimeCalculator(ProbeSpecContext ctx, Integer startProbeSetID, Integer endProbeSetID) {
+        super(ctx, startProbeSetID, endProbeSetID);
+    }
 
 	/**
 	 * Initializes the metric information for the result of this calculator

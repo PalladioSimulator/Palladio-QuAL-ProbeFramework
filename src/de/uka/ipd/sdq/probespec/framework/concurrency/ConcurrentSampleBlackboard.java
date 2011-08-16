@@ -27,12 +27,13 @@ public class ConcurrentSampleBlackboard extends SampleBlackboard {
 	private static Logger logger = Logger.getLogger(ConcurrentSampleBlackboard.class.getName());
 	
 	private LinkedBlockingQueue<QueuedAction> sampleQueue;
+	private ProbeSpecContext probeSpecContext;
+	private boolean running;
 
-	public ConcurrentSampleBlackboard() {
-		sampleQueue = new LinkedBlockingQueue<QueuedAction>();
-		ProbeSpecContext.instance().getThreadManager().startThread(
-				new ProcessQueuedActions(), "ProbeSpec Concurrent Blackboard");
-	}
+    public ConcurrentSampleBlackboard(ProbeSpecContext ctx) {
+        this.sampleQueue = new LinkedBlockingQueue<QueuedAction>();
+        this.probeSpecContext = ctx;
+    }
 
 	private void delegateAddSample(ProbeSetSample pss) {
 		super.addSample(pss);
@@ -61,6 +62,7 @@ public class ConcurrentSampleBlackboard extends SampleBlackboard {
 	 */
 	@Override
 	public void addSample(ProbeSetSample pss) {
+	    checkRunning();	    	    
 		try {
 			sampleQueue.put(new AddSampleAction(pss));
 		} catch (InterruptedException e) {
@@ -81,6 +83,7 @@ public class ConcurrentSampleBlackboard extends SampleBlackboard {
 	 */
 	@Override
 	public void deleteSamplesInRequestContext(RequestContext requestContext) {
+	    checkRunning();
 		try {
 			sampleQueue.put(new DeleteSamplesInRequestContextAction(
 					requestContext));
@@ -101,12 +104,20 @@ public class ConcurrentSampleBlackboard extends SampleBlackboard {
 	 */
 	@Override
 	public void deleteSample(ProbeSetAndRequestContext pss) {
+	    checkRunning();
 		try {
 			sampleQueue.put(new DeleteSampleAction(pss));
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	private void checkRunning() {
+	    if(!running) {
+	        running = true;
+	        probeSpecContext.getThreadManager().startThread(new ProcessQueuedActions(), "ProbeSpec Concurrent Blackboard");
+	    }
 	}
 
 	/**
@@ -212,8 +223,8 @@ public class ConcurrentSampleBlackboard extends SampleBlackboard {
 		@Override
 		public void execute() {
 			delegateDeleteSample(pss);
-		}
+        }
 
-	}
+    }
 
 }

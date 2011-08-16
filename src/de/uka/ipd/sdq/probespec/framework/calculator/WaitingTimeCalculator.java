@@ -7,8 +7,7 @@ import javax.measure.unit.SI;
 import de.uka.ipd.sdq.pipesandfilters.framework.CaptureType;
 import de.uka.ipd.sdq.pipesandfilters.framework.MeasurementMetric;
 import de.uka.ipd.sdq.pipesandfilters.framework.Scale;
-import de.uka.ipd.sdq.probespec.framework.ISampleBlackboard;
-import de.uka.ipd.sdq.probespec.framework.SampleBlackboard;
+import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
 
 /**
  * Calculates a time span representing the waiting time.
@@ -24,8 +23,8 @@ public class WaitingTimeCalculator extends TimeSpanCalculator {
 	/**
 	 * Default Constructor.
 	 * 
-	 * @param blackboard
-	 *            the blackboard this calculator will observe
+	 * @param ctx
+	 *            the {@link ProbeSpecContext}
 	 * @param startWaitingProbeSetID
 	 *            references the ProbeSet which represents the starting point
 	 *            for the waiting time measurement
@@ -33,10 +32,9 @@ public class WaitingTimeCalculator extends TimeSpanCalculator {
 	 *            references the ProbeSet which represents the final point for
 	 *            the waiting time measurement
 	 */
-	public WaitingTimeCalculator(ISampleBlackboard blackboard,
-			Integer startWaitingProbeSetID, Integer stopWaitingProbeSetID) {
-		super(blackboard, startWaitingProbeSetID, stopWaitingProbeSetID);
-	}
+    public WaitingTimeCalculator(ProbeSpecContext ctx, Integer startWaitingProbeSetID, Integer stopWaitingProbeSetID) {
+        super(ctx, startWaitingProbeSetID, stopWaitingProbeSetID);
+    }
 
 	// @SuppressWarnings("unchecked")
 	// @Override
