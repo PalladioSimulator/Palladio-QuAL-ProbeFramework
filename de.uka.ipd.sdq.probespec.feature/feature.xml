@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="de.uka.ipd.sdq.probespec.feature"
-      label="%label"
+      label="ProbeSpecification Feature"
       version="1.0.0.qualifier"
-      provider-name="sdq.ipd.uka.de"
-      plugin="de.uka.ipd.sdq.branding">
+      provider-name="sdq.ipd.uka.de">
 
    <description url="http://sdq.ipd.kit.edu/">
       Allows the specification of measuring points by decorating EMF
@@ -17,7 +16,7 @@ ProbeSpecification framework.
 the Palladio Research Group, University of Karlsruhe.
    </copyright>
 
-   <license>
+   <license url="http://www.eclipse.org/legal/epl-v10.html">
       Eclipse Public License - v 1.0
 THE ACCOMPANYING PROGRAM IS PROVIDED UNDER THE TERMS OF THIS
 ECLIPSE PUBLIC LICENSE (&quot;AGREEMENT&quot;). ANY USE, REPRODUCTION OR
@@ -216,14 +215,6 @@ Each party waives its rights to a jury trial in any resulting
 litigation.
    </license>
 
-   <url>
-      <update label="Palladio Update Site" url="http://sdqweb.ipd.uka.de/eclipse/PCM/"/>
-   </url>
-
-   <includes
-         id="de.uka.ipd.sdq.probespec.feature.source"
-         version="0.0.0"/>
-
    <requires>
       <import plugin="org.eclipse.core.runtime"/>
       <import plugin="org.eclipse.emf.ecore"/>
@@ -249,6 +240,7 @@ litigation.
       <import plugin="de.uka.ipd.sdq.identifier.edit" version="2.0.0" match="greaterOrEqual"/>
       <import plugin="de.uka.ipd.sdq.pipesandfilters.edit" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.junit"/>
+      <import plugin="org.eclipse.osgi"/>
    </requires>
 
    <plugin
