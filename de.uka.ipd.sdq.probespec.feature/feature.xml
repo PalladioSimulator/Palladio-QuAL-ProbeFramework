@@ -239,8 +239,6 @@ litigation.
       <import plugin="org.eclipse.emf.ecore.edit"/>
       <import plugin="de.uka.ipd.sdq.identifier.edit" version="2.0.0" match="greaterOrEqual"/>
       <import plugin="de.uka.ipd.sdq.pipesandfilters.edit" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="org.junit"/>
-      <import plugin="org.eclipse.osgi"/>
    </requires>
 
    <plugin
