@@ -76,7 +76,8 @@ public abstract class RegionBasedGarbageCollector<T> implements
 	@Override
 	public void enterRegion(T regionId) {
 		if (increasePopulation(regionId) == 1) {
-			logger.debug("Region " + regionId + " opened.");
+			if(logger.isDebugEnabled())
+				logger.debug("Region " + regionId + " opened.");
 		}
 	}
 
@@ -93,7 +94,8 @@ public abstract class RegionBasedGarbageCollector<T> implements
 		if (decreasePopulation(regionId) == 0) {
 			collectRegionSamples(regionId);
 			regionCountMap.remove(regionId);
-			logger.debug("Region " + regionId + " closed.");
+			if(logger.isDebugEnabled())
+				logger.debug("Region " + regionId + " closed.");
 		}
 	}
 
