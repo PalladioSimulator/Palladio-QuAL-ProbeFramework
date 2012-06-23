@@ -2,6 +2,9 @@ package de.uka.ipd.sdq.pipesandfilters.framework.filters;
 
 import java.util.List;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 /**
  * Implements the "Marginal Confidence Rule" (MCR) for filtering the warm-up
  * period of a steady state simulation.
@@ -13,6 +16,7 @@ import java.util.List;
  */
 public class MCRWarmUpFilter extends Filter {
 
+	private static Logger logger = Logger.getLogger(MCRWarmUpFilter.class.getName());
 	private int minIndex = 0;
 
 	public List<Double> filter(List<Double> samples) {
@@ -52,8 +56,8 @@ public class MCRWarmUpFilter extends Filter {
 		}
 
 		if (minIndex > samples.size() / 3){
-			//TODO: Kriterium nachschauen und logger
-			System.out.println("MCRWarmUpFilter Warning: Truncation point is in the last two thirds of the samples, so the confidence in this result is low.");
+			if(logger.isEnabledFor(Level.WARN))
+				logger.warn("Truncation point is in the last two thirds of the samples, so the confidence in this result is low.");
 		}
 		
 		// TODO Create new list?
