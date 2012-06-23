@@ -1,5 +1,6 @@
 package de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import de.uka.ipd.sdq.pipesandfilters.framework.MetaDataInit;
@@ -111,7 +112,8 @@ public class SensorFrameworkWriteStrategy implements IRawWriteStrategy {
 		if (!flushed) {
 			writeDataStrategy.writeData(data);
         } else {
-            logger.warn("Tried to write data, but the pipe has been flushed already");
+        	if(logger.isEnabledFor(Level.WARN))
+        		logger.warn("Tried to write data, but the pipe has been flushed already");
         }
 	}
 
@@ -119,7 +121,8 @@ public class SensorFrameworkWriteStrategy implements IRawWriteStrategy {
     public synchronized void flush() {
 		if (!flushed) {
 			flushed = true;
-			logger.debug("Flushing SensorFramework data store");
+			if(logger.isDebugEnabled())
+				logger.debug("Flushing SensorFramework data store");
 			daoFactory.store();
 			//do not execute daoFactory.finalizeAndClose() ! This will flush all lists for file-based lists, e.g. experiments, from memory. This should not be done on any DAO requested via the singleton as the lists are not reloaded on next access.
 		}
