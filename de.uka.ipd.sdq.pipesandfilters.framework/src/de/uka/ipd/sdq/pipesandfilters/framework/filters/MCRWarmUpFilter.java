@@ -22,7 +22,8 @@ public class MCRWarmUpFilter extends Filter {
 	public List<Double> filter(List<Double> samples) {
 		
 		if (samples.size() <= 150){
-			System.out.println("MCRWarmUpFilter Warning: Too few samples to get a meaningful result.");
+			if(logger.isEnabledFor(Level.WARN))
+				logger.warn("MCRWarmUpFilter Warning: Too few samples to get a meaningful result.");
 		}
 		
 		int truncatedSamplesSize = samples.size();
@@ -46,7 +47,7 @@ public class MCRWarmUpFilter extends Filter {
 			double d = factor * sum;
 
 			if (d < minValue) {
-//				System.out.println(i + ": " + d);
+//				logger.warn(i + ": " + d);
 				minIndex = i;
 				minValue = d;
 			}
