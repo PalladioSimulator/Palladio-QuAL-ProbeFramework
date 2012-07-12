@@ -1,5 +1,6 @@
 package de.uka.ipd.sdq.probespec.framework.calculator;
 
+import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -10,8 +11,10 @@ import de.uka.ipd.sdq.pipesandfilters.framework.MeasurementMetric;
 import de.uka.ipd.sdq.probespec.framework.BlackboardVote;
 import de.uka.ipd.sdq.probespec.framework.IBlackboardListener;
 import de.uka.ipd.sdq.probespec.framework.ISampleBlackboard;
+import de.uka.ipd.sdq.probespec.framework.ProbeSample;
 import de.uka.ipd.sdq.probespec.framework.ProbeSetSample;
 import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
+import de.uka.ipd.sdq.probespec.framework.RequestContext;
 import de.uka.ipd.sdq.probespec.framework.exceptions.CalculatorException;
 
 /**
@@ -78,9 +81,10 @@ public abstract class Calculator implements IBlackboardListener {
 //	}
 
 	@Override
-	public BlackboardVote sampleArrived(ProbeSetSample pss) {
+	public BlackboardVote sampleArrived(List<ProbeSample<?, ? extends Quantity>> samples,
+			RequestContext requestContextID, Integer probeSetId) {
 		try {
-			return execute(pss);
+			return execute(samples, requestContextID, probeSetId);
 		} catch (CalculatorException e) {
 			e.printStackTrace();
 		}
@@ -94,7 +98,9 @@ public abstract class Calculator implements IBlackboardListener {
 	
 //	public abstract BlackboardVote decideBlackboardVote();
 
-	abstract protected BlackboardVote execute(ProbeSetSample pss)
+	abstract protected BlackboardVote execute(List<ProbeSample<?, ? extends Quantity>> samples,
+			RequestContext requestContextID,
+			Integer probeSetId)
 			throws CalculatorException;
 
 	abstract protected Vector<MeasurementMetric> getConcreteMeasurementMetrics();

@@ -4,6 +4,7 @@ import javax.measure.Measure;
 import javax.measure.quantity.Dimensionless;
 
 import de.uka.ipd.sdq.probespec.framework.ProbeSample;
+import de.uka.ipd.sdq.probespec.framework.ProbeSampleFactory;
 import de.uka.ipd.sdq.probespec.framework.ProbeType;
 import de.uka.ipd.sdq.probespec.framework.probes.IProbeStrategy;
 
@@ -26,7 +27,7 @@ public class ExampleTakePassiveResourceState implements IProbeStrategy {
 
 		Measure<Integer, Dimensionless> free = Measure.valueOf(res.getFree(),
 				Dimensionless.UNIT);
-		ProbeSample<Integer, Dimensionless> sample = new ProbeSample<Integer, Dimensionless>(
+		ProbeSample<Integer, Dimensionless> sample = ProbeSampleFactory.getFactory().createSample(
 				free, probeId, ProbeType.RESOURCE_STATE);
 
 		return sample;

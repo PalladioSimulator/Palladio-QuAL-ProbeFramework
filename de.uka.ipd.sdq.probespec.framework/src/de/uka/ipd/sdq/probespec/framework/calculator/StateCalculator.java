@@ -1,5 +1,6 @@
 package de.uka.ipd.sdq.probespec.framework.calculator;
 
+import java.util.List;
 import java.util.Vector;
 
 import javax.measure.Measure;
@@ -11,12 +12,12 @@ import de.uka.ipd.sdq.pipesandfilters.framework.CaptureType;
 import de.uka.ipd.sdq.pipesandfilters.framework.MeasurementMetric;
 import de.uka.ipd.sdq.pipesandfilters.framework.Scale;
 import de.uka.ipd.sdq.probespec.framework.ProbeSample;
-import de.uka.ipd.sdq.probespec.framework.ProbeSetSample;
 import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
 import de.uka.ipd.sdq.probespec.framework.ProbeType;
 import de.uka.ipd.sdq.probespec.framework.exceptions.CalculatorException;
 import de.uka.ipd.sdq.probespec.framework.matching.IMatchRule;
 import de.uka.ipd.sdq.probespec.framework.matching.ProbeTypeMatchRule;
+import de.uka.ipd.sdq.probespec.framework.utils.ProbeSpecUtils;
 
 /**
  * This class is a specific Calculator which composes a 2-tuple containing a
@@ -46,19 +47,18 @@ public class StateCalculator extends UnaryCalculator {
 
 	@Override
 	protected Vector<Measure<?, ? extends Quantity>> calculate(
-			ProbeSetSample sample) throws CalculatorException {
+			List<ProbeSample<?, ? extends Quantity>> samples) throws CalculatorException {
 		// Obtain measuring time
 		IMatchRule[] rules = new IMatchRule[1];
 		rules[0] = new ProbeTypeMatchRule(ProbeType.CURRENT_TIME);
-		Vector<ProbeSample<?, ? extends Quantity>> result = sample
-				.getProbeSamples(rules);
+		List<ProbeSample<?, ? extends Quantity>> result = ProbeSpecUtils.getProbeSamples(samples, rules);
 		ProbeSample<?, ? extends Quantity> time = null;
 		if (result != null && result.size() > 0)
 			time = result.get(0);
 
 		// Obtain measured state
 		rules[0] = new ProbeTypeMatchRule(ProbeType.RESOURCE_STATE);
-		result = sample.getProbeSamples(rules);
+		result = ProbeSpecUtils.getProbeSamples(samples, rules);
 		ProbeSample<?, ? extends Quantity> resourceState = null;
 		if (result != null && result.size() > 0)
 			resourceState = result.get(0);

@@ -5,6 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
+import javax.measure.quantity.Quantity;
+
+import de.uka.ipd.sdq.probespec.framework.utils.ProbeSpecUtils;
+
 /**
  * The blackboard is a mediator between entities producing samples (
  * {@link ProbeSetSample}s) and entities consuming samples. Producers offer
@@ -40,37 +44,47 @@ public class SampleBlackboard implements ISampleBlackboard {
 
 	// stores the samples
 	// maps RequestContext to map (ProbeSetAndRequestContext -> ProbeSetSample)
-	private HashMap<RequestContext, HashMap<ProbeSetAndRequestContext, ProbeSetSample>> sampleMap = new HashMap<RequestContext, HashMap<ProbeSetAndRequestContext, ProbeSetSample>>();
+	private HashMap<RequestContext, HashMap<Integer, ProbeSetSample>> sampleMap = new HashMap<RequestContext, HashMap<Integer, ProbeSetSample>>();
 
 	public SampleBlackboard() {
 		listeners = new ArrayList<IBlackboardListener>();
 		topicToListenersMap = new HashMap<Integer, ArrayList<IBlackboardListener>>();
 	}
 
+	public void addSample(ProbeSample<?, ? extends Quantity> sample,
+			RequestContext requestContextID, Integer probeSetId) {
+		 List<ProbeSample<?, ? extends Quantity>> samples = new ArrayList<ProbeSample<?,? extends Quantity>>();
+		 samples.add(sample);
+		 addSample(samples, requestContextID, probeSetId);
+	}
 
-	public void addSample(ProbeSetSample pss) {
+	public void addSample(List<ProbeSample<?, ? extends Quantity>> samples,
+			RequestContext requestContextID, Integer probeSetId) {
 		// notify listeners and obtain deletion vote
-		BlackboardVote deletionVote = fireSampleArrived(pss);
+		BlackboardVote deletionVote = fireSampleArrived(samples, requestContextID, probeSetId);
 
 		// retain sample if at least one RETAIN-vote exists
 		if (deletionVote.equals(BlackboardVote.RETAIN)) {
-			RequestContext context = pss.getProbeSetAndRequestContext()
-					.getCtxID();
-			HashMap<ProbeSetAndRequestContext, ProbeSetSample> contextMap = sampleMap
-					.get(context);
+			HashMap<Integer, ProbeSetSample> contextMap = sampleMap.get(requestContextID);
 			// create hash map for request context, if not done yet
 			if (contextMap == null) {
-				contextMap = new HashMap<ProbeSetAndRequestContext, ProbeSetSample>();
-				sampleMap.put(context, contextMap);
+				contextMap = new HashMap<Integer, ProbeSetSample>();
+				sampleMap.put(requestContextID, contextMap);
 			}
-			contextMap.put(pss.getProbeSetAndRequestContext(), pss);
+			
+			//Improvement:
+			//ProbeSetSamples and ProbeSetAndRequestContext are only created if they are really needed. 
+			ProbeSetSample pss = ProbeSpecUtils.buildProbeSetSample(samples, requestContextID, probeSetId);
+			contextMap.put(pss.getProbeSetID(), pss);
 		}
 	}
 
-
-	public void deleteSample(ProbeSetAndRequestContext pss) {
-		sampleMap.get(pss.getCtxID()).remove(pss);
+	@Override
+	public void deleteSampleSet(RequestContext requestContext, Integer probeSetID) {
+		ProbeSetSample pss = sampleMap.get(requestContext).remove(probeSetID);
+		deleteSamples(pss);
 	}
+
 
 
 	public void deleteSamplesInRequestContext(RequestContext requestContext) {
@@ -81,11 +95,21 @@ public class SampleBlackboard implements ISampleBlackboard {
 			}
 		}
 		
-		HashMap<ProbeSetAndRequestContext, ProbeSetSample> contextMap = sampleMap
-				.get(requestContext);
+		HashMap<Integer, ProbeSetSample> contextMap = sampleMap.get(requestContext);
 		if (contextMap != null) {
+
+			for(Entry<Integer, ProbeSetSample> entry : contextMap.entrySet()) {
+				deleteSamples(entry.getValue());
+			}
+			
 			contextMap.clear();
-			sampleMap.remove(requestContext);
+			contextMap = sampleMap.remove(requestContext);
+		}
+	}
+	
+	private void deleteSamples(ProbeSetSample pss) {
+		for(ProbeSample<?, ?> sample : pss.getProbeSamples()) {
+			ProbeSampleFactory.getFactory().deleteSample(sample);
 		}
 	}
 
@@ -101,25 +125,24 @@ public class SampleBlackboard implements ISampleBlackboard {
 	 * (taken before a fork) for a given end ProbeSetSample (taken within a
 	 * fork).
 	 * 
-	 * @param probeSetSampleID
-	 *            the encapsulated probeId and RequestContextID
-	 * @return the ProbeSetSample for the probeSetSampleID, if there is any;
+	 * @param requestContext 
+	 * @param probeSetID
+	 * @return the ProbeSetSample for the requestContext and probeSetID, if there is any;
 	 *         else null.
 	 */
-	public ProbeSetSample getSample(ProbeSetAndRequestContext probeSetSampleID) {
+	@Override
+	public ProbeSetSample getSample(RequestContext requestContext, Integer probeSetID) {
 		// try to find the ProbeSetSample in the specified context
-		ProbeSetSample sample = obtainSample(probeSetSampleID);
+		ProbeSetSample sample = obtainSample(requestContext, probeSetID);
 		if (sample != null) {
 			return sample;
 		}
 
 		// try to find the ProbeSetSample in a parent context
-		RequestContext ctx = probeSetSampleID.getCtxID().getParentContext();
-		Integer probeSetID = probeSetSampleID.getProbeSetID();
+		RequestContext ctx = requestContext.getParentContext();
 		while (ctx != null) {
-			ProbeSetAndRequestContext pssID = new ProbeSetAndRequestContext(
-					probeSetID, ctx);
-			ProbeSetSample pss = obtainSample(pssID);
+			
+			ProbeSetSample pss = obtainSample(ctx, probeSetID);
 			if (pss != null) {
 				return pss;
 			}
@@ -135,19 +158,17 @@ public class SampleBlackboard implements ISampleBlackboard {
 	 * @param probeSetSampleID
 	 * @return
 	 */
-	private ProbeSetSample obtainSample(
-			ProbeSetAndRequestContext probeSetSampleID) {
-		HashMap<ProbeSetAndRequestContext, ProbeSetSample> contextMap = sampleMap
-				.get(probeSetSampleID.getCtxID());
+	private ProbeSetSample obtainSample(RequestContext requestContext, Integer probeSetID) {
+		HashMap<Integer, ProbeSetSample> contextMap = sampleMap.get(requestContext);
 		if (contextMap != null) {
-			return contextMap.get(probeSetSampleID);
+			return contextMap.get(probeSetID);
 		}
 		return null;
 	}
 
 	public int size() {
 		int i = 0;
-		for (Entry<RequestContext, HashMap<ProbeSetAndRequestContext, ProbeSetSample>> e : sampleMap
+		for (Entry<RequestContext, HashMap<Integer, ProbeSetSample>> e : sampleMap
 				.entrySet()) {
 			i += e.getValue().size();
 		}
@@ -181,12 +202,12 @@ public class SampleBlackboard implements ISampleBlackboard {
 	 * @return {@link BlackboardVote#RETAIN} when the sample has to be stored;
 	 *         {@link BlackboardVote#DISCARD} else.
 	 */
-	private BlackboardVote fireSampleArrived(ProbeSetSample pss,
-			List<IBlackboardListener> listeners) {
+	private BlackboardVote fireSampleArrived(List<ProbeSample<?, ? extends Quantity>> samples,
+			RequestContext requestContextID, Integer probeSetId, List<IBlackboardListener> listeners) {
 		// private BlackboardVote fireSampleArrived(ProbeSetSample pss) {
 		BlackboardVote deletionVote = BlackboardVote.DISCARD;
 		for (IBlackboardListener l : listeners) {
-			if (l.sampleArrived(pss).equals(BlackboardVote.RETAIN)) {
+			if (l.sampleArrived(samples, requestContextID, probeSetId).equals(BlackboardVote.RETAIN)) {
 				deletionVote = BlackboardVote.RETAIN;
 			}
 		}
@@ -202,16 +223,16 @@ public class SampleBlackboard implements ISampleBlackboard {
 	 * @return {@link BlackboardVote#RETAIN} when the sample has to be stored;
 	 *         {@link BlackboardVote#DISCARD} else.
 	 */
-	private BlackboardVote fireSampleArrived(ProbeSetSample pss) {
+	private BlackboardVote fireSampleArrived(List<ProbeSample<?, ? extends Quantity>> samples,
+			RequestContext requestContextID, Integer probeSetId) {
 		// notify listeners that are not registered for a specific topic
-		BlackboardVote firstDeletionVote = fireSampleArrived(pss, listeners);
+		BlackboardVote firstDeletionVote = fireSampleArrived(samples, requestContextID, probeSetId, listeners);
 
 		// notify listeners that are registered for the sample's topic
-		Integer topic = pss.getProbeSetAndRequestContext().getProbeSetID();
-		List<IBlackboardListener> listeners = topicToListenersMap.get(topic);
+		List<IBlackboardListener> listeners = topicToListenersMap.get(probeSetId);
 		BlackboardVote secondDeletionVote = null;
 		if (listeners != null) {
-			secondDeletionVote = fireSampleArrived(pss, listeners);
+			secondDeletionVote = fireSampleArrived(samples, requestContextID, probeSetId, listeners);
 		}
 
 		if (firstDeletionVote.equals(BlackboardVote.DISCARD)
@@ -221,5 +242,4 @@ public class SampleBlackboard implements ISampleBlackboard {
 		}
 		return BlackboardVote.RETAIN;
 	}
-
 }

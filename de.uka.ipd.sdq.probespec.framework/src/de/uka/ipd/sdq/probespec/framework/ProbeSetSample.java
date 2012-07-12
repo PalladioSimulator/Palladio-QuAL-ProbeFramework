@@ -1,11 +1,11 @@
 package de.uka.ipd.sdq.probespec.framework;
 
-import java.util.Collection;
-import java.util.Vector;
+import java.util.List;
 
 import javax.measure.quantity.Quantity;
 
 import de.uka.ipd.sdq.probespec.framework.matching.IMatchRule;
+import de.uka.ipd.sdq.probespec.framework.utils.ProbeSpecUtils;
 
 /**
  * Represents a sample which is taken for a ProbeSet in a {@link RequestContext}
@@ -26,12 +26,11 @@ import de.uka.ipd.sdq.probespec.framework.matching.IMatchRule;
  */
 public class ProbeSetSample {
 
-	private Collection<ProbeSample<?, ? extends Quantity>> probeSamples;
+	private List<ProbeSample<?, ? extends Quantity>> probeSamples;
 
-	private ProbeSetAndRequestContext probeSetAndRequestContext;
-
-	/** The id of the annotated model element */
-	private String modelElementID;
+	private RequestContext requestContext;
+	
+	private int probeSetID;
 
 	/**
 	 * Class constructor specifying the encapsulated probe samples, the context
@@ -51,16 +50,13 @@ public class ProbeSetSample {
 	 * @see RequestContext
 	 */
 	public ProbeSetSample(
-			Vector<ProbeSample<?, ? extends Quantity>> probeSamples,
-			RequestContext ctxID, String modelElementID, Integer probeSetID) {
+			List<ProbeSample<?, ? extends Quantity>> probeSamples,
+			RequestContext ctxID, Integer probeSetID) {
 		super();
 
 		this.probeSamples = probeSamples;
-		this.probeSetAndRequestContext = new ProbeSetAndRequestContext(
-				probeSetID, ctxID);
-
-		// TODO modelElementId really needed?
-		this.modelElementID = modelElementID;
+		this.requestContext = ctxID;
+		this.probeSetID = probeSetID;
 	}
 
 	/**
@@ -71,44 +67,40 @@ public class ProbeSetSample {
 	 * @return
 	 * @see ProbeSample
 	 */
-	public Vector<ProbeSample<?, ? extends Quantity>> getProbeSamples(
+	public List<ProbeSample<?, ? extends Quantity>> getProbeSamples(
 			IMatchRule[] matchingRules) {
-		Vector<ProbeSample<?, ? extends Quantity>> res = new Vector<ProbeSample<?, ? extends Quantity>>();
-
-		for (ProbeSample<?, ? extends Quantity> sample : probeSamples) {
-			boolean match = true;
-			for (IMatchRule rule : matchingRules) {
-				match = match && rule.match(sample);
-			}
-			if (match)
-				res.add(sample);
-		}
-
-		return res;
+		
+		return ProbeSpecUtils.getProbeSamples(probeSamples, matchingRules);
+	}
+	
+	public List<ProbeSample<?, ? extends Quantity>> getProbeSamples() {
+		return probeSamples;
 	}
 
 	/**
-	 * Returns the id of the model element which is annotated by the underlying
-	 * probe set.
-	 * 
-	 * @return the model element id
-	 */
-	public String getModelElementID() {
-		return modelElementID;
-	}
-
-	/**
-	 * This method returns the (ProbeSet, RequestContext)-pair for this sample.
+	 * This method returns the RequestContext for this sample.
 	 * It indicates
 	 * <ul>
-	 * <li>from which ProbeSet the sample originates</li>
 	 * <li>the {@link RequestContext} in which the sample has been taken</li>
 	 * </ul>
 	 * 
-	 * @return the originating ProbeSet and {@link RequestContext}
+	 * @return the originating {@link RequestContext}
 	 */
-	public ProbeSetAndRequestContext getProbeSetAndRequestContext() {
-		return probeSetAndRequestContext;
+	public RequestContext getRequestContext() {
+		return requestContext;
+	}
+	
+	/**
+	 * This method returns the ProbeSet-ID for this sample.
+	 * It indicates
+	 * <ul>
+	 * <li>from which ProbeSet the sample originates</li>
+	 * </ul>
+	 * 
+	 * @return the originating ProbeSet
+	 */
+	public int getProbeSetID() {
+		return this.probeSetID;
 	}
 
 }

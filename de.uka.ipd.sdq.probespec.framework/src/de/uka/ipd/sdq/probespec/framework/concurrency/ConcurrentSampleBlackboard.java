@@ -1,12 +1,14 @@
 package de.uka.ipd.sdq.probespec.framework.concurrency;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
+
+import javax.measure.quantity.Quantity;
 
 import org.apache.log4j.Logger;
 
-import de.uka.ipd.sdq.probespec.framework.ProbeSetAndRequestContext;
-import de.uka.ipd.sdq.probespec.framework.ProbeSetSample;
-import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
+import de.uka.ipd.sdq.probespec.framework.ProbeSample;
 import de.uka.ipd.sdq.probespec.framework.RequestContext;
 import de.uka.ipd.sdq.probespec.framework.SampleBlackboard;
 
@@ -35,8 +37,9 @@ public class ConcurrentSampleBlackboard extends SampleBlackboard {
         this.threadManager = threadManager;
     }
 
-	private void delegateAddSample(ProbeSetSample pss) {
-		super.addSample(pss);
+	private void delegateAddSample(List<ProbeSample<?, ? extends Quantity>> samples,
+			RequestContext requestContextID, Integer probeSetId) {
+		super.addSample(samples, requestContextID, probeSetId);
 	}
 
 	private void delegateDeleteSamplesInRequestContext(
@@ -44,8 +47,8 @@ public class ConcurrentSampleBlackboard extends SampleBlackboard {
 		super.deleteSamplesInRequestContext(requestContext);
 	}
 
-	private void delegateDeleteSample(ProbeSetAndRequestContext pss) {
-		super.deleteSample(pss);
+	private void delegateDeleteSampleSet(RequestContext requestContext, Integer probeSetID) {
+		super.deleteSampleSet(requestContext, probeSetID);
 	}
 
 	/**
@@ -61,10 +64,26 @@ public class ConcurrentSampleBlackboard extends SampleBlackboard {
 	 *            the sample
 	 */
 	@Override
-	public void addSample(ProbeSetSample pss) {
+	public void addSample(List<ProbeSample<?, ? extends Quantity>> samples,
+			RequestContext requestContextID, Integer probeSetId) {
 	    checkRunning();	    	    
 		try {
-			sampleQueue.put(new AddSampleAction(pss));
+			sampleQueue.put(new AddSampleAction(samples, requestContextID, probeSetId));
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void addSample(ProbeSample<?, ? extends Quantity> sample,
+			RequestContext requestContextID, Integer probeSetId) {
+	    checkRunning();	    	
+	    
+		try {
+			List<ProbeSample<?, ? extends Quantity>> samples = new ArrayList<ProbeSample<?,? extends Quantity>>();
+			samples.add(sample);
+			sampleQueue.put(new AddSampleAction(samples, requestContextID, probeSetId));
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -101,12 +120,13 @@ public class ConcurrentSampleBlackboard extends SampleBlackboard {
 	 * 
 	 * @param requestContext
 	 *            the samples
+	 * @param probeSetID the sample set id
 	 */
 	@Override
-	public void deleteSample(ProbeSetAndRequestContext pss) {
+	public void deleteSampleSet(RequestContext requestContext, Integer probeSetID) {
 	    checkRunning();
 		try {
-			sampleQueue.put(new DeleteSampleAction(pss));
+			sampleQueue.put(new DeleteSampleAction(requestContext, probeSetID));
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -138,7 +158,8 @@ public class ConcurrentSampleBlackboard extends SampleBlackboard {
 					e.printStackTrace();
 				}
 			}
-			logger.debug("Runnable " + this.getClass().getSimpleName()
+			if(logger.isDebugEnabled())
+				logger.debug("Runnable " + this.getClass().getSimpleName()
 					+ " stopped running");
 		}
 
@@ -184,15 +205,20 @@ public class ConcurrentSampleBlackboard extends SampleBlackboard {
 	 */
 	private class AddSampleAction implements QueuedAction {
 
-		private ProbeSetSample pss;
+		private List<ProbeSample<?, ? extends Quantity>> samples;
+		private RequestContext requestContextID;
+		private Integer probeSetId;
 
-		public AddSampleAction(ProbeSetSample pss) {
-			this.pss = pss;
+		public AddSampleAction(List<ProbeSample<?, ? extends Quantity>> samples,
+				RequestContext requestContextID, Integer probeSetId) {
+			this.samples = samples;
+			this.requestContextID = requestContextID;
+			this.probeSetId = probeSetId;
 		}
 
 		@Override
 		public void execute() {
-			delegateAddSample(pss);
+			delegateAddSample(samples, requestContextID, probeSetId);
 		}
 
 	}
@@ -214,15 +240,17 @@ public class ConcurrentSampleBlackboard extends SampleBlackboard {
 
 	private class DeleteSampleAction implements QueuedAction {
 
-		private ProbeSetAndRequestContext pss;
+		private RequestContext requestContext;
+		private Integer probeSetID;
 
-		public DeleteSampleAction(ProbeSetAndRequestContext pss) {
-			this.pss = pss;
+		public DeleteSampleAction(RequestContext requestContext, Integer probeSetID) {
+			this.requestContext = requestContext;
+			this.probeSetID = probeSetID;
 		}
 
 		@Override
 		public void execute() {
-			delegateDeleteSample(pss);
+			delegateDeleteSampleSet(requestContext, probeSetID);
         }
 
     }

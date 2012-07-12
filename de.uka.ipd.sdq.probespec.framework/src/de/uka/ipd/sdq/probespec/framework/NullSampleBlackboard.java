@@ -1,5 +1,9 @@
 package de.uka.ipd.sdq.probespec.framework;
 
+import java.util.List;
+
+import javax.measure.quantity.Quantity;
+
 /**
  * This blackboard discards any measurement that is published at the blackboard. Thus, the
  * {@link #getSample(ProbeSetAndRequestContext)} method returns always null.
@@ -16,13 +20,20 @@ public class NullSampleBlackboard implements ISampleBlackboard {
         // nothing to do
     }
 
+	@Override
+	public void addSample(ProbeSample<?, ? extends Quantity> sample,
+			RequestContext requestContextID, Integer probeSetId) {
+		// nothing to do
+	}
+	
     @Override
-    public void addSample(ProbeSetSample pss) {
+    public void addSample(List<ProbeSample<?, ? extends Quantity>> samples,
+			RequestContext requestContextID, Integer probeSetId) {
         // nothing to do
     }
 
     @Override
-    public void deleteSample(ProbeSetAndRequestContext pss) {
+    public void deleteSampleSet(RequestContext requestContext, Integer probeSetID) {
         // nothing to do
     }
 
@@ -32,7 +43,7 @@ public class NullSampleBlackboard implements ISampleBlackboard {
     }
 
     @Override
-    public ProbeSetSample getSample(ProbeSetAndRequestContext probeSetSampleID) {
+    public ProbeSetSample getSample(RequestContext requestContext, Integer probeSetID) {
         return null;
     }
 

@@ -1,6 +1,7 @@
 package de.uka.ipd.sdq.probespec.framework.calculator;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Vector;
 
 import javax.measure.Measure;
@@ -14,6 +15,7 @@ import de.uka.ipd.sdq.probespec.framework.ProbeType;
 import de.uka.ipd.sdq.probespec.framework.exceptions.CalculatorException;
 import de.uka.ipd.sdq.probespec.framework.matching.IMatchRule;
 import de.uka.ipd.sdq.probespec.framework.matching.ProbeTypeMatchRule;
+import de.uka.ipd.sdq.probespec.framework.utils.ProbeSpecUtils;
 
 /**
  * Calculates a time span. It expects two ProbeSets each containing at least a
@@ -41,17 +43,17 @@ public abstract class TimeSpanCalculator extends BinaryCalculator {
 	 */
 	@Override
 	protected Vector<Measure<?, ? extends Quantity>> calculate(
-			ProbeSetSample start, ProbeSetSample end)
+			List<ProbeSample<?, ? extends Quantity>> startProbeSamples, List<ProbeSample<?, ? extends Quantity>> endProbeSamples)
 			throws CalculatorException {
 		// Obtain start time sample
-		ProbeSample<Double, Duration> startTimeSample = obtainCurrentTimeProbeSample(start);
+		ProbeSample<Double, Duration> startTimeSample = obtainCurrentTimeProbeSample(startProbeSamples);
 		if (startTimeSample == null) {
 			throw new CalculatorException(
 					"Could not access start probe sample.");
 		}
 
 		// Obtain end time sample
-		ProbeSample<Double, Duration> endTimeSample = obtainCurrentTimeProbeSample(end);
+		ProbeSample<Double, Duration> endTimeSample = obtainCurrentTimeProbeSample(endProbeSamples);
 		if (endTimeSample == null) {
 			throw new CalculatorException("Could not access end probe sample.");
 		}
@@ -77,11 +79,10 @@ public abstract class TimeSpanCalculator extends BinaryCalculator {
 
 	@SuppressWarnings("unchecked")
 	private ProbeSample<Double, Duration> obtainCurrentTimeProbeSample(
-			ProbeSetSample probeSetSample) {
+			List<ProbeSample<?, ? extends Quantity>> probeSamples) {
 		IMatchRule[] rules = new IMatchRule[1];
 		rules[0] = new ProbeTypeMatchRule(ProbeType.CURRENT_TIME);
-		Vector<ProbeSample<?, ? extends Quantity>> result = probeSetSample
-				.getProbeSamples(rules);
+		List<ProbeSample<?, ? extends Quantity>> result = ProbeSpecUtils.getProbeSamples(probeSamples, rules);
 
 		if (result != null && result.size() > 0)
 			return (ProbeSample<Double, Duration>) result.get(0);

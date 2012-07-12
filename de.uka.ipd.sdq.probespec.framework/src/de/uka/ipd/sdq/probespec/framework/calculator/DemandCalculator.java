@@ -1,5 +1,6 @@
 package de.uka.ipd.sdq.probespec.framework.calculator;
 
+import java.util.List;
 import java.util.Vector;
 
 import javax.measure.Measure;
@@ -11,12 +12,12 @@ import de.uka.ipd.sdq.pipesandfilters.framework.CaptureType;
 import de.uka.ipd.sdq.pipesandfilters.framework.MeasurementMetric;
 import de.uka.ipd.sdq.pipesandfilters.framework.Scale;
 import de.uka.ipd.sdq.probespec.framework.ProbeSample;
-import de.uka.ipd.sdq.probespec.framework.ProbeSetSample;
 import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
 import de.uka.ipd.sdq.probespec.framework.ProbeType;
 import de.uka.ipd.sdq.probespec.framework.exceptions.CalculatorException;
 import de.uka.ipd.sdq.probespec.framework.matching.IMatchRule;
 import de.uka.ipd.sdq.probespec.framework.matching.ProbeTypeMatchRule;
+import de.uka.ipd.sdq.probespec.framework.utils.ProbeSpecUtils;
 
 /**
  * This class is a specific Calculator which composes a 2-tuple containing a
@@ -45,21 +46,19 @@ public class DemandCalculator extends UnaryCalculator {
     }
 
 	@Override
-	public Vector<Measure<?, ? extends Quantity>> calculate(
-			ProbeSetSample sample) throws CalculatorException {
+	public Vector<Measure<?, ? extends Quantity>> calculate(List<ProbeSample<?, ? extends Quantity>> samples) throws CalculatorException {
 		// Obtain measurement time
 		ProbeSample<?, ? extends Quantity> measurementTime = null;
 		IMatchRule[] rules = new IMatchRule[1];
 		rules[0] = new ProbeTypeMatchRule(ProbeType.CURRENT_TIME);
-		Vector<ProbeSample<?, ? extends Quantity>> result = sample
-				.getProbeSamples(rules);
+		List<ProbeSample<?, ? extends Quantity>> result = ProbeSpecUtils.getProbeSamples(samples, rules);
 		if (result != null && result.size() > 0)
 			measurementTime = result.get(0);
 
 		// Obtain demand
 		ProbeSample<?, ? extends Quantity> demand = null;
 		rules[0] = new ProbeTypeMatchRule(ProbeType.RESOURCE_DEMAND);
-		result = sample.getProbeSamples(rules);
+		result = ProbeSpecUtils.getProbeSamples(samples, rules);
 		if (result != null && result.size() > 0)
 			demand = result.get(0);
 

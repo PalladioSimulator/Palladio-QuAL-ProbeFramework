@@ -6,7 +6,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import de.uka.ipd.sdq.probespec.framework.ISampleBlackboard;
-import de.uka.ipd.sdq.probespec.framework.ProbeSetAndRequestContext;
+import de.uka.ipd.sdq.probespec.framework.RequestContext;
 import de.uka.ipd.sdq.probespec.framework.calculator.Calculator;
 
 /**
@@ -59,13 +59,13 @@ public abstract class RegionBasedGarbageCollector<T> implements
 
 	/**
 	 * Extracts the region id for the specified
-	 * {@link ProbeSetAndRequestContext}.
+	 * {@link RequestContext}.
 	 * 
 	 * @param c
-	 *            the {@link ProbeSetAndRequestContext}
+	 *            the {@link RequestContext}
 	 * @return the extracted region representative
 	 */
-	public abstract T obtainRegionId(ProbeSetAndRequestContext c);
+	public abstract T obtainRegionId(RequestContext requestContext);
 
 	/**
 	 * Informs the garbage collector that the specified region has been entered.

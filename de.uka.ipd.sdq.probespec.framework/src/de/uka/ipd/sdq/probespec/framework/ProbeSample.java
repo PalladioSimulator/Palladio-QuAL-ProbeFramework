@@ -38,7 +38,7 @@ public class ProbeSample<V, Q extends Quantity> {
 	 * @see Measure
 	 * @see ProbeType
 	 */
-	public ProbeSample(final Measure<V, Q> measure, final String probeID,
+	protected ProbeSample(final Measure<V, Q> measure, final String probeID,
 			final ProbeType probeType) {
 		super();
 		this.measure = measure;
@@ -76,4 +76,17 @@ public class ProbeSample<V, Q extends Quantity> {
 		return probeType;
 	}
 
+	public void setMeasure(Measure<V, Q> measure) {
+		this.measure = measure;
+	}
+
+	public void setProbeID(String probeID) {
+		this.probeID = probeID;
+	}
+
+	public void setProbeType(ProbeType probeType) {
+		this.probeType = probeType;
+	}
+
+	
 }

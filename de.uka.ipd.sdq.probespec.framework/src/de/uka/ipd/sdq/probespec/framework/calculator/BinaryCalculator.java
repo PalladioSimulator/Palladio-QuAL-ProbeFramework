@@ -1,5 +1,6 @@
 package de.uka.ipd.sdq.probespec.framework.calculator;
 
+import java.util.List;
 import java.util.Vector;
 
 import javax.measure.Measure;
@@ -8,9 +9,10 @@ import javax.measure.quantity.Quantity;
 import de.uka.ipd.sdq.pipesandfilters.framework.MeasurementMetric;
 import de.uka.ipd.sdq.probespec.framework.BlackboardVote;
 import de.uka.ipd.sdq.probespec.framework.ISampleBlackboard;
-import de.uka.ipd.sdq.probespec.framework.ProbeSetAndRequestContext;
+import de.uka.ipd.sdq.probespec.framework.ProbeSample;
 import de.uka.ipd.sdq.probespec.framework.ProbeSetSample;
 import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
+import de.uka.ipd.sdq.probespec.framework.RequestContext;
 import de.uka.ipd.sdq.probespec.framework.exceptions.CalculatorException;
 import de.uka.ipd.sdq.probespec.framework.utils.ProbeSpecUtils;
 
@@ -47,7 +49,7 @@ public abstract class BinaryCalculator extends Calculator {
 	}
 
 	abstract protected Vector<Measure<?, ? extends Quantity>> calculate(
-			ProbeSetSample start, ProbeSetSample end)
+			List<ProbeSample<?, ? extends Quantity>> startProbeSamples, List<ProbeSample<?, ? extends Quantity>> endProbeSamples)
 			throws CalculatorException;
 
 	@Override
@@ -76,29 +78,27 @@ public abstract class BinaryCalculator extends Calculator {
 	 *            SampleBlackboard and so triggered this Calculator.
 	 */
 	@Override
-	protected BlackboardVote execute(ProbeSetSample pss) throws CalculatorException {
+	protected BlackboardVote execute(List<ProbeSample<?, ? extends Quantity>> samples,
+			RequestContext requestContextID, Integer probeSetId) throws CalculatorException {
 		/*
 		 * Execute only if second ProbeSetSample arrives. Here we make the
 		 * assumption that the start ProbeSetSample always arrives before the
 		 * end ProbeSetSample. See JavaDoc comment above.
 		 */
-		if (endProbeSetID.equals(pss.getProbeSetAndRequestContext().getProbeSetID())) {
-			ProbeSetSample endSetSample = pss;
-			ProbeSetSample startSetSample = blackboard.getSample(
-					new ProbeSetAndRequestContext(startProbeSetID, pss
-							.getProbeSetAndRequestContext().getCtxID()));
+		if (endProbeSetID.equals(probeSetId)) {
+			ProbeSetSample startSetSample = blackboard.getSample(requestContextID, startProbeSetID);
 			if (startSetSample != null) {
 				Vector<Measure<?, ? extends Quantity>> resultTuple = calculate(
-						startSetSample, endSetSample);
+						startSetSample.getProbeSamples(), samples);
 
 				fireCalculated(resultTuple);
 			} else {
                 throw new CalculatorException("Could not find sample for ProbeSetID "
                         + ProbeSpecUtils.ProbeSetIdToString(startProbeSetID, this.getProbeSpecContext())
-                        + " within context " + pss.getProbeSetAndRequestContext().getCtxID());
+                        + " within context " + requestContextID);
 			}
 			return BlackboardVote.DISCARD;
-		} else if (startProbeSetID.equals(pss.getProbeSetAndRequestContext().getProbeSetID())) {
+		} else if (startProbeSetID.equals(probeSetId)) {
 			return BlackboardVote.RETAIN;
 		} else {
 			return BlackboardVote.DISCARD;

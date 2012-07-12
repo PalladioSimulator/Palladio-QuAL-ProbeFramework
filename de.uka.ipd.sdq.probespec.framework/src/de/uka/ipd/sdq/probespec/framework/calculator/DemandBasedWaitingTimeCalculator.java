@@ -1,5 +1,6 @@
 package de.uka.ipd.sdq.probespec.framework.calculator;
 
+import java.util.List;
 import java.util.Vector;
 
 import javax.measure.Measure;
@@ -8,12 +9,12 @@ import javax.measure.quantity.Quantity;
 import javax.measure.unit.Unit;
 
 import de.uka.ipd.sdq.probespec.framework.ProbeSample;
-import de.uka.ipd.sdq.probespec.framework.ProbeSetSample;
 import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
 import de.uka.ipd.sdq.probespec.framework.ProbeType;
 import de.uka.ipd.sdq.probespec.framework.exceptions.CalculatorException;
 import de.uka.ipd.sdq.probespec.framework.matching.IMatchRule;
 import de.uka.ipd.sdq.probespec.framework.matching.ProbeTypeMatchRule;
+import de.uka.ipd.sdq.probespec.framework.utils.ProbeSpecUtils;
 
 /**
  * Calculates the waiting time for resources in environments where the stop of
@@ -41,10 +42,10 @@ public class DemandBasedWaitingTimeCalculator extends WaitingTimeCalculator {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected Vector<Measure<?, ? extends Quantity>> calculate(
-			ProbeSetSample start, ProbeSetSample end)
+			List<ProbeSample<?, ? extends Quantity>> startProbeSamples, List<ProbeSample<?, ? extends Quantity>> endProbeSamples)
 			throws CalculatorException {
 		// Obtain demand. The demand of start and end should be equal!
-		ProbeSample<Double, Duration> demandSample = obtainDemandProbeSample(start);
+		ProbeSample<Double, Duration> demandSample = obtainDemandProbeSample(startProbeSamples);
 		if (demandSample == null) {
 			throw new CalculatorException(
 					"Could not access demand probe sample.");
@@ -52,7 +53,7 @@ public class DemandBasedWaitingTimeCalculator extends WaitingTimeCalculator {
 
 		// Obtain processing time
 		Vector<Measure<?, ? extends Quantity>> timeSpanResultTuple = super
-				.calculate(start, end);
+				.calculate(startProbeSamples, endProbeSamples);
 		Measure<Double, Duration> processingTimeSpanMeasure = (Measure<Double, Duration>) timeSpanResultTuple
 				.get(0);
 		Measure<Double, Duration> endTimeMeasure = (Measure<Double, Duration>) timeSpanResultTuple
@@ -85,11 +86,10 @@ public class DemandBasedWaitingTimeCalculator extends WaitingTimeCalculator {
 
 	@SuppressWarnings("unchecked")
 	private ProbeSample<Double, Duration> obtainDemandProbeSample(
-			ProbeSetSample probeSetSample) {
+			List<ProbeSample<?, ? extends Quantity>> probeSamples) {
 		IMatchRule[] rules = new IMatchRule[1];
 		rules[0] = new ProbeTypeMatchRule(ProbeType.RESOURCE_DEMAND);
-		Vector<ProbeSample<?, ? extends Quantity>> result = probeSetSample
-				.getProbeSamples(rules);
+		List<ProbeSample<?, ? extends Quantity>> result = ProbeSpecUtils.getProbeSamples(probeSamples, rules);
 
 		if (result != null && result.size() > 0)
 			return (ProbeSample<Double, Duration>) result.get(0);
