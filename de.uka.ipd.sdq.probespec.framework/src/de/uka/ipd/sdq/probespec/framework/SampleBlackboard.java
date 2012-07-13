@@ -81,8 +81,7 @@ public class SampleBlackboard implements ISampleBlackboard {
 
 	@Override
 	public void deleteSampleSet(RequestContext requestContext, Integer probeSetID) {
-		ProbeSetSample pss = sampleMap.get(requestContext).remove(probeSetID);
-		deleteSamples(pss);
+		sampleMap.get(requestContext).remove(probeSetID);
 	}
 
 
@@ -97,19 +96,9 @@ public class SampleBlackboard implements ISampleBlackboard {
 		
 		HashMap<Integer, ProbeSetSample> contextMap = sampleMap.get(requestContext);
 		if (contextMap != null) {
-
-			for(Entry<Integer, ProbeSetSample> entry : contextMap.entrySet()) {
-				deleteSamples(entry.getValue());
-			}
 			
 			contextMap.clear();
 			contextMap = sampleMap.remove(requestContext);
-		}
-	}
-	
-	private void deleteSamples(ProbeSetSample pss) {
-		for(ProbeSample<?, ?> sample : pss.getProbeSamples()) {
-			ProbeSampleFactory.getFactory().deleteSample(sample);
 		}
 	}
 

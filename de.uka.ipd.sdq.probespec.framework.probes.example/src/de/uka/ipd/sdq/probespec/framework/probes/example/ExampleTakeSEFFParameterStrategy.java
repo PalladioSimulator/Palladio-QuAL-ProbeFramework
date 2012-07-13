@@ -4,7 +4,6 @@ import javax.measure.Measure;
 import javax.measure.quantity.Dimensionless;
 
 import de.uka.ipd.sdq.probespec.framework.ProbeSample;
-import de.uka.ipd.sdq.probespec.framework.ProbeSampleFactory;
 import de.uka.ipd.sdq.probespec.framework.ProbeType;
 import de.uka.ipd.sdq.probespec.framework.probes.IProbeStrategy;
 
@@ -29,22 +28,22 @@ public class ExampleTakeSEFFParameterStrategy implements IProbeStrategy {
 		if (parameter.getValue() instanceof Double) {
 			Measure<Double, Dimensionless> value = Measure.valueOf(
 					(Double) parameter.getValue(), Dimensionless.UNIT);
-			sample = ProbeSampleFactory.getFactory().createSample(value, probeId,
+			sample = new ProbeSample<Double, Dimensionless>(value, probeId,
 					ProbeType.SEFF_PARAMETER);
 		} else if (parameter.getValue() instanceof Float) {
 			Measure<Float, Dimensionless> value = Measure.valueOf(
 					(Float) parameter.getValue(), Dimensionless.UNIT);
-			sample = ProbeSampleFactory.getFactory().createSample(value, probeId,
+			sample = new ProbeSample<Float, Dimensionless>(value, probeId,
 					ProbeType.SEFF_PARAMETER);
 		} else if (parameter.getValue() instanceof Integer) {
 			Measure<Integer, Dimensionless> value = Measure.valueOf(
 					(Integer) parameter.getValue(), Dimensionless.UNIT);
-			sample = ProbeSampleFactory.getFactory().createSample(value, probeId,
+			sample = new ProbeSample<Integer, Dimensionless>(value, probeId,
 					ProbeType.SEFF_PARAMETER);
 		} else if (parameter.getValue() instanceof Long) {
 			Measure<Long, Dimensionless> value = Measure.valueOf(
 					(Long) parameter.getValue(), Dimensionless.UNIT);
-			sample = ProbeSampleFactory.getFactory().createSample(value, probeId,
+			sample = new ProbeSample<Long, Dimensionless>(value, probeId,
 					ProbeType.SEFF_PARAMETER);
 		} else {
 			throw new IllegalArgumentException(
