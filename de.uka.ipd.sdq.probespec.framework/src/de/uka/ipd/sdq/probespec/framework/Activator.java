@@ -27,6 +27,8 @@ public class Activator extends Plugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+		
+		AbstractProbeSampleFactory.setFactory(new ProbeSampleFactoryWithObjectPool());
 	}
 
 	/*
@@ -35,6 +37,7 @@ public class Activator extends Plugin {
 	 */
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
+		AbstractProbeSampleFactory.getFactory().clear();
 		super.stop(context);
 	}
 

@@ -3,7 +3,9 @@ package de.uka.ipd.sdq.probespec.framework.probes.example;
 import javax.measure.Measure;
 import javax.measure.quantity.Dimensionless;
 
+import de.uka.ipd.sdq.probespec.framework.AbstractProbeSampleFactory;
 import de.uka.ipd.sdq.probespec.framework.ProbeSample;
+import de.uka.ipd.sdq.probespec.framework.ProbeSampleFactoryWithObjectPool;
 import de.uka.ipd.sdq.probespec.framework.ProbeType;
 import de.uka.ipd.sdq.probespec.framework.probes.IProbeStrategy;
 
@@ -26,7 +28,7 @@ public class ExampleTakeStoExStrategy implements IProbeStrategy {
 
 		Measure<Double, Dimensionless> evalEx = Measure.valueOf(ex
 				.evaluateExpression(), Dimensionless.UNIT);
-		ProbeSample<Double, Dimensionless> sample = new ProbeSample<Double, Dimensionless>(
+		ProbeSample<Double, Dimensionless> sample = AbstractProbeSampleFactory.getFactory().createSample(
 				evalEx, probeId, ProbeType.STOEX);
 
 		return sample;

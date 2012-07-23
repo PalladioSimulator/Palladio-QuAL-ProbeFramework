@@ -7,6 +7,7 @@ import javax.measure.Measure;
 import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
 
+import de.uka.ipd.sdq.probespec.framework.AbstractProbeSampleFactory;
 import de.uka.ipd.sdq.probespec.framework.ProbeSample;
 import de.uka.ipd.sdq.probespec.framework.ProbeType;
 import de.uka.ipd.sdq.probespec.framework.probes.IProbeStrategy;
@@ -43,7 +44,7 @@ public class ExampleTakeCurrentTimeStrategy implements IProbeStrategy {
 
 		Measure<Double, Duration> time = Measure.valueOf((double) simContext
 				.getSimulatedTime(), MILLI(SECOND));
-		ProbeSample<Double, Duration> sample = new ProbeSample<Double, Duration>(
+		ProbeSample<Double, Duration> sample = AbstractProbeSampleFactory.getFactory().createSample(
 				time, probeId, ProbeType.CURRENT_TIME);
 		return sample;
 	}

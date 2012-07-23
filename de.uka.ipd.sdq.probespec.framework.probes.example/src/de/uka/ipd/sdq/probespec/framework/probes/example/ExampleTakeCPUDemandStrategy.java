@@ -3,6 +3,7 @@ package de.uka.ipd.sdq.probespec.framework.probes.example;
 import javax.measure.Measure;
 import javax.measure.quantity.Dimensionless;
 
+import de.uka.ipd.sdq.probespec.framework.AbstractProbeSampleFactory;
 import de.uka.ipd.sdq.probespec.framework.ProbeSample;
 import de.uka.ipd.sdq.probespec.framework.ProbeType;
 import de.uka.ipd.sdq.probespec.framework.probes.IProbeStrategy;
@@ -37,7 +38,7 @@ public class ExampleTakeCPUDemandStrategy implements IProbeStrategy {
 
 		Measure<Double, Dimensionless> demand = Measure.valueOf(demanding
 				.getDemand(resource), Dimensionless.UNIT);
-		ProbeSample<Double, Dimensionless> sample = new ProbeSample<Double, Dimensionless>(
+		ProbeSample<Double, Dimensionless> sample = AbstractProbeSampleFactory.getFactory().createSample(
 				demand, probeId, ProbeType.RESOURCE_DEMAND);
 
 		return sample;

@@ -3,6 +3,7 @@ package de.uka.ipd.sdq.probespec.framework.probes.example;
 import javax.measure.Measure;
 import javax.measure.quantity.Dimensionless;
 
+import de.uka.ipd.sdq.probespec.framework.AbstractProbeSampleFactory;
 import de.uka.ipd.sdq.probespec.framework.ProbeSample;
 import de.uka.ipd.sdq.probespec.framework.ProbeType;
 import de.uka.ipd.sdq.probespec.framework.probes.IProbeStrategy;
@@ -26,7 +27,7 @@ public class ExampleTakeCPUStateStrategy implements IProbeStrategy {
 
 		Measure<Integer, Dimensionless> jobs = Measure.valueOf(res.getJobs(),
 				Dimensionless.UNIT);
-		ProbeSample<Integer, Dimensionless> sample = new ProbeSample<Integer, Dimensionless>(
+		ProbeSample<Integer, Dimensionless> sample = AbstractProbeSampleFactory.getFactory().createSample(
 				jobs, probeId, ProbeType.RESOURCE_STATE);
 
 		return sample;

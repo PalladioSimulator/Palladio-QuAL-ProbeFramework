@@ -76,12 +76,15 @@ public class SampleBlackboard implements ISampleBlackboard {
 			//ProbeSetSamples and ProbeSetAndRequestContext are only created if they are really needed. 
 			ProbeSetSample pss = ProbeSpecUtils.buildProbeSetSample(samples, requestContextID, probeSetId);
 			contextMap.put(pss.getProbeSetID(), pss);
+		} else {
+			deleteSamples(samples);
 		}
 	}
 
 	@Override
 	public void deleteSampleSet(RequestContext requestContext, Integer probeSetID) {
-		sampleMap.get(requestContext).remove(probeSetID);
+		ProbeSetSample pss = sampleMap.get(requestContext).remove(probeSetID);
+		deleteSamples(pss);
 	}
 
 
@@ -96,9 +99,23 @@ public class SampleBlackboard implements ISampleBlackboard {
 		
 		HashMap<Integer, ProbeSetSample> contextMap = sampleMap.get(requestContext);
 		if (contextMap != null) {
+
+			for(Entry<Integer, ProbeSetSample> entry : contextMap.entrySet()) {
+				deleteSamples(entry.getValue());
+			}
 			
 			contextMap.clear();
 			contextMap = sampleMap.remove(requestContext);
+		}
+	}
+	
+	private void deleteSamples(ProbeSetSample pss) {
+		deleteSamples(pss.getProbeSamples());
+	}
+	
+	private void deleteSamples(List<ProbeSample<?, ?extends Quantity>> samples) {
+		for(ProbeSample<?, ?> sample : samples) {
+			AbstractProbeSampleFactory.getFactory().deleteSample(sample);
 		}
 	}
 
