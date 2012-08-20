@@ -107,7 +107,7 @@ public class PipesAndFiltersManagerTest extends TestCase {
 					.getLastArrivedPipeData().getTupleElement(0).getValue());
 
 		}
-		manager.finalize();
+		manager.flush();
 
 		assertEquals(10, exampleFilter.getReceiveCount());
 		assertEquals(14.5, (Double) filteredAggWriteStrategy

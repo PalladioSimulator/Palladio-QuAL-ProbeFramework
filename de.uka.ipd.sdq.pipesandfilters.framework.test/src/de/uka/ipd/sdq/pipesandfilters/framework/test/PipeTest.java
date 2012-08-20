@@ -109,7 +109,7 @@ public class PipeTest extends TestCase {
 
 			manager.processData(data);
 		}
-		manager.finalize();
+		manager.flush();
 	}
 
 	@Override

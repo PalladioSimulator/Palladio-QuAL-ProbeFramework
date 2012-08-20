@@ -73,7 +73,7 @@ public class PipesAndFiltersPerformanceTest extends TestCase {
 			data = new PipeData(m);
 			manager.processData(data);
 		}
-		manager.finalize();
+		manager.flush();
 	}
 
 	@Override
