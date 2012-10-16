@@ -12,6 +12,7 @@ public class SensorFrameworkConfig implements IRecorderConfiguration, Serializab
 	private long datasourceID;
 	
 	public static final String DATASOURCE_ID = "datasourceID";
+	public static final String PERSISTENCE_RECORDER_ID = "SensorFramework";
 	
 	public void setConfiguration(Map<String,Object> configuration) {
 		this.datasourceID = (Integer)configuration.get(
