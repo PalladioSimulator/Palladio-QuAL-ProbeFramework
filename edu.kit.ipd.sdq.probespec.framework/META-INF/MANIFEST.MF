@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ProbeSpecification Framework
+Bundle-SymbolicName: edu.kit.ipd.sdq.probespec.framework
+Bundle-Version: 2.0.0.qualifier
+Bundle-Activator: edu.kit.ipd.sdq.probespec.framework.Activator
+Bundle-Vendor: sdq.ipd.kit.edu
+Require-Bundle: org.eclipse.core.runtime,
+ edu.kit.ipd.sdq.probespec;bundle-version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
+Export-Package: edu.kit.ipd.sdq.probespec.framework,
+ edu.kit.ipd.sdq.probespec.framework.calculators,
+ edu.kit.ipd.sdq.probespec.framework.calculators.binary,
+ edu.kit.ipd.sdq.probespec.framework.calculators.binary.example,
+ edu.kit.ipd.sdq.probespec.framework.calculators.unary,
+ edu.kit.ipd.sdq.probespec.framework.calculators.unary.example

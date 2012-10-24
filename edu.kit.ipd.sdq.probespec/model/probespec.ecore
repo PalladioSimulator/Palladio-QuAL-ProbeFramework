@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="probespec" nsURI="http://sdq.ipd.kit.edu/ProbeSpecification/2.0"
+    nsPrefix="probespec">
+  <eClassifiers xsi:type="ecore:EClass" name="Probe" abstract="true" eSuperTypes="#//ResultConfiguration platform:/plugin/de.uka.ipd.sdq.identifier/model/identifier.ecore#//Identifier">
+    <eTypeParameters name="T"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" ordered="false" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="transient" ordered="false"
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ResultConfiguration" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="aggregationLevel" ordered="false"
+        lowerBound="1" eType="#//ResultAggregationLevel"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="enabled" ordered="false"
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="ResultAggregationLevel">
+    <eLiterals name="inherit"/>
+    <eLiterals name="none" value="1"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MountPoint" abstract="true" eSuperTypes="#//ResultConfiguration platform:/plugin/de.uka.ipd.sdq.identifier/model/identifier.ecore#//Identifier">
+    <eOperations name="getProbes" ordered="false" upperBound="-1" eType="#//ObjectProbe"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" ordered="false" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ObjectProbe">
+    <eGenericSuperTypes eClassifier="#//Probe">
+      <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ProbeRepository" eSuperTypes="#//ResultConfiguration platform:/plugin/de.uka.ipd.sdq.identifier/model/identifier.ecore#//Identifier">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="derivedProbes" ordered="false"
+        upperBound="-1" containment="true">
+      <eGenericType eClassifier="#//DerivedProbe">
+        <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      </eGenericType>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="importedRepositories" ordered="false"
+        upperBound="-1" eType="#//ProbeRepository"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="entities" ordered="false"
+        upperBound="-1" eType="#//MeasurableEntity" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DerivedProbe" abstract="true">
+    <eTypeParameters name="Td"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sourceProbes" ordered="false"
+        lowerBound="1" upperBound="-1">
+      <eGenericType eClassifier="#//Probe">
+        <eTypeArguments eTypeParameter="#//DerivedProbe/Td"/>
+      </eGenericType>
+    </eStructuralFeatures>
+    <eGenericSuperTypes eClassifier="#//Probe">
+      <eTypeArguments eTypeParameter="#//DerivedProbe/Td"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MeasurableEntity" abstract="true" eSuperTypes="#//ResultConfiguration platform:/plugin/de.uka.ipd.sdq.identifier/model/identifier.ecore#//Identifier">
+    <eOperations name="getMountPoints" ordered="false" upperBound="-1" eType="#//MountPoint"/>
+    <eOperations name="getDecoratedEntity" ordered="false" lowerBound="1" eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="IntegerProbe">
+    <eGenericSuperTypes eClassifier="#//Probe">
+      <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="LongProbe">
+    <eGenericSuperTypes eClassifier="#//Probe">
+      <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//ELongObject"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DoubleProbe">
+    <eGenericSuperTypes eClassifier="#//Probe">
+      <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDoubleObject"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DerivedObjectProbe">
+    <eGenericSuperTypes eClassifier="#//DerivedProbe">
+      <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DerivedDoubleProbe">
+    <eGenericSuperTypes eClassifier="#//DerivedProbe">
+      <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDoubleObject"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DerivedIntegerProbe">
+    <eGenericSuperTypes eClassifier="#//DerivedProbe">
+      <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DerivedLongProbe">
+    <eGenericSuperTypes eClassifier="#//DerivedProbe">
+      <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//ELongObject"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+</ecore:EPackage>

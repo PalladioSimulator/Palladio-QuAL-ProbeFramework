@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ProbeSpecification Tests
+Bundle-SymbolicName: edu.kit.ipd.sdq.probespec.framework.test
+Bundle-Version: 2.0.0.qualifier
+Bundle-Activator: edu.kit.ipd.sdq.probespec.framework.test.Activator
+Bundle-Vendor: sdq.ipd.kit.edu
+Require-Bundle: org.eclipse.core.runtime,
+ edu.kit.ipd.sdq.probespec.framework;bundle-version="2.0.0",
+ edu.kit.ipd.sdq.probespec;bundle-version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
