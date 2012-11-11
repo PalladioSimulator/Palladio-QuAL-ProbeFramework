@@ -17,5 +17,7 @@ public interface IBlackboard {
     public <T> void addMeasurementListener(IBlackboardListener<T> l, Probe<T> probe);
 
     public <T> void addMeasurementListener(IBlackboardListener<T> l);
+    
+    public <T> void removeMeasurementListener(IBlackboardListener<T> l);
 
 }

@@ -16,7 +16,7 @@ public class PlusOneCalculator extends AbstractUnaryCalculator<Integer, Integer>
     }
 
     @Override
-    public void singleMeasurementArrived(Integer measurement, Probe<Integer> probe, IBlackboard blackboard) {
+    public void measurementArrived(Integer measurement, Probe<Integer> probe, IBlackboard blackboard) {
         blackboard.addMeasurement(calculate(measurement), getBoundedProbe());
     }
 

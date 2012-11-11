@@ -60,4 +60,9 @@ public class SimpleBlackboard implements IBlackboard {
         return r;
     }
 
+    @Override
+    public <T> void removeMeasurementListener(IBlackboardListener<T> l) {
+        getRegion(l.getGenericType()).removeMeasurementListener(l);
+    }
+
 }

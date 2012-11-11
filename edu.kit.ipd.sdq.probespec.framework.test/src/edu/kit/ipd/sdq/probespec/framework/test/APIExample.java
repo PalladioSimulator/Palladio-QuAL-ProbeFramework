@@ -11,6 +11,8 @@ import edu.kit.ipd.sdq.probespec.framework.calculators.unary.example.PlusOneCalc
 public class APIExample {
 
     public static void main(String[] args) {
+        long t1 = System.nanoTime();
+        
         // initialize ProbeSpec
         ProbeSpecContext ctx = new ProbeSpecContext();
         
@@ -24,8 +26,8 @@ public class APIExample {
         DerivedIntegerProbe derivedProbe2 = ProbeFactory.createDerivedIntegerProbe("differenceProbe");
 
         // now bind each derived probe to exactly one calculator
-        ctx.registerUnaryCalculator(new PlusOneCalculator(derivedProbe), thirdProbe);
-        ctx.registerBinaryCalculator(new DifferenceCalculator(derivedProbe2), derivedProbe, thirdProbe);
+        ctx.getBindingContext().bind(new PlusOneCalculator(derivedProbe), thirdProbe);
+        ctx.getBindingContext().bind(new DifferenceCalculator(derivedProbe2), derivedProbe, thirdProbe);
 
         // generate some dummy measurements for demonstration purposes
         for (int i = 0; i < 3; i++) {
@@ -35,6 +37,11 @@ public class APIExample {
         ctx.getBlackboard().addMeasurement(5, thirdProbe);
         
         System.out.println(ctx.getBlackboard().getLatestMeasurement(thirdProbe));
+        
+        long t2 = System.nanoTime();
+        long diff = t2-t1;
+        
+        System.out.println("Took " + diff/(1000*1000) + " ms.");
         
         //TODO: support probe.addMeasurement() ?
     }

@@ -17,6 +17,8 @@ public interface IBlackboardRegion<T> {
     public void addMeasurementListener(IBlackboardListener<T> l, Probe<T> probe);
 
     public void addMeasurementListener(IBlackboardListener<T> l);
+    
+    public void removeMeasurementListener(IBlackboardListener<T> l);
 
     public Class<T> getGenericType();
     
