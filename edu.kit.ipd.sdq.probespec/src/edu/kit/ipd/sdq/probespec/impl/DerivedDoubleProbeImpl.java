@@ -39,12 +39,10 @@ public class DerivedDoubleProbeImpl extends DerivedProbeImpl<Double> implements 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     public Class<Double> getGenericClass() {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
-        throw new UnsupportedOperationException();
+        return Double.class;
     }
 
 } //DerivedDoubleProbeImpl

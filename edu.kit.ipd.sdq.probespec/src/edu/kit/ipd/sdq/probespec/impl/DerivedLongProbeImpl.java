@@ -39,12 +39,10 @@ public class DerivedLongProbeImpl extends DerivedProbeImpl<Long> implements Deri
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     public Class<Long> getGenericClass() {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
-        throw new UnsupportedOperationException();
+        return Long.class;
     }
 
 } //DerivedLongProbeImpl

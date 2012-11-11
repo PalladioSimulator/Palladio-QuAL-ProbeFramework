@@ -39,12 +39,10 @@ public class DerivedIntegerProbeImpl extends DerivedProbeImpl<Integer> implement
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     public Class<Integer> getGenericClass() {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
-        throw new UnsupportedOperationException();
+        return Integer.class;
     }
 
 } //DerivedIntegerProbeImpl

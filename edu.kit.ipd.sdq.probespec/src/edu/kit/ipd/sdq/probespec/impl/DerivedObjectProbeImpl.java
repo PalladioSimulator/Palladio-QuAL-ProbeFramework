@@ -39,12 +39,10 @@ public class DerivedObjectProbeImpl extends DerivedProbeImpl<Object> implements 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     public Class<Object> getGenericClass() {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
-        throw new UnsupportedOperationException();
+        return Object.class;
     }
 
 } //DerivedObjectProbeImpl
