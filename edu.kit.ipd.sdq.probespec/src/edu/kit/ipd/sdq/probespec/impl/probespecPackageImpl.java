@@ -647,9 +647,27 @@ public class probespecPackageImpl extends EPackageImpl implements probespecPacka
 
         initEClass(integerProbeEClass, IntegerProbe.class, "IntegerProbe", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
+        op = addEOperation(integerProbeEClass, null, "getGenericClass", 1, 1, IS_UNIQUE, !IS_ORDERED);
+        g1 = createEGenericType(ecorePackage.getEJavaClass());
+        g2 = createEGenericType(ecorePackage.getEIntegerObject());
+        g1.getETypeArguments().add(g2);
+        initEOperation(op, g1);
+
         initEClass(longProbeEClass, LongProbe.class, "LongProbe", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
+        op = addEOperation(longProbeEClass, null, "getGenericClass", 1, 1, IS_UNIQUE, !IS_ORDERED);
+        g1 = createEGenericType(ecorePackage.getEJavaClass());
+        g2 = createEGenericType(ecorePackage.getELongObject());
+        g1.getETypeArguments().add(g2);
+        initEOperation(op, g1);
+
         initEClass(doubleProbeEClass, DoubleProbe.class, "DoubleProbe", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        op = addEOperation(doubleProbeEClass, null, "getGenericClass", 1, 1, IS_UNIQUE, !IS_ORDERED);
+        g1 = createEGenericType(ecorePackage.getEJavaClass());
+        g2 = createEGenericType(ecorePackage.getEDoubleObject());
+        g1.getETypeArguments().add(g2);
+        initEOperation(op, g1);
 
         initEClass(derivedObjectProbeEClass, DerivedObjectProbe.class, "DerivedObjectProbe", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

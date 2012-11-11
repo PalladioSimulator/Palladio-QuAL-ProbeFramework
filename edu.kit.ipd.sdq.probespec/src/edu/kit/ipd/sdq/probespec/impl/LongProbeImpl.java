@@ -36,4 +36,13 @@ public class LongProbeImpl extends ProbeImpl<Long> implements LongProbe {
         return probespecPackage.Literals.LONG_PROBE;
     }
 
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated NOT
+     */
+    public Class<Long> getGenericClass() {
+        return Long.class;
+    }
+
 } //LongProbeImpl

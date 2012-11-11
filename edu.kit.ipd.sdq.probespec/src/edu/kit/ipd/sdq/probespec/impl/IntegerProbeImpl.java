@@ -36,4 +36,13 @@ public class IntegerProbeImpl extends ProbeImpl<Integer> implements IntegerProbe
         return probespecPackage.Literals.INTEGER_PROBE;
     }
 
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated NOT
+     */
+    public Class<Integer> getGenericClass() {
+        return Integer.class;
+    }
+
 } //IntegerProbeImpl

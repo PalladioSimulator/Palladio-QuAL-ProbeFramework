@@ -36,4 +36,13 @@ public class DoubleProbeImpl extends ProbeImpl<Double> implements DoubleProbe {
         return probespecPackage.Literals.DOUBLE_PROBE;
     }
 
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated NOT
+     */
+    public Class<Double> getGenericClass() {
+        return Double.class;
+    }
+
 } //DoubleProbeImpl
