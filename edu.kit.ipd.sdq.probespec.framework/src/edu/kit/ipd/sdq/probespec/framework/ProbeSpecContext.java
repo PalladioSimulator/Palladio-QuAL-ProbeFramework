@@ -51,13 +51,33 @@ public class ProbeSpecContext {
     
     public <I, O> void bind(DerivedProbe<O> derivedProbe, IUnaryCalculator<I, O> calculator, Probe<I> sourceProbe) {
         calculator.setBoundedProbe(derivedProbe);
-        getBlackboard().addBlackboardListener(calculator.getListener(), sourceProbe);
+        getBlackboard().addMeasurementListener(calculator.getListener(), sourceProbe);
     }
     
-    public <I1, I2, O> void bind(DerivedProbe<O> derivedProbe, IBinaryCalculator<I1, I2, O> calculator, Probe<I1> sourceProbe1, Probe<I2> sourceProbe2) {
-        calculator.setBoundedProbe(derivedProbe);
-        getBlackboard().addBlackboardListener(calculator.getFirstListener(), sourceProbe1);
-        getBlackboard().addBlackboardListener(calculator.getSecondListener(), sourceProbe2);
+    public <I1, I2, O> void bindCalculatorInput(IBinaryCalculator<I1, I2, O> calculator, Probe<I1> sourceProbe1, Probe<I2> sourceProbe2) {
+        getBlackboard().addMeasurementListener(calculator.getFirstListener(), sourceProbe1);
+        getBlackboard().addMeasurementListener(calculator.getSecondListener(), sourceProbe2);
     }
+    
+    public <I1, I2, O> void bindCalculatorOutput(IBinaryCalculator<I1, I2, O> calculator, DerivedProbe<O> derivedProbe) {
+        calculator.setBoundedProbe(derivedProbe);
+    }
+    
+//    public <I1, I2, O> void bind(DerivedProbe<O> derivedProbe, IBinaryCalculator<I1, I2, O> calculator, Probe<I1> sourceProbe1, Probe<I2> sourceProbe2) {
+//        calculator.setBoundedProbe(derivedProbe);
+//        getBlackboard().addMeasurementListener(calculator.getFirstListener(), sourceProbe1);
+//        getBlackboard().addMeasurementListener(calculator.getSecondListener(), sourceProbe2);
+//    }
+    
+    public void addIntegerMeasurement(Integer measurement, Probe<Integer> probe) {
+        blackboard.getRegion(Integer.class).addMeasurement(measurement, probe);
+    }
+    
+    public void addDoubleMeasurement(Double measurement, Probe<Double> probe) {
+        blackboard.getRegion(Double.class).addMeasurement(measurement, probe);
+    }
+    
+    // TODO consider further types other than Integer and Double
+    
     
 }

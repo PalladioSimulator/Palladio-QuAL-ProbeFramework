@@ -26,7 +26,7 @@ public class DifferenceCalculator extends AbstractBinaryCalculator<Integer, Inte
     public void secondMeasurementArrived(Integer measurement, Probe<Integer> probe) {
         Integer secondMeasurement = measurement;
         Integer c = calculate(firstMeasurement, secondMeasurement);
-        ctx.getBlackboard().addMeasurement(c, getBoundedProbe());
+        ctx.addIntegerMeasurement(c, getBoundedProbe());
     }
 
 }

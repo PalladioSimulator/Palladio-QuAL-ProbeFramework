@@ -17,7 +17,7 @@ public class PlusOneCalculator extends AbstractUnaryCalculator<Integer, Integer>
 
     @Override
     public void singleMeasurementArrived(Integer measurement, Probe<Integer> probe) {
-        ctx.getBlackboard().addMeasurement(calculate(measurement), getBoundedProbe());
+        ctx.addIntegerMeasurement(calculate(measurement), getBoundedProbe());
     }
 
 }
