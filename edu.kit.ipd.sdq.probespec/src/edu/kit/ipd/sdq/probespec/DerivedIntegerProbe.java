@@ -14,4 +14,12 @@ package edu.kit.ipd.sdq.probespec;
  * @generated
  */
 public interface DerivedIntegerProbe extends DerivedProbe<Integer> {
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @model kind="operation" required="true" ordered="false"
+     * @generated
+     */
+    Class<Integer> getGenericClass();
 } // DerivedIntegerProbe

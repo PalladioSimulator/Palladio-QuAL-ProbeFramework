@@ -671,11 +671,35 @@ public class probespecPackageImpl extends EPackageImpl implements probespecPacka
 
         initEClass(derivedObjectProbeEClass, DerivedObjectProbe.class, "DerivedObjectProbe", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
+        op = addEOperation(derivedObjectProbeEClass, null, "getGenericClass", 1, 1, IS_UNIQUE, !IS_ORDERED);
+        g1 = createEGenericType(ecorePackage.getEJavaClass());
+        g2 = createEGenericType(ecorePackage.getEJavaObject());
+        g1.getETypeArguments().add(g2);
+        initEOperation(op, g1);
+
         initEClass(derivedDoubleProbeEClass, DerivedDoubleProbe.class, "DerivedDoubleProbe", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        op = addEOperation(derivedDoubleProbeEClass, null, "getGenericClass", 1, 1, IS_UNIQUE, !IS_ORDERED);
+        g1 = createEGenericType(ecorePackage.getEJavaClass());
+        g2 = createEGenericType(ecorePackage.getEDoubleObject());
+        g1.getETypeArguments().add(g2);
+        initEOperation(op, g1);
 
         initEClass(derivedIntegerProbeEClass, DerivedIntegerProbe.class, "DerivedIntegerProbe", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
+        op = addEOperation(derivedIntegerProbeEClass, null, "getGenericClass", 1, 1, IS_UNIQUE, !IS_ORDERED);
+        g1 = createEGenericType(ecorePackage.getEJavaClass());
+        g2 = createEGenericType(ecorePackage.getEIntegerObject());
+        g1.getETypeArguments().add(g2);
+        initEOperation(op, g1);
+
         initEClass(derivedLongProbeEClass, DerivedLongProbe.class, "DerivedLongProbe", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        op = addEOperation(derivedLongProbeEClass, null, "getGenericClass", 1, 1, IS_UNIQUE, !IS_ORDERED);
+        g1 = createEGenericType(ecorePackage.getEJavaClass());
+        g2 = createEGenericType(ecorePackage.getELongObject());
+        g1.getETypeArguments().add(g2);
+        initEOperation(op, g1);
 
         // Initialize enums and add enum literals
         initEEnum(resultAggregationLevelEEnum, ResultAggregationLevel.class, "ResultAggregationLevel");

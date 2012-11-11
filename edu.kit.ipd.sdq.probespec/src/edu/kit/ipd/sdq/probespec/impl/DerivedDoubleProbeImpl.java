@@ -36,4 +36,15 @@ public class DerivedDoubleProbeImpl extends DerivedProbeImpl<Double> implements 
         return probespecPackage.Literals.DERIVED_DOUBLE_PROBE;
     }
 
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public Class<Double> getGenericClass() {
+        // TODO: implement this method
+        // Ensure that you remove @generated or mark it @generated NOT
+        throw new UnsupportedOperationException();
+    }
+
 } //DerivedDoubleProbeImpl

@@ -14,4 +14,12 @@ package edu.kit.ipd.sdq.probespec;
  * @generated
  */
 public interface DerivedLongProbe extends DerivedProbe<Long> {
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @model kind="operation" required="true" ordered="false"
+     * @generated
+     */
+    Class<Long> getGenericClass();
 } // DerivedLongProbe

@@ -36,4 +36,15 @@ public class DerivedLongProbeImpl extends DerivedProbeImpl<Long> implements Deri
         return probespecPackage.Literals.DERIVED_LONG_PROBE;
     }
 
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public Class<Long> getGenericClass() {
+        // TODO: implement this method
+        // Ensure that you remove @generated or mark it @generated NOT
+        throw new UnsupportedOperationException();
+    }
+
 } //DerivedLongProbeImpl

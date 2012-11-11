@@ -36,4 +36,15 @@ public class DerivedObjectProbeImpl extends DerivedProbeImpl<Object> implements 
         return probespecPackage.Literals.DERIVED_OBJECT_PROBE;
     }
 
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public Class<Object> getGenericClass() {
+        // TODO: implement this method
+        // Ensure that you remove @generated or mark it @generated NOT
+        throw new UnsupportedOperationException();
+    }
+
 } //DerivedObjectProbeImpl
