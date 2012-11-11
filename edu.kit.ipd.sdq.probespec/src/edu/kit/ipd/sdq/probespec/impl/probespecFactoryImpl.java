@@ -81,6 +81,8 @@ public class probespecFactoryImpl extends EFactoryImpl implements probespecFacto
         switch (eDataType.getClassifierID()) {
             case probespecPackage.RESULT_AGGREGATION_LEVEL:
                 return createResultAggregationLevelFromString(eDataType, initialValue);
+            case probespecPackage.CONTEXT_MATCH_STRATEGY:
+                return createContextMatchStrategyFromString(eDataType, initialValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -96,6 +98,8 @@ public class probespecFactoryImpl extends EFactoryImpl implements probespecFacto
         switch (eDataType.getClassifierID()) {
             case probespecPackage.RESULT_AGGREGATION_LEVEL:
                 return convertResultAggregationLevelToString(eDataType, instanceValue);
+            case probespecPackage.CONTEXT_MATCH_STRATEGY:
+                return convertContextMatchStrategyToString(eDataType, instanceValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -212,6 +216,26 @@ public class probespecFactoryImpl extends EFactoryImpl implements probespecFacto
     }
 
 	/**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public ContextMatchStrategy createContextMatchStrategyFromString(EDataType eDataType, String initialValue) {
+        ContextMatchStrategy result = ContextMatchStrategy.get(initialValue);
+        if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+        return result;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public String convertContextMatchStrategyToString(EDataType eDataType, Object instanceValue) {
+        return instanceValue == null ? null : instanceValue.toString();
+    }
+
+    /**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated

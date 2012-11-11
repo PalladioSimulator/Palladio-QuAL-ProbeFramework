@@ -30,10 +30,16 @@
       <genEnumLiterals xsi:type="genmodel:GenEnumLiteral" ecoreEnumLiteral="probespec.ecore#//ResultAggregationLevel/inherit"/>
       <genEnumLiterals xsi:type="genmodel:GenEnumLiteral" ecoreEnumLiteral="probespec.ecore#//ResultAggregationLevel/none"/>
     </genEnums>
+    <genEnums xsi:type="genmodel:GenEnum" typeSafeEnumCompatible="false" ecoreEnum="probespec.ecore#//ContextMatchStrategy">
+      <genEnumLiterals xsi:type="genmodel:GenEnumLiteral" ecoreEnumLiteral="probespec.ecore#//ContextMatchStrategy/allContexts"/>
+      <genEnumLiterals xsi:type="genmodel:GenEnumLiteral" ecoreEnumLiteral="probespec.ecore#//ContextMatchStrategy/sameContext"/>
+      <genEnumLiterals xsi:type="genmodel:GenEnumLiteral" ecoreEnumLiteral="probespec.ecore#//ContextMatchStrategy/sameOrParentContext"/>
+    </genEnums>
     <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="probespec.ecore#//Probe">
       <genTypeParameters ecoreTypeParameter="probespec.ecore#//Probe/T"/>
       <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute probespec.ecore#//Probe/name"/>
       <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute probespec.ecore#//Probe/transient"/>
+      <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="probespec.ecore#//Probe/getGenericClass"/>
     </genClasses>
     <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="probespec.ecore#//ResultConfiguration">
       <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute probespec.ecore#//ResultConfiguration/aggregationLevel"/>
@@ -56,6 +62,7 @@
       <genTypeParameters ecoreTypeParameter="probespec.ecore#//DerivedProbe/Td"/>
       <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
           propertySortChoices="true" ecoreFeature="ecore:EReference probespec.ecore#//DerivedProbe/sourceProbes"/>
+      <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute probespec.ecore#//DerivedProbe/matchStrategy"/>
     </genClasses>
     <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="probespec.ecore#//MeasurableEntity">
       <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="probespec.ecore#//MeasurableEntity/getMountPoints"/>

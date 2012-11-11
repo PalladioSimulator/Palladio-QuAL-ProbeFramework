@@ -74,4 +74,12 @@ public interface Probe<T> extends ResultConfiguration, Identifier {
      */
     void setTransient(boolean value);
 
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @model kind="operation" required="true" ordered="false"
+     * @generated
+     */
+    Class<T> getGenericClass();
+
 } // Probe

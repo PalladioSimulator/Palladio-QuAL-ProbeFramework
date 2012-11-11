@@ -19,6 +19,8 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
+import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
+import org.eclipse.emf.edit.provider.ViewerNotification;
 
 /**
  * This is the item provider adapter for a {@link edu.kit.ipd.sdq.probespec.DerivedProbe} object.
@@ -56,6 +58,7 @@ public class DerivedProbeItemProvider
             super.getPropertyDescriptors(object);
 
             addSourceProbesPropertyDescriptor(object);
+            addMatchStrategyPropertyDescriptor(object);
         }
         return itemPropertyDescriptors;
     }
@@ -78,6 +81,28 @@ public class DerivedProbeItemProvider
                  false,
                  true,
                  null,
+                 null,
+                 null));
+    }
+
+    /**
+     * This adds a property descriptor for the Match Strategy feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    protected void addMatchStrategyPropertyDescriptor(Object object) {
+        itemPropertyDescriptors.add
+            (createItemPropertyDescriptor
+                (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+                 getResourceLocator(),
+                 getString("_UI_DerivedProbe_matchStrategy_feature"),
+                 getString("_UI_PropertyDescriptor_description", "_UI_DerivedProbe_matchStrategy_feature", "_UI_DerivedProbe_type"),
+                 probespecPackage.Literals.DERIVED_PROBE__MATCH_STRATEGY,
+                 true,
+                 false,
+                 false,
+                 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
                  null,
                  null));
     }
@@ -106,6 +131,12 @@ public class DerivedProbeItemProvider
 	@Override
 	public void notifyChanged(Notification notification) {
         updateChildren(notification);
+
+        switch (notification.getFeatureID(DerivedProbe.class)) {
+            case probespecPackage.DERIVED_PROBE__MATCH_STRATEGY:
+                fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+                return;
+        }
         super.notifyChanged(notification);
     }
 

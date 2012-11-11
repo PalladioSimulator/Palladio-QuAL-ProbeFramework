@@ -2,8 +2,13 @@
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="probespec" nsURI="http://sdq.ipd.kit.edu/ProbeSpecification/2.0"
     nsPrefix="probespec">
-  <eClassifiers xsi:type="ecore:EClass" name="Probe" abstract="true" eSuperTypes="#//ResultConfiguration platform:/plugin/de.uka.ipd.sdq.identifier/model/identifier.ecore#//Identifier">
+  <eClassifiers xsi:type="ecore:EClass" name="Probe" abstract="true" eSuperTypes="#//ResultConfiguration http://sdq.ipd.uka.de/Identifier/1.0#//Identifier">
     <eTypeParameters name="T"/>
+    <eOperations name="getGenericClass" ordered="false" lowerBound="1">
+      <eGenericType eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaClass">
+        <eTypeArguments eTypeParameter="#//Probe/T"/>
+      </eGenericType>
+    </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" ordered="false" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="transient" ordered="false"
@@ -19,7 +24,7 @@
     <eLiterals name="inherit"/>
     <eLiterals name="none" value="1"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="MountPoint" abstract="true" eSuperTypes="#//ResultConfiguration platform:/plugin/de.uka.ipd.sdq.identifier/model/identifier.ecore#//Identifier">
+  <eClassifiers xsi:type="ecore:EClass" name="MountPoint" abstract="true" eSuperTypes="#//ResultConfiguration http://sdq.ipd.uka.de/Identifier/1.0#//Identifier">
     <eOperations name="getProbes" ordered="false" upperBound="-1" eType="#//ObjectProbe"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" ordered="false" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -29,7 +34,7 @@
       <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
     </eGenericSuperTypes>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ProbeRepository" eSuperTypes="#//ResultConfiguration platform:/plugin/de.uka.ipd.sdq.identifier/model/identifier.ecore#//Identifier">
+  <eClassifiers xsi:type="ecore:EClass" name="ProbeRepository" eSuperTypes="#//ResultConfiguration http://sdq.ipd.uka.de/Identifier/1.0#//Identifier">
     <eStructuralFeatures xsi:type="ecore:EReference" name="derivedProbes" ordered="false"
         upperBound="-1" containment="true">
       <eGenericType eClassifier="#//DerivedProbe">
@@ -49,13 +54,20 @@
         <eTypeArguments eTypeParameter="#//DerivedProbe/Td"/>
       </eGenericType>
     </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="matchStrategy" ordered="false"
+        lowerBound="1" eType="#//ContextMatchStrategy" defaultValueLiteral="SAME_OR_PARENT_CONTEXT"/>
     <eGenericSuperTypes eClassifier="#//Probe">
       <eTypeArguments eTypeParameter="#//DerivedProbe/Td"/>
     </eGenericSuperTypes>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="MeasurableEntity" abstract="true" eSuperTypes="#//ResultConfiguration platform:/plugin/de.uka.ipd.sdq.identifier/model/identifier.ecore#//Identifier">
+  <eClassifiers xsi:type="ecore:EEnum" name="ContextMatchStrategy">
+    <eLiterals name="allContexts"/>
+    <eLiterals name="sameContext" value="1"/>
+    <eLiterals name="sameOrParentContext" value="2"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MeasurableEntity" abstract="true" eSuperTypes="#//ResultConfiguration http://sdq.ipd.uka.de/Identifier/1.0#//Identifier">
     <eOperations name="getMountPoints" ordered="false" upperBound="-1" eType="#//MountPoint"/>
-    <eOperations name="getDecoratedEntity" ordered="false" lowerBound="1" eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    <eOperations name="getDecoratedEntity" ordered="false" lowerBound="1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IntegerProbe">
     <eGenericSuperTypes eClassifier="#//Probe">

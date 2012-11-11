@@ -464,13 +464,22 @@ public interface probespecPackage extends EPackage {
     int DERIVED_PROBE__SOURCE_PROBES = PROBE_FEATURE_COUNT + 0;
 
     /**
+     * The feature id for the '<em><b>Match Strategy</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DERIVED_PROBE__MATCH_STRATEGY = PROBE_FEATURE_COUNT + 1;
+
+    /**
      * The number of structural features of the '<em>Derived Probe</em>' class.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int DERIVED_PROBE_FEATURE_COUNT = PROBE_FEATURE_COUNT + 1;
+	int DERIVED_PROBE_FEATURE_COUNT = PROBE_FEATURE_COUNT + 2;
 
     /**
      * The feature id for the '<em><b>Aggregation Level</b></em>' attribute.
@@ -725,6 +734,15 @@ public interface probespecPackage extends EPackage {
     int DERIVED_OBJECT_PROBE__SOURCE_PROBES = DERIVED_PROBE__SOURCE_PROBES;
 
     /**
+     * The feature id for the '<em><b>Match Strategy</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DERIVED_OBJECT_PROBE__MATCH_STRATEGY = DERIVED_PROBE__MATCH_STRATEGY;
+
+    /**
      * The number of structural features of the '<em>Derived Object Probe</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -796,6 +814,15 @@ public interface probespecPackage extends EPackage {
      * @ordered
      */
     int DERIVED_DOUBLE_PROBE__SOURCE_PROBES = DERIVED_PROBE__SOURCE_PROBES;
+
+    /**
+     * The feature id for the '<em><b>Match Strategy</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DERIVED_DOUBLE_PROBE__MATCH_STRATEGY = DERIVED_PROBE__MATCH_STRATEGY;
 
     /**
      * The number of structural features of the '<em>Derived Double Probe</em>' class.
@@ -871,6 +898,15 @@ public interface probespecPackage extends EPackage {
     int DERIVED_INTEGER_PROBE__SOURCE_PROBES = DERIVED_PROBE__SOURCE_PROBES;
 
     /**
+     * The feature id for the '<em><b>Match Strategy</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DERIVED_INTEGER_PROBE__MATCH_STRATEGY = DERIVED_PROBE__MATCH_STRATEGY;
+
+    /**
      * The number of structural features of the '<em>Derived Integer Probe</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -944,6 +980,15 @@ public interface probespecPackage extends EPackage {
     int DERIVED_LONG_PROBE__SOURCE_PROBES = DERIVED_PROBE__SOURCE_PROBES;
 
     /**
+     * The feature id for the '<em><b>Match Strategy</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DERIVED_LONG_PROBE__MATCH_STRATEGY = DERIVED_PROBE__MATCH_STRATEGY;
+
+    /**
      * The number of structural features of the '<em>Derived Long Probe</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -964,6 +1009,17 @@ public interface probespecPackage extends EPackage {
 
 
 	/**
+     * The meta object id for the '{@link edu.kit.ipd.sdq.probespec.ContextMatchStrategy <em>Context Match Strategy</em>}' enum.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.kit.ipd.sdq.probespec.ContextMatchStrategy
+     * @see edu.kit.ipd.sdq.probespec.impl.probespecPackageImpl#getContextMatchStrategy()
+     * @generated
+     */
+    int CONTEXT_MATCH_STRATEGY = 15;
+
+
+    /**
      * Returns the meta object for class '{@link edu.kit.ipd.sdq.probespec.Probe <em>Probe</em>}'.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1113,6 +1169,17 @@ public interface probespecPackage extends EPackage {
     EReference getDerivedProbe_SourceProbes();
 
     /**
+     * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.probespec.DerivedProbe#getMatchStrategy <em>Match Strategy</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Match Strategy</em>'.
+     * @see edu.kit.ipd.sdq.probespec.DerivedProbe#getMatchStrategy()
+     * @see #getDerivedProbe()
+     * @generated
+     */
+    EAttribute getDerivedProbe_MatchStrategy();
+
+    /**
      * Returns the meta object for class '{@link edu.kit.ipd.sdq.probespec.MeasurableEntity <em>Measurable Entity</em>}'.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1213,6 +1280,16 @@ public interface probespecPackage extends EPackage {
 	EEnum getResultAggregationLevel();
 
 	/**
+     * Returns the meta object for enum '{@link edu.kit.ipd.sdq.probespec.ContextMatchStrategy <em>Context Match Strategy</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for enum '<em>Context Match Strategy</em>'.
+     * @see edu.kit.ipd.sdq.probespec.ContextMatchStrategy
+     * @generated
+     */
+    EEnum getContextMatchStrategy();
+
+    /**
      * Returns the factory that creates the instances of the model.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1357,6 +1434,14 @@ public interface probespecPackage extends EPackage {
         EReference DERIVED_PROBE__SOURCE_PROBES = eINSTANCE.getDerivedProbe_SourceProbes();
 
         /**
+         * The meta object literal for the '<em><b>Match Strategy</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute DERIVED_PROBE__MATCH_STRATEGY = eINSTANCE.getDerivedProbe_MatchStrategy();
+
+        /**
          * The meta object literal for the '{@link edu.kit.ipd.sdq.probespec.impl.MeasurableEntityImpl <em>Measurable Entity</em>}' class.
          * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1455,6 +1540,16 @@ public interface probespecPackage extends EPackage {
          * @generated
          */
 		EEnum RESULT_AGGREGATION_LEVEL = eINSTANCE.getResultAggregationLevel();
+
+        /**
+         * The meta object literal for the '{@link edu.kit.ipd.sdq.probespec.ContextMatchStrategy <em>Context Match Strategy</em>}' enum.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see edu.kit.ipd.sdq.probespec.ContextMatchStrategy
+         * @see edu.kit.ipd.sdq.probespec.impl.probespecPackageImpl#getContextMatchStrategy()
+         * @generated
+         */
+        EEnum CONTEXT_MATCH_STRATEGY = eINSTANCE.getContextMatchStrategy();
 
 	}
 

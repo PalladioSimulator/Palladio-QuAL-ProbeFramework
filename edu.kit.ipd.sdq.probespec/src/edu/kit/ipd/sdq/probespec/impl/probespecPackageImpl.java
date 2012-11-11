@@ -4,6 +4,7 @@ package edu.kit.ipd.sdq.probespec.impl;
 
 import de.uka.ipd.sdq.identifier.IdentifierPackage;
 
+import edu.kit.ipd.sdq.probespec.ContextMatchStrategy;
 import edu.kit.ipd.sdq.probespec.DerivedDoubleProbe;
 import edu.kit.ipd.sdq.probespec.DerivedIntegerProbe;
 import edu.kit.ipd.sdq.probespec.DerivedLongProbe;
@@ -26,6 +27,7 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EGenericType;
+import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.ETypeParameter;
@@ -146,6 +148,13 @@ public class probespecPackageImpl extends EPackageImpl implements probespecPacka
 	private EEnum resultAggregationLevelEEnum = null;
 
 	/**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EEnum contextMatchStrategyEEnum = null;
+
+    /**
      * Creates an instance of the model <b>Package</b>, registered with
      * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
      * package URI value.
@@ -338,6 +347,15 @@ public class probespecPackageImpl extends EPackageImpl implements probespecPacka
 
     /**
      * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getDerivedProbe_MatchStrategy() {
+        return (EAttribute)derivedProbeEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
      */
@@ -428,6 +446,15 @@ public class probespecPackageImpl extends EPackageImpl implements probespecPacka
 
 	/**
      * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EEnum getContextMatchStrategy() {
+        return contextMatchStrategyEEnum;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
      */
@@ -474,6 +501,7 @@ public class probespecPackageImpl extends EPackageImpl implements probespecPacka
 
         derivedProbeEClass = createEClass(DERIVED_PROBE);
         createEReference(derivedProbeEClass, DERIVED_PROBE__SOURCE_PROBES);
+        createEAttribute(derivedProbeEClass, DERIVED_PROBE__MATCH_STRATEGY);
 
         measurableEntityEClass = createEClass(MEASURABLE_ENTITY);
 
@@ -493,6 +521,7 @@ public class probespecPackageImpl extends EPackageImpl implements probespecPacka
 
         // Create enums
         resultAggregationLevelEEnum = createEEnum(RESULT_AGGREGATION_LEVEL);
+        contextMatchStrategyEEnum = createEEnum(CONTEXT_MATCH_STRATEGY);
     }
 
 	/**
@@ -520,10 +549,9 @@ public class probespecPackageImpl extends EPackageImpl implements probespecPacka
 
         // Obtain other dependent packages
         IdentifierPackage theIdentifierPackage = (IdentifierPackage)EPackage.Registry.INSTANCE.getEPackage(IdentifierPackage.eNS_URI);
-        EcorePackage theEcorePackage = (EcorePackage)EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI);
 
         // Create type parameters
-        addETypeParameter(probeEClass, "T");
+        ETypeParameter probeEClass_T = addETypeParameter(probeEClass, "T");
         ETypeParameter derivedProbeEClass_Td = addETypeParameter(derivedProbeEClass, "Td");
 
         // Set bounds for type parameters
@@ -579,6 +607,12 @@ public class probespecPackageImpl extends EPackageImpl implements probespecPacka
         initEAttribute(getProbe_Name(), ecorePackage.getEString(), "name", null, 1, 1, Probe.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
         initEAttribute(getProbe_Transient(), ecorePackage.getEBoolean(), "transient", null, 1, 1, Probe.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 
+        EOperation op = addEOperation(probeEClass, null, "getGenericClass", 1, 1, IS_UNIQUE, !IS_ORDERED);
+        g1 = createEGenericType(ecorePackage.getEJavaClass());
+        g2 = createEGenericType(probeEClass_T);
+        g1.getETypeArguments().add(g2);
+        initEOperation(op, g1);
+
         initEClass(resultConfigurationEClass, ResultConfiguration.class, "ResultConfiguration", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getResultConfiguration_AggregationLevel(), this.getResultAggregationLevel(), "aggregationLevel", null, 1, 1, ResultConfiguration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
         initEAttribute(getResultConfiguration_Enabled(), ecorePackage.getEBoolean(), "enabled", null, 1, 1, ResultConfiguration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
@@ -603,12 +637,13 @@ public class probespecPackageImpl extends EPackageImpl implements probespecPacka
         g2 = createEGenericType(derivedProbeEClass_Td);
         g1.getETypeArguments().add(g2);
         initEReference(getDerivedProbe_SourceProbes(), g1, null, "sourceProbes", null, 1, -1, DerivedProbe.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+        initEAttribute(getDerivedProbe_MatchStrategy(), this.getContextMatchStrategy(), "matchStrategy", "SAME_OR_PARENT_CONTEXT", 1, 1, DerivedProbe.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 
         initEClass(measurableEntityEClass, MeasurableEntity.class, "MeasurableEntity", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         addEOperation(measurableEntityEClass, this.getMountPoint(), "getMountPoints", 0, -1, IS_UNIQUE, !IS_ORDERED);
 
-        addEOperation(measurableEntityEClass, theEcorePackage.getEObject(), "getDecoratedEntity", 1, 1, IS_UNIQUE, !IS_ORDERED);
+        addEOperation(measurableEntityEClass, ecorePackage.getEObject(), "getDecoratedEntity", 1, 1, IS_UNIQUE, !IS_ORDERED);
 
         initEClass(integerProbeEClass, IntegerProbe.class, "IntegerProbe", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -628,6 +663,11 @@ public class probespecPackageImpl extends EPackageImpl implements probespecPacka
         initEEnum(resultAggregationLevelEEnum, ResultAggregationLevel.class, "ResultAggregationLevel");
         addEEnumLiteral(resultAggregationLevelEEnum, ResultAggregationLevel.INHERIT);
         addEEnumLiteral(resultAggregationLevelEEnum, ResultAggregationLevel.NONE);
+
+        initEEnum(contextMatchStrategyEEnum, ContextMatchStrategy.class, "ContextMatchStrategy");
+        addEEnumLiteral(contextMatchStrategyEEnum, ContextMatchStrategy.ALL_CONTEXTS);
+        addEEnumLiteral(contextMatchStrategyEEnum, ContextMatchStrategy.SAME_CONTEXT);
+        addEEnumLiteral(contextMatchStrategyEEnum, ContextMatchStrategy.SAME_OR_PARENT_CONTEXT);
 
         // Create resource
         createResource(eNS_URI);
