@@ -24,20 +24,17 @@ public class APIExample {
         DerivedIntegerProbe derivedProbe2 = ProbeFactory.createDerivedIntegerProbe("differenceProbe");
 
         // now bind each derived probe to exactly one calculator
-        ctx.bind(derivedProbe, new PlusOneCalculator(ctx), thirdProbe);
-        
-        DifferenceCalculator c = new DifferenceCalculator(ctx);
-        ctx.bindCalculatorInput(c, derivedProbe, thirdProbe);
-        ctx.bindCalculatorOutput(c, derivedProbe2);
+        ctx.registerUnaryCalculator(new PlusOneCalculator(derivedProbe), thirdProbe);
+        ctx.registerBinaryCalculator(new DifferenceCalculator(derivedProbe2), derivedProbe, thirdProbe);
 
         // generate some dummy measurements for demonstration purposes
         for (int i = 0; i < 3; i++) {
-            ctx.addIntegerMeasurement(i, firstProbe);
+            ctx.getBlackboard().addMeasurement(i, firstProbe);
         }
-        ctx.addDoubleMeasurement(5.0, secondProbe);
-        ctx.addIntegerMeasurement(5, thirdProbe);
+        ctx.getBlackboard().addMeasurement(5.0, secondProbe);
+        ctx.getBlackboard().addMeasurement(5, thirdProbe);
         
-        System.out.println(ctx.getBlackboard().getRegion(Integer.class).getLatestMeasurement(thirdProbe));
+        System.out.println(ctx.getBlackboard().getLatestMeasurement(thirdProbe));
         
         //TODO: support probe.addMeasurement() ?
     }

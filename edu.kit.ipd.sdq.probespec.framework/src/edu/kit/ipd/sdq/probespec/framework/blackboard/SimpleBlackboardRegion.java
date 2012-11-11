@@ -1,23 +1,24 @@
-package edu.kit.ipd.sdq.probespec.framework;
+package edu.kit.ipd.sdq.probespec.framework.blackboard;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import edu.kit.ipd.sdq.probespec.Probe;
 
 public class SimpleBlackboardRegion<T> implements IBlackboardRegion<T> {
 
-    private List<IBlackboardListener<T>> listeners;
+    private Class<T> type;
+    
+    private IBlackboard blackboard;
 
-    private Map<Probe<?>, List<IBlackboardListener<T>>> probeListeners;
-
+    private ListenerSupport<T> listenerSupport;
+    
     private Map<IMeasurementContext, Map<Probe<T>, T>> measurements;
 
-    public SimpleBlackboardRegion() {
-        listeners = new ArrayList<IBlackboardListener<T>>();
-        probeListeners = new HashMap<Probe<?>, List<IBlackboardListener<T>>>();
+    public SimpleBlackboardRegion(IBlackboard blackboard, Class<T> type) {
+        this.type = type;
+        this.blackboard = blackboard;
+        listenerSupport = new ListenerSupport<T>();
         measurements = new HashMap<IMeasurementContext, Map<Probe<T>, T>>();
     }
 
@@ -41,32 +42,7 @@ public class SimpleBlackboardRegion<T> implements IBlackboardRegion<T> {
         measurementsInContext.put(probe, measurement);
 
         // notify listeners
-        notifyMeasurementListeners(measurement, probe);
-    }
-
-    public void notifyMeasurementListeners(T measurement, Probe<T> probe) {
-        for (IBlackboardListener<T> l : listeners) {
-            l.measurementArrived(measurement, probe);
-        }
-
-        if (probeListeners.containsKey(probe)) {
-            for (IBlackboardListener<T> l : probeListeners.get(probe)) {
-                l.measurementArrived(measurement, probe);
-            }
-        }
-    }
-
-    @Override
-    public void addMeasurementListener(IBlackboardListener<T> l) {
-        listeners.add(l);
-    }
-
-    @Override
-    public void addMeasurementListener(IBlackboardListener<T> l, Probe<T> probe) {
-        if (!probeListeners.containsKey(probe)) {
-            probeListeners.put(probe, new ArrayList<IBlackboardListener<T>>());
-        }
-        probeListeners.get(probe).add(l);
+        listenerSupport.notifyMeasurementListeners(measurement, probe, blackboard);
     }
 
     @Override
@@ -93,6 +69,21 @@ public class SimpleBlackboardRegion<T> implements IBlackboardRegion<T> {
     public void deleteMeasurements(IMeasurementContext context) {
         // TODO Auto-generated method stub
         throw new RuntimeException("Not yet implemented");
+    }
+
+    @Override
+    public void addMeasurementListener(IBlackboardListener<T> l) {
+        listenerSupport.addMeasurementListener(l);
+    }
+
+    @Override
+    public void addMeasurementListener(IBlackboardListener<T> l, Probe<T> probe) {
+        listenerSupport.addMeasurementListener(l, probe);
+    }
+    
+    @Override
+    public Class<T> getGenericType() {
+        return type;
     }
 
 }

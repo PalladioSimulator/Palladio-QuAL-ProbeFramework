@@ -1,20 +1,13 @@
 package edu.kit.ipd.sdq.probespec.framework.calculators;
 
 import edu.kit.ipd.sdq.probespec.Probe;
-import edu.kit.ipd.sdq.probespec.framework.ProbeSpecContext;
 
 public class AbstractCalculator<OUT> {
-
-    protected ProbeSpecContext ctx;
     
-    private Probe<OUT> boundedProbe;
+    private final Probe<OUT> boundedProbe;
     
-    public AbstractCalculator(ProbeSpecContext ctx) {
-        this.ctx = ctx;
-    }
-    
-    public void setBoundedProbe(Probe<OUT> probe) {
-        this.boundedProbe = probe;
+    public AbstractCalculator(Probe<OUT> boundedProbe) {
+        this.boundedProbe = boundedProbe;
     }
 
     public Probe<OUT> getBoundedProbe() {

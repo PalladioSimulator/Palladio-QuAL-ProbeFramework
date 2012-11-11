@@ -1,13 +1,13 @@
 package edu.kit.ipd.sdq.probespec.framework.calculators.unary.example;
 
 import edu.kit.ipd.sdq.probespec.Probe;
-import edu.kit.ipd.sdq.probespec.framework.ProbeSpecContext;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
 import edu.kit.ipd.sdq.probespec.framework.calculators.unary.AbstractUnaryCalculator;
 
 public class PlusOneCalculator extends AbstractUnaryCalculator<Integer, Integer> {
 
-    public PlusOneCalculator(ProbeSpecContext ctx) {
-        super(ctx, Integer.class, Integer.class);
+    public PlusOneCalculator(Probe<Integer> boundedProbe) {
+        super(boundedProbe, Integer.class, Integer.class);
     }
 
     @Override
@@ -16,8 +16,8 @@ public class PlusOneCalculator extends AbstractUnaryCalculator<Integer, Integer>
     }
 
     @Override
-    public void singleMeasurementArrived(Integer measurement, Probe<Integer> probe) {
-        ctx.addIntegerMeasurement(calculate(measurement), getBoundedProbe());
+    public void singleMeasurementArrived(Integer measurement, Probe<Integer> probe, IBlackboard blackboard) {
+        blackboard.addMeasurement(calculate(measurement), getBoundedProbe());
     }
 
 }

@@ -1,8 +1,8 @@
 package edu.kit.ipd.sdq.probespec.framework.calculators.unary;
 
 import edu.kit.ipd.sdq.probespec.Probe;
-import edu.kit.ipd.sdq.probespec.framework.IBlackboardListener;
-import edu.kit.ipd.sdq.probespec.framework.ProbeSpecContext;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboardListener;
 import edu.kit.ipd.sdq.probespec.framework.calculators.AbstractCalculator;
 
 public abstract class AbstractUnaryCalculator<IN, OUT> extends AbstractCalculator<OUT> implements
@@ -14,8 +14,8 @@ public abstract class AbstractUnaryCalculator<IN, OUT> extends AbstractCalculato
 
     private Class<OUT> outClass;
 
-    public AbstractUnaryCalculator(ProbeSpecContext ctx, Class<IN> inClass, Class<OUT> outClass) {
-        super(ctx);
+    public AbstractUnaryCalculator(Probe<OUT> boundedProbe, Class<IN> inClass, Class<OUT> outClass) {
+        super(boundedProbe);
         this.inClass = inClass;
         this.outClass = outClass;
         this.listener = new ProbeListener();
@@ -36,7 +36,7 @@ public abstract class AbstractUnaryCalculator<IN, OUT> extends AbstractCalculato
         return outClass;
     }
 
-    public abstract void singleMeasurementArrived(IN measurement, Probe<IN> probe);
+    public abstract void singleMeasurementArrived(IN measurement, Probe<IN> probe, IBlackboard blackboard);
 
     protected class ProbeListener implements IBlackboardListener<IN> {
 
@@ -46,8 +46,8 @@ public abstract class AbstractUnaryCalculator<IN, OUT> extends AbstractCalculato
         }
 
         @Override
-        public void measurementArrived(IN measurement, Probe<IN> probe) {
-            singleMeasurementArrived(measurement, probe);
+        public void measurementArrived(IN measurement, Probe<IN> probe, IBlackboard blackboard) {
+            singleMeasurementArrived(measurement, probe, blackboard);
         }
 
     }
