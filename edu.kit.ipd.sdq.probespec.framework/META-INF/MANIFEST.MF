@@ -16,3 +16,5 @@ Export-Package: edu.kit.ipd.sdq.probespec.framework,
  edu.kit.ipd.sdq.probespec.framework.calculators.binary.example,
  edu.kit.ipd.sdq.probespec.framework.calculators.unary,
  edu.kit.ipd.sdq.probespec.framework.calculators.unary.example
+Bundle-ClassPath: lib/guava-13.0.1.jar,
+ .

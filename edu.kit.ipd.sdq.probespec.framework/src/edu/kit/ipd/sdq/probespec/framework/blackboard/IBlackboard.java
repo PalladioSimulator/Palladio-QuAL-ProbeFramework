@@ -6,7 +6,7 @@ public interface IBlackboard {
 
     public <T> void addMeasurement(T measurement, Probe<T> probe);
 
-    public <T> void addMeasurement(T measurement, Probe<T> probe, IMeasurementContext context);
+    public <T> void addMeasurement(T measurement, Probe<T> probe, IMeasurementContext... context);
     
     public <T> T getLatestMeasurement(Probe<T> probe);
     

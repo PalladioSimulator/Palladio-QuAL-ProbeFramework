@@ -11,8 +11,8 @@ public class SimpleBlackboard implements IBlackboard {
 
     public SimpleBlackboard() {
         this.regions = new HashMap<Class<?>, IBlackboardRegion<?>>();
-        this.regions.put(Integer.class, new SimpleBlackboardRegion<Integer>(this, Integer.class));
-        this.regions.put(Double.class, new SimpleBlackboardRegion<Double>(this, Double.class));
+        this.regions.put(Integer.class, new MultiMapBlackboardRegion<Integer>(this, Integer.class));
+        this.regions.put(Double.class, new MultiMapBlackboardRegion<Double>(this, Double.class));
     }
 
     @Override
@@ -21,7 +21,8 @@ public class SimpleBlackboard implements IBlackboard {
     }
 
     @Override
-    public <T> void addMeasurement(T measurement, Probe<T> probe, IMeasurementContext context) {
+    public <T> void addMeasurement(T measurement, Probe<T> probe, IMeasurementContext... context) {
+        // TODO
         getRegion(probe.getGenericClass()).addMeasurement(measurement, probe);
     }
 

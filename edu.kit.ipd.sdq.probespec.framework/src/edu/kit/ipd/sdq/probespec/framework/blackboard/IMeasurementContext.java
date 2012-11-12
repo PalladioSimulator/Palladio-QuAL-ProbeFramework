@@ -1,8 +1,8 @@
 package edu.kit.ipd.sdq.probespec.framework.blackboard;
 
-public interface IMeasurementContext {
+public interface IMeasurementContext<T> {
 
-    public static final IMeasurementContext NULL = new IMeasurementContext() {
+    public static final IMeasurementContext<String> NULL = new IMeasurementContext<String>() {
     }; 
     
 }
