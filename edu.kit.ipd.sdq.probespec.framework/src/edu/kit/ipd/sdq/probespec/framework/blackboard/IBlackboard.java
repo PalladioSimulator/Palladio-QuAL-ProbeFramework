@@ -10,9 +10,11 @@ public interface IBlackboard {
     
     public <T> T getLatestMeasurement(Probe<T> probe);
     
-    public <T> T getLatestMeasurement(Probe<T> probe, IMeasurementContext context);
+    public <T> T getLatestMeasurement(Probe<T> probe, IMeasurementContext... context);
     
     public void deleteMeasurements(IMeasurementContext context);
+    
+    public <T> void deleteMeasurement(Probe<T> probe, IMeasurementContext... context);
     
     public <T> void addMeasurementListener(IBlackboardListener<T> l, Probe<T> probe);
 

@@ -4,7 +4,7 @@ import edu.kit.ipd.sdq.probespec.Probe;
 
 public interface IBlackboardListener<T> {
     
-    public void measurementArrived(T measurement, Probe<T> probe, IBlackboard blackboard);
+    public void measurementArrived(IBlackboard blackboard, T measurement, Probe<T> probe, IMeasurementContext... contexts);
     
     public Class<T> getGenericType();
     

@@ -3,6 +3,7 @@ package edu.kit.ipd.sdq.probespec.framework.calculators.binary;
 import edu.kit.ipd.sdq.probespec.Probe;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboardListener;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementContext;
 
 public class BindableBinaryCalculator<IN1, IN2, OUT> {
 
@@ -31,7 +32,7 @@ public class BindableBinaryCalculator<IN1, IN2, OUT> {
     private class Input1Listener implements IBlackboardListener<IN1> {
 
         @Override
-        public void measurementArrived(IN1 measurement, Probe<IN1> probe, IBlackboard blackboard) {
+        public void measurementArrived(IBlackboard blackboard, IN1 measurement, Probe<IN1> probe, IMeasurementContext... contexts) {
             calculator.firstMeasurementArrived(measurement, probe, blackboard);
         }
         
@@ -45,7 +46,7 @@ public class BindableBinaryCalculator<IN1, IN2, OUT> {
     private class Input2Listener implements IBlackboardListener<IN2> {
 
         @Override
-        public void measurementArrived(IN2 measurement, Probe<IN2> probe, IBlackboard blackboard) {
+        public void measurementArrived(IBlackboard blackboard, IN2 measurement, Probe<IN2> probe, IMeasurementContext... contexts) {
             calculator.secondMeasurementArrived(measurement, probe, blackboard);
         }
         

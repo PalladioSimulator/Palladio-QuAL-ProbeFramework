@@ -3,8 +3,12 @@ package edu.kit.ipd.sdq.probespec.framework.test;
 import edu.kit.ipd.sdq.probespec.DerivedIntegerProbe;
 import edu.kit.ipd.sdq.probespec.DoubleProbe;
 import edu.kit.ipd.sdq.probespec.IntegerProbe;
+import edu.kit.ipd.sdq.probespec.Probe;
 import edu.kit.ipd.sdq.probespec.framework.ProbeFactory;
 import edu.kit.ipd.sdq.probespec.framework.ProbeSpecContext;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboardListener;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.calculators.binary.example.DifferenceCalculator;
 import edu.kit.ipd.sdq.probespec.framework.calculators.unary.example.PlusOneCalculator;
 
@@ -15,6 +19,20 @@ public class APIExample {
         
         // initialize ProbeSpec
         ProbeSpecContext ctx = new ProbeSpecContext();
+        
+        // register a listener for Integer measurements
+        ctx.getBlackboard().addMeasurementListener(new IBlackboardListener<Integer>() {
+
+            @Override
+            public void measurementArrived(IBlackboard blackboard, Integer measurement, Probe<Integer> probe, IMeasurementContext... contexts) {
+                System.out.println("Encountered measurement " + measurement + " for probe " + probe.getId());
+            }
+
+            @Override
+            public Class<Integer> getGenericType() {
+                return Integer.class;
+            }
+        });
         
         // create some basic probes
         IntegerProbe firstProbe = ProbeFactory.createIntegerProbe("firstBasicProbe");

@@ -18,14 +18,14 @@ public class ListenerSupport<T> {
         probeListeners = new HashMap<Probe<?>, List<IBlackboardListener<T>>>();
     }
 
-    public void notifyMeasurementListeners(T measurement, Probe<T> probe, IBlackboard blackboard) {
+    public void notifyMeasurementListeners(IBlackboard blackboard, T measurement, Probe<T> probe, IMeasurementContext... contexts) {
         for (IBlackboardListener<T> l : listeners) {
-            l.measurementArrived(measurement, probe, blackboard);
+            l.measurementArrived(blackboard, measurement, probe, contexts);
         }
 
         if (probeListeners.containsKey(probe)) {
             for (IBlackboardListener<T> l : probeListeners.get(probe)) {
-                l.measurementArrived(measurement, probe, blackboard);
+                l.measurementArrived(blackboard, measurement, probe, contexts);
             }
         }
     }

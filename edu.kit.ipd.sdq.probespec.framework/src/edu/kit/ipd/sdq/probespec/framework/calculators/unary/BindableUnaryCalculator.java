@@ -3,6 +3,7 @@ package edu.kit.ipd.sdq.probespec.framework.calculators.unary;
 import edu.kit.ipd.sdq.probespec.Probe;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboardListener;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementContext;
 
 public class BindableUnaryCalculator<IN, OUT> {
 
@@ -26,7 +27,7 @@ public class BindableUnaryCalculator<IN, OUT> {
     protected class ProbeListener implements IBlackboardListener<IN> {
 
         @Override
-        public void measurementArrived(IN measurement, Probe<IN> probe, IBlackboard blackboard) {
+        public void measurementArrived(IBlackboard blackboard, IN measurement, Probe<IN> probe, IMeasurementContext... contexts) {
             calculator.measurementArrived(measurement, probe, blackboard);
         }
 
