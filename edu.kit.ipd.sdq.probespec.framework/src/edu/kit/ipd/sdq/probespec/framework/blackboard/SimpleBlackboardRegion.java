@@ -1,15 +1,11 @@
 package edu.kit.ipd.sdq.probespec.framework.blackboard;
 
-import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
-
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
 
 import edu.kit.ipd.sdq.probespec.Probe;
 
@@ -23,21 +19,22 @@ public class SimpleBlackboardRegion<T> implements IBlackboardRegion<T> {
 
     private ListenerSupport<T> listenerSupport;
 
-    private Map<Probe<T>, Measurement<T>> contextlessMeasurements;
+    private Map<String, Measurement<T>> contextlessMeasurements;
 
     private Map<String, Measurement<T>> measurements;
 
-    private Map<Class<? extends IMeasurementContext>, Multimap<String, WeakReference<String>>> indices;
+    private Map<Class<? extends IMeasurementContext>, WeakIndex> indices;
 
     private KeyBuilder keyBuilder;
 
     public SimpleBlackboardRegion(IBlackboard blackboard, Class<T> type) {
         this.type = type;
         this.blackboard = blackboard;
+
         listenerSupport = new ListenerSupport<T>();
-        contextlessMeasurements = new HashMap<Probe<T>, Measurement<T>>();
+        contextlessMeasurements = new HashMap<String, Measurement<T>>();
         measurements = new HashMap<String, Measurement<T>>();
-        indices = new HashMap<Class<? extends IMeasurementContext>, Multimap<String, WeakReference<String>>>();
+        indices = new HashMap<Class<? extends IMeasurementContext>, WeakIndex>();
         keyBuilder = new KeyBuilder();
     }
 
@@ -48,10 +45,10 @@ public class SimpleBlackboardRegion<T> implements IBlackboardRegion<T> {
         }
 
         // wrap value into measurement object
-        Measurement<T> measurement = new Measurement<T>(0, value);
+        Measurement<T> measurement = new Measurement<T>(0, value); // TODO timestamp == 0
 
         // add measurement
-        contextlessMeasurements.put(probe, measurement);
+        contextlessMeasurements.put(probe.getId(), measurement);
 
         // notify listeners
         listenerSupport.notifyMeasurementListeners(blackboard, value, probe);
@@ -77,8 +74,8 @@ public class SimpleBlackboardRegion<T> implements IBlackboardRegion<T> {
 
         // update indices
         for (IMeasurementContext c : contexts) {
-            Multimap<String, WeakReference<String>> index = indices.get(c.getClass());
-            index.put(c.getId(), new WeakReference<String>(key));
+            WeakIndex index = indices.get(c.getClass());
+            index.add(c.getId(), key);
         }
 
         // notify listeners
@@ -87,7 +84,7 @@ public class SimpleBlackboardRegion<T> implements IBlackboardRegion<T> {
 
     @Override
     public T getLatestMeasurement(Probe<T> probe) {
-        return contextlessMeasurements.get(probe).getValue();
+        return contextlessMeasurements.get(probe.getId()).getValue();
     }
 
     @Override
@@ -104,22 +101,21 @@ public class SimpleBlackboardRegion<T> implements IBlackboardRegion<T> {
     @Override
     public void deleteMeasurements(IMeasurementContext context) {
         // obtain index corresponding to passed context
-        Multimap<String, WeakReference<String>> index = indices.get(context.getClass());
+        WeakIndex index = indices.get(context.getClass());
 
         // return if there is not yet an index for the passed context
         if (index == null) {
             return;
         }
 
-        int count = index.get(context.getId()).size();
+        int count = index.size(context.getId());
         System.out.println("About to delete " + count + " entries in context " + context);
 
         int deletionCounter = 0;
-        for (Iterator<WeakReference<String>> it = index.get(context.getId()).iterator(); it.hasNext();) {
-            WeakReference<String> ref = it.next();
+        for (Iterator<String> it = index.iterator(context.getId()); it.hasNext();) {
+            String key = it.next();
 
             // weakly referenced object might be gc'ed already, thus check for null first
-            String key = ref.get();
             if (key != null) {
                 measurements.remove(key);
                 ++deletionCounter;
@@ -167,22 +163,10 @@ public class SimpleBlackboardRegion<T> implements IBlackboardRegion<T> {
 
     private int cleanIndices(Class<? extends IMeasurementContext> exclude) {
         int deletionCount = 0;
-        for (Entry<Class<? extends IMeasurementContext>, Multimap<String, WeakReference<String>>> index : indices
-                .entrySet()) {
-            if (index.getKey().equals(exclude)) {
-                continue;
+        for (Entry<Class<? extends IMeasurementContext>, WeakIndex> entry : indices.entrySet()) {
+            if (!entry.getKey().equals(exclude)) {
+                deletionCount += entry.getValue().clean();
             }
-
-            for (Iterator<WeakReference<String>> it = index.getValue().values().iterator(); it.hasNext();) {
-                WeakReference<String> ref = it.next();
-                if (ref.get() == null) {
-                    // remove dangling weak reference, whose referenced object has been gc'ed
-                    // already
-                    it.remove();
-                    ++deletionCount;
-                }
-            }
-
         }
         return deletionCount;
     }
@@ -190,8 +174,7 @@ public class SimpleBlackboardRegion<T> implements IBlackboardRegion<T> {
     private void ensureIndicesExist(IMeasurementContext... contexts) {
         for (IMeasurementContext c : contexts) {
             if (!indices.containsKey(c.getClass())) {
-                Multimap<String, WeakReference<String>> m = HashMultimap.create();
-                indices.put(c.getClass(), m);
+                indices.put(c.getClass(), new WeakIndex());
             }
         }
     }
