@@ -112,16 +112,8 @@ public class SimpleBlackboardRegion<T> implements IBlackboardRegion<T> {
         System.out.println("About to delete " + count + " entries in context " + context);
 
         int deletionCounter = 0;
-        for (Iterator<String> it = index.iterator(context.getId()); it.hasNext();) {
-            String key = it.next();
-
-            // weakly referenced object might be gc'ed already, thus check for null first
-            if (key != null) {
-                measurements.remove(key);
-                ++deletionCounter;
-            }
-        }
-
+        deletionCounter = index.removeMeasurements(context.getId(), measurements);
+        
         System.out.println("Deleted " + deletionCounter + " entries in context " + context);
 
         // remove deleted measurements from indices

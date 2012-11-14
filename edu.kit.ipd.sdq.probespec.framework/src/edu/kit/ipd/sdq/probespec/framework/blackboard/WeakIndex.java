@@ -2,6 +2,7 @@ package edu.kit.ipd.sdq.probespec.framework.blackboard;
 
 import java.lang.ref.WeakReference;
 import java.util.Iterator;
+import java.util.Map;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
@@ -20,6 +21,20 @@ public class WeakIndex {
 
     public void removeAll(String key) {
         index.removeAll(key);
+    }
+
+    public <T> int removeMeasurements(String key, Map<String, Measurement<T>> measurements) {
+        int deletionCounter = 0;
+        for (Iterator<String> it = iterator(key); it.hasNext();) {
+            String k = it.next();
+
+            // weakly referenced object might be gc'ed already, thus check for null first
+            if (k != null) {
+                measurements.remove(k);
+                ++deletionCounter;
+            }
+        }
+        return deletionCounter;
     }
 
     public int size(String key) {
@@ -47,7 +62,7 @@ public class WeakIndex {
         };
     }
 
-    public Iterator<String> iterator() {
+    private Iterator<String> iterator() {
         return new Iterator<String>() {
             private Iterator<WeakReference<String>> it = index.values().iterator();
 
