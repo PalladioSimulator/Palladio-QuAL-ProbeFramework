@@ -9,6 +9,7 @@ import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardFactory;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardType;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementContext;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
 
 public class ConcurrentBlackboard implements IBlackboard {
@@ -37,17 +38,17 @@ public class ConcurrentBlackboard implements IBlackboard {
     }
 
     @Override
-    public <T> void addMeasurement(T measurement, Probe<T> probe) {
+    public <T> void addMeasurement(Measurement<T> measurement, Probe<T> probe) {
         queue.put(new AddMeasurementAction<T>(measurement, probe));
     }
 
     @Override
-    public <T> void addMeasurement(T measurement, Probe<T> probe, IMeasurementContext... contexts) {
+    public <T> void addMeasurement(Measurement<T> measurement, Probe<T> probe, IMeasurementContext... contexts) {
         queue.put(new AddMeasurementAction<T>(measurement, probe, contexts));
     }
 
     @Override
-    public <T> T getLatestMeasurement(Probe<T> probe) {
+    public <T> Measurement<T> getLatestMeasurement(Probe<T> probe) {
         if (weakConsistency) {
             return delegatee.getLatestMeasurement(probe);
         } else {
@@ -57,7 +58,7 @@ public class ConcurrentBlackboard implements IBlackboard {
     }
 
     @Override
-    public <T> T getLatestMeasurement(Probe<T> probe, IMeasurementContext... contexts) {
+    public <T> Measurement<T> getLatestMeasurement(Probe<T> probe, IMeasurementContext... contexts) {
         if (weakConsistency) {
             return delegatee.getLatestMeasurement(probe, contexts);
         } else {
@@ -120,13 +121,13 @@ public class ConcurrentBlackboard implements IBlackboard {
      */
     private class AddMeasurementAction<T> implements IQueuableAction {
 
-        private T measurement;
+        private Measurement<T> measurement;
 
         private Probe<T> probe;
 
         private IMeasurementContext[] contexts;
 
-        public AddMeasurementAction(T measurement, Probe<T> probe, IMeasurementContext... contexts) {
+        public AddMeasurementAction(Measurement<T> measurement, Probe<T> probe, IMeasurementContext... contexts) {
             this.measurement = measurement;
             this.probe = probe;
             this.contexts = contexts;

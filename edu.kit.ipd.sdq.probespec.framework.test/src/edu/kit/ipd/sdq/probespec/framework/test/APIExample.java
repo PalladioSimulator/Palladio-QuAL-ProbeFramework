@@ -6,6 +6,7 @@ import edu.kit.ipd.sdq.probespec.DerivedIntegerProbe;
 import edu.kit.ipd.sdq.probespec.DoubleProbe;
 import edu.kit.ipd.sdq.probespec.IntegerProbe;
 import edu.kit.ipd.sdq.probespec.Probe;
+import edu.kit.ipd.sdq.probespec.framework.Measurements;
 import edu.kit.ipd.sdq.probespec.framework.ProbeFactory;
 import edu.kit.ipd.sdq.probespec.framework.ProbeSpecContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardFactory;
@@ -62,10 +63,10 @@ public class APIExample {
 
         // generate some dummy measurements for demonstration purposes
         for (int i = 0; i < 3; i++) {
-            ctx.getBlackboard().addMeasurement(i, firstProbe);
+            ctx.getBlackboard().addMeasurement(Measurements.create(i), firstProbe);
         }
-        ctx.getBlackboard().addMeasurement(5.0, secondProbe);
-        ctx.getBlackboard().addMeasurement(5, thirdProbe);
+        ctx.getBlackboard().addMeasurement(Measurements.create(5.0), secondProbe);
+        ctx.getBlackboard().addMeasurement(Measurements.create(5), thirdProbe);
         
 //        ((ConcurrentBlackboard)ctx.getBlackboard()).synchronise();
         System.out.println(ctx.getBlackboard().getLatestMeasurement(thirdProbe));

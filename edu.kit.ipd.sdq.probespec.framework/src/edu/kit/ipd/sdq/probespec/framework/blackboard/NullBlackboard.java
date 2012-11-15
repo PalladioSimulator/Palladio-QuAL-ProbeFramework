@@ -16,24 +16,24 @@ import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListen
 public class NullBlackboard implements IBlackboard {
 
     @Override
-    public <T> void addMeasurement(T measurement, Probe<T> probe) {
+    public <T> void addMeasurement(Measurement<T> measurement, Probe<T> probe) {
         // nothing to do
     }
 
     @Override
-    public <T> void addMeasurement(T measurement, Probe<T> probe, IMeasurementContext... context) {
+    public <T> void addMeasurement(Measurement<T> measurement, Probe<T> probe, IMeasurementContext... context) {
         // nothing to do
 
     }
 
     @Override
-    public <T> T getLatestMeasurement(Probe<T> probe) {
+    public <T> Measurement<T> getLatestMeasurement(Probe<T> probe) {
         // nothing to do
         return null;
     }
 
     @Override
-    public <T> T getLatestMeasurement(Probe<T> probe, IMeasurementContext... context) {
+    public <T> Measurement<T> getLatestMeasurement(Probe<T> probe, IMeasurementContext... context) {
         // nothing to do
         return null;
     }

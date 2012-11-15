@@ -41,22 +41,16 @@ public class SimpleBlackboardRegion<T> implements IBlackboardRegion<T> {
     }
 
     @Override
-    public void addMeasurement(T value, Probe<T> probe) {
-        // wrap value into measurement object
-        Measurement<T> measurement = new Measurement<T>(0, value); // TODO timestamp == 0
-
+    public void addMeasurement(Measurement<T> measurement, Probe<T> probe) {
         // add measurement
         contextlessMeasurements.put(probe.getId(), measurement);
 
         // notify listeners
-        listenerSupport.notifyMeasurementListeners(blackboard, value, probe);
+        listenerSupport.notifyMeasurementListeners(blackboard, measurement.getValue(), probe);
     }
 
     @Override
-    public void addMeasurement(T value, Probe<T> probe, IMeasurementContext... contexts) {
-        // wrap value into measurement object
-        Measurement<T> measurement = new Measurement<T>(0, value); // TODO timestamp == 0
-
+    public void addMeasurement(Measurement<T> measurement, Probe<T> probe, IMeasurementContext... contexts) {
         // create composite key
         String key = keyBuilder.createKey(probe, contexts);
 
@@ -67,27 +61,27 @@ public class SimpleBlackboardRegion<T> implements IBlackboardRegion<T> {
         indices.add(key, contexts);
 
         // notify listeners
-        listenerSupport.notifyMeasurementListeners(blackboard, value, probe, contexts);
+        listenerSupport.notifyMeasurementListeners(blackboard, measurement.getValue(), probe, contexts);
     }
 
     @Override
-    public T getLatestMeasurement(Probe<T> probe) {
+    public Measurement<T> getLatestMeasurement(Probe<T> probe) {
         Measurement<T> measurement = contextlessMeasurements.get(probe.getId());
         if (measurement != null) {
-            return measurement.getValue();
+            return measurement;
         } else {
             return null;
         }
     }
 
     @Override
-    public T getLatestMeasurement(Probe<T> probe, IMeasurementContext... contexts) {
+    public Measurement<T> getLatestMeasurement(Probe<T> probe, IMeasurementContext... contexts) {
         // create composite key
         String key = keyBuilder.createKey(probe, contexts);
 
         Measurement<T> measurement = measurements.get(key);
         if (measurement != null) {
-            return measurement.getValue();
+            return measurement;
         } else {
             return null;
         }

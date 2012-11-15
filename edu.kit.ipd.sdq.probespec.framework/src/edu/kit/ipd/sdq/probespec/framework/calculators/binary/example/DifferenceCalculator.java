@@ -1,6 +1,7 @@
 package edu.kit.ipd.sdq.probespec.framework.calculators.binary.example;
 
 import edu.kit.ipd.sdq.probespec.Probe;
+import edu.kit.ipd.sdq.probespec.framework.Measurements;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
 import edu.kit.ipd.sdq.probespec.framework.calculators.binary.AbstractBinaryCalculator;
 
@@ -26,7 +27,7 @@ public class DifferenceCalculator extends AbstractBinaryCalculator<Integer, Inte
     public void secondMeasurementArrived(Integer measurement, Probe<Integer> probe, IBlackboard blackboard) {
         Integer secondMeasurement = measurement;
         Integer c = calculate(firstMeasurement, secondMeasurement);
-        blackboard.addMeasurement(c, getBoundedProbe());
+        blackboard.addMeasurement(Measurements.create(c), getBoundedProbe());
     }
 
 }

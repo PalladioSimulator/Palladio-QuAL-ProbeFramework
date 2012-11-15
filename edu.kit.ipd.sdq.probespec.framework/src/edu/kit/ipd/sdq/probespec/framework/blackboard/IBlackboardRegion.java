@@ -5,13 +5,13 @@ import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListen
 
 public interface IBlackboardRegion<T> {
 
-    public void addMeasurement(T value, Probe<T> probe);
+    public void addMeasurement(Measurement<T> measurement, Probe<T> probe);
 
-    public void addMeasurement(T value, Probe<T> probe, IMeasurementContext... contexts);
+    public void addMeasurement(Measurement<T> measurement, Probe<T> probe, IMeasurementContext... contexts);
 
-    public T getLatestMeasurement(Probe<T> probe);
+    public Measurement<T> getLatestMeasurement(Probe<T> probe);
 
-    public T getLatestMeasurement(Probe<T> probe, IMeasurementContext... contexts);
+    public Measurement<T> getLatestMeasurement(Probe<T> probe, IMeasurementContext... contexts);
 
     public void deleteMeasurement(Probe<T> probe, IMeasurementContext... context);
     

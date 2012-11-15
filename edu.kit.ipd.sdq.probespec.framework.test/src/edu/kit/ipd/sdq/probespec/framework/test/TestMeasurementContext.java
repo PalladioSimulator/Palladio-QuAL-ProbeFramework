@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import edu.kit.ipd.sdq.probespec.DerivedIntegerProbe;
 import edu.kit.ipd.sdq.probespec.IntegerProbe;
+import edu.kit.ipd.sdq.probespec.framework.Measurements;
 import edu.kit.ipd.sdq.probespec.framework.ProbeFactory;
 import edu.kit.ipd.sdq.probespec.framework.ProbeSpecContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardFactory;
@@ -21,10 +22,10 @@ public class TestMeasurementContext {
         // initialise logging
         LoggingUtils.configureLogging();
 
-//        ProbeSpecContext ctx = new ProbeSpecContext();
+        ProbeSpecContext ctx = new ProbeSpecContext();
         ThreadManager m = new ThreadManager();
         IBlackboard bb = BlackboardFactory.createBlackboard(BlackboardType.CONCURRENT, m);
-         ProbeSpecContext ctx = new ProbeSpecContext(bb);
+//         ProbeSpecContext ctx = new ProbeSpecContext(bb);
 
         // create two basic probes
         IntegerProbe startProbe = ProbeFactory.createIntegerProbe("startProbe");
@@ -49,12 +50,12 @@ public class TestMeasurementContext {
         long t1 = System.nanoTime();
 
         for (int i = 0; i < 1000000; i++) {
-            ctx.getBlackboard().addMeasurement(i, probes[i], assCtx, usgCtx);
+            ctx.getBlackboard().addMeasurement(Measurements.create(i), probes[i], assCtx, usgCtx);
         }
-        ctx.getBlackboard().addMeasurement(40, startProbe);
-        ctx.getBlackboard().addMeasurement(50, stopProbe);
+        ctx.getBlackboard().addMeasurement(Measurements.create(40), startProbe);
+        ctx.getBlackboard().addMeasurement(Measurements.create(50), stopProbe);
 
-        ctx.getBlackboard().addMeasurement(40, startProbe, assCtx, usgCtx);
+        ctx.getBlackboard().addMeasurement(Measurements.create(40), startProbe, assCtx, usgCtx);
 
         // Assert.assertEquals(new Integer(12), ctx.getBlackboard().getLatestMeasurement(startProbe,
         // usgCtx, assCtx));
@@ -67,7 +68,7 @@ public class TestMeasurementContext {
         // -------------------
         long t3 = System.nanoTime();
 
-        ((ConcurrentBlackboard) ctx.getBlackboard()).synchronise();
+//        ((ConcurrentBlackboard) ctx.getBlackboard()).synchronise();
         System.gc();
         
 

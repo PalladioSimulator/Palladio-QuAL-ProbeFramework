@@ -3,10 +3,14 @@ package edu.kit.ipd.sdq.probespec.framework.blackboard;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import edu.kit.ipd.sdq.probespec.Probe;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
 
 public class SimpleBlackboard implements IBlackboard {
+
+    private static final Logger logger = Logger.getLogger(SimpleBlackboard.class);
 
     private Map<Class<?>, IBlackboardRegion<?>> regions;
 
@@ -15,22 +19,22 @@ public class SimpleBlackboard implements IBlackboard {
     }
 
     @Override
-    public <T> void addMeasurement(T measurement, Probe<T> probe) {
+    public <T> void addMeasurement(Measurement<T> measurement, Probe<T> probe) {
         createOrFindRegion(probe.getGenericClass()).addMeasurement(measurement, probe);
     }
 
     @Override
-    public <T> void addMeasurement(T measurement, Probe<T> probe, IMeasurementContext... contexts) {
+    public <T> void addMeasurement(Measurement<T> measurement, Probe<T> probe, IMeasurementContext... contexts) {
         createOrFindRegion(probe.getGenericClass()).addMeasurement(measurement, probe, contexts);
     }
 
     @Override
-    public <T> T getLatestMeasurement(Probe<T> probe) {
+    public <T> Measurement<T> getLatestMeasurement(Probe<T> probe) {
         return createOrFindRegion(probe.getGenericClass()).getLatestMeasurement(probe);
     }
 
     @Override
-    public <T> T getLatestMeasurement(Probe<T> probe, IMeasurementContext... contexts) {
+    public <T> Measurement<T> getLatestMeasurement(Probe<T> probe, IMeasurementContext... contexts) {
         return createOrFindRegion(probe.getGenericClass()).getLatestMeasurement(probe, contexts);
     }
 
@@ -67,6 +71,7 @@ public class SimpleBlackboard implements IBlackboard {
         if (r == null) {
             r = new SimpleBlackboardRegion<T>(this, clazz);
             this.regions.put(clazz, r);
+            logger.debug("Created blackboard region for " + clazz);
         }
         return r;
     }
