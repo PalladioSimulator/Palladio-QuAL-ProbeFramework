@@ -1,7 +1,8 @@
 package edu.kit.ipd.sdq.probespec.framework.blackboard.index;
 
+import java.lang.ref.WeakReference;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -26,7 +27,7 @@ public class IndexManager {
         }
     }
 
-    public List<String> values(IMeasurementContext key) {
+    public Collection<WeakReference<String>> values(IMeasurementContext key) {
         ensureIndicesExist(key);
         return indices.get(key.getClass()).values(key.getId());
     }
@@ -34,7 +35,7 @@ public class IndexManager {
     public void removeValues(IMeasurementContext key) {
         ensureIndicesExist(key);
         indices.get(key.getClass()).removeAll(key.getId());
-        clean();
+        clean(); // TODO should rather be called periodically in a separate thread
     }
 
     private void clean() {
@@ -43,6 +44,7 @@ public class IndexManager {
             deletionCount += index.clean();
             if (logger.isDebugEnabled()) {
                 logger.debug("Cleaning removed " + deletionCount + " dangling weak references from " + index);
+                logger.debug("Size of  " + index + ": " + index.size());
             }
         }
     }

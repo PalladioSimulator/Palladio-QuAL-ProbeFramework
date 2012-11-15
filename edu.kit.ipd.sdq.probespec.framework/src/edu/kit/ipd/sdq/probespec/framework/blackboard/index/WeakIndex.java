@@ -1,9 +1,8 @@
 package edu.kit.ipd.sdq.probespec.framework.blackboard.index;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
@@ -29,19 +28,16 @@ public class WeakIndex {
         index.removeAll(key);
     }
 
-    public List<String> values(String key) {
-        List<String> values = new ArrayList<String>();
-        for (WeakReference<String> ref : index.get(key)) {
-            String v = ref.get();
-            if (v != null) {
-                values.add(v);
-            }
-        }
-        return values;
+    public Collection<WeakReference<String>> values(String key) {
+        return index.get(key);
     }
 
     public int size(String key) {
         return index.get(key).size();
+    }
+
+    public int size() {
+        return index.size();
     }
 
     public int clean() {

@@ -2,8 +2,9 @@ package edu.kit.ipd.sdq.probespec.framework;
 
 import edu.kit.ipd.sdq.probespec.ProbeRepository;
 import edu.kit.ipd.sdq.probespec.probespecFactory;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardFactory;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardType;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.SimpleBlackboard;
 import edu.kit.ipd.sdq.probespec.framework.calculators.BindingContext;
 
 public class ProbeSpecContext {
@@ -12,7 +13,8 @@ public class ProbeSpecContext {
 
     private static final ProbeRepository EMPTY_REPOSITORY = probespecFactory.eINSTANCE.createProbeRepository();
 
-    private static final IBlackboard DEFAULT_BLACKBOARD = new SimpleBlackboard();
+    private static final IBlackboard DEFAULT_BLACKBOARD = BlackboardFactory.createBlackboard(BlackboardType.SIMPLE,
+            null);
 
     private BindingContext bindingContext;
 
