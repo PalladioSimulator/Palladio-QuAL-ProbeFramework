@@ -1,6 +1,7 @@
 package edu.kit.ipd.sdq.probespec.framework.blackboard;
 
 import edu.kit.ipd.sdq.probespec.Probe;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
 
 public interface IBlackboardRegion<T> {
 

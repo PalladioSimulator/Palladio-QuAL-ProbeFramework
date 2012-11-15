@@ -1,13 +1,15 @@
 package edu.kit.ipd.sdq.probespec.framework.blackboard;
 
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
 import edu.kit.ipd.sdq.probespec.Probe;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.index.IndexManager;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.ListenerSupport;
 
 public class SimpleBlackboardRegion<T> implements IBlackboardRegion<T> {
 
@@ -23,7 +25,7 @@ public class SimpleBlackboardRegion<T> implements IBlackboardRegion<T> {
 
     private Map<String, Measurement<T>> measurements;
 
-    private Map<Class<? extends IMeasurementContext>, WeakIndex> indices;
+    private IndexManager indices;
 
     private KeyBuilder keyBuilder;
 
@@ -34,16 +36,12 @@ public class SimpleBlackboardRegion<T> implements IBlackboardRegion<T> {
         listenerSupport = new ListenerSupport<T>();
         contextlessMeasurements = new HashMap<String, Measurement<T>>();
         measurements = new HashMap<String, Measurement<T>>();
-        indices = new HashMap<Class<? extends IMeasurementContext>, WeakIndex>();
+        indices = new IndexManager();
         keyBuilder = new KeyBuilder();
     }
 
     @Override
     public void addMeasurement(T value, Probe<T> probe) {
-        if (logger.isDebugEnabled()) {
-            logger.debug("Adding measurement for probe " + probe.getName() + ": " + value);
-        }
-
         // wrap value into measurement object
         Measurement<T> measurement = new Measurement<T>(0, value); // TODO timestamp == 0
 
@@ -56,10 +54,6 @@ public class SimpleBlackboardRegion<T> implements IBlackboardRegion<T> {
 
     @Override
     public void addMeasurement(T value, Probe<T> probe, IMeasurementContext... contexts) {
-        if (logger.isDebugEnabled()) {
-            logger.debug("Adding measurement for probe " + probe.getName() + ": " + value);
-        }
-
         // wrap value into measurement object
         Measurement<T> measurement = new Measurement<T>(0, value); // TODO timestamp == 0
 
@@ -69,14 +63,8 @@ public class SimpleBlackboardRegion<T> implements IBlackboardRegion<T> {
         // store wrapped measurement
         measurements.put(key, measurement);
 
-        // make sure there is an index for each context, i.e. create a new index if necessary
-        ensureIndicesExist(contexts);
-
         // update indices
-        for (IMeasurementContext c : contexts) {
-            WeakIndex index = indices.get(c.getClass());
-            index.add(c.getId(), key);
-        }
+        indices.add(key, contexts);
 
         // notify listeners
         listenerSupport.notifyMeasurementListeners(blackboard, value, probe, contexts);
@@ -89,9 +77,6 @@ public class SimpleBlackboardRegion<T> implements IBlackboardRegion<T> {
 
     @Override
     public T getLatestMeasurement(Probe<T> probe, IMeasurementContext... contexts) {
-        // make sure there is an index for each context
-        ensureIndicesExist(contexts);
-
         // create composite key
         String key = keyBuilder.createKey(probe, contexts);
 
@@ -100,28 +85,22 @@ public class SimpleBlackboardRegion<T> implements IBlackboardRegion<T> {
 
     @Override
     public void deleteMeasurements(IMeasurementContext context) {
-        // obtain index corresponding to passed context
-        WeakIndex index = indices.get(context.getClass());
+        // get a key list referring to all measurements taken in the specified context
+        List<String> keyList = indices.values(context);
 
-        // return if there is not yet an index for the passed context
-        if (index == null) {
-            return;
+        // delete measurements
+        int counter = 0;
+        for (String key : keyList) {
+            measurements.remove(key);
+            ++counter;
         }
 
-        int count = index.size(context.getId());
-        System.out.println("About to delete " + count + " entries in context " + context);
-
-        int deletionCounter = 0;
-        deletionCounter = index.removeMeasurements(context.getId(), measurements);
-        
-        System.out.println("Deleted " + deletionCounter + " entries in context " + context);
-
         // remove deleted measurements from indices
-        int removed = count;
-        indices.get(context.getClass()).removeAll(context.getId());
-        removed += cleanIndices(context.getClass());
-        System.out.println("Removed " + removed + " dangling weak references...");
+        indices.removeValues(context);
 
+        if (logger.isDebugEnabled()) {
+            logger.debug("Deleted " + counter + " entries in context " + context);
+        }
     }
 
     @Override
@@ -151,24 +130,6 @@ public class SimpleBlackboardRegion<T> implements IBlackboardRegion<T> {
     @Override
     public Class<T> getGenericType() {
         return type;
-    }
-
-    private int cleanIndices(Class<? extends IMeasurementContext> exclude) {
-        int deletionCount = 0;
-        for (Entry<Class<? extends IMeasurementContext>, WeakIndex> entry : indices.entrySet()) {
-            if (!entry.getKey().equals(exclude)) {
-                deletionCount += entry.getValue().clean();
-            }
-        }
-        return deletionCount;
-    }
-
-    private void ensureIndicesExist(IMeasurementContext... contexts) {
-        for (IMeasurementContext c : contexts) {
-            if (!indices.containsKey(c.getClass())) {
-                indices.put(c.getClass(), new WeakIndex());
-            }
-        }
     }
 
 }

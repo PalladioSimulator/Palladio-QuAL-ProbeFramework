@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.probespec.framework.blackboard;
+package edu.kit.ipd.sdq.probespec.framework.blackboard.listener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import edu.kit.ipd.sdq.probespec.Probe;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementContext;
 
 public class ListenerSupport<T> {
 

@@ -8,6 +8,7 @@ Bundle-Vendor: sdq.ipd.kit.edu
 Require-Bundle: org.eclipse.core.runtime,
  edu.kit.ipd.sdq.probespec;bundle-version="1.0.0",
  edu.kit.ipd.sdq.probespec.framework;bundle-version="2.0.0",
- org.junit;bundle-version="4.10.0"
+ org.junit;bundle-version="4.10.0",
+ org.apache.log4j;bundle-version="1.2.15"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy

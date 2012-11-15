@@ -13,6 +13,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: edu.kit.ipd.sdq.probespec.framework,
  edu.kit.ipd.sdq.probespec.framework.blackboard,
+ edu.kit.ipd.sdq.probespec.framework.blackboard.listener,
  edu.kit.ipd.sdq.probespec.framework.calculators,
  edu.kit.ipd.sdq.probespec.framework.calculators.binary,
  edu.kit.ipd.sdq.probespec.framework.calculators.binary.example,

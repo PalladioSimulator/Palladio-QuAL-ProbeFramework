@@ -2,8 +2,8 @@ package edu.kit.ipd.sdq.probespec.framework.calculators.unary;
 
 import edu.kit.ipd.sdq.probespec.Probe;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboardListener;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementContext;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
 
 public class BindableUnaryCalculator<IN, OUT> {
 

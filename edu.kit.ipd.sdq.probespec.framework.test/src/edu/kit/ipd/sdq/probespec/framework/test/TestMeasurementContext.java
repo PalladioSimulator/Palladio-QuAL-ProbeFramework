@@ -1,5 +1,8 @@
 package edu.kit.ipd.sdq.probespec.framework.test;
 
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.junit.Test;
 
 import edu.kit.ipd.sdq.probespec.DerivedIntegerProbe;
@@ -13,6 +16,10 @@ public class TestMeasurementContext {
 
     @Test
     public void testOne() {
+        // configure log4j
+        BasicConfigurator.configure();
+        Logger.getRootLogger().setLevel(Level.DEBUG);
+        
         ProbeSpecContext ctx = new ProbeSpecContext();
 
         // create two basic probes
