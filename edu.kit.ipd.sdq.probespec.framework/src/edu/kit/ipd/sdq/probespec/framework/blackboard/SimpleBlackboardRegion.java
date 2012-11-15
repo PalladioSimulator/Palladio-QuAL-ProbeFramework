@@ -1,7 +1,7 @@
 package edu.kit.ipd.sdq.probespec.framework.blackboard;
 
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -72,7 +72,12 @@ public class SimpleBlackboardRegion<T> implements IBlackboardRegion<T> {
 
     @Override
     public T getLatestMeasurement(Probe<T> probe) {
-        return contextlessMeasurements.get(probe.getId()).getValue();
+        Measurement<T> measurement = contextlessMeasurements.get(probe.getId());
+        if (measurement != null) {
+            return measurement.getValue();
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -80,27 +85,32 @@ public class SimpleBlackboardRegion<T> implements IBlackboardRegion<T> {
         // create composite key
         String key = keyBuilder.createKey(probe, contexts);
 
-        return measurements.get(key).getValue();
+        Measurement<T> measurement = measurements.get(key);
+        if (measurement != null) {
+            return measurement.getValue();
+        } else {
+            return null;
+        }
     }
 
     @Override
     public void deleteMeasurements(IMeasurementContext context) {
-        // get a key list referring to all measurements taken in the specified context
-        List<String> keyList = indices.values(context);
-
         // delete measurements
         int counter = 0;
-        for (String key : keyList) {
-            measurements.remove(key);
-            ++counter;
+        for (WeakReference<String> keyRef : indices.values(context)) {
+            String key = keyRef.get();
+            if (key != null) {
+                measurements.remove(key);
+                ++counter;
+            }
         }
-
-        // remove deleted measurements from indices
-        indices.removeValues(context);
 
         if (logger.isDebugEnabled()) {
             logger.debug("Deleted " + counter + " entries in context " + context);
         }
+
+        // remove deleted measurements from indices
+        indices.removeValues(context);
     }
 
     @Override
