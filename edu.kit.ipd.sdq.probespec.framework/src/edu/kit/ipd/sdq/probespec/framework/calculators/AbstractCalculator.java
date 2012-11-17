@@ -4,14 +4,19 @@ import edu.kit.ipd.sdq.probespec.Probe;
 
 public class AbstractCalculator<OUT> {
     
-    private final Probe<OUT> boundedProbe;
+    private final Probe<OUT> derivedProbe;
     
-    public AbstractCalculator(Probe<OUT> boundedProbe) {
-        this.boundedProbe = boundedProbe;
+    public AbstractCalculator(Probe<OUT> derivedProbe) {
+        this.derivedProbe = derivedProbe;
     }
 
-    public Probe<OUT> getBoundedProbe() {
-        return boundedProbe;
+    public Probe<OUT> getDerivedProbe() {
+        return derivedProbe;
     }
 
+    @Override
+    public String toString() {
+        return getClass().getName() + " [derivedProbe=" + getDerivedProbe() + "]";
+    }
+    
 }

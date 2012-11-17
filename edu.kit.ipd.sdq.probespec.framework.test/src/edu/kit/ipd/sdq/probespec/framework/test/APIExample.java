@@ -51,6 +51,9 @@ public class APIExample {
         ps.addCalculator(new PlusOneCalculator(plusOneProbe)).bind(thirdProbe);
         ps.addCalculator(new DifferenceCalculator(differenceProbe)).bind(plusOneProbe, thirdProbe);
 
+        // create an unbound calculator, which should raise a warning
+        ps.addCalculator(new PlusOneCalculator(plusOneProbe));
+
         // generate some dummy measurements for demonstration purposes
         for (int i = 0; i < 5; i++) {
             ps.addMeasurement(i, firstProbe);
@@ -68,7 +71,7 @@ public class APIExample {
         System.out.println("Calculated difference between " + v1 + " and " + v2 + ": " + v3);
 
         // stop all threads spawned by the ProbeSpec
-        ps.getThreadManager().stopThreads();
+        ps.shutdown();
 
         // calculate and print processing time
         long t2 = System.nanoTime();
