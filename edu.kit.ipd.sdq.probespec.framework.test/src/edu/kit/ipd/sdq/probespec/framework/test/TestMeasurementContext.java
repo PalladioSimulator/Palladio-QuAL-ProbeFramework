@@ -1,31 +1,28 @@
 package edu.kit.ipd.sdq.probespec.framework.test;
 
-import org.junit.Test;
-
 import edu.kit.ipd.sdq.probespec.DerivedIntegerProbe;
 import edu.kit.ipd.sdq.probespec.IntegerProbe;
-import edu.kit.ipd.sdq.probespec.framework.Measurements;
 import edu.kit.ipd.sdq.probespec.framework.ProbeFactory;
 import edu.kit.ipd.sdq.probespec.framework.ProbeSpecContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardFactory;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardType;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementContext;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.concurrent.ConcurrentBlackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.concurrent.ThreadManager;
 import edu.kit.ipd.sdq.probespec.framework.calculators.binary.example.DifferenceCalculator;
 
 public class TestMeasurementContext {
 
-    @Test
+    // @Test
     public void testOne() {
         // initialise logging
         LoggingUtils.configureLogging();
 
-        ProbeSpecContext ctx = new ProbeSpecContext();
+        // ProbeSpecContext<Long> ctx = new ProbeSpecContext<Long>(new SimpleTimestampBuilder());
         ThreadManager m = new ThreadManager();
-        IBlackboard bb = BlackboardFactory.createBlackboard(BlackboardType.CONCURRENT, m);
-//         ProbeSpecContext ctx = new ProbeSpecContext(bb);
+        IBlackboard<Long> bb = BlackboardFactory.createBlackboard(BlackboardType.SIMPLE,
+                new SimpleTimestampBuilder(), m);
+        ProbeSpecContext<Long> ctx = new ProbeSpecContext<Long>(bb);
 
         // create two basic probes
         IntegerProbe startProbe = ProbeFactory.createIntegerProbe("startProbe");
@@ -50,27 +47,26 @@ public class TestMeasurementContext {
         long t1 = System.nanoTime();
 
         for (int i = 0; i < 1000000; i++) {
-            ctx.getBlackboard().addMeasurement(Measurements.create(i), probes[i], assCtx, usgCtx);
+            ctx.getBlackboard().addMeasurement(i, probes[i], assCtx, usgCtx);
         }
-        ctx.getBlackboard().addMeasurement(Measurements.create(40), startProbe);
-        ctx.getBlackboard().addMeasurement(Measurements.create(50), stopProbe);
+        ctx.getBlackboard().addMeasurement(40, startProbe);
+        ctx.getBlackboard().addMeasurement(50, stopProbe);
 
-        ctx.getBlackboard().addMeasurement(Measurements.create(40), startProbe, assCtx, usgCtx);
+        ctx.getBlackboard().addMeasurement(40, startProbe, assCtx, usgCtx);
 
         // Assert.assertEquals(new Integer(12), ctx.getBlackboard().getLatestMeasurement(startProbe,
         // usgCtx, assCtx));
 
         // -------------------
         long t2 = System.nanoTime();
-                
+
         ctx.getBlackboard().deleteMeasurements(assCtx);
 
         // -------------------
         long t3 = System.nanoTime();
 
-//        ((ConcurrentBlackboard) ctx.getBlackboard()).synchronise();
+        // ((ConcurrentBlackboard) ctx.getBlackboard()).synchronise();
         System.gc();
-        
 
         // -------------------
         long t4 = System.nanoTime();
@@ -94,7 +90,12 @@ public class TestMeasurementContext {
 
         // System.out.println(ctx.getBlackboard().getLatestMeasurement(thirdProbe));
 
-         m.stopThreads();
+        m.stopThreads();
+    }
+
+    public static void main(String[] args) {
+        TestMeasurementContext c = new TestMeasurementContext();
+        c.testOne();
     }
 
 }

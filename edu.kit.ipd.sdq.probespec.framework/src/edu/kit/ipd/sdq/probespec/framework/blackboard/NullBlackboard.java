@@ -13,27 +13,27 @@ import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListen
  * @author Philipp Merkle
  * 
  */
-public class NullBlackboard implements IBlackboard {
+public class NullBlackboard<U> implements IBlackboard<U> {
 
     @Override
-    public <T> void addMeasurement(Measurement<T> measurement, Probe<T> probe) {
+    public <T> void addMeasurement(T measurement, Probe<T> probe) {
         // nothing to do
     }
 
     @Override
-    public <T> void addMeasurement(Measurement<T> measurement, Probe<T> probe, IMeasurementContext... context) {
+    public <T> void addMeasurement(T measurement, Probe<T> probe, IMeasurementContext... context) {
         // nothing to do
 
     }
 
     @Override
-    public <T> Measurement<T> getLatestMeasurement(Probe<T> probe) {
+    public <T> Measurement<T, U> getLatestMeasurement(Probe<T> probe) {
         // nothing to do
         return null;
     }
 
     @Override
-    public <T> Measurement<T> getLatestMeasurement(Probe<T> probe, IMeasurementContext... context) {
+    public <T> Measurement<T, U> getLatestMeasurement(Probe<T> probe, IMeasurementContext... context) {
         // nothing to do
         return null;
     }
@@ -49,17 +49,17 @@ public class NullBlackboard implements IBlackboard {
     }
 
     @Override
-    public <T> void addMeasurementListener(IBlackboardListener<T> l, Probe<T> probe) {
+    public <T> void addMeasurementListener(IBlackboardListener<T, U> l, Probe<T> probe) {
         // nothing to do
     }
 
     @Override
-    public <T> void addMeasurementListener(IBlackboardListener<T> l) {
+    public <T> void addMeasurementListener(IBlackboardListener<T, U> l) {
         // nothing to do
     }
 
     @Override
-    public <T> void removeMeasurementListener(IBlackboardListener<T> l) {
+    public <T> void removeMeasurementListener(IBlackboardListener<T, U> l) {
         // nothing to do
     }
 

@@ -1,11 +1,11 @@
 package edu.kit.ipd.sdq.probespec.framework.calculators.binary.example;
 
 import edu.kit.ipd.sdq.probespec.Probe;
-import edu.kit.ipd.sdq.probespec.framework.Measurements;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
 import edu.kit.ipd.sdq.probespec.framework.calculators.binary.AbstractBinaryCalculator;
 
-public class DifferenceCalculator extends AbstractBinaryCalculator<Integer, Integer, Integer> {
+public class DifferenceCalculator extends AbstractBinaryCalculator<Integer, Integer, Integer, Long> {
 
     private Integer firstMeasurement;
 
@@ -19,15 +19,17 @@ public class DifferenceCalculator extends AbstractBinaryCalculator<Integer, Inte
     }
 
     @Override
-    public void firstMeasurementArrived(Integer measurement, Probe<Integer> probe, IBlackboard blackboard) {
-        this.firstMeasurement = measurement;
+    public void firstMeasurementArrived(Measurement<Integer, Long> measurement, Probe<Integer> probe,
+            IBlackboard<Long> blackboard) {
+        this.firstMeasurement = measurement.getValue();
     }
 
     @Override
-    public void secondMeasurementArrived(Integer measurement, Probe<Integer> probe, IBlackboard blackboard) {
-        Integer secondMeasurement = measurement;
+    public void secondMeasurementArrived(Measurement<Integer, Long> measurement, Probe<Integer> probe,
+            IBlackboard<Long> blackboard) {
+        Integer secondMeasurement = measurement.getValue();
         Integer c = calculate(firstMeasurement, secondMeasurement);
-        blackboard.addMeasurement(Measurements.create(c), getBoundedProbe());
+        blackboard.addMeasurement(c, getBoundedProbe());
     }
 
 }

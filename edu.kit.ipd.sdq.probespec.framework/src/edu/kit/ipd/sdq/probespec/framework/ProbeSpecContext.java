@@ -1,37 +1,30 @@
 package edu.kit.ipd.sdq.probespec.framework;
 
-import edu.kit.ipd.sdq.probespec.ProbeRepository;
-import edu.kit.ipd.sdq.probespec.probespecFactory;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardFactory;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardType;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
 import edu.kit.ipd.sdq.probespec.framework.calculators.BindingContext;
 
-public class ProbeSpecContext {
+public class ProbeSpecContext<U> {
 
-    private IBlackboard blackboard;
+    private IBlackboard<U> blackboard;
 
-    private static final ProbeRepository EMPTY_REPOSITORY = probespecFactory.eINSTANCE.createProbeRepository();
+    private BindingContext<U> bindingContext;
 
-    private static final IBlackboard DEFAULT_BLACKBOARD = BlackboardFactory.createBlackboard(BlackboardType.SIMPLE,
-            null);
-
-    private BindingContext bindingContext;
-
-    public ProbeSpecContext() {
-        this(DEFAULT_BLACKBOARD);
+    public ProbeSpecContext(ITimestampBuilder<U> timestampBuilder) {
+        this(BlackboardFactory.createBlackboard(BlackboardType.SIMPLE, timestampBuilder, null));
     }
 
-    public ProbeSpecContext(IBlackboard blackboard) {
+    public ProbeSpecContext(IBlackboard<U> blackboard) {
         this.blackboard = blackboard;
-        this.bindingContext = new BindingContext(blackboard);
+        this.bindingContext = new BindingContext<U>(blackboard);
     }
 
-    public IBlackboard getBlackboard() {
+    public IBlackboard<U> getBlackboard() {
         return blackboard;
     }
 
-    public BindingContext getBindingContext() {
+    public BindingContext<U> getBindingContext() {
         return bindingContext;
     }
 

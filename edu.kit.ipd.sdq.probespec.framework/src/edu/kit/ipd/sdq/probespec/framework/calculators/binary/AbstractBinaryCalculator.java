@@ -3,8 +3,8 @@ package edu.kit.ipd.sdq.probespec.framework.calculators.binary;
 import edu.kit.ipd.sdq.probespec.Probe;
 import edu.kit.ipd.sdq.probespec.framework.calculators.AbstractCalculator;
 
-public abstract class AbstractBinaryCalculator<IN1, IN2, OUT> extends AbstractCalculator<OUT> implements
-        IBinaryCalculator<IN1, IN2, OUT> {
+public abstract class AbstractBinaryCalculator<IN1, IN2, OUT, U> extends AbstractCalculator<OUT> implements
+        IBinaryCalculator<IN1, IN2, OUT, U> {
 
     private Class<IN1> in1Class;
 

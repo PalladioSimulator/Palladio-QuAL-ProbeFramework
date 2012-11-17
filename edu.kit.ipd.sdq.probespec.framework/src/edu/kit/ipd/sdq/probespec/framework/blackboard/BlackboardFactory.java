@@ -1,5 +1,6 @@
 package edu.kit.ipd.sdq.probespec.framework.blackboard;
 
+import edu.kit.ipd.sdq.probespec.framework.ITimestampBuilder;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.concurrent.ConcurrentBlackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.concurrent.ThreadManager;
 
@@ -25,14 +26,14 @@ public class BlackboardFactory {
      *            blackboard; <code>null</code> else
      * @return the created blackboard
      */
-    public static IBlackboard createBlackboard(BlackboardType type, ThreadManager threadManager) {
+    public static <U> IBlackboard<U> createBlackboard(BlackboardType type, ITimestampBuilder<U> timestampBuilder, ThreadManager threadManager) {
         switch (type) {
         case SIMPLE:
-            return new SimpleBlackboard();
+            return new SimpleBlackboard<U>(timestampBuilder);
         case CONCURRENT:
-            return new ConcurrentBlackboard(threadManager);
+            return new ConcurrentBlackboard<U>(timestampBuilder, threadManager);
         case NONE:
-            return new NullBlackboard();
+            return new NullBlackboard<U>();
         }
 
         throw new RuntimeException("Could not create a blackboard of type " + type.toString()
