@@ -11,6 +11,7 @@ import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardType;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.concurrent.ConcurrentBlackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
 import edu.kit.ipd.sdq.probespec.java.DifferenceCalculator;
 import edu.kit.ipd.sdq.probespec.java.JavaProbeSpecContext;
@@ -21,48 +22,58 @@ public class APIExample {
     private static final Logger logger = Logger.getLogger(APIExample.class);
 
     public static void main(String[] args) {
-        long t1 = System.nanoTime();
-
         // initialise logging
         LoggingUtils.configureLogging();
 
-        // initialize ProbeSpec
-        JavaProbeSpecContext ctx = new JavaProbeSpecContext(BlackboardType.CONCURRENT);
-
-        // register a listener for Integer measurements
-        ctx.getBlackboard().addMeasurementListener(new PrintMeasurementsListener());
-
+        // ////////////////////////////////////////////////////////////////////
+        // CREATE PROBESPEC MODEL
+        //
         // create some basic probes
         IntegerProbe firstProbe = ProbeFactory.createIntegerProbe("firstBasicProbe");
         DoubleProbe secondProbe = ProbeFactory.createDoubleProbe("secondBasicProbe");
         IntegerProbe thirdProbe = ProbeFactory.createIntegerProbe("thirdBasicProbe");
-
+        //
         // create some derived probes (without binding them to a calculator for the moment)
-        DerivedIntegerProbe derivedProbe = ProbeFactory.createDerivedIntegerProbe("plusOneProbe");
-        DerivedIntegerProbe derivedProbe2 = ProbeFactory.createDerivedIntegerProbe("differenceProbe");
+        DerivedIntegerProbe plusOneProbe = ProbeFactory.createDerivedIntegerProbe("plusOneProbe");
+        DerivedIntegerProbe differenceProbe = ProbeFactory.createDerivedIntegerProbe("differenceProbe");
+        //
+        // ////////////////////////////////////////////////////////////////////
+
+        long t1 = System.nanoTime();
+
+        // initialize ProbeSpec
+        JavaProbeSpecContext ps = new JavaProbeSpecContext(BlackboardType.CONCURRENT);
+
+        // register a listener for Integer measurements
+        ps.addMeasurementListener(new PrintMeasurementsListener());
 
         // now bind each derived probe to exactly one calculator
-        ctx.getBindingContext().bind(new PlusOneCalculator(derivedProbe), thirdProbe);
-        ctx.getBindingContext().bind(new DifferenceCalculator(derivedProbe2), derivedProbe, thirdProbe);
+        ps.bindUnaryCalculator(new PlusOneCalculator(plusOneProbe), thirdProbe);
+        ps.bindBinaryCalculator(new DifferenceCalculator(differenceProbe), plusOneProbe, thirdProbe);
 
         // generate some dummy measurements for demonstration purposes
-        for (int i = 0; i < 30; i++) {
-            ctx.getBlackboard().addMeasurement(i, firstProbe);
+        for (int i = 0; i < 5; i++) {
+            ps.addMeasurement(i, firstProbe);
         }
-        ctx.getBlackboard().addMeasurement(5.0, secondProbe);
-        ctx.getBlackboard().addMeasurement(5, thirdProbe);
+        ps.addMeasurement(5.0, secondProbe);
+        ps.addMeasurement(5, thirdProbe);
 
-        // ((ConcurrentBlackboard)ctx.getBlackboard()).synchronise();
-        System.out.println(ctx.getBlackboard().getLatestMeasurement(thirdProbe));
+        if (ps.getBlackboardType().equals(BlackboardType.CONCURRENT)) {
+            ((ConcurrentBlackboard<?>) ps.getBlackboard()).synchronise();
+        }
 
+        Integer v1 = ps.getLatestMeasurement(plusOneProbe).getValue();
+        Integer v2 = ps.getLatestMeasurement(thirdProbe).getValue();
+        Integer v3 = ps.getLatestMeasurement(differenceProbe).getValue();
+        System.out.println("Calculated difference between " + v1 + " and " + v2 + ": " + v3);
+
+        // stop all threads spawned by the ProbeSpec
+        ps.getThreadManager().stopThreads();
+
+        // calculate and print processing time
         long t2 = System.nanoTime();
         long diff = t2 - t1;
-
         System.out.println("Took " + diff / (1000 * 1000) + " ms.");
-        
-        ctx.getThreadManager().stopThreads();
-
-        // TODO: support probe.addMeasurement() ?
     }
 
     private static class PrintMeasurementsListener implements IBlackboardListener<Integer, Long> {
@@ -79,7 +90,5 @@ public class APIExample {
         }
 
     }
-
-   
 
 }

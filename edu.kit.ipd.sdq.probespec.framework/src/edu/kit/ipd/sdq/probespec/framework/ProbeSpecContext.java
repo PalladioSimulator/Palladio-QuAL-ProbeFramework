@@ -13,12 +13,15 @@ public class ProbeSpecContext<U> {
     private BindingContext<U> bindingContext;
 
     private ThreadManager threadManager;
+    
+    private BlackboardType blackboardType;
 
     public ProbeSpecContext(ITimestampGenerator<U> timestampBuilder) {
         this(timestampBuilder, BlackboardType.SIMPLE);
     }
 
     public ProbeSpecContext(ITimestampGenerator<U> timestampBuilder, BlackboardType blackboardType) {
+        this.blackboardType = blackboardType;
         this.threadManager = new ThreadManager();
         this.blackboard = BlackboardFactory.createBlackboard(blackboardType, timestampBuilder, threadManager);
         this.bindingContext = new BindingContext<U>(blackboard);
@@ -34,6 +37,10 @@ public class ProbeSpecContext<U> {
 
     public ThreadManager getThreadManager() {
         return threadManager;
+    }
+
+    public BlackboardType getBlackboardType() {
+        return blackboardType;
     }
 
 }
