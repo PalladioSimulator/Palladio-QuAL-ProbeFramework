@@ -48,8 +48,8 @@ public class APIExample {
         ps.addMeasurementListener(new PrintMeasurementsListener());
 
         // now bind each derived probe to exactly one calculator
-        ps.bindUnaryCalculator(new PlusOneCalculator(plusOneProbe), thirdProbe);
-        ps.bindBinaryCalculator(new DifferenceCalculator(differenceProbe), plusOneProbe, thirdProbe);
+        ps.addCalculator(new PlusOneCalculator(plusOneProbe)).bind(thirdProbe);
+        ps.addCalculator(new DifferenceCalculator(differenceProbe)).bind(plusOneProbe, thirdProbe);
 
         // generate some dummy measurements for demonstration purposes
         for (int i = 0; i < 5; i++) {

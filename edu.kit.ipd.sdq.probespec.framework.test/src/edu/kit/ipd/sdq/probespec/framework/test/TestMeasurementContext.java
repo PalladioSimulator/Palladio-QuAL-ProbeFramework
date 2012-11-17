@@ -33,7 +33,7 @@ public class TestMeasurementContext {
         DerivedIntegerProbe differenceProbe = ProbeFactory.createDerivedIntegerProbe("differenceProbe");
 
         // bind derived probe
-        ctx.getBindingContext().bind(new DifferenceCalculator(differenceProbe), startProbe, stopProbe);
+        ctx.getCalculatorRegistry().bind(new DifferenceCalculator(differenceProbe), startProbe, stopProbe);
 
         // create artificial measurement data
         IMeasurementContext assCtx = new AssemblyContext("MyAssemblyContext");

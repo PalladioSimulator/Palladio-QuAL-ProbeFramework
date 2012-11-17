@@ -8,7 +8,9 @@ import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
+import edu.kit.ipd.sdq.probespec.framework.calculators.binary.BindableBinaryCalculator;
 import edu.kit.ipd.sdq.probespec.framework.calculators.binary.IBinaryCalculator;
+import edu.kit.ipd.sdq.probespec.framework.calculators.unary.BindableUnaryCalculator;
 import edu.kit.ipd.sdq.probespec.framework.calculators.unary.IUnaryCalculator;
 
 public class JavaProbeSpecContext extends ProbeSpecContext<Long> implements IBlackboard<Long> {
@@ -68,12 +70,12 @@ public class JavaProbeSpecContext extends ProbeSpecContext<Long> implements IBla
         getBlackboard().addMeasurementListener(l);
     }
 
-    public <IN, OUT> void bindUnaryCalculator(IUnaryCalculator<IN, OUT, Long> calculator, Probe<IN> sourceProbe) {
-        getBindingContext().bind(calculator, sourceProbe);
+    public <IN, OUT> BindableUnaryCalculator<IN, OUT, Long> addCalculator(IUnaryCalculator<IN, OUT, Long> calculator) {
+        return getCalculatorRegistry().add(calculator);
     }
 
-    public <IN1, IN2, OUT> void bindBinaryCalculator(IBinaryCalculator<IN1, IN2, OUT, Long> calculator,
-            Probe<IN1> sourceProbe1, Probe<IN2> sourceProbe2) {
-        getBindingContext().bind(calculator, sourceProbe1, sourceProbe2);
+    public <IN1, IN2, OUT> BindableBinaryCalculator<IN1, IN2, OUT, Long> addCalculator(
+            IBinaryCalculator<IN1, IN2, OUT, Long> calculator) {
+        return getCalculatorRegistry().add(calculator);
     }
 }

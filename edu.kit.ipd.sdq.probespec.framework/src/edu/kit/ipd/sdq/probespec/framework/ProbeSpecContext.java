@@ -4,13 +4,13 @@ import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardFactory;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardType;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.concurrent.ThreadManager;
-import edu.kit.ipd.sdq.probespec.framework.calculators.BindingContext;
+import edu.kit.ipd.sdq.probespec.framework.calculators.CalculatorRegistry;
 
 public class ProbeSpecContext<U> {
 
     private IBlackboard<U> blackboard;
 
-    private BindingContext<U> bindingContext;
+    private CalculatorRegistry<U> bindingContext;
 
     private ThreadManager threadManager;
     
@@ -24,14 +24,14 @@ public class ProbeSpecContext<U> {
         this.blackboardType = blackboardType;
         this.threadManager = new ThreadManager();
         this.blackboard = BlackboardFactory.createBlackboard(blackboardType, timestampBuilder, threadManager);
-        this.bindingContext = new BindingContext<U>(blackboard);
+        this.bindingContext = new CalculatorRegistry<U>(blackboard);
     }
 
     public IBlackboard<U> getBlackboard() {
         return blackboard;
     }
 
-    public BindingContext<U> getBindingContext() {
+    public CalculatorRegistry<U> getCalculatorRegistry() {
         return bindingContext;
     }
 

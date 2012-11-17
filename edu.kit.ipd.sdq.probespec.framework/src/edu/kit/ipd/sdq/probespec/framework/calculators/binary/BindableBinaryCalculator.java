@@ -8,19 +8,22 @@ import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListen
 
 public class BindableBinaryCalculator<IN1, IN2, OUT, T> {
 
+    private IBlackboard<T> blackboard;
+
     private IBlackboardListener<IN1, T> in1Listener;
 
     private IBlackboardListener<IN2, T> in2Listener;
 
     private IBinaryCalculator<IN1, IN2, OUT, T> calculator;
 
-    public BindableBinaryCalculator(IBinaryCalculator<IN1, IN2, OUT, T> calculator) {
+    public BindableBinaryCalculator(IBinaryCalculator<IN1, IN2, OUT, T> calculator, IBlackboard<T> blackboard) {
+        this.blackboard = blackboard;
         this.calculator = calculator;
         this.in1Listener = new Input1Listener();
         this.in2Listener = new Input2Listener();
     }
 
-    public void bind(IBlackboard<T> blackboard, Probe<IN1> sourceProbe1, Probe<IN2> sourceProbe2) {
+    public void bind(Probe<IN1> sourceProbe1, Probe<IN2> sourceProbe2) {
         blackboard.addMeasurementListener(in1Listener, sourceProbe1);
         blackboard.addMeasurementListener(in2Listener, sourceProbe2);
     }
