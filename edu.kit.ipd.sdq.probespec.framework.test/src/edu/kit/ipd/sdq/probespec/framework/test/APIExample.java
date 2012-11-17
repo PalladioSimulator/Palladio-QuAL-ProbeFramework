@@ -15,8 +15,9 @@ import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.concurrent.ThreadManager;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
-import edu.kit.ipd.sdq.probespec.framework.calculators.binary.example.DifferenceCalculator;
-import edu.kit.ipd.sdq.probespec.framework.calculators.unary.example.PlusOneCalculator;
+import edu.kit.ipd.sdq.probespec.java.DifferenceCalculator;
+import edu.kit.ipd.sdq.probespec.java.JavaTimestampBuilder;
+import edu.kit.ipd.sdq.probespec.java.PlusOneCalculator;
 
 public class APIExample {
 
@@ -31,7 +32,7 @@ public class APIExample {
         // initialize ProbeSpec
         ThreadManager m = new ThreadManager();
         IBlackboard<Long> bb = BlackboardFactory.createBlackboard(BlackboardType.CONCURRENT,
-                new SimpleTimestampBuilder(), m);
+                new JavaTimestampBuilder(), m);
         ProbeSpecContext<Long> ctx = new ProbeSpecContext<Long>(bb);
 
         // register a listener for Integer measurements

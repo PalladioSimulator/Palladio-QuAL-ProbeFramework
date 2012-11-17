@@ -9,7 +9,8 @@ import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardType;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.concurrent.ThreadManager;
-import edu.kit.ipd.sdq.probespec.framework.calculators.binary.example.DifferenceCalculator;
+import edu.kit.ipd.sdq.probespec.java.DifferenceCalculator;
+import edu.kit.ipd.sdq.probespec.java.JavaTimestampBuilder;
 
 public class TestMeasurementContext {
 
@@ -21,7 +22,7 @@ public class TestMeasurementContext {
         // ProbeSpecContext<Long> ctx = new ProbeSpecContext<Long>(new SimpleTimestampBuilder());
         ThreadManager m = new ThreadManager();
         IBlackboard<Long> bb = BlackboardFactory.createBlackboard(BlackboardType.SIMPLE,
-                new SimpleTimestampBuilder(), m);
+                new JavaTimestampBuilder(), m);
         ProbeSpecContext<Long> ctx = new ProbeSpecContext<Long>(bb);
 
         // create two basic probes
