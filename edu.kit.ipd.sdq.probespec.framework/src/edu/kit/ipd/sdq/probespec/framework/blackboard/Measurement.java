@@ -1,28 +1,27 @@
 package edu.kit.ipd.sdq.probespec.framework.blackboard;
 
-public final class Measurement<T, U> {
+public final class Measurement<V, T> {
 
-    // TODO what about double-typed simulation times, e.g. t=20.51 !?
-    private final U timestamp;
+    private final V value;
     
-    private final T value;
-    
-    public Measurement(U timestamp, T value) {
+    private final T timestamp;
+
+    public Measurement(V value, T timestamp) {
         this.timestamp = timestamp;
         this.value = value;
     }
-    
-    public T getValue() {
+
+    public V getValue() {
         return value;
     }
 
-    public U getTimestamp() {
+    public T getTimestamp() {
         return timestamp;
     }
 
     @Override
     public String toString() {
-        return "Measurement [timestamp=" + timestamp + ", value=" + value + "]";
+        return "Measurement [value=" + value + ", timestamp=" + timestamp + "]";
     }
-    
+
 }

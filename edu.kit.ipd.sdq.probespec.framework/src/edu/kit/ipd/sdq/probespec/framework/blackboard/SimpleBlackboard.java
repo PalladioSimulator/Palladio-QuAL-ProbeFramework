@@ -6,74 +6,74 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import edu.kit.ipd.sdq.probespec.Probe;
-import edu.kit.ipd.sdq.probespec.framework.ITimestampBuilder;
+import edu.kit.ipd.sdq.probespec.framework.ITimestampGenerator;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
 
-public class SimpleBlackboard<U> implements IBlackboard<U> {
+public class SimpleBlackboard<T> implements IBlackboard<T> {
 
     private static final Logger logger = Logger.getLogger(SimpleBlackboard.class);
 
-    private Map<Class<?>, IBlackboardRegion<?, U>> regions;
+    private Map<Class<?>, IBlackboardRegion<?, T>> regions;
 
-    private ITimestampBuilder<U> timestampBuilder;
+    private ITimestampGenerator<T> timestampBuilder;
     
-    public SimpleBlackboard(ITimestampBuilder<U> timestampBuilder) {
-        this.regions = new HashMap<Class<?>, IBlackboardRegion<?, U>>();
+    public SimpleBlackboard(ITimestampGenerator<T> timestampBuilder) {
+        this.regions = new HashMap<Class<?>, IBlackboardRegion<?, T>>();
         this.timestampBuilder = timestampBuilder;
     }
 
     @Override
-    public <T> void addMeasurement(T measurement, Probe<T> probe) {
-        createOrFindRegion(probe.getGenericClass()).addMeasurement(measurement, probe);
+    public <V> void addMeasurement(V value, Probe<V> probe) {
+        createOrFindRegion(probe.getGenericClass()).addMeasurement(value, probe);
     }
 
     @Override
-    public <T> void addMeasurement(T measurement, Probe<T> probe, IMeasurementContext... contexts) {
-        createOrFindRegion(probe.getGenericClass()).addMeasurement(measurement, probe, contexts);
+    public <V> void addMeasurement(V value, Probe<V> probe, IMeasurementContext... contexts) {
+        createOrFindRegion(probe.getGenericClass()).addMeasurement(value, probe, contexts);
     }
 
     @Override
-    public <T> Measurement<T, U> getLatestMeasurement(Probe<T> probe) {
+    public <V> Measurement<V, T> getLatestMeasurement(Probe<V> probe) {
         return createOrFindRegion(probe.getGenericClass()).getLatestMeasurement(probe);
     }
 
     @Override
-    public <T> Measurement<T, U> getLatestMeasurement(Probe<T> probe, IMeasurementContext... contexts) {
+    public <V> Measurement<V, T> getLatestMeasurement(Probe<V> probe, IMeasurementContext... contexts) {
         return createOrFindRegion(probe.getGenericClass()).getLatestMeasurement(probe, contexts);
     }
 
     @Override
     public void deleteMeasurements(IMeasurementContext context) {
-        for (IBlackboardRegion<?, U> r : regions.values()) {
+        for (IBlackboardRegion<?, T> r : regions.values()) {
             r.deleteMeasurements(context);
         }
     }
 
     @Override
-    public <T> void deleteMeasurement(Probe<T> probe, IMeasurementContext... contexts) {
+    public <V> void deleteMeasurement(Probe<V> probe, IMeasurementContext... contexts) {
         createOrFindRegion(probe.getGenericClass()).deleteMeasurement(probe, contexts);
     }
 
     @Override
-    public <T> void addMeasurementListener(IBlackboardListener<T, U> l, Probe<T> probe) {
+    public <V> void addMeasurementListener(IBlackboardListener<V, T> l, Probe<V> probe) {
         createOrFindRegion(probe.getGenericClass()).addMeasurementListener(l, probe);
     }
 
     @Override
-    public <T> void addMeasurementListener(IBlackboardListener<T, U> l) {
+    public <V> void addMeasurementListener(IBlackboardListener<V, T> l) {
         createOrFindRegion(l.getGenericType()).addMeasurementListener(l);
     }
 
     @Override
-    public <T> void removeMeasurementListener(IBlackboardListener<T, U> l) {
+    public <V> void removeMeasurementListener(IBlackboardListener<V, T> l) {
         createOrFindRegion(l.getGenericType()).removeMeasurementListener(l);
     }
 
-    private <T> IBlackboardRegion<T, U> createOrFindRegion(Class<T> clazz) {
+    private <V> IBlackboardRegion<V, T> createOrFindRegion(Class<V> clazz) {
         @SuppressWarnings("unchecked")
-        IBlackboardRegion<T, U> r = (IBlackboardRegion<T, U>) this.regions.get(clazz);
+        IBlackboardRegion<V, T> r = (IBlackboardRegion<V, T>) this.regions.get(clazz);
         if (r == null) {
-            r = new SimpleBlackboardRegion<T, U>(this, clazz, timestampBuilder);
+            r = new SimpleBlackboardRegion<V, T>(this, clazz, timestampBuilder);
             this.regions.put(clazz, r);
             logger.debug("Created blackboard region for " + clazz);
         }

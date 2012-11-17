@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.probespec.framework.blackboard;
 
-import edu.kit.ipd.sdq.probespec.framework.ITimestampBuilder;
+import edu.kit.ipd.sdq.probespec.framework.ITimestampGenerator;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.concurrent.ConcurrentBlackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.concurrent.ThreadManager;
 
@@ -16,8 +16,8 @@ public class BlackboardFactory {
 
     /**
      * Creates a blackboard of the specified type. If a {@link BlackboardType#CONCURRENT} blackboard
-     * is to be created, a <code>threadManager</code> is expected; otherwise, this parameter may
-     * be <code>null</code>.
+     * is to be created, a <code>threadManager</code> is expected; otherwise, this parameter may be
+     * <code>null</code>.
      * 
      * @param type
      *            the type of the blackboard to create
@@ -26,14 +26,15 @@ public class BlackboardFactory {
      *            blackboard; <code>null</code> else
      * @return the created blackboard
      */
-    public static <U> IBlackboard<U> createBlackboard(BlackboardType type, ITimestampBuilder<U> timestampBuilder, ThreadManager threadManager) {
+    public static <T> IBlackboard<T> createBlackboard(BlackboardType type, ITimestampGenerator<T> timestampBuilder,
+            ThreadManager threadManager) {
         switch (type) {
         case SIMPLE:
-            return new SimpleBlackboard<U>(timestampBuilder);
+            return new SimpleBlackboard<T>(timestampBuilder);
         case CONCURRENT:
-            return new ConcurrentBlackboard<U>(timestampBuilder, threadManager);
+            return new ConcurrentBlackboard<T>(timestampBuilder, threadManager);
         case NONE:
-            return new NullBlackboard<U>();
+            return new NullBlackboard<T>();
         }
 
         throw new RuntimeException("Could not create a blackboard of type " + type.toString()

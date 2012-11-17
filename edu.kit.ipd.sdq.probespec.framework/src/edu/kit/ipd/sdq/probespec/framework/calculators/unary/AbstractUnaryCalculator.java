@@ -3,8 +3,8 @@ package edu.kit.ipd.sdq.probespec.framework.calculators.unary;
 import edu.kit.ipd.sdq.probespec.Probe;
 import edu.kit.ipd.sdq.probespec.framework.calculators.AbstractCalculator;
 
-public abstract class AbstractUnaryCalculator<IN, OUT, U> extends AbstractCalculator<OUT> implements
-        IUnaryCalculator<IN, OUT, U> {
+public abstract class AbstractUnaryCalculator<IN, OUT, T> extends AbstractCalculator<OUT> implements
+        IUnaryCalculator<IN, OUT, T> {
 
     private Class<IN> inClass;
 

@@ -5,7 +5,7 @@ import java.util.concurrent.CountDownLatch;
 import org.apache.log4j.Logger;
 
 import edu.kit.ipd.sdq.probespec.Probe;
-import edu.kit.ipd.sdq.probespec.framework.ITimestampBuilder;
+import edu.kit.ipd.sdq.probespec.framework.ITimestampGenerator;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardFactory;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardType;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
@@ -13,7 +13,7 @@ import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
 
-public class ConcurrentBlackboard<U> implements IBlackboard<U> {
+public class ConcurrentBlackboard<T> implements IBlackboard<T> {
 
     private static final Logger logger = Logger.getLogger(ConcurrentBlackboard.class);
 
@@ -21,15 +21,16 @@ public class ConcurrentBlackboard<U> implements IBlackboard<U> {
 
     private ActionQueue queue;
 
-    private IBlackboard<U> delegatee;
+    private IBlackboard<T> delegatee;
 
     private boolean weakConsistency;
-    
-    public ConcurrentBlackboard(ITimestampBuilder<U> timestampBuilder, ThreadManager threadManager) {
-        this(timestampBuilder, threadManager, true);    
+
+    public ConcurrentBlackboard(ITimestampGenerator<T> timestampBuilder, ThreadManager threadManager) {
+        this(timestampBuilder, threadManager, true);
     }
 
-    public ConcurrentBlackboard(ITimestampBuilder<U> timestampBuilder, ThreadManager threadManager, boolean weakConsistency) {
+    public ConcurrentBlackboard(ITimestampGenerator<T> timestampBuilder, ThreadManager threadManager,
+            boolean weakConsistency) {
         this.threadManager = threadManager;
         this.queue = new ActionQueue();
         this.delegatee = BlackboardFactory.createBlackboard(BlackboardType.SIMPLE, timestampBuilder, null);
@@ -39,17 +40,17 @@ public class ConcurrentBlackboard<U> implements IBlackboard<U> {
     }
 
     @Override
-    public <T> void addMeasurement(T measurement, Probe<T> probe) {
-        queue.put(new AddMeasurementAction<T>(measurement, probe));
+    public <V> void addMeasurement(V value, Probe<V> probe) {
+        queue.put(new AddMeasurementAction<V>(value, probe));
     }
 
     @Override
-    public <T> void addMeasurement(T measurement, Probe<T> probe, IMeasurementContext... contexts) {
-        queue.put(new AddMeasurementAction<T>(measurement, probe, contexts));
+    public <V> void addMeasurement(V value, Probe<V> probe, IMeasurementContext... contexts) {
+        queue.put(new AddMeasurementAction<V>(value, probe, contexts));
     }
 
     @Override
-    public <T> Measurement<T, U> getLatestMeasurement(Probe<T> probe) {
+    public <V> Measurement<V, T> getLatestMeasurement(Probe<V> probe) {
         if (weakConsistency) {
             return delegatee.getLatestMeasurement(probe);
         } else {
@@ -59,7 +60,7 @@ public class ConcurrentBlackboard<U> implements IBlackboard<U> {
     }
 
     @Override
-    public <T> Measurement<T, U> getLatestMeasurement(Probe<T> probe, IMeasurementContext... contexts) {
+    public <V> Measurement<V, T> getLatestMeasurement(Probe<V> probe, IMeasurementContext... contexts) {
         if (weakConsistency) {
             return delegatee.getLatestMeasurement(probe, contexts);
         } else {
@@ -74,22 +75,22 @@ public class ConcurrentBlackboard<U> implements IBlackboard<U> {
     }
 
     @Override
-    public <T> void deleteMeasurement(Probe<T> probe, IMeasurementContext... contexts) {
-        queue.put(new DeleteMeasurementAction<T>(probe, contexts));
+    public <V> void deleteMeasurement(Probe<V> probe, IMeasurementContext... contexts) {
+        queue.put(new DeleteMeasurementAction<V>(probe, contexts));
     }
 
     @Override
-    public <T> void addMeasurementListener(IBlackboardListener<T, U> l, Probe<T> probe) {
+    public <V> void addMeasurementListener(IBlackboardListener<V, T> l, Probe<V> probe) {
         delegatee.addMeasurementListener(l, probe);
     }
 
     @Override
-    public <T> void addMeasurementListener(IBlackboardListener<T, U> l) {
+    public <V> void addMeasurementListener(IBlackboardListener<V, T> l) {
         delegatee.addMeasurementListener(l);
     }
 
     @Override
-    public <T> void removeMeasurementListener(IBlackboardListener<T, U> l) {
+    public <V> void removeMeasurementListener(IBlackboardListener<V, T> l) {
         delegatee.removeMeasurementListener(l);
     }
 
@@ -120,15 +121,15 @@ public class ConcurrentBlackboard<U> implements IBlackboard<U> {
     /**
      * Adds a sample to the blackboard.
      */
-    private class AddMeasurementAction<T> implements IQueuableAction {
+    private class AddMeasurementAction<V> implements IQueuableAction {
 
-        private T value;
+        private V value;
 
-        private Probe<T> probe;
+        private Probe<V> probe;
 
         private IMeasurementContext[] contexts;
 
-        public AddMeasurementAction(T value, Probe<T> probe, IMeasurementContext... contexts) {
+        public AddMeasurementAction(V value, Probe<V> probe, IMeasurementContext... contexts) {
             this.value = value;
             this.probe = probe;
             this.contexts = contexts;
@@ -160,13 +161,13 @@ public class ConcurrentBlackboard<U> implements IBlackboard<U> {
 
     }
 
-    private class DeleteMeasurementAction<T> implements IQueuableAction {
+    private class DeleteMeasurementAction<V> implements IQueuableAction {
 
-        private Probe<T> probe;
+        private Probe<V> probe;
 
         private IMeasurementContext[] contexts;
 
-        public DeleteMeasurementAction(Probe<T> probe, IMeasurementContext... contexts) {
+        public DeleteMeasurementAction(Probe<V> probe, IMeasurementContext... contexts) {
             this.probe = probe;
             this.contexts = contexts;
         }

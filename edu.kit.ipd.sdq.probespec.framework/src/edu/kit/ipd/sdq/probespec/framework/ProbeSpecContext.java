@@ -11,7 +11,7 @@ public class ProbeSpecContext<U> {
 
     private BindingContext<U> bindingContext;
 
-    public ProbeSpecContext(ITimestampBuilder<U> timestampBuilder) {
+    public ProbeSpecContext(ITimestampGenerator<U> timestampBuilder) {
         this(BlackboardFactory.createBlackboard(BlackboardType.SIMPLE, timestampBuilder, null));
     }
 

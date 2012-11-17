@@ -13,28 +13,25 @@ import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListen
  * @author Philipp Merkle
  * 
  */
-public class NullBlackboard<U> implements IBlackboard<U> {
+public class NullBlackboard<T> implements IBlackboard<T> {
 
     @Override
-    public <T> void addMeasurement(T measurement, Probe<T> probe) {
+    public <V> void addMeasurement(V value, Probe<V> probe) {
         // nothing to do
     }
 
     @Override
-    public <T> void addMeasurement(T measurement, Probe<T> probe, IMeasurementContext... context) {
+    public <V> void addMeasurement(V value, Probe<V> probe, IMeasurementContext... contexts) {
         // nothing to do
-
     }
 
     @Override
-    public <T> Measurement<T, U> getLatestMeasurement(Probe<T> probe) {
-        // nothing to do
+    public <V> Measurement<V, T> getLatestMeasurement(Probe<V> probe) {
         return null;
     }
 
     @Override
-    public <T> Measurement<T, U> getLatestMeasurement(Probe<T> probe, IMeasurementContext... context) {
-        // nothing to do
+    public <V> Measurement<V, T> getLatestMeasurement(Probe<V> probe, IMeasurementContext... contexts) {
         return null;
     }
 
@@ -44,22 +41,22 @@ public class NullBlackboard<U> implements IBlackboard<U> {
     }
 
     @Override
-    public <T> void deleteMeasurement(Probe<T> probe, IMeasurementContext... context) {
+    public <V> void deleteMeasurement(Probe<V> probe, IMeasurementContext... contexts) {
         // nothing to do
     }
 
     @Override
-    public <T> void addMeasurementListener(IBlackboardListener<T, U> l, Probe<T> probe) {
+    public <V> void addMeasurementListener(IBlackboardListener<V, T> l, Probe<V> probe) {
         // nothing to do
     }
 
     @Override
-    public <T> void addMeasurementListener(IBlackboardListener<T, U> l) {
+    public <V> void addMeasurementListener(IBlackboardListener<V, T> l) {
         // nothing to do
     }
 
     @Override
-    public <T> void removeMeasurementListener(IBlackboardListener<T, U> l) {
+    public <V> void removeMeasurementListener(IBlackboardListener<V, T> l) {
         // nothing to do
     }
 

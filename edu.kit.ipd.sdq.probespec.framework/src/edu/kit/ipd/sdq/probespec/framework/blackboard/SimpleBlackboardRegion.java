@@ -7,47 +7,47 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import edu.kit.ipd.sdq.probespec.Probe;
-import edu.kit.ipd.sdq.probespec.framework.ITimestampBuilder;
+import edu.kit.ipd.sdq.probespec.framework.ITimestampGenerator;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.index.IndexManager;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.ListenerSupport;
 
-public class SimpleBlackboardRegion<T, U> implements IBlackboardRegion<T, U> {
+public class SimpleBlackboardRegion<V, T> implements IBlackboardRegion<V, T> {
 
     private static final Logger logger = Logger.getLogger(SimpleBlackboardRegion.class);
 
-    private Class<T> type;
+    private Class<V> type;
 
-    private IBlackboard<U> blackboard;
+    private IBlackboard<T> blackboard;
 
-    private ListenerSupport<T, U> listenerSupport;
+    private ListenerSupport<V, T> listenerSupport;
 
-    private Map<String, Measurement<T, U>> contextlessMeasurements;
+    private Map<String, Measurement<V, T>> contextlessMeasurements;
 
-    private Map<String, Measurement<T, U>> measurements;
+    private Map<String, Measurement<V, T>> measurements;
 
     private IndexManager indices;
 
     private KeyBuilder keyBuilder;
 
-    private ITimestampBuilder<U> timestampBuilder;
+    private ITimestampGenerator<T> timestampBuilder;
 
-    public SimpleBlackboardRegion(IBlackboard<U> blackboard, Class<T> type, ITimestampBuilder<U> timestampBuilder) {
+    public SimpleBlackboardRegion(IBlackboard<T> blackboard, Class<V> type, ITimestampGenerator<T> timestampBuilder) {
         this.type = type;
         this.blackboard = blackboard;
         this.timestampBuilder = timestampBuilder;
 
-        listenerSupport = new ListenerSupport<T, U>();
-        contextlessMeasurements = new HashMap<String, Measurement<T, U>>();
-        measurements = new HashMap<String, Measurement<T, U>>();
+        listenerSupport = new ListenerSupport<V, T>();
+        contextlessMeasurements = new HashMap<String, Measurement<V, T>>();
+        measurements = new HashMap<String, Measurement<V, T>>();
         indices = new IndexManager();
         keyBuilder = new KeyBuilder();
     }
 
     @Override
-    public void addMeasurement(T value, Probe<T> probe) {
+    public void addMeasurement(V value, Probe<V> probe) {
         // wrap value into measurement object
-        Measurement<T, U> measurement = new Measurement<T, U>(timestampBuilder.now(), value);
+        Measurement<V, T> measurement = new Measurement<V, T>(value, timestampBuilder.now());
 
         // add measurement
         contextlessMeasurements.put(probe.getId(), measurement);
@@ -57,9 +57,9 @@ public class SimpleBlackboardRegion<T, U> implements IBlackboardRegion<T, U> {
     }
 
     @Override
-    public void addMeasurement(T value, Probe<T> probe, IMeasurementContext... contexts) {
+    public void addMeasurement(V value, Probe<V> probe, IMeasurementContext... contexts) {
         // wrap value into measurement object
-        Measurement<T, U> measurement = new Measurement<T, U>(timestampBuilder.now(), value);
+        Measurement<V, T> measurement = new Measurement<V, T>(value, timestampBuilder.now());
 
         // create composite key
         String key = keyBuilder.createKey(probe, contexts);
@@ -75,8 +75,8 @@ public class SimpleBlackboardRegion<T, U> implements IBlackboardRegion<T, U> {
     }
 
     @Override
-    public Measurement<T, U> getLatestMeasurement(Probe<T> probe) {
-        Measurement<T, U> measurement = contextlessMeasurements.get(probe.getId());
+    public Measurement<V, T> getLatestMeasurement(Probe<V> probe) {
+        Measurement<V, T> measurement = contextlessMeasurements.get(probe.getId());
         if (measurement != null) {
             return measurement;
         } else {
@@ -85,11 +85,11 @@ public class SimpleBlackboardRegion<T, U> implements IBlackboardRegion<T, U> {
     }
 
     @Override
-    public Measurement<T, U> getLatestMeasurement(Probe<T> probe, IMeasurementContext... contexts) {
+    public Measurement<V, T> getLatestMeasurement(Probe<V> probe, IMeasurementContext... contexts) {
         // create composite key
         String key = keyBuilder.createKey(probe, contexts);
 
-        Measurement<T, U> measurement = measurements.get(key);
+        Measurement<V, T> measurement = measurements.get(key);
         if (measurement != null) {
             return measurement;
         } else {
@@ -118,7 +118,7 @@ public class SimpleBlackboardRegion<T, U> implements IBlackboardRegion<T, U> {
     }
 
     @Override
-    public void deleteMeasurement(Probe<T> probe, IMeasurementContext... contexts) {
+    public void deleteMeasurement(Probe<V> probe, IMeasurementContext... contexts) {
         // create composite key
         String key = keyBuilder.createKey(probe, contexts);
 
@@ -127,22 +127,22 @@ public class SimpleBlackboardRegion<T, U> implements IBlackboardRegion<T, U> {
     }
 
     @Override
-    public void addMeasurementListener(IBlackboardListener<T, U> l) {
+    public void addMeasurementListener(IBlackboardListener<V, T> l) {
         listenerSupport.addMeasurementListener(l);
     }
 
     @Override
-    public void addMeasurementListener(IBlackboardListener<T, U> l, Probe<T> probe) {
+    public void addMeasurementListener(IBlackboardListener<V, T> l, Probe<V> probe) {
         listenerSupport.addMeasurementListener(l, probe);
     }
 
     @Override
-    public void removeMeasurementListener(IBlackboardListener<T, U> l) {
+    public void removeMeasurementListener(IBlackboardListener<V, T> l) {
         listenerSupport.removeMeasurementListener(l);
     }
 
     @Override
-    public Class<T> getGenericType() {
+    public Class<V> getGenericType() {
         return type;
     }
 

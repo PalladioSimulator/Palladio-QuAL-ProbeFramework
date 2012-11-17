@@ -5,11 +5,11 @@ import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
 
-public interface IBlackboardListener<T, U> {
+public interface IBlackboardListener<V, T> {
 
-    public void measurementArrived(IBlackboard<U> blackboard, Measurement<T, U> measurement, Probe<T> probe,
+    public void measurementArrived(IBlackboard<T> blackboard, Measurement<V, T> measurement, Probe<V> probe,
             IMeasurementContext... contexts);
 
-    public Class<T> getGenericType();
+    public Class<V> getGenericType();
 
 }
