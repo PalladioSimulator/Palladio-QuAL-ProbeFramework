@@ -7,16 +7,13 @@ import edu.kit.ipd.sdq.probespec.DoubleProbe;
 import edu.kit.ipd.sdq.probespec.IntegerProbe;
 import edu.kit.ipd.sdq.probespec.Probe;
 import edu.kit.ipd.sdq.probespec.framework.ProbeFactory;
-import edu.kit.ipd.sdq.probespec.framework.ProbeSpecContext;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardFactory;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardType;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.concurrent.ThreadManager;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
 import edu.kit.ipd.sdq.probespec.java.DifferenceCalculator;
-import edu.kit.ipd.sdq.probespec.java.JavaTimestampBuilder;
+import edu.kit.ipd.sdq.probespec.java.JavaProbeSpecContext;
 import edu.kit.ipd.sdq.probespec.java.PlusOneCalculator;
 
 public class APIExample {
@@ -30,10 +27,7 @@ public class APIExample {
         LoggingUtils.configureLogging();
 
         // initialize ProbeSpec
-        ThreadManager m = new ThreadManager();
-        IBlackboard<Long> bb = BlackboardFactory.createBlackboard(BlackboardType.CONCURRENT,
-                new JavaTimestampBuilder(), m);
-        ProbeSpecContext<Long> ctx = new ProbeSpecContext<Long>(bb);
+        JavaProbeSpecContext ctx = new JavaProbeSpecContext(BlackboardType.CONCURRENT);
 
         // register a listener for Integer measurements
         ctx.getBlackboard().addMeasurementListener(new PrintMeasurementsListener());
@@ -65,8 +59,8 @@ public class APIExample {
         long diff = t2 - t1;
 
         System.out.println("Took " + diff / (1000 * 1000) + " ms.");
-
-        m.stopThreads();
+        
+        ctx.getThreadManager().stopThreads();
 
         // TODO: support probe.addMeasurement() ?
     }

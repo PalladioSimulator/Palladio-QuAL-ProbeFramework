@@ -3,6 +3,7 @@ package edu.kit.ipd.sdq.probespec.framework;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardFactory;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardType;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.concurrent.ThreadManager;
 import edu.kit.ipd.sdq.probespec.framework.calculators.BindingContext;
 
 public class ProbeSpecContext<U> {
@@ -11,12 +12,15 @@ public class ProbeSpecContext<U> {
 
     private BindingContext<U> bindingContext;
 
+    private ThreadManager threadManager;
+
     public ProbeSpecContext(ITimestampGenerator<U> timestampBuilder) {
-        this(BlackboardFactory.createBlackboard(BlackboardType.SIMPLE, timestampBuilder, null));
+        this(timestampBuilder, BlackboardType.SIMPLE);
     }
 
-    public ProbeSpecContext(IBlackboard<U> blackboard) {
-        this.blackboard = blackboard;
+    public ProbeSpecContext(ITimestampGenerator<U> timestampBuilder, BlackboardType blackboardType) {
+        this.threadManager = new ThreadManager();
+        this.blackboard = BlackboardFactory.createBlackboard(blackboardType, timestampBuilder, threadManager);
         this.bindingContext = new BindingContext<U>(blackboard);
     }
 
@@ -26,6 +30,10 @@ public class ProbeSpecContext<U> {
 
     public BindingContext<U> getBindingContext() {
         return bindingContext;
+    }
+
+    public ThreadManager getThreadManager() {
+        return threadManager;
     }
 
 }
