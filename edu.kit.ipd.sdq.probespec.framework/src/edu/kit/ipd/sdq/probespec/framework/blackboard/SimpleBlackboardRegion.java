@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import edu.kit.ipd.sdq.probespec.Probe;
 import edu.kit.ipd.sdq.probespec.framework.ITimestampGenerator;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.index.IndexManager;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardConsumer;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.ListenerSupport;
 
@@ -128,18 +129,24 @@ public class SimpleBlackboardRegion<V, T> implements IBlackboardRegion<V, T> {
 
     @Override
     public void addMeasurementListener(IBlackboardListener<V, T> l) {
-        listenerSupport.addMeasurementListener(l);
+        listenerSupport.addMeasurementListener(blackboard, l);
     }
 
     @Override
-    public void addMeasurementListener(IBlackboardListener<V, T> l, Probe<V> probe) {
-        listenerSupport.addMeasurementListener(l, probe);
+    public void addMeasurementListener(IBlackboardConsumer<V, T> l, Probe<V> probe) {
+        listenerSupport.addMeasurementListener(blackboard, l, probe);
     }
-
+    
     @Override
     public void removeMeasurementListener(IBlackboardListener<V, T> l) {
         listenerSupport.removeMeasurementListener(l);
     }
+
+    @Override
+    public void removeMeasurementListener(IBlackboardConsumer<V, T> l) {
+        listenerSupport.removeMeasurementListener(l);
+    }
+    
 
     @Override
     public Class<V> getGenericType() {

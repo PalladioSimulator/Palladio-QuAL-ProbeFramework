@@ -1,6 +1,7 @@
 package edu.kit.ipd.sdq.probespec.framework.calculators.binary;
 
 import edu.kit.ipd.sdq.probespec.Probe;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.ProbeMeasurementsProxy;
 import edu.kit.ipd.sdq.probespec.framework.calculators.AbstractCalculator;
 
 public abstract class AbstractBinaryCalculator<IN1, IN2, OUT, T> extends AbstractCalculator<OUT> implements
@@ -11,14 +12,25 @@ public abstract class AbstractBinaryCalculator<IN1, IN2, OUT, T> extends Abstrac
     private Class<IN2> in2Class;
 
     private Class<OUT> outClass;
+    
+    private ProbeMeasurementsProxy<IN1, T> proxy1;
+    
+    private ProbeMeasurementsProxy<IN2, T> proxy2;
 
-    public AbstractBinaryCalculator(Probe<OUT> boundedProbe, Class<IN1> in1Class, Class<IN2> in2Class,
+    public AbstractBinaryCalculator(Probe<OUT> derivedProbe, Class<IN1> in1Class, Class<IN2> in2Class,
             Class<OUT> outClass) {
-        super(boundedProbe);
+        super(derivedProbe);
         this.in1Class = in1Class;
         this.in2Class = in2Class;
         this.outClass = outClass;
     }
+
+    @Override
+    public OUT calculate() {
+        return calculate(proxy1, proxy2);
+    }
+    
+    public abstract OUT calculate(ProbeMeasurementsProxy<IN1, T> proxy1, ProbeMeasurementsProxy<IN2, T> proxy2);
 
     @Override
     public Class<IN1> getIn1Class() {
@@ -33,6 +45,16 @@ public abstract class AbstractBinaryCalculator<IN1, IN2, OUT, T> extends Abstrac
     @Override
     public Class<OUT> getOutClass() {
         return outClass;
+    }
+    
+    @Override
+    public void setFirstMeasurementsProxy(ProbeMeasurementsProxy<IN1, T> proxy) {
+        proxy1 = proxy;
+    }
+
+    @Override
+    public void setSecondMeasurementsProxy(ProbeMeasurementsProxy<IN2, T> proxy) {
+        proxy2 = proxy;
     }
 
 }

@@ -1,17 +1,15 @@
 package edu.kit.ipd.sdq.probespec.framework.calculators.binary;
 
-import edu.kit.ipd.sdq.probespec.Probe;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.ProbeMeasurementsProxy;
+import edu.kit.ipd.sdq.probespec.framework.calculators.ICalculator;
 
-
-public interface IBinaryCalculator<IN1, IN2, OUT, T> {
-
-    public OUT calculate(IN1 firstProbe, IN2 secondProbe);
+public interface IBinaryCalculator<IN1, IN2, OUT, T> extends ICalculator<OUT> {
     
-    public void firstMeasurementArrived(Measurement<IN1, T> measurement, Probe<IN1> probe, IBlackboard<T> blackboard);
-
-    public void secondMeasurementArrived(Measurement<IN2, T> measurement, Probe<IN2> probe, IBlackboard<T> blackboard);
+    public void setFirstMeasurementsProxy(ProbeMeasurementsProxy<IN1, T> proxy);
+    
+    public void setSecondMeasurementsProxy(ProbeMeasurementsProxy<IN2, T> proxy);
+    
+    public OUT calculate();
 
     public Class<IN1> getIn1Class();
 

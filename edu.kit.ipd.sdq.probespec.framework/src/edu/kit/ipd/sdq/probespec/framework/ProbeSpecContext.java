@@ -28,6 +28,8 @@ public class ProbeSpecContext<U> {
     }
 
     public ProbeSpecContext(ITimestampGenerator<U> timestampBuilder, BlackboardType blackboardType) {
+        logger.info("Initialising ProbeSpecification with " + blackboardType.toString() + " blackboard...");
+        
         this.blackboardType = blackboardType;
         this.threadManager = new ThreadManager();
         this.blackboard = BlackboardFactory.createBlackboard(blackboardType, timestampBuilder, threadManager);
@@ -56,8 +58,10 @@ public class ProbeSpecContext<U> {
         for (IBindableCalculator c : unboundCalculators) {
             logger.warn("Encountered unbound calculator: " + c);
         }
-        
+
         threadManager.stopThreads();
+        
+        logger.info("Shut down ProbeSpecification");
     }
 
 }

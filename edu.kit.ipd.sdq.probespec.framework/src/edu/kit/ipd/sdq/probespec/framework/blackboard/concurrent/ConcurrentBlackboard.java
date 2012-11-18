@@ -11,6 +11,7 @@ import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardType;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardConsumer;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
 
 public class ConcurrentBlackboard<T> implements IBlackboard<T> {
@@ -80,7 +81,7 @@ public class ConcurrentBlackboard<T> implements IBlackboard<T> {
     }
 
     @Override
-    public <V> void addMeasurementListener(IBlackboardListener<V, T> l, Probe<V> probe) {
+    public <V> void addMeasurementListener(IBlackboardConsumer<V, T> l, Probe<V> probe) {
         delegatee.addMeasurementListener(l, probe);
     }
 
@@ -89,6 +90,11 @@ public class ConcurrentBlackboard<T> implements IBlackboard<T> {
         delegatee.addMeasurementListener(l);
     }
 
+    @Override
+    public <V> void removeMeasurementListener(IBlackboardConsumer<V, T> l) {
+        delegatee.removeMeasurementListener(l);
+    }
+    
     @Override
     public <V> void removeMeasurementListener(IBlackboardListener<V, T> l) {
         delegatee.removeMeasurementListener(l);

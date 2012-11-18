@@ -7,8 +7,8 @@ import edu.kit.ipd.sdq.probespec.DoubleProbe;
 import edu.kit.ipd.sdq.probespec.IntegerProbe;
 import edu.kit.ipd.sdq.probespec.Probe;
 import edu.kit.ipd.sdq.probespec.framework.ProbeFactory;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.ProbeMeasurementsProxy;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardType;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.concurrent.ConcurrentBlackboard;
@@ -42,7 +42,7 @@ public class APIExample {
         long t1 = System.nanoTime();
 
         // initialize ProbeSpec
-        JavaProbeSpecContext ps = new JavaProbeSpecContext(BlackboardType.CONCURRENT);
+        JavaProbeSpecContext ps = new JavaProbeSpecContext(BlackboardType.SIMPLE);
 
         // register a listener for Integer measurements
         ps.addMeasurementListener(new PrintMeasurementsListener());
@@ -52,7 +52,7 @@ public class APIExample {
         ps.addCalculator(new DifferenceCalculator(differenceProbe)).bind(plusOneProbe, thirdProbe);
 
         // create an unbound calculator, which should raise a warning
-        ps.addCalculator(new PlusOneCalculator(plusOneProbe));
+        // ps.addCalculator(new PlusOneCalculator(plusOneProbe));
 
         // generate some dummy measurements for demonstration purposes
         for (int i = 0; i < 5; i++) {
@@ -80,11 +80,12 @@ public class APIExample {
     }
 
     private static class PrintMeasurementsListener implements IBlackboardListener<Integer, Long> {
-
+        
         @Override
-        public void measurementArrived(IBlackboard<Long> blackboard, Measurement<Integer, Long> measurement,
-                Probe<Integer> probe, IMeasurementContext... contexts) {
-            logger.info("Encountered " + measurement + " for probe " + probe.getId());
+        public void measurementArrived(Measurement<Integer, Long> measurement, Probe<Integer> probe,
+                IMeasurementContext... contexts) {
+            logger.info("Encountered " + measurement + " for probe "
+                    + probe.getName());
         }
 
         @Override

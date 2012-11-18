@@ -1,15 +1,14 @@
 package edu.kit.ipd.sdq.probespec.framework.calculators.unary;
 
-import edu.kit.ipd.sdq.probespec.Probe;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.ProbeMeasurementsProxy;
+import edu.kit.ipd.sdq.probespec.framework.calculators.ICalculator;
 
-public interface IUnaryCalculator<IN, OUT, T> {
+public interface IUnaryCalculator<IN, OUT, T> extends ICalculator<OUT> {
 
-    public OUT calculate(IN p);
+    public void setMeasurementsProxy(ProbeMeasurementsProxy<IN, T> blackboard);
     
-    public void measurementArrived(Measurement<IN, T> measurement, Probe<IN> probe, IBlackboard<T> blackboard);
-
+    public OUT calculate();
+    
     public Class<IN> getInClass();
 
     public Class<OUT> getOutClass();

@@ -3,10 +3,10 @@ package edu.kit.ipd.sdq.probespec.framework.calculators.binary;
 import org.apache.log4j.Logger;
 
 import edu.kit.ipd.sdq.probespec.Probe;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.ProbeMeasurementsProxy;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementContext;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardConsumer;
 import edu.kit.ipd.sdq.probespec.framework.calculators.IBindableCalculator;
 
 public class BindableBinaryCalculator<IN1, IN2, OUT, T> implements IBindableCalculator {
@@ -15,9 +15,9 @@ public class BindableBinaryCalculator<IN1, IN2, OUT, T> implements IBindableCalc
 
     private IBlackboard<T> blackboard;
 
-    private IBlackboardListener<IN1, T> in1Listener;
+    private IBlackboardConsumer<IN1, T> in1Listener;
 
-    private IBlackboardListener<IN2, T> in2Listener;
+    private IBlackboardConsumer<IN2, T> in2Listener;
 
     private IBinaryCalculator<IN1, IN2, OUT, T> calculator;
 
@@ -51,18 +51,25 @@ public class BindableBinaryCalculator<IN1, IN2, OUT, T> implements IBindableCalc
             logger.warn("Tried to unbind a calculator which has not been bound before: " + calculator);
         }
     }
-    
+
     @Override
     public String toString() {
         return calculator.toString();
     }
 
-    private class Input1Listener implements IBlackboardListener<IN1, T> {
-
+    private class Input1Listener implements IBlackboardConsumer<IN1, T> {
+        
         @Override
-        public void measurementArrived(IBlackboard<T> blackboard, Measurement<IN1, T> measurement, Probe<IN1> probe,
-                IMeasurementContext... contexts) {
-            calculator.firstMeasurementArrived(measurement, probe, blackboard);
+        public void setBlackboardProxy(ProbeMeasurementsProxy<IN1, T> blackboard) {
+            calculator.setFirstMeasurementsProxy(blackboard);
+        }
+        
+        @Override
+        public void measurementArrived(IMeasurementContext... contexts) {
+            OUT result = calculator.calculate();
+            if (result != null) {
+                blackboard.addMeasurement(result, calculator.getDerivedProbe());
+            }
         }
 
         @Override
@@ -72,12 +79,19 @@ public class BindableBinaryCalculator<IN1, IN2, OUT, T> implements IBindableCalc
 
     }
 
-    private class Input2Listener implements IBlackboardListener<IN2, T> {
+    private class Input2Listener implements IBlackboardConsumer<IN2, T> {
 
         @Override
-        public void measurementArrived(IBlackboard<T> blackboard, Measurement<IN2, T> measurement, Probe<IN2> probe,
-                IMeasurementContext... contexts) {
-            calculator.secondMeasurementArrived(measurement, probe, blackboard);
+        public void setBlackboardProxy(ProbeMeasurementsProxy<IN2, T> blackboard) {
+            calculator.setSecondMeasurementsProxy(blackboard);
+        }
+        
+        @Override
+        public void measurementArrived(IMeasurementContext... contexts) {
+            OUT result = calculator.calculate();
+            if (result != null) {
+                blackboard.addMeasurement(result, calculator.getDerivedProbe());
+            }
         }
 
         @Override
