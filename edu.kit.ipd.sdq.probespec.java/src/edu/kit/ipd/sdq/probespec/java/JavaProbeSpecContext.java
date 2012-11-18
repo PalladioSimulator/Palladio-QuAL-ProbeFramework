@@ -7,6 +7,7 @@ import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardType;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardConsumer;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
 import edu.kit.ipd.sdq.probespec.framework.calculators.binary.BindableBinaryCalculator;
 import edu.kit.ipd.sdq.probespec.framework.calculators.binary.IBinaryCalculator;
@@ -56,7 +57,7 @@ public class JavaProbeSpecContext extends ProbeSpecContext<Long> implements IBla
     }
 
     @Override
-    public <V> void addMeasurementListener(IBlackboardListener<V, Long> l, Probe<V> probe) {
+    public <V> void addMeasurementListener(IBlackboardConsumer<V, Long> l, Probe<V> probe) {
         getBlackboard().addMeasurementListener(l, probe);
     }
 
@@ -66,8 +67,13 @@ public class JavaProbeSpecContext extends ProbeSpecContext<Long> implements IBla
     }
 
     @Override
+    public <V> void removeMeasurementListener(IBlackboardConsumer<V, Long> l) {
+        getBlackboard().removeMeasurementListener(l);
+    }
+    
+    @Override
     public <V> void removeMeasurementListener(IBlackboardListener<V, Long> l) {
-        getBlackboard().addMeasurementListener(l);
+        getBlackboard().removeMeasurementListener(l);
     }
 
     public <IN, OUT> BindableUnaryCalculator<IN, OUT, Long> addCalculator(IUnaryCalculator<IN, OUT, Long> calculator) {
@@ -78,4 +84,5 @@ public class JavaProbeSpecContext extends ProbeSpecContext<Long> implements IBla
             IBinaryCalculator<IN1, IN2, OUT, Long> calculator) {
         return getCalculatorRegistry().add(calculator);
     }
+
 }
