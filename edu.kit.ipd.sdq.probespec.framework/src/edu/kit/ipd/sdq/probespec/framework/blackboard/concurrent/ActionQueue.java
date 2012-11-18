@@ -19,7 +19,7 @@ public class ActionQueue implements StoppableRunnable {
     @Override
     public void run() {
         logger.debug("Runnable " + this.getClass().getSimpleName() + " started running");
-        while (keepRunning) {
+        while (keepRunning | !queue.isEmpty()) {
             try {
                 queue.take().execute();
             } catch (InterruptedException e) {

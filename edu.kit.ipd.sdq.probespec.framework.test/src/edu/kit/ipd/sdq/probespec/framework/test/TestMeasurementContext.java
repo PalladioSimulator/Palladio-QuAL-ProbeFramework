@@ -1,100 +1,78 @@
 package edu.kit.ipd.sdq.probespec.framework.test;
 
-import edu.kit.ipd.sdq.probespec.DerivedIntegerProbe;
-import edu.kit.ipd.sdq.probespec.IntegerProbe;
-import edu.kit.ipd.sdq.probespec.framework.ProbeFactory;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardType;
+import java.util.List;
+
+import junit.framework.Assert;
+
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TestName;
+
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementContext;
-import edu.kit.ipd.sdq.probespec.java.DifferenceCalculator;
-import edu.kit.ipd.sdq.probespec.java.JavaProbeSpecContext;
+import edu.kit.ipd.sdq.probespec.framework.test.mockup.AssemblyContext;
 
 public class TestMeasurementContext {
 
-    // @Test
-    public void testOne() {
-        // initialise logging
-        LoggingUtils.configureLogging();
+    private AssemblyContext root;
+    private AssemblyContext child1;
+    private AssemblyContext child2;
+    private AssemblyContext child3;
+    private AssemblyContext childOfChild2;
 
-        // initialize ProbeSpec
-        JavaProbeSpecContext ctx = new JavaProbeSpecContext(BlackboardType.SIMPLE);
+    @Rule
+    public TestName name = new TestName();
 
-        // create two basic probes
-        IntegerProbe startProbe = ProbeFactory.createIntegerProbe("startProbe");
-        IntegerProbe stopProbe = ProbeFactory.createIntegerProbe("stopProbeOne");
-
-        // create a derived probe to calculate the difference between the start and stop probe
-        DerivedIntegerProbe differenceProbe = ProbeFactory.createDerivedIntegerProbe("differenceProbe");
-
-        // bind derived probe
-        ctx.addCalculator(new DifferenceCalculator(differenceProbe)).bind(startProbe, stopProbe);
-
-        // create artificial measurement data
-        IMeasurementContext assCtx = new AssemblyContext("MyAssemblyContext");
-        IMeasurementContext usgCtx = new UsageContext("User1");
-
-        // -------------------
-        long t0 = System.nanoTime();
-
-        IntegerProbe[] probes = new IntegerProbe[100000];
-        for (int i = 0; i < 100000; i++) {
-            probes[i] = ProbeFactory.createIntegerProbe("probe" + i);
-        }
-
-        // -------------------
-        long t1 = System.nanoTime();
-
-        for (int i = 0; i < 100000; i++) {
-            ctx.getBlackboard().addMeasurement(i, probes[i], assCtx, usgCtx);
-        }
-        ctx.getBlackboard().addMeasurement(40, startProbe);
-        ctx.getBlackboard().addMeasurement(50, stopProbe);
-
-        ctx.getBlackboard().addMeasurement(40, startProbe, assCtx, usgCtx);
-
-        // Assert.assertEquals(new Integer(12), ctx.getBlackboard().getLatestMeasurement(startProbe,
-        // usgCtx, assCtx));
-
-        // -------------------
-        long t2 = System.nanoTime();
-
-        ctx.getBlackboard().deleteMeasurements(assCtx);
-
-        // -------------------
-        long t3 = System.nanoTime();
-
-        // ((ConcurrentBlackboard) ctx.getBlackboard()).synchronise();
-        System.gc();
-
-        // -------------------
-        long t4 = System.nanoTime();
-
-        ctx.getBlackboard().deleteMeasurements(assCtx);
-
-        long t5 = System.nanoTime();
-
-        long d0 = (t1 - t0) / (1000 * 1000);
-        long d1 = (t2 - t1) / (1000 * 1000);
-        long d2 = (t3 - t2) / (1000 * 1000);
-        long d3 = (t4 - t3) / (1000 * 1000);
-        long d4 = (t5 - t4) / (1000 * 1000);
-
-        System.out.println("D0: " + d0 + " (created probes)");
-        System.out.println("D1: " + d1 + " (added measurements)");
-        System.out.println("D2: " + d2 + " (deleted measurements)");
-        System.out.println("D3: " + d3 + " (garbage collection; leaving behind dangling weak references)");
-        System.out.println("D4: " + d4 + " (removal of dangling weak references)");
-
-        // Assert.assertEquals(new Integer(40),
-        // ctx.getBlackboard().getLatestMeasurement(differenceProbe));
-
-        // System.out.println(ctx.getBlackboard().getLatestMeasurement(thirdProbe));
-
-        ctx.shutdown();
+    @Before
+    public void before() {
+        root = new AssemblyContext("1");
+        
+        child1 = new AssemblyContext("1.1", root);
+        child2 = new AssemblyContext("1.2", root);
+        child3 = new AssemblyContext("1.3", root);
+        
+        childOfChild2 = new AssemblyContext("1.2.1", child2);
     }
 
-    public static void main(String[] args) {
-        TestMeasurementContext c = new TestMeasurementContext();
-        c.testOne();
+    @Test
+    public void testGetChildren() {
+        // test if root has exactly 3 children: child1, child2, child3
+        List<IMeasurementContext> childsOfRoot = root.getChildren();
+        Assert.assertEquals(3, childsOfRoot.size());
+        Assert.assertTrue(childsOfRoot.contains(child1));
+        Assert.assertTrue(childsOfRoot.contains(child2));
+        Assert.assertTrue(childsOfRoot.contains(child3));
+
+        // test if child1 has no children
+        List<IMeasurementContext> childsOfChild1 = child1.getChildren();
+        Assert.assertEquals(0, childsOfChild1.size());
+
+        // test if child2 has exactly 1 children: childOfChild2
+        List<IMeasurementContext> childsOfChild2 = child2.getChildren();
+        Assert.assertEquals(1, childsOfChild2.size());
+        Assert.assertTrue(childsOfChild2.contains(childOfChild2));
+    }
+    
+    @Test
+    public void testGetParent() {
+        Assert.assertNull(root.getParent());
+        
+        Assert.assertEquals(root, child1.getParent());
+        Assert.assertEquals(root, child2.getParent());
+        Assert.assertEquals(root, child3.getParent());
+        
+        Assert.assertEquals(child2, childOfChild2.getParent());
+    }
+    
+    @Test
+    public void testGetRoot() {
+        Assert.assertEquals(root, root.getRoot());
+        
+        Assert.assertEquals(root, child1.getRoot());
+        Assert.assertEquals(root, child2.getRoot());
+        Assert.assertEquals(root, child3.getRoot());
+        
+        Assert.assertEquals(root, childOfChild2.getRoot());
     }
 
 }

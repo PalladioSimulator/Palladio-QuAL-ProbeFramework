@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.probespec.framework.test;
+package edu.kit.ipd.sdq.probespec.framework.test.example;
 
 import org.apache.log4j.Logger;
 
@@ -12,6 +12,7 @@ import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.concurrent.ConcurrentBlackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
+import edu.kit.ipd.sdq.probespec.framework.test.util.LoggingUtils;
 import edu.kit.ipd.sdq.probespec.java.DifferenceCalculator;
 import edu.kit.ipd.sdq.probespec.java.JavaProbeSpecContext;
 import edu.kit.ipd.sdq.probespec.java.PlusOneCalculator;
@@ -42,7 +43,7 @@ public class APIExample {
         long t1 = System.nanoTime();
 
         // initialize ProbeSpec
-        JavaProbeSpecContext ps = new JavaProbeSpecContext(BlackboardType.SIMPLE);
+        JavaProbeSpecContext ps = new JavaProbeSpecContext(BlackboardType.CONCURRENT);
 
         // register a listener for Integer measurements
         ps.addMeasurementListener(new PrintMeasurementsListener());

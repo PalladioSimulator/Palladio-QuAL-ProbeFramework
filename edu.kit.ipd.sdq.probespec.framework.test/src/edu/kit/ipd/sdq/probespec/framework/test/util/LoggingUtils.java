@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.probespec.framework.test;
+package edu.kit.ipd.sdq.probespec.framework.test.util;
 
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Level;
