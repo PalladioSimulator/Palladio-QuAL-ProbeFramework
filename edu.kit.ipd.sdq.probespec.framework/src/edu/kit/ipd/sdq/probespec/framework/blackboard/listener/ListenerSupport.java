@@ -52,10 +52,14 @@ public class ListenerSupport<V, T> {
         // TODO implement method
         throw new UnsupportedOperationException("Not yet implemented");
     }
-    
+
     public void removeMeasurementListener(IBlackboardListener<V, T> l) {
         // TODO implement method
         throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    public boolean hasConsumers(Probe<V> probe) {
+        return probeListeners.containsKey(probe) && probeListeners.get(probe).size() > 0;
     }
 
 }

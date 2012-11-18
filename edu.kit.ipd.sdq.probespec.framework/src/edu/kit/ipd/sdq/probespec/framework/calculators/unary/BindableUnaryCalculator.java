@@ -3,10 +3,9 @@ package edu.kit.ipd.sdq.probespec.framework.calculators.unary;
 import org.apache.log4j.Logger;
 
 import edu.kit.ipd.sdq.probespec.Probe;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.ProbeMeasurementsProxy;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementContext;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.ProbeMeasurementsProxy;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardConsumer;
 import edu.kit.ipd.sdq.probespec.framework.calculators.IBindableCalculator;
 
@@ -31,11 +30,6 @@ public class BindableUnaryCalculator<IN, OUT, T> implements IBindableCalculator 
     public void bind(Probe<IN> sourceProbe) {
         blackboard.addMeasurementListener(inListener, sourceProbe);
         isBound = true;
-    }
-
-    public void unbind(IBlackboard<T> blackboard) {
-        // TODO
-        throw new UnsupportedOperationException();
     }
 
     @Override

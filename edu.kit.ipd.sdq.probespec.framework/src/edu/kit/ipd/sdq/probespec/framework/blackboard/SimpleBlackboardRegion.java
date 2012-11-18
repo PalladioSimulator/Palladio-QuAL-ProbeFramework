@@ -51,7 +51,11 @@ public class SimpleBlackboardRegion<V, T> implements IBlackboardRegion<V, T> {
         Measurement<V, T> measurement = new Measurement<V, T>(value, timestampBuilder.now());
 
         // add measurement
-        contextlessMeasurements.put(probe.getId(), measurement);
+        if (listenerSupport.hasConsumers(probe)) {
+            contextlessMeasurements.put(probe.getId(), measurement);
+        } else {
+//            logger.debug("Discarding " + measurement + " for probe " + probe.getName());
+        }
 
         // notify listeners
         listenerSupport.notifyMeasurementListeners(blackboard, measurement, probe);
@@ -66,7 +70,11 @@ public class SimpleBlackboardRegion<V, T> implements IBlackboardRegion<V, T> {
         String key = keyBuilder.createKey(probe, contexts);
 
         // store wrapped measurement
-        measurements.put(key, measurement);
+        if (listenerSupport.hasConsumers(probe)) {
+            measurements.put(key, measurement);
+        } else {
+//            logger.debug("Discarding " + measurement + " for probe " + probe.getName());
+        }
 
         // update indices
         indices.add(key, contexts);
@@ -136,7 +144,7 @@ public class SimpleBlackboardRegion<V, T> implements IBlackboardRegion<V, T> {
     public void addMeasurementListener(IBlackboardConsumer<V, T> l, Probe<V> probe) {
         listenerSupport.addMeasurementListener(blackboard, l, probe);
     }
-    
+
     @Override
     public void removeMeasurementListener(IBlackboardListener<V, T> l) {
         listenerSupport.removeMeasurementListener(l);
@@ -146,7 +154,6 @@ public class SimpleBlackboardRegion<V, T> implements IBlackboardRegion<V, T> {
     public void removeMeasurementListener(IBlackboardConsumer<V, T> l) {
         listenerSupport.removeMeasurementListener(l);
     }
-    
 
     @Override
     public Class<V> getGenericType() {

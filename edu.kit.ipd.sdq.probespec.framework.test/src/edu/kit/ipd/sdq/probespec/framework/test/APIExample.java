@@ -7,7 +7,6 @@ import edu.kit.ipd.sdq.probespec.DoubleProbe;
 import edu.kit.ipd.sdq.probespec.IntegerProbe;
 import edu.kit.ipd.sdq.probespec.Probe;
 import edu.kit.ipd.sdq.probespec.framework.ProbeFactory;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.ProbeMeasurementsProxy;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardType;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
@@ -35,6 +34,7 @@ public class APIExample {
         //
         // create some derived probes (without binding them to a calculator for the moment)
         DerivedIntegerProbe plusOneProbe = ProbeFactory.createDerivedIntegerProbe("plusOneProbe");
+        DerivedIntegerProbe plusOneProbeTwo = ProbeFactory.createDerivedIntegerProbe("plusOneProbeTwo");
         DerivedIntegerProbe differenceProbe = ProbeFactory.createDerivedIntegerProbe("differenceProbe");
         //
         // ////////////////////////////////////////////////////////////////////
@@ -49,10 +49,11 @@ public class APIExample {
 
         // now bind each derived probe to exactly one calculator
         ps.addCalculator(new PlusOneCalculator(plusOneProbe)).bind(thirdProbe);
+        ps.addCalculator(new PlusOneCalculator(plusOneProbeTwo)).bind(plusOneProbe);
         ps.addCalculator(new DifferenceCalculator(differenceProbe)).bind(plusOneProbe, thirdProbe);
 
         // create an unbound calculator, which should raise a warning
-        // ps.addCalculator(new PlusOneCalculator(plusOneProbe));
+         ps.addCalculator(new PlusOneCalculator(plusOneProbe));
 
         // generate some dummy measurements for demonstration purposes
         for (int i = 0; i < 5; i++) {
@@ -65,10 +66,10 @@ public class APIExample {
             ((ConcurrentBlackboard<?>) ps.getBlackboard()).synchronise();
         }
 
-        Integer v1 = ps.getLatestMeasurement(plusOneProbe).getValue();
-        Integer v2 = ps.getLatestMeasurement(thirdProbe).getValue();
-        Integer v3 = ps.getLatestMeasurement(differenceProbe).getValue();
-        System.out.println("Calculated difference between " + v1 + " and " + v2 + ": " + v3);
+//        Integer v1 = ps.getLatestMeasurement(plusOneProbe).getValue();
+//        Integer v2 = ps.getLatestMeasurement(thirdProbe).getValue();
+//        Integer v3 = ps.getLatestMeasurement(differenceProbe).getValue();
+//        System.out.println("Calculated difference between " + v1 + " and " + v2 + ": " + v3);
 
         // stop all threads spawned by the ProbeSpec
         ps.shutdown();
