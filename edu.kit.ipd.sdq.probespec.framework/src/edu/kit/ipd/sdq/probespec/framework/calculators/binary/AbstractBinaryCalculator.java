@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.probespec.framework.calculators.binary;
 
-import edu.kit.ipd.sdq.probespec.Probe;
+import edu.kit.ipd.sdq.probespec.DerivedProbe;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.ProbeMeasurementsProxy;
 import edu.kit.ipd.sdq.probespec.framework.calculators.AbstractCalculator;
 
@@ -17,9 +17,9 @@ public abstract class AbstractBinaryCalculator<IN1, IN2, OUT, T> extends Abstrac
     
     private ProbeMeasurementsProxy<IN2, T> proxy2;
 
-    public AbstractBinaryCalculator(Probe<OUT> derivedProbe, Class<IN1> in1Class, Class<IN2> in2Class,
+    public AbstractBinaryCalculator(DerivedProbe<OUT> outputProbe, Class<IN1> in1Class, Class<IN2> in2Class,
             Class<OUT> outClass) {
-        super(derivedProbe);
+        super(outputProbe);
         this.in1Class = in1Class;
         this.in2Class = in2Class;
         this.outClass = outClass;

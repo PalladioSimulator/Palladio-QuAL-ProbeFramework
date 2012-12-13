@@ -1,23 +1,23 @@
 package edu.kit.ipd.sdq.probespec.framework.calculators;
 
-import edu.kit.ipd.sdq.probespec.Probe;
+import edu.kit.ipd.sdq.probespec.DerivedProbe;
 
 public class AbstractCalculator<OUT> implements ICalculator<OUT> {
     
-    private final Probe<OUT> derivedProbe;
+    private final DerivedProbe<OUT> outputProbe;
     
-    public AbstractCalculator(Probe<OUT> derivedProbe) {
-        this.derivedProbe = derivedProbe;
+    public AbstractCalculator(DerivedProbe<OUT> outputProbe) {
+        this.outputProbe = outputProbe;
     }
 
     @Override
-    public Probe<OUT> getDerivedProbe() {
-        return derivedProbe;
+    public DerivedProbe<OUT> getOutputProbe() {
+        return outputProbe;
     }
 
     @Override
     public String toString() {
-        return getClass().getName() + " [derivedProbe=" + getDerivedProbe() + "]";
+        return getClass().getName() + " [outputProbe=" + getOutputProbe() + "]";
     }
     
 }

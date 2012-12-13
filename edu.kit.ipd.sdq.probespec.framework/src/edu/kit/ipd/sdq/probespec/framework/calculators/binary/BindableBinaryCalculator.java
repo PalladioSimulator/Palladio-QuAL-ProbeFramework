@@ -68,7 +68,7 @@ public class BindableBinaryCalculator<IN1, IN2, OUT, T> implements IBindableCalc
         public void measurementArrived(IMeasurementContext... contexts) {
             OUT result = calculator.calculate();
             if (result != null) {
-                blackboard.addMeasurement(result, calculator.getDerivedProbe());
+                blackboard.addMeasurement(result, calculator.getOutputProbe());
             }
         }
 
@@ -90,7 +90,7 @@ public class BindableBinaryCalculator<IN1, IN2, OUT, T> implements IBindableCalc
         public void measurementArrived(IMeasurementContext... contexts) {
             OUT result = calculator.calculate();
             if (result != null) {
-                blackboard.addMeasurement(result, calculator.getDerivedProbe());
+                blackboard.addMeasurement(result, calculator.getOutputProbe());
             }
         }
 

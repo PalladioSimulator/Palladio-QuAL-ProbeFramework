@@ -66,7 +66,7 @@ public class BindableUnaryCalculator<IN, OUT, T> implements IBindableCalculator 
         public void measurementArrived(IMeasurementContext... contexts) {
             OUT result = calculator.calculate();
             if (result != null) {
-                blackboard.addMeasurement(result, calculator.getDerivedProbe());
+                blackboard.addMeasurement(result, calculator.getOutputProbe());
             }
         }
 
