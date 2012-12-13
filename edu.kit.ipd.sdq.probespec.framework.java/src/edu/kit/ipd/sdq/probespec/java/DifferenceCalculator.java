@@ -8,15 +8,19 @@ import edu.kit.ipd.sdq.probespec.framework.calculators.binary.AbstractBinaryCalc
 public class DifferenceCalculator extends AbstractBinaryCalculator<Integer, Integer, Integer, Long> {
 
     public static int count;
-    
+
     public DifferenceCalculator(DerivedProbe<Integer> outputProbe) {
+        // Provide generic class parameters to super class. This is necessary because generic
+        // type parameters are "erased" with compilation, thus making them unavailable at runtime.
+        //
+        // /////////////// IN1-class //// IN2-class ///// OUT-class
         super(outputProbe, Integer.class, Integer.class, Integer.class);
     }
 
     @Override
     public Integer calculate(ProbeMeasurementsProxy<Integer, Long> proxy1, ProbeMeasurementsProxy<Integer, Long> proxy2) {
         count++;
-        
+
         Measurement<Integer, Long> mm1 = proxy1.getLatestMeasurement();
         Measurement<Integer, Long> mm2 = proxy2.getLatestMeasurement();
 
@@ -26,6 +30,5 @@ public class DifferenceCalculator extends AbstractBinaryCalculator<Integer, Inte
             return null;
         }
     }
-    
 
 }

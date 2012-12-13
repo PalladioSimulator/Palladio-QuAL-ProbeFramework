@@ -7,6 +7,10 @@ import edu.kit.ipd.sdq.probespec.framework.calculators.unary.AbstractUnaryCalcul
 public class PlusOneCalculator extends AbstractUnaryCalculator<Integer, Integer, Long> {
 
     public PlusOneCalculator(DerivedProbe<Integer> outputProbe) {
+        // Provide generic class parameters to super class. This is necessary because generic
+        // type parameters are "erased" with compilation, thus making them unavailable at runtime.
+        //
+        // /////////////// IN1-class //// OUT-class
         super(outputProbe, Integer.class, Integer.class);
     }
 
