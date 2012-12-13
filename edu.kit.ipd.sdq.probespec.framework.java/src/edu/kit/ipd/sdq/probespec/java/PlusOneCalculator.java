@@ -1,13 +1,13 @@
 package edu.kit.ipd.sdq.probespec.java;
 
-import edu.kit.ipd.sdq.probespec.Probe;
+import edu.kit.ipd.sdq.probespec.DerivedProbe;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.ProbeMeasurementsProxy;
 import edu.kit.ipd.sdq.probespec.framework.calculators.unary.AbstractUnaryCalculator;
 
 public class PlusOneCalculator extends AbstractUnaryCalculator<Integer, Integer, Long> {
 
-    public PlusOneCalculator(Probe<Integer> derivedProbe) {
-        super(derivedProbe, Integer.class, Integer.class);
+    public PlusOneCalculator(DerivedProbe<Integer> outputProbe) {
+        super(outputProbe, Integer.class, Integer.class);
     }
 
     @Override
