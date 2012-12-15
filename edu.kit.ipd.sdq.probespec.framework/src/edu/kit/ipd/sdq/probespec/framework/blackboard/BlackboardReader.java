@@ -2,21 +2,29 @@ package edu.kit.ipd.sdq.probespec.framework.blackboard;
 
 import edu.kit.ipd.sdq.probespec.Probe;
 
-public class ProbeMeasurementsProxy<V, T> {
+public class BlackboardReader<V, T> implements IBlackboardReader<V, T> {
 
     private Probe<V> probe;
     
     private IBlackboard<T> blackboard;
 
-    public ProbeMeasurementsProxy(Probe<V> probe, IBlackboard<T> blackboard) {
+    public BlackboardReader(Probe<V> probe, IBlackboard<T> blackboard) {
         this.probe = probe;
         this.blackboard = blackboard;
     }
     
+    /* (non-Javadoc)
+     * @see edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboardReader#getLatestMeasurement()
+     */
+    @Override
     public Measurement<V, T> getLatestMeasurement() {
         return blackboard.getLatestMeasurement(probe);
     }
     
+    /* (non-Javadoc)
+     * @see edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboardReader#getLatestMeasurement(edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementContext)
+     */
+    @Override
     public Measurement<V, T> getLatestMeasurement(IMeasurementContext... contexts) {
         return blackboard.getLatestMeasurement(probe, contexts);
     }
@@ -31,6 +39,10 @@ public class ProbeMeasurementsProxy<V, T> {
         blackboard.addMeasurement(value, probe, contexts);
     }
 
+    /* (non-Javadoc)
+     * @see edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboardReader#getProbe()
+     */
+    @Override
     public Probe<V> getProbe() {
         return probe;
     }

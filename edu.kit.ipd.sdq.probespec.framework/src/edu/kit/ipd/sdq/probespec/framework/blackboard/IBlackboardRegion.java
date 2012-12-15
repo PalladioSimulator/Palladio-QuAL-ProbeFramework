@@ -1,7 +1,7 @@
 package edu.kit.ipd.sdq.probespec.framework.blackboard;
 
 import edu.kit.ipd.sdq.probespec.Probe;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardConsumer;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.listener._IBlackboardReader_;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
 
 public interface IBlackboardRegion<V, T> {
@@ -18,11 +18,9 @@ public interface IBlackboardRegion<V, T> {
 
     public void deleteMeasurements(IMeasurementContext context);
 
-    public void addMeasurementListener(IBlackboardConsumer<V, T> l, Probe<V> probe);
+    public void addMeasurementListener(IBlackboardListener<V, T> l, Probe<V> probe);
 
     public void addMeasurementListener(IBlackboardListener<V, T> l);
-
-    public void removeMeasurementListener(IBlackboardConsumer<V, T> l);
     
     public void removeMeasurementListener(IBlackboardListener<V, T> l);
 

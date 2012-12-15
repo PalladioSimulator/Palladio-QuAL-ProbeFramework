@@ -1,11 +1,15 @@
 package edu.kit.ipd.sdq.probespec.java;
 
 import edu.kit.ipd.sdq.probespec.DerivedProbe;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.ProbeMeasurementsProxy;
+import edu.kit.ipd.sdq.probespec.Probe;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboardReader;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.calculators.unary.AbstractUnaryCalculator;
 
 public class PlusOneCalculator extends AbstractUnaryCalculator<Integer, Integer, Long> {
 
+    private IBlackboardReader<Integer, Long> inReader;
+    
     public PlusOneCalculator(DerivedProbe<Integer> outputProbe) {
         // Provide generic class parameters to super class. This is necessary because generic
         // type parameters are "erased" with compilation, thus making them unavailable at runtime.
@@ -15,8 +19,14 @@ public class PlusOneCalculator extends AbstractUnaryCalculator<Integer, Integer,
     }
 
     @Override
-    public Integer calculate(ProbeMeasurementsProxy<Integer, Long> proxy) {
-        return proxy.getLatestMeasurement().getValue() + 1;
+    public void setupBlackboardAccess(IBlackboardReader<Integer, Long> reader) {
+        this.inReader = reader;
+        
+    }
+    
+    @Override
+    public Integer calculate(Probe<?> probe, IMeasurementContext... contexts) {
+        return inReader.getLatestMeasurement().getValue() + 1;
     }
 
 }

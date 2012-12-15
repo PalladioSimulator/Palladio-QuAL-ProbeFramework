@@ -3,10 +3,13 @@ package edu.kit.ipd.sdq.probespec.framework.calculators.unary;
 import org.apache.log4j.Logger;
 
 import edu.kit.ipd.sdq.probespec.Probe;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardReader;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboardReader;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementContext;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.ProbeMeasurementsProxy;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardConsumer;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.listener._IBlackboardReader_;
 import edu.kit.ipd.sdq.probespec.framework.calculators.IBindableCalculator;
 
 public class BindableUnaryCalculator<IN, OUT, T> implements IBindableCalculator {
@@ -15,7 +18,7 @@ public class BindableUnaryCalculator<IN, OUT, T> implements IBindableCalculator 
 
     private IBlackboard<T> blackboard;
 
-    private IBlackboardConsumer<IN, T> inListener;
+    private IBlackboardListener<IN, T> inListener;
 
     private IUnaryCalculator<IN, OUT, T> calculator;
 
@@ -29,6 +32,10 @@ public class BindableUnaryCalculator<IN, OUT, T> implements IBindableCalculator 
 
     public void bind(Probe<IN> sourceProbe) {
         blackboard.addMeasurementListener(inListener, sourceProbe);
+        IBlackboardReader<IN, T> reader1 = blackboard.getReader(sourceProbe);
+        
+        calculator.setupBlackboardAccess(reader1);
+        
         isBound = true;
     }
 
@@ -52,19 +59,13 @@ public class BindableUnaryCalculator<IN, OUT, T> implements IBindableCalculator 
         return calculator.toString();
     }
 
-    protected class ProbeListener implements IBlackboardConsumer<IN, T> {
+    protected class ProbeListener implements IBlackboardListener<IN, T> {
 
-        private ProbeMeasurementsProxy<IN, T> blackboard;
-
-        @Override
-        public void setBlackboardProxy(ProbeMeasurementsProxy<IN, T> blackboard) {
-            this.blackboard = blackboard;
-            calculator.setMeasurementsProxy(blackboard);
-        }
+        private BlackboardReader<IN, T> blackboard;
         
         @Override
-        public void measurementArrived(IMeasurementContext... contexts) {
-            OUT result = calculator.calculate();
+        public void measurementArrived(Measurement<IN, T> measurement, Probe<IN> probe, IMeasurementContext... contexts) {
+            OUT result = calculator.calculate(probe, contexts);
             if (result != null) {
                 blackboard.addMeasurement(result, calculator.getOutputProbe());
             }

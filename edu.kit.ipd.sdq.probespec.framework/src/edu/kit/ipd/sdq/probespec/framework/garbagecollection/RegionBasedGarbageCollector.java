@@ -7,7 +7,7 @@ import org.apache.log4j.Logger;
 
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementContext;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardConsumer;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.listener._IBlackboardReader_;
 
 /**
  * TODO Update documentation!
@@ -15,7 +15,7 @@ import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardConsum
  * A garbage collector for the {@link IBlackboard}. It cleans up obsolete measurements stored at the
  * blackboard.
  * <p>
- * Generally a measurement is obsolete if there are no {@link IBlackboardConsumer}s interested in
+ * Generally a measurement is obsolete if there are no {@link _IBlackboardReader_}s interested in
  * the sample anymore. Assuming that calculators are solely interested in samples from the same
  * region, all samples belonging to a particular region can be cleaned up as soon as it is assured
  * that there will be no new samples within that region.

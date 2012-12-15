@@ -7,7 +7,6 @@ import org.apache.log4j.Logger;
 
 import edu.kit.ipd.sdq.probespec.Probe;
 import edu.kit.ipd.sdq.probespec.framework.ITimestampGenerator;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardConsumer;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
 
 public class SimpleBlackboard<T> implements IBlackboard<T> {
@@ -17,7 +16,7 @@ public class SimpleBlackboard<T> implements IBlackboard<T> {
     private Map<Class<?>, IBlackboardRegion<?, T>> regions;
 
     private ITimestampGenerator<T> timestampBuilder;
-    
+
     public SimpleBlackboard(ITimestampGenerator<T> timestampBuilder) {
         this.regions = new HashMap<Class<?>, IBlackboardRegion<?, T>>();
         this.timestampBuilder = timestampBuilder;
@@ -56,7 +55,7 @@ public class SimpleBlackboard<T> implements IBlackboard<T> {
     }
 
     @Override
-    public <V> void addMeasurementListener(IBlackboardConsumer<V, T> l, Probe<V> probe) {
+    public <V> void addMeasurementListener(IBlackboardListener<V, T> l, Probe<V> probe) {
         createOrFindRegion(probe.getGenericClass()).addMeasurementListener(l, probe);
     }
 
@@ -65,11 +64,6 @@ public class SimpleBlackboard<T> implements IBlackboard<T> {
         createOrFindRegion(l.getGenericType()).addMeasurementListener(l);
     }
 
-    @Override
-    public <V> void removeMeasurementListener(IBlackboardConsumer<V, T> l) {
-        createOrFindRegion(l.getGenericType()).removeMeasurementListener(l);
-    }
-    
     @Override
     public <V> void removeMeasurementListener(IBlackboardListener<V, T> l) {
         createOrFindRegion(l.getGenericType()).removeMeasurementListener(l);
@@ -84,6 +78,11 @@ public class SimpleBlackboard<T> implements IBlackboard<T> {
             logger.debug("Created blackboard region for " + clazz);
         }
         return r;
+    }
+
+    @Override
+    public <V> IBlackboardReader<V, T> getReader(Probe<V> probe) {
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 
 }

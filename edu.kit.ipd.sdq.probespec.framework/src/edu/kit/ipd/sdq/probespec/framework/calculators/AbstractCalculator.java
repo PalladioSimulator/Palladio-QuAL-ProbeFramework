@@ -2,7 +2,7 @@ package edu.kit.ipd.sdq.probespec.framework.calculators;
 
 import edu.kit.ipd.sdq.probespec.DerivedProbe;
 
-public class AbstractCalculator<OUT> implements ICalculator<OUT> {
+public abstract class AbstractCalculator<OUT> implements ICalculator<OUT> {
     
     private final DerivedProbe<OUT> outputProbe;
     
