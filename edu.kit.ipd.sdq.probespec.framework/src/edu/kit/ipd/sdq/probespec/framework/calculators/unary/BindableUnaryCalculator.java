@@ -9,7 +9,6 @@ import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboardReader;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.listener._IBlackboardReader_;
 import edu.kit.ipd.sdq.probespec.framework.calculators.IBindableCalculator;
 
 public class BindableUnaryCalculator<IN, OUT, T> implements IBindableCalculator {
