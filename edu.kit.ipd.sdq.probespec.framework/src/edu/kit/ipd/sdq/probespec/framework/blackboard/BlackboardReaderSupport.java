@@ -13,7 +13,7 @@ public class BlackboardReaderSupport<V, T> {
         openReaderCounter = new HashMap<Probe<?>, Integer>();
     }
 
-    public IBlackboardReader<V, T> getReader(Probe<V> probe, IBlackboard<T> blackboard) {
+    public IBlackboardReader<V, T> getReader(Probe<V> probe, SimpleBlackboardRegion<V, T> region) {
         if (!openReaderCounter.containsKey(probe)) {
             openReaderCounter.put(probe, new Integer(0));
         }
@@ -22,7 +22,7 @@ public class BlackboardReaderSupport<V, T> {
         Integer adjustedCount = openReaderCounter.get(probe) + 1;
         openReaderCounter.put(probe, adjustedCount);
 
-        return new BlackboardReader<V, T>(probe, blackboard);
+        return new BlackboardReader<V, T>(probe, region);
     }
 
     public boolean hasConsumers(Probe<V> probe) {

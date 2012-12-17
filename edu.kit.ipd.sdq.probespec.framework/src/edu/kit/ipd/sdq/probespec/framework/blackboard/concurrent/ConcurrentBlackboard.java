@@ -11,7 +11,6 @@ import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardType;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboardReader;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementContext;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
 
 public class ConcurrentBlackboard<T> implements IBlackboard<T> {
@@ -24,6 +23,7 @@ public class ConcurrentBlackboard<T> implements IBlackboard<T> {
 
     private IBlackboard<T> delegatee;
 
+    // TODO
     private boolean weakConsistency;
 
     public ConcurrentBlackboard(ITimestampGenerator<T> timestampBuilder, ThreadManager threadManager) {
@@ -48,26 +48,6 @@ public class ConcurrentBlackboard<T> implements IBlackboard<T> {
     @Override
     public <V> void addMeasurement(V value, Probe<V> probe, IMeasurementContext... contexts) {
         queue.put(new AddMeasurementAction<V>(value, probe, contexts));
-    }
-
-    @Override
-    public <V> Measurement<V, T> getLatestMeasurement(Probe<V> probe) {
-        if (weakConsistency) {
-            return delegatee.getLatestMeasurement(probe);
-        } else {
-            // TODO
-            throw new UnsupportedOperationException("Not yet implemented");
-        }
-    }
-
-    @Override
-    public <V> Measurement<V, T> getLatestMeasurement(Probe<V> probe, IMeasurementContext... contexts) {
-        if (weakConsistency) {
-            return delegatee.getLatestMeasurement(probe, contexts);
-        } else {
-            // TODO
-            throw new UnsupportedOperationException("Not yet implemented");
-        }
     }
 
     @Override

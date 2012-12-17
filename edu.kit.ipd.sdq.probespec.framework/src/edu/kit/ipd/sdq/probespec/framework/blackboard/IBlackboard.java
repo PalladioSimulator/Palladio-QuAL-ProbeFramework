@@ -11,9 +11,9 @@ public interface IBlackboard<T> {
     
     public <V> IBlackboardReader<V, T> getReader(Probe<V> probe);
     
-    public <V> Measurement<V, T> getLatestMeasurement(Probe<V> probe);
-    
-    public <V> Measurement<V, T> getLatestMeasurement(Probe<V> probe, IMeasurementContext... contexts);
+//    public <V> Measurement<V, T> getLatestMeasurement(Probe<V> probe);
+//    
+//    public <V> Measurement<V, T> getLatestMeasurement(Probe<V> probe, IMeasurementContext... contexts);
     
     public void deleteMeasurements(IMeasurementContext context);
     

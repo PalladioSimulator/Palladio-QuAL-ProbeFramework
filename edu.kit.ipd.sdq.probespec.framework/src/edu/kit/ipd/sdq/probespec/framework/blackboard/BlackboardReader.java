@@ -8,21 +8,21 @@ public class BlackboardReader<V, T> implements IBlackboardReader<V, T> {
 
     private Probe<V> probe;
 
-    private IBlackboard<T> blackboard;
+    private SimpleBlackboardRegion<V, T> blackboardRegion;
 
-    public BlackboardReader(Probe<V> probe, IBlackboard<T> blackboard) {
+    public BlackboardReader(Probe<V> probe, SimpleBlackboardRegion<V, T> blackboardRegion) {
         this.probe = probe;
-        this.blackboard = blackboard;
+        this.blackboardRegion = blackboardRegion;
     }
 
     @Override
     public Measurement<V, T> getLatestMeasurement() {
-        return blackboard.getLatestMeasurement(probe);
+        return blackboardRegion.getLatestMeasurement(probe);
     }
 
     @Override
     public Measurement<V, T> getLatestMeasurement(IMeasurementContext... contexts) {
-        return blackboard.getLatestMeasurement(probe, contexts);
+        return blackboardRegion.getLatestMeasurement(probe, contexts);
     }
     
     @Override
@@ -34,16 +34,6 @@ public class BlackboardReader<V, T> implements IBlackboardReader<V, T> {
             }
         }
         return null;
-    }
-
-    @SuppressWarnings("hiding")
-    public <V> void addMeasurement(V value, Probe<V> probe) {
-        blackboard.addMeasurement(value, probe);
-    }
-
-    @SuppressWarnings("hiding")
-    public <V> void addMeasurement(V value, Probe<V> probe, IMeasurementContext... contexts) {
-        blackboard.addMeasurement(value, probe, contexts);
     }
 
     @Override

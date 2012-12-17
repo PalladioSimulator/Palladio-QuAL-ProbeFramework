@@ -163,7 +163,7 @@ public class SimpleBlackboardRegion<V, T> implements IBlackboardRegion<V, T> {
 
     @Override
     public IBlackboardReader<V, T> getReader(Probe<V> probe) {
-        return readerSupport.getReader(probe, blackboard);
+        return readerSupport.getReader(probe, this);
     }
 
 }

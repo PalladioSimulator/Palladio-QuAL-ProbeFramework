@@ -7,12 +7,11 @@ import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardType;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboardReader;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementContext;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
 import edu.kit.ipd.sdq.probespec.framework.calculators.binary.BinaryCalculatorBinding;
 import edu.kit.ipd.sdq.probespec.framework.calculators.binary.IBinaryCalculator;
-import edu.kit.ipd.sdq.probespec.framework.calculators.unary.UnaryCalculatorBinding;
 import edu.kit.ipd.sdq.probespec.framework.calculators.unary.IUnaryCalculator;
+import edu.kit.ipd.sdq.probespec.framework.calculators.unary.UnaryCalculatorBinding;
 
 public class JavaProbeSpecContext extends ProbeSpecContext<Long> implements IBlackboard<Long> {
 
@@ -34,16 +33,6 @@ public class JavaProbeSpecContext extends ProbeSpecContext<Long> implements IBla
     @Override
     public <V> void addMeasurement(V value, Probe<V> probe, IMeasurementContext... contexts) {
         getBlackboard().addMeasurement(value, probe, contexts);
-    }
-
-    @Override
-    public <V> Measurement<V, Long> getLatestMeasurement(Probe<V> probe) {
-        return getBlackboard().getLatestMeasurement(probe);
-    }
-
-    @Override
-    public <V> Measurement<V, Long> getLatestMeasurement(Probe<V> probe, IMeasurementContext... contexts) {
-        return getBlackboard().getLatestMeasurement(probe, contexts);
     }
 
     @Override

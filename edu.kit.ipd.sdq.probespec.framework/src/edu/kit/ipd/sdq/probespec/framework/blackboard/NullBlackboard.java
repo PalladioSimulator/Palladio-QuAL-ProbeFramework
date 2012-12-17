@@ -26,16 +26,6 @@ public class NullBlackboard<T> implements IBlackboard<T> {
     }
 
     @Override
-    public <V> Measurement<V, T> getLatestMeasurement(Probe<V> probe) {
-        return null;
-    }
-
-    @Override
-    public <V> Measurement<V, T> getLatestMeasurement(Probe<V> probe, IMeasurementContext... contexts) {
-        return null;
-    }
-
-    @Override
     public void deleteMeasurements(IMeasurementContext context) {
         // nothing to do
     }
