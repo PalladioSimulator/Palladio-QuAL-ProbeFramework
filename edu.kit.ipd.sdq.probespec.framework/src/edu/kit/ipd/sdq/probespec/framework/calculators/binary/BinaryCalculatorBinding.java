@@ -71,7 +71,7 @@ public class BinaryCalculatorBinding<IN1, IN2, OUT, T> implements ICalculatorBin
                 IMeasurementContext... contexts) {
             OUT result = calculator.calculate(probe, contexts);
             if (result != null) {
-                blackboard.addMeasurement(result, calculator.getOutputProbe());
+                blackboard.addMeasurement(result, calculator.getOutputProbe(), contexts);
             }
         }
 
@@ -89,7 +89,7 @@ public class BinaryCalculatorBinding<IN1, IN2, OUT, T> implements ICalculatorBin
                 IMeasurementContext... contexts) {
             OUT result = calculator.calculate(probe, contexts);
             if (result != null) {
-                blackboard.addMeasurement(result, calculator.getOutputProbe());
+                blackboard.addMeasurement(result, calculator.getOutputProbe(), contexts);
             }
         }
 

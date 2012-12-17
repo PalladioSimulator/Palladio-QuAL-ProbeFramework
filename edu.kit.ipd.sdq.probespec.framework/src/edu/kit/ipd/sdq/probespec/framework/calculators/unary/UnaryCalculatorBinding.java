@@ -64,7 +64,7 @@ public class UnaryCalculatorBinding<IN, OUT, T> implements ICalculatorBinding {
         public void measurementArrived(Measurement<IN, T> measurement, Probe<IN> probe, IMeasurementContext... contexts) {
             OUT result = calculator.calculate(probe, contexts);
             if (result != null) {
-                blackboard.addMeasurement(result, calculator.getOutputProbe());
+                blackboard.addMeasurement(result, calculator.getOutputProbe(), contexts);
             }
         }
 

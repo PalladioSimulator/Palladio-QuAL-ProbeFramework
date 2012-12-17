@@ -32,7 +32,7 @@ public class TestResponseTimeCalculator {
     public void testResponseTimeCalculator() {
         ProbeSpecContext<Double> ps = new ProbeSpecContext<Double>(new MockupTimestampGenerator(),
                 BlackboardType.SIMPLE);
-        
+
         ps.getBlackboard().addMeasurementListener(new PrintMeasurementsListener());
 
         DoubleProbe startProbe = ProbeFactory.createDoubleProbe("startProbe");
@@ -51,39 +51,39 @@ public class TestResponseTimeCalculator {
         // ////////////////////////////////////
 
         ps.getBlackboard().addMeasurement(12.0, stopProbe, rootCtx);
-        Assert.assertEquals(new Double(2.0), responseTimeReader.getLatestMeasurement().getValue());
+        Assert.assertEquals(new Double(2.0), responseTimeReader.getLatestMeasurement(rootCtx).getValue());
 
         ps.getBlackboard().addMeasurement(14.0, stopProbe, childCtx);
-        Assert.assertEquals(new Double(4.0), responseTimeReader.getLatestMeasurement().getValue());
+        Assert.assertEquals(new Double(4.0), responseTimeReader.getLatestMeasurement(childCtx).getValue());
 
         ps.getBlackboard().addMeasurement(16.0, stopProbe, childOfChildCtx);
-        Assert.assertEquals(new Double(6.0), responseTimeReader.getLatestMeasurement().getValue());
+        Assert.assertEquals(new Double(6.0), responseTimeReader.getLatestMeasurement(childOfChildCtx).getValue());
 
         // ////////////////////////////////////
         ps.getBlackboard().addMeasurement(20.0, startProbe, childCtx);
         // ////////////////////////////////////
 
         ps.getBlackboard().addMeasurement(22.0, stopProbe, rootCtx);
-        Assert.assertEquals(new Double(12.0), responseTimeReader.getLatestMeasurement().getValue());
+        Assert.assertEquals(new Double(12.0), responseTimeReader.getLatestMeasurement(rootCtx).getValue());
 
         ps.getBlackboard().addMeasurement(24.0, stopProbe, childCtx);
-        Assert.assertEquals(new Double(4.0), responseTimeReader.getLatestMeasurement().getValue());
+        Assert.assertEquals(new Double(4.0), responseTimeReader.getLatestMeasurement(childCtx).getValue());
 
         ps.getBlackboard().addMeasurement(26.0, stopProbe, childOfChildCtx);
-        Assert.assertEquals(new Double(6.0), responseTimeReader.getLatestMeasurement().getValue());
+        Assert.assertEquals(new Double(6.0), responseTimeReader.getLatestMeasurement(childOfChildCtx).getValue());
 
         // ////////////////////////////////////
         ps.getBlackboard().addMeasurement(30.0, startProbe, childOfChildCtx);
         // ////////////////////////////////////
 
         ps.getBlackboard().addMeasurement(32.0, stopProbe, rootCtx);
-        Assert.assertEquals(new Double(22.0), responseTimeReader.getLatestMeasurement().getValue());
+        Assert.assertEquals(new Double(22.0), responseTimeReader.getLatestMeasurement(rootCtx).getValue());
 
         ps.getBlackboard().addMeasurement(34.0, stopProbe, childCtx);
-        Assert.assertEquals(new Double(14.0), responseTimeReader.getLatestMeasurement().getValue());
+        Assert.assertEquals(new Double(14.0), responseTimeReader.getLatestMeasurement(childCtx).getValue());
 
         ps.getBlackboard().addMeasurement(36.0, stopProbe, childOfChildCtx);
-        Assert.assertEquals(new Double(6.0), responseTimeReader.getLatestMeasurement().getValue());
+        Assert.assertEquals(new Double(6.0), responseTimeReader.getLatestMeasurement(childOfChildCtx).getValue());
 
         ps.shutdown();
     }
@@ -102,7 +102,8 @@ public class TestResponseTimeCalculator {
         @Override
         public void measurementArrived(Measurement<Double, Double> measurement, Probe<Double> probe,
                 IMeasurementContext... contexts) {
-            System.out.println("Encountered " + measurement + " for probe " + probe.getName() + " in " + MeasurementContextHelper.filter(UsageContext.class, contexts));
+            System.out.println("Encountered " + measurement + " for probe " + probe.getName() + " in "
+                    + MeasurementContextHelper.filter(UsageContext.class, contexts));
         }
 
         @Override
