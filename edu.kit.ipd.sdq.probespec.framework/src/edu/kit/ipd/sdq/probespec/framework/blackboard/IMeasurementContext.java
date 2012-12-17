@@ -10,6 +10,8 @@ public interface IMeasurementContext {
     
     public IMeasurementContext getRoot();
 
+    public boolean isRoot();
+    
     public List<IMeasurementContext> getChildren();
     
 }

@@ -69,6 +69,11 @@ public class SimpleBlackboard<T> implements IBlackboard<T> {
         createOrFindRegion(l.getGenericType()).removeMeasurementListener(l);
     }
 
+    @Override
+    public <V> IBlackboardReader<V, T> getReader(Probe<V> probe) {
+        return createOrFindRegion(probe.getGenericClass()).getReader(probe);
+    }
+    
     private <V> IBlackboardRegion<V, T> createOrFindRegion(Class<V> clazz) {
         @SuppressWarnings("unchecked")
         IBlackboardRegion<V, T> r = (IBlackboardRegion<V, T>) this.regions.get(clazz);
@@ -78,11 +83,6 @@ public class SimpleBlackboard<T> implements IBlackboard<T> {
             logger.debug("Created blackboard region for " + clazz);
         }
         return r;
-    }
-
-    @Override
-    public <V> IBlackboardReader<V, T> getReader(Probe<V> probe) {
-        throw new UnsupportedOperationException("Not yet implemented");
     }
 
 }

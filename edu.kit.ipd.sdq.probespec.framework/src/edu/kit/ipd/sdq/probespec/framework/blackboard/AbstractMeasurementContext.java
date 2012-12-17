@@ -38,6 +38,11 @@ public class AbstractMeasurementContext implements IMeasurementContext {
         }
         return context;
     }
+    
+    @Override
+    public boolean isRoot() {
+        return this == getRoot();
+    }
 
     @Override
     public IMeasurementContext getParent() {
@@ -51,7 +56,7 @@ public class AbstractMeasurementContext implements IMeasurementContext {
         }
         return Collections.unmodifiableList(children);
     }
-
+    
     private void addChildren(AbstractMeasurementContext context) {
         if (children == null) {
             children = new ArrayList<IMeasurementContext>();
@@ -59,4 +64,9 @@ public class AbstractMeasurementContext implements IMeasurementContext {
         children.add(context);
     }
 
+    @Override
+    public String toString() {
+        return "MeasurementContext [id=" + id + ", parent=" + parent + "]";
+    }
+    
 }

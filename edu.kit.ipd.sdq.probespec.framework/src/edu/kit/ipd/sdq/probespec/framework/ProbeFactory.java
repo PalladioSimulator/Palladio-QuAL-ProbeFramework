@@ -1,5 +1,6 @@
 package edu.kit.ipd.sdq.probespec.framework;
 
+import edu.kit.ipd.sdq.probespec.DerivedDoubleProbe;
 import edu.kit.ipd.sdq.probespec.DerivedIntegerProbe;
 import edu.kit.ipd.sdq.probespec.DoubleProbe;
 import edu.kit.ipd.sdq.probespec.IntegerProbe;
@@ -60,6 +61,18 @@ public class ProbeFactory {
 
     public static <I> DerivedIntegerProbe createDerivedIntegerProbe(String id, String name) {
         DerivedIntegerProbe p = probespecFactory.eINSTANCE.createDerivedIntegerProbe();
+        p.setId(id);
+        p.setName(name);
+
+        return p;
+    }
+    
+    public static <I> DerivedDoubleProbe createDerivedDoubleProbe(String id) {
+        return createDerivedDoubleProbe(id, id);
+    }
+
+    public static <I> DerivedDoubleProbe createDerivedDoubleProbe(String id, String name) {
+        DerivedDoubleProbe p = probespecFactory.eINSTANCE.createDerivedDoubleProbe();
         p.setId(id);
         p.setName(name);
 

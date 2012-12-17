@@ -7,3 +7,5 @@ Bundle-Vendor: sdq.ipd.kit.edu
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: edu.kit.ipd.sdq.probespec.framework;bundle-version="2.0.0",
  edu.kit.ipd.sdq.probespec;bundle-version="1.0.0"
+Export-Package: edu.kit.ipd.sdq.probespec.pcm,
+ edu.kit.ipd.sdq.probespec.pcm.contexts

@@ -9,11 +9,11 @@ import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboardReader;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
-import edu.kit.ipd.sdq.probespec.framework.calculators.IBindableCalculator;
+import edu.kit.ipd.sdq.probespec.framework.calculators.ICalculatorBinding;
 
-public class BindableUnaryCalculator<IN, OUT, T> implements IBindableCalculator {
+public class UnaryCalculatorBinding<IN, OUT, T> implements ICalculatorBinding {
 
-    private static final Logger logger = Logger.getLogger(BindableUnaryCalculator.class);
+    private static final Logger logger = Logger.getLogger(UnaryCalculatorBinding.class);
 
     private IBlackboard<T> blackboard;
 
@@ -23,7 +23,7 @@ public class BindableUnaryCalculator<IN, OUT, T> implements IBindableCalculator 
 
     private boolean isBound;
 
-    public BindableUnaryCalculator(IUnaryCalculator<IN, OUT, T> calculator, IBlackboard<T> blackboard) {
+    public UnaryCalculatorBinding(IUnaryCalculator<IN, OUT, T> calculator, IBlackboard<T> blackboard) {
         this.blackboard = blackboard;
         this.calculator = calculator;
         this.inListener = new ProbeListener();
@@ -59,8 +59,6 @@ public class BindableUnaryCalculator<IN, OUT, T> implements IBindableCalculator 
     }
 
     protected class ProbeListener implements IBlackboardListener<IN, T> {
-
-        private BlackboardReader<IN, T> blackboard;
         
         @Override
         public void measurementArrived(Measurement<IN, T> measurement, Probe<IN> probe, IMeasurementContext... contexts) {

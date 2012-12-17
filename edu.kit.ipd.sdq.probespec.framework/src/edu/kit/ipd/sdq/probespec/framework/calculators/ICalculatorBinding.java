@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.probespec.framework.calculators;
 
-public interface IBindableCalculator {
+public interface ICalculatorBinding {
 
     boolean isBound();
     

@@ -50,9 +50,4 @@ public class ListenerSupport<V, T> {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    public boolean hasConsumers(Probe<V> probe) {
-        // TODO move to blackboard!?
-        return probeListeners.containsKey(probe) && probeListeners.get(probe).size() > 0;
-    }
-
 }

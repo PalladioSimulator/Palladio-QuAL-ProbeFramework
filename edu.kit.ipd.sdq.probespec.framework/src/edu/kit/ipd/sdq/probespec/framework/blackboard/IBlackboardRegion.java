@@ -25,4 +25,6 @@ public interface IBlackboardRegion<V, T> {
 
     public Class<V> getGenericType();
 
+    public IBlackboardReader<V, T> getReader(Probe<V> probe);
+
 }

@@ -9,38 +9,46 @@ import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardType;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.concurrent.ThreadManager;
 import edu.kit.ipd.sdq.probespec.framework.calculators.CalculatorRegistry;
-import edu.kit.ipd.sdq.probespec.framework.calculators.IBindableCalculator;
+import edu.kit.ipd.sdq.probespec.framework.calculators.ICalculatorBinding;
 
-public class ProbeSpecContext<U> {
+/**
+ * 
+ * @author Philipp Merkle
+ * 
+ * @param <T>
+ *            the type of timestamps. Must be equal to the the type parameter {@code T} of the
+ *            {@link ITimestampGenerator} to be used.
+ */
+public class ProbeSpecContext<T> {
 
     private static final Logger logger = Logger.getLogger(ProbeSpecContext.class);
 
-    private IBlackboard<U> blackboard;
+    private IBlackboard<T> blackboard;
 
-    private CalculatorRegistry<U> bindingContext;
+    private CalculatorRegistry<T> bindingContext;
 
     private ThreadManager threadManager;
 
     private BlackboardType blackboardType;
 
-    public ProbeSpecContext(ITimestampGenerator<U> timestampBuilder) {
+    public ProbeSpecContext(ITimestampGenerator<T> timestampBuilder) {
         this(timestampBuilder, BlackboardType.SIMPLE);
     }
 
-    public ProbeSpecContext(ITimestampGenerator<U> timestampBuilder, BlackboardType blackboardType) {
+    public ProbeSpecContext(ITimestampGenerator<T> timestampBuilder, BlackboardType blackboardType) {
         logger.info("Initialising ProbeSpecification with " + blackboardType.toString() + " blackboard...");
-        
+
         this.blackboardType = blackboardType;
         this.threadManager = new ThreadManager();
         this.blackboard = BlackboardFactory.createBlackboard(blackboardType, timestampBuilder, threadManager);
-        this.bindingContext = new CalculatorRegistry<U>(blackboard);
+        this.bindingContext = new CalculatorRegistry<T>(blackboard);
     }
 
-    public IBlackboard<U> getBlackboard() {
+    public IBlackboard<T> getBlackboard() {
         return blackboard;
     }
 
-    public CalculatorRegistry<U> getCalculatorRegistry() {
+    public CalculatorRegistry<T> getCalculatorRegistry() {
         return bindingContext;
     }
 
@@ -54,13 +62,13 @@ public class ProbeSpecContext<U> {
 
     public void shutdown() {
         // TODO where to put this check!?
-        List<IBindableCalculator> unboundCalculators = getCalculatorRegistry().getUnboundCalculators();
-        for (IBindableCalculator c : unboundCalculators) {
+        List<ICalculatorBinding> unboundCalculators = getCalculatorRegistry().getUnboundCalculators();
+        for (ICalculatorBinding c : unboundCalculators) {
             logger.warn("Encountered unbound calculator: " + c);
         }
 
         threadManager.stopThreads();
-        
+
         logger.info("Shut down ProbeSpecification");
     }
 

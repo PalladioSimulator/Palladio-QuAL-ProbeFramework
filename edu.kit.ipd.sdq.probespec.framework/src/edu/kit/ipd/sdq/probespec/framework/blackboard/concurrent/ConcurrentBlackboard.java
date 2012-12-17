@@ -97,7 +97,7 @@ public class ConcurrentBlackboard<T> implements IBlackboard<T> {
     
     @Override
     public <V> IBlackboardReader<V, T> getReader(Probe<V> probe) {
-        throw new UnsupportedOperationException("Not yet implemented");
+    	return delegatee.getReader(probe);
     }
 
     public void synchronise() {

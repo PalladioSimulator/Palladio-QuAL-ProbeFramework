@@ -21,6 +21,8 @@ public class SimpleBlackboardRegion<V, T> implements IBlackboardRegion<V, T> {
     private IBlackboard<T> blackboard;
 
     private ListenerSupport<V, T> listenerSupport;
+    
+    private BlackboardReaderSupport<V, T> readerSupport;
 
     private Map<String, Measurement<V, T>> contextlessMeasurements;
 
@@ -38,6 +40,7 @@ public class SimpleBlackboardRegion<V, T> implements IBlackboardRegion<V, T> {
         this.timestampBuilder = timestampBuilder;
 
         listenerSupport = new ListenerSupport<V, T>();
+        readerSupport = new BlackboardReaderSupport<V, T>();
         contextlessMeasurements = new HashMap<String, Measurement<V, T>>();
         measurements = new HashMap<String, Measurement<V, T>>();
         indices = new IndexManager();
@@ -50,7 +53,7 @@ public class SimpleBlackboardRegion<V, T> implements IBlackboardRegion<V, T> {
         Measurement<V, T> measurement = new Measurement<V, T>(value, timestampBuilder.now());
 
         // add measurement
-        if (listenerSupport.hasConsumers(probe)) {
+        if (readerSupport.hasConsumers(probe)) {
             contextlessMeasurements.put(probe.getId(), measurement);
         } else {
 //            logger.debug("Discarding " + measurement + " for probe " + probe.getName());
@@ -69,7 +72,7 @@ public class SimpleBlackboardRegion<V, T> implements IBlackboardRegion<V, T> {
         String key = keyBuilder.createKey(probe, contexts);
 
         // store wrapped measurement
-        if (listenerSupport.hasConsumers(probe)) {
+        if (readerSupport.hasConsumers(probe)) {
             measurements.put(key, measurement);
         } else {
 //            logger.debug("Discarding " + measurement + " for probe " + probe.getName());
@@ -94,6 +97,10 @@ public class SimpleBlackboardRegion<V, T> implements IBlackboardRegion<V, T> {
 
     @Override
     public Measurement<V, T> getLatestMeasurement(Probe<V> probe, IMeasurementContext... contexts) {
+        if(contexts.length == 0) {
+           return getLatestMeasurement(probe);
+        }
+        
         // create composite key
         String key = keyBuilder.createKey(probe, contexts);
 
@@ -152,6 +159,11 @@ public class SimpleBlackboardRegion<V, T> implements IBlackboardRegion<V, T> {
     @Override
     public Class<V> getGenericType() {
         return type;
+    }
+
+    @Override
+    public IBlackboardReader<V, T> getReader(Probe<V> probe) {
+        return readerSupport.getReader(probe, blackboard);
     }
 
 }
