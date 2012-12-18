@@ -11,16 +11,16 @@ import edu.kit.ipd.sdq.probespec.framework.ITimestampGenerator;
 import edu.kit.ipd.sdq.probespec.framework.ProbeFactory;
 import edu.kit.ipd.sdq.probespec.framework.ProbeSpecContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardType;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboardReader;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.MeasurementContextHelper;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContextHelper;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.IBlackboardReader;
 import edu.kit.ipd.sdq.probespec.framework.test.util.LoggingUtils;
 import edu.kit.ipd.sdq.probespec.pcm.ResponseTimeCalculator;
 import edu.kit.ipd.sdq.probespec.pcm.contexts.UsageContext;
 
-public class TestResponseTimeCalculator {
+public class ResponseTimeCalculatorTest {
 
     @BeforeClass
     public static void setup() {

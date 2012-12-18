@@ -7,7 +7,7 @@ import java.util.Iterator;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
-import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementContext;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
 
 public class WeakIndex {
 

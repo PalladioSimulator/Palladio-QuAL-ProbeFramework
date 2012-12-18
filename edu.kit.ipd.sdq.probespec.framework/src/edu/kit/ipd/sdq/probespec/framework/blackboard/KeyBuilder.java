@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import edu.kit.ipd.sdq.probespec.Probe;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
 
 public class KeyBuilder {
 

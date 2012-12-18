@@ -2,8 +2,8 @@ package edu.kit.ipd.sdq.probespec.java;
 
 import edu.kit.ipd.sdq.probespec.DerivedProbe;
 import edu.kit.ipd.sdq.probespec.Probe;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboardReader;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementContext;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.IBlackboardReader;
 import edu.kit.ipd.sdq.probespec.framework.calculators.unary.AbstractUnaryCalculator;
 
 public class PlusOneCalculator extends AbstractUnaryCalculator<Integer, Integer, Long> {

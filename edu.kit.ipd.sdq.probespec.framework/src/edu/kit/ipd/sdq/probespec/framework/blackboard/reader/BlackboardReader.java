@@ -1,8 +1,11 @@
-package edu.kit.ipd.sdq.probespec.framework.blackboard;
+package edu.kit.ipd.sdq.probespec.framework.blackboard.reader;
 
 import java.util.List;
 
 import edu.kit.ipd.sdq.probespec.Probe;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.SimpleBlackboardRegion;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
 
 public class BlackboardReader<V, T> implements IBlackboardReader<V, T> {
 

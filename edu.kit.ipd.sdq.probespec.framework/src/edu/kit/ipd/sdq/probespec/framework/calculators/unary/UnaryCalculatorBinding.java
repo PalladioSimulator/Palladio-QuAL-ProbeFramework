@@ -3,12 +3,12 @@ package edu.kit.ipd.sdq.probespec.framework.calculators.unary;
 import org.apache.log4j.Logger;
 
 import edu.kit.ipd.sdq.probespec.Probe;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardReader;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboardReader;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.BlackboardReader;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.IBlackboardReader;
 import edu.kit.ipd.sdq.probespec.framework.calculators.ICalculatorBinding;
 
 public class UnaryCalculatorBinding<IN, OUT, T> implements ICalculatorBinding {

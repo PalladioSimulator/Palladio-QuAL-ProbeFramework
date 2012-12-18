@@ -1,9 +1,10 @@
-package edu.kit.ipd.sdq.probespec.framework.blackboard;
+package edu.kit.ipd.sdq.probespec.framework.blackboard.reader;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import edu.kit.ipd.sdq.probespec.Probe;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.SimpleBlackboardRegion;
 
 public class BlackboardReaderSupport<V, T> {
 

@@ -6,12 +6,12 @@ import org.junit.Test;
 
 import edu.kit.ipd.sdq.probespec.IntegerProbe;
 import edu.kit.ipd.sdq.probespec.framework.ProbeFactory;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.KeyBuilder;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.test.mockup.AssemblyContext;
 import edu.kit.ipd.sdq.probespec.framework.test.mockup.UsageContext;
 
-public class TestKeyBuilder {
+public class KeyBuilderTest {
 
     @Test
     public void testCreateKey() {

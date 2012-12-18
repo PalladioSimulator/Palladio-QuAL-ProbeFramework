@@ -7,8 +7,8 @@ import java.util.Map;
 
 import edu.kit.ipd.sdq.probespec.Probe;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
 
 public class ListenerSupport<V, T> {
 

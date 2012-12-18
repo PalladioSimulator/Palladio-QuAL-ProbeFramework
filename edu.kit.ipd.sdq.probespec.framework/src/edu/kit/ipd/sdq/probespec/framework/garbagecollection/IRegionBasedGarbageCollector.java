@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.probespec.framework.garbagecollection;
 
-import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementContext;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
 
 /**
  * TODO

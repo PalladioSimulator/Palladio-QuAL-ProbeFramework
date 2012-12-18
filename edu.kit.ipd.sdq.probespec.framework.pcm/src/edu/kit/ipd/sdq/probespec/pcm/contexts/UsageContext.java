@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.probespec.pcm.contexts;
 
-import edu.kit.ipd.sdq.probespec.framework.blackboard.AbstractMeasurementContext;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.context.AbstractMeasurementContext;
 
 public class UsageContext extends AbstractMeasurementContext {
 

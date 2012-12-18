@@ -9,10 +9,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 
-import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementContext;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.test.mockup.AssemblyContext;
 
-public class TestMeasurementContext {
+public class MeasurementContextTest {
 
     private AssemblyContext root;
     private AssemblyContext child1;

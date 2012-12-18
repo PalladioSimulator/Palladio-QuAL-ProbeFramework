@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.probespec.framework.blackboard;
+package edu.kit.ipd.sdq.probespec.framework.blackboard.context;
 
 /**
  * Static helper methods for instances of {@link IMeasurementContext}.

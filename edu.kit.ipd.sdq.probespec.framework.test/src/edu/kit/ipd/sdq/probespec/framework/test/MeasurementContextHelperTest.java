@@ -4,13 +4,13 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.kit.ipd.sdq.probespec.framework.blackboard.AbstractMeasurementContext;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementContext;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.MeasurementContextHelper;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.context.AbstractMeasurementContext;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContextHelper;
 import edu.kit.ipd.sdq.probespec.framework.test.mockup.AssemblyContext;
 import edu.kit.ipd.sdq.probespec.framework.test.mockup.UsageContext;
 
-public class TestMeasurementContextHelper {
+public class MeasurementContextHelperTest {
 
     private AssemblyContext assCtxRoot;
     private AssemblyContext assCtxChild;

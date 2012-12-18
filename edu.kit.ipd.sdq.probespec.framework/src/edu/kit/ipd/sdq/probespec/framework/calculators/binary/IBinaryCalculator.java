@@ -1,7 +1,7 @@
 package edu.kit.ipd.sdq.probespec.framework.calculators.binary;
 
 import edu.kit.ipd.sdq.probespec.Probe;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboardReader;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.IBlackboardReader;
 import edu.kit.ipd.sdq.probespec.framework.calculators.ICalculator;
 
 public interface IBinaryCalculator<IN1, IN2, OUT, T> extends ICalculator<OUT> {

@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.probespec.framework.test.mockup;
 
-import edu.kit.ipd.sdq.probespec.framework.blackboard.AbstractMeasurementContext;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.context.AbstractMeasurementContext;
 
 public class AssemblyContext extends AbstractMeasurementContext {
 

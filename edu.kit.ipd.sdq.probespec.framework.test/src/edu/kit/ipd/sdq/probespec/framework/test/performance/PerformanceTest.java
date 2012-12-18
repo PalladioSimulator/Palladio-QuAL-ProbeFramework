@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.probespec.pcm.test;
+package edu.kit.ipd.sdq.probespec.framework.test.performance;
 
 import org.junit.After;
 import org.junit.Before;
@@ -11,14 +11,14 @@ import edu.kit.ipd.sdq.probespec.DerivedIntegerProbe;
 import edu.kit.ipd.sdq.probespec.IntegerProbe;
 import edu.kit.ipd.sdq.probespec.framework.ProbeFactory;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardType;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementContext;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
+import edu.kit.ipd.sdq.probespec.framework.test.mockup.AssemblyContext;
+import edu.kit.ipd.sdq.probespec.framework.test.mockup.UsageContext;
 import edu.kit.ipd.sdq.probespec.framework.test.util.LoggingUtils;
 import edu.kit.ipd.sdq.probespec.java.DifferenceCalculator;
 import edu.kit.ipd.sdq.probespec.java.JavaProbeSpecContext;
-import edu.kit.ipd.sdq.probespec.pcm.contexts.AssemblyContext;
-import edu.kit.ipd.sdq.probespec.pcm.contexts.UsageContext;
 
-public class TestPerformance {
+public class PerformanceTest {
 
     private JavaProbeSpecContext ps;
 

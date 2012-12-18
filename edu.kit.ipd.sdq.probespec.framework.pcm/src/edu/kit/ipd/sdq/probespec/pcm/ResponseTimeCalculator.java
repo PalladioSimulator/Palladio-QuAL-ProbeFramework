@@ -2,10 +2,10 @@ package edu.kit.ipd.sdq.probespec.pcm;
 
 import edu.kit.ipd.sdq.probespec.DerivedProbe;
 import edu.kit.ipd.sdq.probespec.Probe;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.ILookupStrategy;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.SameOrParentContextLookupStrategy;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.ILookupStrategy;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.SameOrParentContextLookupStrategy;
 import edu.kit.ipd.sdq.probespec.framework.calculators.binary.AbstractBinaryCalculator;
 import edu.kit.ipd.sdq.probespec.pcm.contexts.UsageContext;
 

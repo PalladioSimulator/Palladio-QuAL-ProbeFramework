@@ -2,7 +2,7 @@ package edu.kit.ipd.sdq.probespec.framework.calculators;
 
 import edu.kit.ipd.sdq.probespec.DerivedProbe;
 import edu.kit.ipd.sdq.probespec.Probe;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementContext;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
 
 public interface ICalculator<OUT> {
 
