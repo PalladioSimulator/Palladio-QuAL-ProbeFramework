@@ -74,5 +74,14 @@ public class TestMeasurementContext {
         
         Assert.assertEquals(root, childOfChild2.getRoot());
     }
+    
+    @Test
+    public void testIsRoot() {
+        Assert.assertTrue(root.isRoot());
+        Assert.assertFalse(child1.isRoot());
+        Assert.assertFalse(child2.isRoot());
+        Assert.assertFalse(child3.isRoot());
+        Assert.assertFalse(childOfChild2.isRoot());
+    }
 
 }
