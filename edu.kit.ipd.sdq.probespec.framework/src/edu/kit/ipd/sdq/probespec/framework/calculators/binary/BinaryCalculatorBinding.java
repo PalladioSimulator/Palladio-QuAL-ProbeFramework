@@ -33,15 +33,19 @@ public class BinaryCalculatorBinding<IN1, IN2, OUT, T> implements ICalculatorBin
     }
 
     public void bind(Probe<IN1> in1Probe, Probe<IN2> in2Probe) {
+        // setup binding
         blackboard.addMeasurementListener(in1Listener, in1Probe);
-        IBlackboardReader<IN1, T> reader1 = blackboard.getReader(in1Probe);
         blackboard.addMeasurementListener(in2Listener, in2Probe);
-        IBlackboardReader<IN2, T> reader2 = blackboard.getReader(in2Probe);
-        IBlackboardWriter<OUT> writer = blackboard.getWriter(calculator.getOutputProbe());
-
-        calculator.setupBlackboardAccess(reader1, reader2);
-        calculator.setupBlackboardWriter(writer);
         calculator.setupBinding(in1Probe, in2Probe);
+
+        // setup blackboard reader
+        IBlackboardReader<IN1, T> reader1 = blackboard.getReader(in1Probe);
+        IBlackboardReader<IN2, T> reader2 = blackboard.getReader(in2Probe);
+        calculator.setupBlackboardReader(reader1, reader2);
+
+        // setup blackboard writer
+        IBlackboardWriter<OUT> writer = blackboard.getWriter(calculator.getOutputProbe());
+        calculator.setupBlackboardWriter(writer);
 
         isBound = true;
     }

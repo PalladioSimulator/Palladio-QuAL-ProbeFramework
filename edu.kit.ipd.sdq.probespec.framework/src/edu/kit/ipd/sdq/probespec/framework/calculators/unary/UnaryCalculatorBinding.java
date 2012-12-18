@@ -29,12 +29,17 @@ public class UnaryCalculatorBinding<IN, OUT, T> implements ICalculatorBinding {
         this.inListener = new ProbeListener();
     }
 
-    public void bind(Probe<IN> sourceProbe) {
-        blackboard.addMeasurementListener(inListener, sourceProbe);
-        IBlackboardReader<IN, T> reader = blackboard.getReader(sourceProbe);
-        IBlackboardWriter<OUT> writer = blackboard.getWriter(calculator.getOutputProbe());
+    public void bind(Probe<IN> inProbe) {
+        // setup binding
+        blackboard.addMeasurementListener(inListener, inProbe);
+        calculator.setupBinding(inProbe);
 
-        calculator.setupBlackboardAccess(reader);
+        // setup blackboard reader
+        IBlackboardReader<IN, T> reader = blackboard.getReader(inProbe);
+        calculator.setupBlackboardReader(reader);
+
+        // setup blackboard writer
+        IBlackboardWriter<OUT> writer = blackboard.getWriter(calculator.getOutputProbe());
         calculator.setupBlackboardWriter(writer);
 
         isBound = true;

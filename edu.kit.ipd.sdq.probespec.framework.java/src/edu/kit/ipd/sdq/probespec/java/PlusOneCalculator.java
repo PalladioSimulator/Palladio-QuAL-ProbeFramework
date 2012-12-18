@@ -19,7 +19,7 @@ public class PlusOneCalculator extends AbstractUnaryCalculator<Integer, Integer,
     }
 
     @Override
-    public void setupBlackboardAccess(IBlackboardReader<Integer, Long> reader) {
+    public void setupBlackboardReader(IBlackboardReader<Integer, Long> reader) {
         this.inReader = reader;
 
     }

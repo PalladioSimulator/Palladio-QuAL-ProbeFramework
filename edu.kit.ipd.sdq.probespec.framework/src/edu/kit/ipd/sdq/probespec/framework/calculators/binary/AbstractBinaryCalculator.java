@@ -46,7 +46,7 @@ public abstract class AbstractBinaryCalculator<IN1, IN2, OUT, T> extends Abstrac
     }
 
     @Override
-    public void setupBlackboardAccess(IBlackboardReader<IN1, T> in1Reader, IBlackboardReader<IN2, T> in2Reader) {
+    public void setupBlackboardReader(IBlackboardReader<IN1, T> in1Reader, IBlackboardReader<IN2, T> in2Reader) {
         this.in1Reader = in1Reader;
         this.in2Reader = in2Reader;
     }

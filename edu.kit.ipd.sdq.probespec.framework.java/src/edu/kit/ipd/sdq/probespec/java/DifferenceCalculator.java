@@ -18,7 +18,7 @@ public class DifferenceCalculator extends AbstractBinaryCalculator<Integer, Inte
     }
 
     @Override
-    public void setupBlackboardAccess(IBlackboardReader<Integer, Long> in1Reader,
+    public void setupBlackboardReader(IBlackboardReader<Integer, Long> in1Reader,
             IBlackboardReader<Integer, Long> in2Reader) {
         this.in1Reader = in1Reader;
         this.in2Reader = in2Reader;
