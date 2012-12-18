@@ -32,16 +32,6 @@ public class SimpleBlackboard<T> implements IBlackboard<T> {
         createOrFindRegion(probe.getGenericClass()).addMeasurement(value, probe, contexts);
     }
 
-//    @Override
-//    public <V> Measurement<V, T> getLatestMeasurement(Probe<V> probe) {
-//        return createOrFindRegion(probe.getGenericClass()).getLatestMeasurement(probe);
-//    }
-//
-//    @Override
-//    public <V> Measurement<V, T> getLatestMeasurement(Probe<V> probe, IMeasurementContext... contexts) {
-//        return createOrFindRegion(probe.getGenericClass()).getLatestMeasurement(probe, contexts);
-//    }
-
     @Override
     public void deleteMeasurements(IMeasurementContext context) {
         for (IBlackboardRegion<?, T> r : regions.values()) {
