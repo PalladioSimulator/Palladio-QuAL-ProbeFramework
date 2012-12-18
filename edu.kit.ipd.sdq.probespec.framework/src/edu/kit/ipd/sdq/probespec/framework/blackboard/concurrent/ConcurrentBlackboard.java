@@ -9,6 +9,8 @@ import edu.kit.ipd.sdq.probespec.framework.ITimestampGenerator;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardFactory;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardType;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementMetadata;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.MeasurementMetadata;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.IBlackboardReader;
@@ -46,8 +48,18 @@ public class ConcurrentBlackboard<T> implements IBlackboard<T> {
     }
 
     @Override
+    public <V> void addMeasurement(V value, Probe<V> probe, IMeasurementMetadata metadata) {
+        queue.put(new AddMeasurementAction<V>(value, probe, metadata));
+    }
+
+    @Override
     public <V> void addMeasurement(V value, Probe<V> probe, IMeasurementContext... contexts) {
         queue.put(new AddMeasurementAction<V>(value, probe, contexts));
+    }
+
+    @Override
+    public <V> void addMeasurement(V value, Probe<V> probe, IMeasurementMetadata metadata, IMeasurementContext... contexts) {
+        queue.put(new AddMeasurementAction<V>(value, probe, metadata, contexts));
     }
 
     @Override
@@ -69,15 +81,15 @@ public class ConcurrentBlackboard<T> implements IBlackboard<T> {
     public <V> void addMeasurementListener(IBlackboardListener<V, T> l) {
         delegatee.addMeasurementListener(l);
     }
-    
+
     @Override
     public <V> void removeMeasurementListener(IBlackboardListener<V, T> l) {
         delegatee.removeMeasurementListener(l);
     }
-    
+
     @Override
     public <V> IBlackboardReader<V, T> getReader(Probe<V> probe) {
-    	return delegatee.getReader(probe);
+        return delegatee.getReader(probe);
     }
 
     public void synchronise() {
@@ -113,20 +125,27 @@ public class ConcurrentBlackboard<T> implements IBlackboard<T> {
 
         private Probe<V> probe;
 
+        private IMeasurementMetadata metadata;
+
         private IMeasurementContext[] contexts;
 
         public AddMeasurementAction(V value, Probe<V> probe, IMeasurementContext... contexts) {
+            this(value, probe, IMeasurementMetadata.EMPTY_METADATA, contexts);
+        }
+
+        public AddMeasurementAction(V value, Probe<V> probe, IMeasurementMetadata metadata, IMeasurementContext... contexts) {
             this.value = value;
             this.probe = probe;
+            this.metadata = metadata;
             this.contexts = contexts;
         }
 
         @Override
         public void execute() {
             if (contexts.length == 0) {
-                delegatee.addMeasurement(value, probe);
+                delegatee.addMeasurement(value, probe, metadata);
             } else {
-                delegatee.addMeasurement(value, probe, contexts);
+                delegatee.addMeasurement(value, probe, metadata, contexts);
             }
         }
 

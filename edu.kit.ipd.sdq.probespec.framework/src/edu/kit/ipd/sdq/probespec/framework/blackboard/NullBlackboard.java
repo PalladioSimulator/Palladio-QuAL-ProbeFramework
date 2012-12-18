@@ -23,7 +23,17 @@ public class NullBlackboard<T> implements IBlackboard<T> {
     }
 
     @Override
+    public <V> void addMeasurement(V value, Probe<V> probe, IMeasurementMetadata metadata) {
+        // nothing to do
+    }
+
+    @Override
     public <V> void addMeasurement(V value, Probe<V> probe, IMeasurementContext... contexts) {
+        // nothing to do
+    }
+
+    @Override
+    public <V> void addMeasurement(V value, Probe<V> probe, IMeasurementMetadata metadata, IMeasurementContext... contexts) {
         // nothing to do
     }
 

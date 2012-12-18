@@ -42,7 +42,6 @@ public class SimpleBlackboardRegion<V, T> implements IBlackboardRegion<V, T> {
 
         listenerSupport = new ListenerSupport<V, T>();
         readerSupport = new BlackboardReaderSupport<V, T>();
-        // contextlessMeasurements = new HashMap<String, Measurement<V, T>>();
         measurements = new HashMap<String, Measurement<V, T>>();
         indices = new IndexManager();
         keyBuilder = new KeyBuilder();
@@ -50,6 +49,11 @@ public class SimpleBlackboardRegion<V, T> implements IBlackboardRegion<V, T> {
 
     @Override
     public void addMeasurement(V value, Probe<V> probe, IMeasurementContext... contexts) {
+        addMeasurement(value, probe, IMeasurementMetadata.EMPTY_METADATA, contexts);
+    }
+
+    @Override
+    public void addMeasurement(V value, Probe<V> probe, IMeasurementMetadata metadata, IMeasurementContext... contexts) {
         // wrap value into measurement object
         Measurement<V, T> measurement = new Measurement<V, T>(value, timestampBuilder.now());
 

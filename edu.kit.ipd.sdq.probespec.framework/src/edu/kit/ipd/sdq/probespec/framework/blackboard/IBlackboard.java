@@ -8,8 +8,12 @@ import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.IBlackboardReader;
 public interface IBlackboard<T> {
 
     public <V> void addMeasurement(V value, Probe<V> probe);
+    
+    public <V> void addMeasurement(V value, Probe<V> probe, IMeasurementMetadata metadata);
 
     public <V> void addMeasurement(V value, Probe<V> probe, IMeasurementContext... contexts);
+    
+    public <V> void addMeasurement(V value, Probe<V> probe, IMeasurementMetadata metadata, IMeasurementContext... contexts);
     
     public <V> IBlackboardReader<V, T> getReader(Probe<V> probe);
     

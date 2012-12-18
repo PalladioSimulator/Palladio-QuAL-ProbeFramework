@@ -30,8 +30,18 @@ public class SimpleBlackboard<T> implements IBlackboard<T> {
     }
 
     @Override
+    public <V> void addMeasurement(V value, Probe<V> probe, IMeasurementMetadata metadata) {
+        createOrFindRegion(probe.getGenericClass()).addMeasurement(value, probe, metadata);
+    }
+
+    @Override
     public <V> void addMeasurement(V value, Probe<V> probe, IMeasurementContext... contexts) {
         createOrFindRegion(probe.getGenericClass()).addMeasurement(value, probe, contexts);
+    }
+
+    @Override
+    public <V> void addMeasurement(V value, Probe<V> probe, IMeasurementMetadata metadata, IMeasurementContext... contexts) {
+        createOrFindRegion(probe.getGenericClass()).addMeasurement(value, probe, metadata, contexts);
     }
 
     @Override
@@ -65,7 +75,7 @@ public class SimpleBlackboard<T> implements IBlackboard<T> {
     public <V> IBlackboardReader<V, T> getReader(Probe<V> probe) {
         return createOrFindRegion(probe.getGenericClass()).getReader(probe);
     }
-    
+
     private <V> IBlackboardRegion<V, T> createOrFindRegion(Class<V> clazz) {
         @SuppressWarnings("unchecked")
         IBlackboardRegion<V, T> r = (IBlackboardRegion<V, T>) this.regions.get(clazz);

@@ -5,6 +5,7 @@ import edu.kit.ipd.sdq.probespec.framework.ITimestampGenerator;
 import edu.kit.ipd.sdq.probespec.framework.ProbeSpecContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardType;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementMetadata;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.IBlackboardReader;
@@ -29,12 +30,22 @@ public class JavaProbeSpecContext extends ProbeSpecContext<Long> implements IBla
     public <V> void addMeasurement(V value, Probe<V> probe) {
         getBlackboard().addMeasurement(value, probe);
     }
-
+    
+    @Override
+    public <V> void addMeasurement(V value, Probe<V> probe, IMeasurementMetadata metadata) {
+        getBlackboard().addMeasurement(value, probe, metadata);
+    }
+    
     @Override
     public <V> void addMeasurement(V value, Probe<V> probe, IMeasurementContext... contexts) {
         getBlackboard().addMeasurement(value, probe, contexts);
     }
 
+    @Override
+    public <V> void addMeasurement(V value, Probe<V> probe, IMeasurementMetadata metadata, IMeasurementContext... contexts) {
+        getBlackboard().addMeasurement(value, probe, metadata, contexts);
+    }
+    
     @Override
     public void deleteMeasurements(IMeasurementContext context) {
         getBlackboard().deleteMeasurements(context);
