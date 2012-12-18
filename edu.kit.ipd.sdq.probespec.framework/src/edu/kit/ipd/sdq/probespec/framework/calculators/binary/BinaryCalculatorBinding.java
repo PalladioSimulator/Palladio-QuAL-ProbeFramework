@@ -8,6 +8,7 @@ import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.IBlackboardReader;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.writer.IBlackboardWriter;
 import edu.kit.ipd.sdq.probespec.framework.calculators.ICalculatorBinding;
 
 public class BinaryCalculatorBinding<IN1, IN2, OUT, T> implements ICalculatorBinding {
@@ -36,8 +37,10 @@ public class BinaryCalculatorBinding<IN1, IN2, OUT, T> implements ICalculatorBin
         IBlackboardReader<IN1, T> reader1 = blackboard.getReader(in1Probe);
         blackboard.addMeasurementListener(in2Listener, in2Probe);
         IBlackboardReader<IN2, T> reader2 = blackboard.getReader(in2Probe);
+        IBlackboardWriter<OUT> writer = blackboard.getWriter(calculator.getOutputProbe());
 
         calculator.setupBlackboardAccess(reader1, reader2);
+        calculator.setupBlackboardWriter(writer);
         calculator.setupBinding(in1Probe, in2Probe);
 
         isBound = true;
@@ -69,10 +72,7 @@ public class BinaryCalculatorBinding<IN1, IN2, OUT, T> implements ICalculatorBin
         @Override
         public void measurementArrived(Measurement<IN1, T> measurement, Probe<IN1> probe,
                 IMeasurementContext... contexts) {
-            OUT result = calculator.calculate(probe, contexts);
-            if (result != null) {
-                blackboard.addMeasurement(result, calculator.getOutputProbe(), contexts);
-            }
+            calculator.calculate(probe, contexts);
         }
 
         @Override
@@ -87,10 +87,7 @@ public class BinaryCalculatorBinding<IN1, IN2, OUT, T> implements ICalculatorBin
         @Override
         public void measurementArrived(Measurement<IN2, T> measurement, Probe<IN2> probe,
                 IMeasurementContext... contexts) {
-            OUT result = calculator.calculate(probe, contexts);
-            if (result != null) {
-                blackboard.addMeasurement(result, calculator.getOutputProbe(), contexts);
-            }
+            calculator.calculate(probe, contexts);
         }
 
         @Override

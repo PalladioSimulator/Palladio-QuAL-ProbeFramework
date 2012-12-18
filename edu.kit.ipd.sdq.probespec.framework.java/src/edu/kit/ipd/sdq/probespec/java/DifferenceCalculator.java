@@ -23,24 +23,21 @@ public class DifferenceCalculator extends AbstractBinaryCalculator<Integer, Inte
         this.in1Reader = in1Reader;
         this.in2Reader = in2Reader;
     }
-    
+
     @Override
     public void setupBinding(Probe<Integer> in1Probe, Probe<Integer> in2Probe) {
         // TODO Auto-generated method stub
     }
 
     @Override
-    public Integer calculate(Probe<?> probe, IMeasurementContext... contexts) {
+    public void calculate(Probe<?> probe, IMeasurementContext... contexts) {
         Measurement<Integer, Long> mm1 = in1Reader.getLatestMeasurement();
         Measurement<Integer, Long> mm2 = in2Reader.getLatestMeasurement();
 
         if (mm1 != null && mm2 != null) {
-            return Math.abs(mm1.getValue() - mm2.getValue());
-        } else {
-            return null;
+            Integer value = Math.abs(mm1.getValue() - mm2.getValue());
+            outWriter.addMeasurement(value, contexts);
         }
     }
-
-    
 
 }

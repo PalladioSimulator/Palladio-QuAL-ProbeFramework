@@ -4,6 +4,7 @@ import edu.kit.ipd.sdq.probespec.Probe;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.IBlackboardReader;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.writer.IBlackboardWriter;
 
 public interface IBlackboard<T> {
 
@@ -17,9 +18,7 @@ public interface IBlackboard<T> {
     
     public <V> IBlackboardReader<V, T> getReader(Probe<V> probe);
     
-//    public <V> Measurement<V, T> getLatestMeasurement(Probe<V> probe);
-//    
-//    public <V> Measurement<V, T> getLatestMeasurement(Probe<V> probe, IMeasurementContext... contexts);
+    public <V> IBlackboardWriter<V> getWriter(Probe<V> probe);
     
     public void deleteMeasurements(IMeasurementContext context);
     

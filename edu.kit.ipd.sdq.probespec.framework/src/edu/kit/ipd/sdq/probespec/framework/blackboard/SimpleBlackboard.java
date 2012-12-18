@@ -10,6 +10,7 @@ import edu.kit.ipd.sdq.probespec.framework.ITimestampGenerator;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.IBlackboardReader;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.writer.IBlackboardWriter;
 
 public class SimpleBlackboard<T> implements IBlackboard<T> {
 
@@ -40,7 +41,8 @@ public class SimpleBlackboard<T> implements IBlackboard<T> {
     }
 
     @Override
-    public <V> void addMeasurement(V value, Probe<V> probe, IMeasurementMetadata metadata, IMeasurementContext... contexts) {
+    public <V> void addMeasurement(V value, Probe<V> probe, IMeasurementMetadata metadata,
+            IMeasurementContext... contexts) {
         createOrFindRegion(probe.getGenericClass()).addMeasurement(value, probe, metadata, contexts);
     }
 
@@ -74,6 +76,11 @@ public class SimpleBlackboard<T> implements IBlackboard<T> {
     @Override
     public <V> IBlackboardReader<V, T> getReader(Probe<V> probe) {
         return createOrFindRegion(probe.getGenericClass()).getReader(probe);
+    }
+
+    @Override
+    public <V> IBlackboardWriter<V> getWriter(Probe<V> probe) {
+        return createOrFindRegion(probe.getGenericClass()).getWriter(probe);
     }
 
     private <V> IBlackboardRegion<V, T> createOrFindRegion(Class<V> clazz) {

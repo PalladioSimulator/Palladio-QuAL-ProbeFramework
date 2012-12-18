@@ -14,6 +14,8 @@ import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListen
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.ListenerSupport;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.BlackboardReaderSupport;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.IBlackboardReader;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.writer.BlackboardWriter;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.writer.IBlackboardWriter;
 
 public class SimpleBlackboardRegion<V, T> implements IBlackboardRegion<V, T> {
 
@@ -141,6 +143,11 @@ public class SimpleBlackboardRegion<V, T> implements IBlackboardRegion<V, T> {
     @Override
     public IBlackboardReader<V, T> getReader(Probe<V> probe) {
         return readerSupport.getReader(probe, this);
+    }
+    
+    @Override
+    public IBlackboardWriter<V> getWriter(Probe<V> probe) {
+        return new BlackboardWriter<V, T>(probe, this);
     }
 
 }

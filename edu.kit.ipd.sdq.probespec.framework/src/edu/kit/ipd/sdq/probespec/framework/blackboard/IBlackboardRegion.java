@@ -4,6 +4,7 @@ import edu.kit.ipd.sdq.probespec.Probe;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.IBlackboardReader;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.writer.IBlackboardWriter;
 
 public interface IBlackboardRegion<V, T> {
 
@@ -24,6 +25,8 @@ public interface IBlackboardRegion<V, T> {
     public void removeMeasurementListener(IBlackboardListener<V, T> l);
 
     public IBlackboardReader<V, T> getReader(Probe<V> probe);
+    
+    public IBlackboardWriter<V> getWriter(Probe<V> probe);
     
     public Class<V> getGenericType();
 

@@ -7,8 +7,8 @@ import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.BlackboardReader;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.IBlackboardReader;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.writer.IBlackboardWriter;
 import edu.kit.ipd.sdq.probespec.framework.calculators.ICalculatorBinding;
 
 public class UnaryCalculatorBinding<IN, OUT, T> implements ICalculatorBinding {
@@ -31,10 +31,12 @@ public class UnaryCalculatorBinding<IN, OUT, T> implements ICalculatorBinding {
 
     public void bind(Probe<IN> sourceProbe) {
         blackboard.addMeasurementListener(inListener, sourceProbe);
-        IBlackboardReader<IN, T> reader1 = blackboard.getReader(sourceProbe);
-        
-        calculator.setupBlackboardAccess(reader1);
-        
+        IBlackboardReader<IN, T> reader = blackboard.getReader(sourceProbe);
+        IBlackboardWriter<OUT> writer = blackboard.getWriter(calculator.getOutputProbe());
+
+        calculator.setupBlackboardAccess(reader);
+        calculator.setupBlackboardWriter(writer);
+
         isBound = true;
     }
 
@@ -59,13 +61,10 @@ public class UnaryCalculatorBinding<IN, OUT, T> implements ICalculatorBinding {
     }
 
     protected class ProbeListener implements IBlackboardListener<IN, T> {
-        
+
         @Override
         public void measurementArrived(Measurement<IN, T> measurement, Probe<IN> probe, IMeasurementContext... contexts) {
-            OUT result = calculator.calculate(probe, contexts);
-            if (result != null) {
-                blackboard.addMeasurement(result, calculator.getOutputProbe(), contexts);
-            }
+            calculator.calculate(probe, contexts);
         }
 
         @Override

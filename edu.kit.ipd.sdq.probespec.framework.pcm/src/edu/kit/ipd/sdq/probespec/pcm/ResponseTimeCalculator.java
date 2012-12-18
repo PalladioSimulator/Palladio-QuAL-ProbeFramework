@@ -16,9 +16,9 @@ public class ResponseTimeCalculator extends AbstractBinaryCalculator<Double, Dou
     }
 
     @Override
-    public Double calculate(Probe<?> probe, IMeasurementContext... contexts) {
+    public void calculate(Probe<?> probe, IMeasurementContext... contexts) {
         if (probe.equals(in1Probe)) {
-            return null;
+            return;
         }
 
         ILookupStrategy lookupStrategy = new SameOrParentContextLookupStrategy(UsageContext.class);
@@ -27,11 +27,9 @@ public class ResponseTimeCalculator extends AbstractBinaryCalculator<Double, Dou
 
         if (mm1 != null) {
             assert (mm1.getTimestamp() < mm2.getTimestamp());
-            return mm2.getValue() - mm1.getValue();
-        } else {
-            return null;
+            Double value = mm2.getValue() - mm1.getValue();
+            outWriter.addMeasurement(value, contexts);
         }
-
     }
 
 }

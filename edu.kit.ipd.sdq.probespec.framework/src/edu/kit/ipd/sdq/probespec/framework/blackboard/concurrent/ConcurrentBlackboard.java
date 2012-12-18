@@ -13,6 +13,7 @@ import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementMetadata;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.IBlackboardReader;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.writer.IBlackboardWriter;
 
 public class ConcurrentBlackboard<T> implements IBlackboard<T> {
 
@@ -89,6 +90,11 @@ public class ConcurrentBlackboard<T> implements IBlackboard<T> {
     @Override
     public <V> IBlackboardReader<V, T> getReader(Probe<V> probe) {
         return delegatee.getReader(probe);
+    }
+    
+    @Override
+    public <V> IBlackboardWriter<V> getWriter(Probe<V> probe) {
+        return delegatee.getWriter(probe);
     }
 
     public void synchronise() {

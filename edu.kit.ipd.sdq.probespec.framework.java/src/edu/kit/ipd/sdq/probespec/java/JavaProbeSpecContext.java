@@ -9,6 +9,7 @@ import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementMetadata;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.IBlackboardReader;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.writer.IBlackboardWriter;
 import edu.kit.ipd.sdq.probespec.framework.calculators.binary.BinaryCalculatorBinding;
 import edu.kit.ipd.sdq.probespec.framework.calculators.binary.IBinaryCalculator;
 import edu.kit.ipd.sdq.probespec.framework.calculators.unary.IUnaryCalculator;
@@ -74,6 +75,11 @@ public class JavaProbeSpecContext extends ProbeSpecContext<Long> implements IBla
     @Override
     public <V> IBlackboardReader<V, Long> getReader(Probe<V> probe) {
     	return getBlackboard().getReader(probe);
+    }
+    
+    @Override
+    public <V> IBlackboardWriter<V> getWriter(Probe<V> probe) {
+        return getBlackboard().getWriter(probe);
     }
 
     public <IN, OUT> UnaryCalculatorBinding<IN, OUT, Long> addCalculator(IUnaryCalculator<IN, OUT, Long> calculator) {
