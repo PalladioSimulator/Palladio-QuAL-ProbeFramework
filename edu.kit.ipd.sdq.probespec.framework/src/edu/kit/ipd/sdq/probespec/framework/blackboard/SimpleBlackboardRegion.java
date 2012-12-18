@@ -24,10 +24,8 @@ public class SimpleBlackboardRegion<V, T> implements IBlackboardRegion<V, T> {
     private IBlackboard<T> blackboard;
 
     private ListenerSupport<V, T> listenerSupport;
-    
-    private BlackboardReaderSupport<V, T> readerSupport;
 
-    private Map<String, Measurement<V, T>> contextlessMeasurements;
+    private BlackboardReaderSupport<V, T> readerSupport;
 
     private Map<String, Measurement<V, T>> measurements;
 
@@ -44,26 +42,10 @@ public class SimpleBlackboardRegion<V, T> implements IBlackboardRegion<V, T> {
 
         listenerSupport = new ListenerSupport<V, T>();
         readerSupport = new BlackboardReaderSupport<V, T>();
-        contextlessMeasurements = new HashMap<String, Measurement<V, T>>();
+        // contextlessMeasurements = new HashMap<String, Measurement<V, T>>();
         measurements = new HashMap<String, Measurement<V, T>>();
         indices = new IndexManager();
         keyBuilder = new KeyBuilder();
-    }
-
-    @Override
-    public void addMeasurement(V value, Probe<V> probe) {
-        // wrap value into measurement object
-        Measurement<V, T> measurement = new Measurement<V, T>(value, timestampBuilder.now());
-
-        // add measurement
-        if (readerSupport.hasConsumers(probe)) {
-            contextlessMeasurements.put(probe.getId(), measurement);
-        } else {
-//            logger.debug("Discarding " + measurement + " for probe " + probe.getName());
-        }
-
-        // notify listeners
-        listenerSupport.notifyMeasurementListeners(blackboard, measurement, probe);
     }
 
     @Override
@@ -78,32 +60,20 @@ public class SimpleBlackboardRegion<V, T> implements IBlackboardRegion<V, T> {
         if (readerSupport.hasConsumers(probe)) {
             measurements.put(key, measurement);
         } else {
-//            logger.debug("Discarding " + measurement + " for probe " + probe.getName());
+            // logger.debug("Discarding " + measurement + " for probe " + probe.getName());
         }
 
         // update indices
-        indices.add(key, contexts);
+        if (contexts.length > 0) {
+            indices.add(key, contexts);
+        }
 
         // notify listeners
         listenerSupport.notifyMeasurementListeners(blackboard, measurement, probe, contexts);
     }
 
     @Override
-    public Measurement<V, T> getLatestMeasurement(Probe<V> probe) {
-        Measurement<V, T> measurement = contextlessMeasurements.get(probe.getId());
-        if (measurement != null) {
-            return measurement;
-        } else {
-            return null;
-        }
-    }
-
-    @Override
     public Measurement<V, T> getLatestMeasurement(Probe<V> probe, IMeasurementContext... contexts) {
-        if(contexts.length == 0) {
-           return getLatestMeasurement(probe);
-        }
-        
         // create composite key
         String key = keyBuilder.createKey(probe, contexts);
 
