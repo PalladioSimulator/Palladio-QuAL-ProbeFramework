@@ -38,7 +38,7 @@ public class MeasurementMetadata implements IMeasurementMetadata {
         return map.containsValue(value);
     }
 
-    public Set<java.util.Map.Entry<String, String>> entrySet() {
+    public Set<Entry<String, String>> entrySet() {
         return map.entrySet();
     }
 
