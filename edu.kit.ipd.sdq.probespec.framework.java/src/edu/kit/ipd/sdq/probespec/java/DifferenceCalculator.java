@@ -1,6 +1,5 @@
 package edu.kit.ipd.sdq.probespec.java;
 
-import edu.kit.ipd.sdq.probespec.DerivedProbe;
 import edu.kit.ipd.sdq.probespec.Probe;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
@@ -9,12 +8,12 @@ import edu.kit.ipd.sdq.probespec.framework.calculators.binary.AbstractBinaryCalc
 
 public class DifferenceCalculator extends AbstractBinaryCalculator<Integer, Integer, Integer, Long> {
 
-    public DifferenceCalculator(DerivedProbe<Integer> outputProbe) {
+    public DifferenceCalculator() {
         // Provide generic class parameters to super class. This is necessary because generic
         // type parameters are "erased" with compilation, thus making them unavailable at runtime.
         //
-        // /////////////// IN1-class //// IN2-class ///// OUT-class
-        super(outputProbe, Integer.class, Integer.class, Integer.class);
+        // // IN1-class //// IN2-class ///// OUT-class
+        super(Integer.class, Integer.class, Integer.class);
     }
 
     @Override
@@ -22,11 +21,6 @@ public class DifferenceCalculator extends AbstractBinaryCalculator<Integer, Inte
             IBlackboardReader<Integer, Long> in2Reader) {
         this.in1Reader = in1Reader;
         this.in2Reader = in2Reader;
-    }
-
-    @Override
-    public void setupBinding(Probe<Integer> in1Probe, Probe<Integer> in2Probe) {
-        // TODO Auto-generated method stub
     }
 
     @Override

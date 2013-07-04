@@ -7,9 +7,15 @@ import org.apache.log4j.Logger;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardFactory;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardType;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.concurrent.ConcurrentBlackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.concurrent.ThreadManager;
 import edu.kit.ipd.sdq.probespec.framework.calculators.CalculatorRegistry;
 import edu.kit.ipd.sdq.probespec.framework.calculators.ICalculatorBinding;
+import edu.kit.ipd.sdq.probespec.framework.calculators.binary.IBinaryCalculator;
+import edu.kit.ipd.sdq.probespec.framework.calculators.binary.binding.BinaryCalculatorBinding;
+import edu.kit.ipd.sdq.probespec.framework.calculators.binary.binding.IBinaryUnboundCalculator;
+import edu.kit.ipd.sdq.probespec.framework.calculators.unary.IUnaryCalculator;
+import edu.kit.ipd.sdq.probespec.framework.calculators.unary.binding.IUnaryUnboundCalculator;
 
 /**
  * 
@@ -25,7 +31,7 @@ public class ProbeManager<T> {
 
     private IBlackboard<T> blackboard;
 
-    private CalculatorRegistry<T> bindingContext;
+    private CalculatorRegistry<T> calculatorRegistry;
 
     private ThreadManager threadManager;
 
@@ -41,7 +47,7 @@ public class ProbeManager<T> {
         this.blackboardType = blackboardType;
         this.threadManager = new ThreadManager();
         this.blackboard = BlackboardFactory.createBlackboard(blackboardType, timestampBuilder, threadManager);
-        this.bindingContext = new CalculatorRegistry<T>(blackboard);
+        this.calculatorRegistry = new CalculatorRegistry<T>(blackboard);
     }
 
     protected IBlackboard<T> getBlackboard() {
@@ -49,7 +55,7 @@ public class ProbeManager<T> {
     }
 
     public CalculatorRegistry<T> getCalculatorRegistry() {
-        return bindingContext;
+        return calculatorRegistry;
     }
 
     public ThreadManager getThreadManager() {
@@ -72,4 +78,20 @@ public class ProbeManager<T> {
         logger.info("Shut down ProbeSpecification");
     }
 
+    // TODO where to put this method!?
+    public void synchronise() {
+        if (blackboardType.equals(BlackboardType.CONCURRENT)) {
+            ((ConcurrentBlackboard<T>) getBlackboard()).synchronise();
+        }
+    }
+
+    public <IN, OUT> IUnaryUnboundCalculator<IN, OUT> installCalculator(IUnaryCalculator<IN, OUT, T> calculator) {
+        return getCalculatorRegistry().add(calculator);
+    }
+
+    public <IN1, IN2, OUT> IBinaryUnboundCalculator<IN1, IN2, OUT> installCalculator(
+            IBinaryCalculator<IN1, IN2, OUT, T> calculator) {
+        return getCalculatorRegistry().add(calculator);
+    }
+    
 }

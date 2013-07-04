@@ -20,6 +20,8 @@ Export-Package: edu.kit.ipd.sdq.probespec.framework,
  edu.kit.ipd.sdq.probespec.framework.blackboard.writer,
  edu.kit.ipd.sdq.probespec.framework.calculators,
  edu.kit.ipd.sdq.probespec.framework.calculators.binary,
- edu.kit.ipd.sdq.probespec.framework.calculators.unary
+ edu.kit.ipd.sdq.probespec.framework.calculators.binary.binding,
+ edu.kit.ipd.sdq.probespec.framework.calculators.unary,
+ edu.kit.ipd.sdq.probespec.framework.calculators.unary.binding
 Bundle-ClassPath: lib/guava-13.0.1.jar,
  .

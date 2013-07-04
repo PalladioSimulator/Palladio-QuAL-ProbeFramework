@@ -16,11 +16,11 @@ import edu.kit.ipd.sdq.probespec.framework.test.mockup.AssemblyContext;
 import edu.kit.ipd.sdq.probespec.framework.test.mockup.UsageContext;
 import edu.kit.ipd.sdq.probespec.framework.test.util.LoggingUtils;
 import edu.kit.ipd.sdq.probespec.java.DifferenceCalculator;
-import edu.kit.ipd.sdq.probespec.java.JavaProbeSpecContext;
+import edu.kit.ipd.sdq.probespec.java.JavaProbeManager;
 
 public class PerformanceTest {
 
-    private JavaProbeSpecContext ps;
+    private JavaProbeManager ps;
 
     private IntegerProbe startProbe;
     private IntegerProbe stopProbe;
@@ -37,7 +37,7 @@ public class PerformanceTest {
     @Before
     public void before() {
         // initialize ProbeSpec
-        ps = new JavaProbeSpecContext(BlackboardType.SIMPLE);
+        ps = new JavaProbeManager(BlackboardType.SIMPLE);
     }
 
     @Test
@@ -96,7 +96,7 @@ public class PerformanceTest {
             derivedProbes[i] = differenceProbe;
             
             // bind derived probe
-            ps.addCalculator(new DifferenceCalculator(differenceProbe)).bind(startProbe, stopProbe);
+            ps.installCalculator(new DifferenceCalculator()).bindInput(startProbe, stopProbe).bindOutput(differenceProbe);
         }
 
         // create artificial measurement data

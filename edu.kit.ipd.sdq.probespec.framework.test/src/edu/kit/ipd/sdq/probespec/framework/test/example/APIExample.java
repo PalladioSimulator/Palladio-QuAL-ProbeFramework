@@ -9,12 +9,11 @@ import edu.kit.ipd.sdq.probespec.Probe;
 import edu.kit.ipd.sdq.probespec.framework.ProbeFactory;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardType;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.concurrent.ConcurrentBlackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
 import edu.kit.ipd.sdq.probespec.framework.test.util.LoggingUtils;
 import edu.kit.ipd.sdq.probespec.java.DifferenceCalculator;
-import edu.kit.ipd.sdq.probespec.java.JavaProbeSpecContext;
+import edu.kit.ipd.sdq.probespec.java.JavaProbeManager;
 import edu.kit.ipd.sdq.probespec.java.PlusOneCalculator;
 
 public class APIExample {
@@ -43,29 +42,28 @@ public class APIExample {
         long t1 = System.nanoTime();
 
         // initialize ProbeSpec
-        JavaProbeSpecContext ps = new JavaProbeSpecContext(BlackboardType.CONCURRENT);
+        JavaProbeManager pm = new JavaProbeManager(BlackboardType.SIMPLE);
 
         // register a listener for Integer measurements
-        ps.addMeasurementListener(new PrintMeasurementsListener());
+        pm.addMeasurementListener(new PrintMeasurementsListener());
 
         // now bind each derived probe to exactly one calculator
-        ps.addCalculator(new PlusOneCalculator(plusOneProbe)).bind(thirdProbe);
-        ps.addCalculator(new PlusOneCalculator(plusOneProbeTwo)).bind(plusOneProbe);
-        ps.addCalculator(new DifferenceCalculator(differenceProbe)).bind(plusOneProbe, thirdProbe);
+        pm.installCalculator(new PlusOneCalculator()).bindInput(thirdProbe).bindOutput(plusOneProbe);
+        pm.installCalculator(new PlusOneCalculator()).bindInput(plusOneProbe).bindOutput(plusOneProbeTwo);
+        pm.installCalculator(new DifferenceCalculator()).bindInput(plusOneProbe, thirdProbe).bindOutput(differenceProbe);
 
         // create an unbound calculator, which should raise a warning
-         ps.addCalculator(new PlusOneCalculator(plusOneProbe));
+//         pm.installCalculator(new PlusOneCalculator(plusOneProbe));
 
         // generate some dummy measurements for demonstration purposes
         for (int i = 0; i < 5; i++) {
-            ps.addMeasurement(i, firstProbe);
+            pm.addMeasurement(i, firstProbe);
         }
-        ps.addMeasurement(5.0, secondProbe);
-        ps.addMeasurement(5, thirdProbe);
+        pm.addMeasurement(5.0, secondProbe);
+        pm.addMeasurement(5, thirdProbe);
 
-        if (ps.getBlackboardType().equals(BlackboardType.CONCURRENT)) {
-            ((ConcurrentBlackboard<?>) ps.getBlackboard()).synchronise();
-        }
+        // TODO synchronisation should not be exposed to API clients
+        pm.synchronise();
 
 //        Integer v1 = ps.getLatestMeasurement(plusOneProbe).getValue();
 //        Integer v2 = ps.getLatestMeasurement(thirdProbe).getValue();
@@ -73,7 +71,7 @@ public class APIExample {
 //        System.out.println("Calculated difference between " + v1 + " and " + v2 + ": " + v3);
 
         // stop all threads spawned by the ProbeSpec
-        ps.shutdown();
+        pm.shutdown();
 
         // calculate and print processing time
         long t2 = System.nanoTime();

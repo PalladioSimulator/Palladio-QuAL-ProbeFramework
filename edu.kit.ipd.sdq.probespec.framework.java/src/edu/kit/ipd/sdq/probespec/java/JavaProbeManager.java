@@ -10,10 +10,6 @@ import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContex
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.IBlackboardReader;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.writer.IBlackboardWriter;
-import edu.kit.ipd.sdq.probespec.framework.calculators.binary.BinaryCalculatorBinding;
-import edu.kit.ipd.sdq.probespec.framework.calculators.binary.IBinaryCalculator;
-import edu.kit.ipd.sdq.probespec.framework.calculators.unary.IUnaryCalculator;
-import edu.kit.ipd.sdq.probespec.framework.calculators.unary.UnaryCalculatorBinding;
 
 public class JavaProbeManager extends ProbeManager<Long> implements IBlackboard<Long> {
 
@@ -80,15 +76,6 @@ public class JavaProbeManager extends ProbeManager<Long> implements IBlackboard<
     @Override
     public <V> IBlackboardWriter<V> getWriter(Probe<V> probe) {
         return getBlackboard().getWriter(probe);
-    }
-
-    public <IN, OUT> UnaryCalculatorBinding<IN, OUT, Long> addCalculator(IUnaryCalculator<IN, OUT, Long> calculator) {
-        return getCalculatorRegistry().add(calculator);
-    }
-
-    public <IN1, IN2, OUT> BinaryCalculatorBinding<IN1, IN2, OUT, Long> addCalculator(
-            IBinaryCalculator<IN1, IN2, OUT, Long> calculator) {
-        return getCalculatorRegistry().add(calculator);
     }
 
 }

@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
-import edu.kit.ipd.sdq.probespec.framework.calculators.binary.BinaryCalculatorBinding;
 import edu.kit.ipd.sdq.probespec.framework.calculators.binary.IBinaryCalculator;
-import edu.kit.ipd.sdq.probespec.framework.calculators.unary.UnaryCalculatorBinding;
+import edu.kit.ipd.sdq.probespec.framework.calculators.binary.binding.BinaryCalculatorBinding;
 import edu.kit.ipd.sdq.probespec.framework.calculators.unary.IUnaryCalculator;
+import edu.kit.ipd.sdq.probespec.framework.calculators.unary.binding.UnaryCalculatorBinding;
 
 public class CalculatorRegistry<T> {
 

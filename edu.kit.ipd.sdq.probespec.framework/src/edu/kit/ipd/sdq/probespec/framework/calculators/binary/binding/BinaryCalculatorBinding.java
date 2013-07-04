@@ -1,7 +1,8 @@
-package edu.kit.ipd.sdq.probespec.framework.calculators.binary;
+package edu.kit.ipd.sdq.probespec.framework.calculators.binary.binding;
 
 import org.apache.log4j.Logger;
 
+import edu.kit.ipd.sdq.probespec.DerivedProbe;
 import edu.kit.ipd.sdq.probespec.Probe;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
@@ -10,8 +11,10 @@ import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListen
 import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.IBlackboardReader;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.writer.IBlackboardWriter;
 import edu.kit.ipd.sdq.probespec.framework.calculators.ICalculatorBinding;
+import edu.kit.ipd.sdq.probespec.framework.calculators.binary.IBinaryCalculator;
 
-public class BinaryCalculatorBinding<IN1, IN2, OUT, T> implements ICalculatorBinding {
+public class BinaryCalculatorBinding<IN1, IN2, OUT, T> implements ICalculatorBinding,
+        IBinaryUnboundCalculator<IN1, IN2, OUT>, IBinaryPartiallyBoundCalculator<OUT>, IBinaryBoundCalculator {
 
     private Logger logger = Logger.getLogger(BinaryCalculatorBinding.class);
 
@@ -23,7 +26,9 @@ public class BinaryCalculatorBinding<IN1, IN2, OUT, T> implements ICalculatorBin
 
     private IBinaryCalculator<IN1, IN2, OUT, T> calculator;
 
-    private boolean isBound;
+    private boolean isInputBound;
+
+    private boolean isOutputBound;
 
     public BinaryCalculatorBinding(IBinaryCalculator<IN1, IN2, OUT, T> calculator, IBlackboard<T> blackboard) {
         this.blackboard = blackboard;
@@ -32,7 +37,17 @@ public class BinaryCalculatorBinding<IN1, IN2, OUT, T> implements ICalculatorBin
         this.in2Listener = new Input2Listener();
     }
 
-    public void bind(Probe<IN1> in1Probe, Probe<IN2> in2Probe) {
+    public IBinaryBoundCalculator bindOutput(DerivedProbe<OUT> outProbe) {
+        // setup blackboard writer
+        IBlackboardWriter<OUT> writer = blackboard.getWriter(outProbe);
+        calculator.setupBlackboardWriter(writer);
+
+        isOutputBound = true;
+
+        return this;
+    }
+
+    public IBinaryPartiallyBoundCalculator<OUT> bindInput(Probe<IN1> in1Probe, Probe<IN2> in2Probe) {
         // setup binding
         blackboard.addMeasurementListener(in1Listener, in1Probe);
         blackboard.addMeasurementListener(in2Listener, in2Probe);
@@ -43,24 +58,22 @@ public class BinaryCalculatorBinding<IN1, IN2, OUT, T> implements ICalculatorBin
         IBlackboardReader<IN2, T> reader2 = blackboard.getReader(in2Probe);
         calculator.setupBlackboardReader(reader1, reader2);
 
-        // setup blackboard writer
-        IBlackboardWriter<OUT> writer = blackboard.getWriter(calculator.getOutputProbe());
-        calculator.setupBlackboardWriter(writer);
+        isInputBound = true;
 
-        isBound = true;
+        return this;
     }
 
     @Override
     public boolean isBound() {
-        return isBound;
+        return isInputBound && isOutputBound;
     }
 
     @Override
     public void unbind() {
-        if (isBound) {
+        if (isInputBound) {
             blackboard.removeMeasurementListener(in1Listener);
             blackboard.removeMeasurementListener(in2Listener);
-            isBound = false;
+            isInputBound = false;
         } else {
             logger.warn("Tried to unbind a calculator which has not been bound before: " + calculator);
         }

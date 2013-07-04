@@ -1,6 +1,5 @@
 package edu.kit.ipd.sdq.probespec.pcm;
 
-import edu.kit.ipd.sdq.probespec.DerivedProbe;
 import edu.kit.ipd.sdq.probespec.Probe;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
@@ -11,8 +10,8 @@ import edu.kit.ipd.sdq.probespec.pcm.contexts.UsageContext;
 
 public class ResponseTimeCalculator extends AbstractBinaryCalculator<Double, Double, Double, Double> {
 
-    public ResponseTimeCalculator(DerivedProbe<Double> outputProbe) {
-        super(outputProbe, Double.class, Double.class, Double.class);
+    public ResponseTimeCalculator() {
+        super(Double.class, Double.class, Double.class);
     }
 
     @Override
