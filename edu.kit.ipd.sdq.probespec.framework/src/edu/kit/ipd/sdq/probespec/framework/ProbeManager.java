@@ -19,9 +19,9 @@ import edu.kit.ipd.sdq.probespec.framework.calculators.ICalculatorBinding;
  *            the type of timestamps. Must be equal to the the type parameter {@code T} of the
  *            {@link ITimestampGenerator} to be used.
  */
-public class ProbeSpecContext<T> {
+public class ProbeManager<T> {
 
-    private static final Logger logger = Logger.getLogger(ProbeSpecContext.class);
+    private static final Logger logger = Logger.getLogger(ProbeManager.class);
 
     private IBlackboard<T> blackboard;
 
@@ -31,11 +31,11 @@ public class ProbeSpecContext<T> {
 
     private BlackboardType blackboardType;
 
-    public ProbeSpecContext(ITimestampGenerator<T> timestampBuilder) {
+    public ProbeManager(ITimestampGenerator<T> timestampBuilder) {
         this(timestampBuilder, BlackboardType.SIMPLE);
     }
 
-    public ProbeSpecContext(ITimestampGenerator<T> timestampBuilder, BlackboardType blackboardType) {
+    public ProbeManager(ITimestampGenerator<T> timestampBuilder, BlackboardType blackboardType) {
         logger.info("Initialising ProbeSpecification with " + blackboardType.toString() + " blackboard...");
 
         this.blackboardType = blackboardType;
