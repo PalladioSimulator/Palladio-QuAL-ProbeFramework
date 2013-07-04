@@ -44,7 +44,7 @@ public class ProbeManager<T> {
         this.bindingContext = new CalculatorRegistry<T>(blackboard);
     }
 
-    public IBlackboard<T> getBlackboard() {
+    protected IBlackboard<T> getBlackboard() {
         return blackboard;
     }
 
