@@ -21,7 +21,7 @@ public interface Probe<V> {
     void addMeasurement(V value, IMeasurementMetadata metadata, IMeasurementContext... contexts);
     
     /**
-     * This method is not intended to be called by clients.
+     * This method is not intended to be invoked by clients.
      */
     void setBlackboard(IBlackboard<?> blackboard);
     
