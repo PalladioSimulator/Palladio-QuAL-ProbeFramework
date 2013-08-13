@@ -15,6 +15,7 @@ import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContex
 import edu.kit.ipd.sdq.probespec.framework.test.mockup.AssemblyContext;
 import edu.kit.ipd.sdq.probespec.framework.test.mockup.UsageContext;
 import edu.kit.ipd.sdq.probespec.framework.test.util.LoggingUtils;
+import edu.kit.ipd.sdq.probespec.framework.test.util.IntegerProbe;
 import edu.kit.ipd.sdq.probespec.java.DifferenceCalculator;
 import edu.kit.ipd.sdq.probespec.java.JavaProbeManager;
 

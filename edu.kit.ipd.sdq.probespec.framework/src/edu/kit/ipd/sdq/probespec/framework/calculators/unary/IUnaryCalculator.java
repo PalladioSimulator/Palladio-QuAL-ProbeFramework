@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.probespec.framework.calculators.unary;
 
-import edu.kit.ipd.sdq.probespec.Probe;
+import edu.kit.ipd.sdq.probespec.framework.Probe;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.IBlackboardReader;
 import edu.kit.ipd.sdq.probespec.framework.calculators.ICalculator;
 

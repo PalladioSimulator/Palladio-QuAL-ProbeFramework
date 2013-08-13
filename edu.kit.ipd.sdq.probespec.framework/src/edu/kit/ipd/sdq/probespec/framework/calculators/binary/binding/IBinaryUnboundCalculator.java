@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.probespec.framework.calculators.binary.binding;
 
-import edu.kit.ipd.sdq.probespec.Probe;
+import edu.kit.ipd.sdq.probespec.framework.Probe;
 
 public interface IBinaryUnboundCalculator<IN1, IN2, OUT> {
 

@@ -2,8 +2,8 @@ package edu.kit.ipd.sdq.probespec.framework.calculators.binary.binding;
 
 import org.apache.log4j.Logger;
 
-import edu.kit.ipd.sdq.probespec.DerivedProbe;
-import edu.kit.ipd.sdq.probespec.Probe;
+import edu.kit.ipd.sdq.probespec.framework.DerivedProbe;
+import edu.kit.ipd.sdq.probespec.framework.Probe;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
@@ -48,6 +48,10 @@ public class BinaryCalculatorBinding<IN1, IN2, OUT, T> implements ICalculatorBin
     }
 
     public IBinaryPartiallyBoundCalculator<OUT> bindInput(Probe<IN1> in1Probe, Probe<IN2> in2Probe) {
+        if (in1Probe == null || in2Probe == null) {
+            throw new IllegalArgumentException("Cannot bind calculator to probes because at least one is null.");
+        }
+
         // setup binding
         blackboard.addMeasurementListener(in1Listener, in1Probe);
         blackboard.addMeasurementListener(in2Listener, in2Probe);

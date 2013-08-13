@@ -2,19 +2,16 @@ package edu.kit.ipd.sdq.probespec.framework.test.example;
 
 import org.apache.log4j.Logger;
 
-import edu.kit.ipd.sdq.probespec.DerivedIntegerProbe;
-import edu.kit.ipd.sdq.probespec.DoubleProbe;
-import edu.kit.ipd.sdq.probespec.IntegerProbe;
-import edu.kit.ipd.sdq.probespec.Probe;
-import edu.kit.ipd.sdq.probespec.framework.ProbeFactory;
+import edu.kit.ipd.sdq.probespec.framework.DerivedProbe;
+import edu.kit.ipd.sdq.probespec.framework.Probe;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardType;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
+import edu.kit.ipd.sdq.probespec.framework.test.util.IntegerProbe;
 import edu.kit.ipd.sdq.probespec.framework.test.util.LoggingUtils;
 import edu.kit.ipd.sdq.probespec.java.DifferenceCalculator;
 import edu.kit.ipd.sdq.probespec.java.JavaProbeManager;
-import edu.kit.ipd.sdq.probespec.java.PlusOneCalculator;
 
 public class APIExample {
 
@@ -24,43 +21,31 @@ public class APIExample {
         // initialise logging
         LoggingUtils.configureLogging();
 
-        // ////////////////////////////////////////////////////////////////////
-        // CREATE PROBESPEC MODEL
-        //
-        // create some basic probes
-        IntegerProbe firstProbe = ProbeFactory.createIntegerProbe("firstBasicProbe");
-        DoubleProbe secondProbe = ProbeFactory.createDoubleProbe("secondBasicProbe");
-        IntegerProbe thirdProbe = ProbeFactory.createIntegerProbe("thirdBasicProbe");
-        //
-        // create some derived probes (without binding them to a calculator for the moment)
-        DerivedIntegerProbe plusOneProbe = ProbeFactory.createDerivedIntegerProbe("plusOneProbe");
-        DerivedIntegerProbe plusOneProbeTwo = ProbeFactory.createDerivedIntegerProbe("plusOneProbeTwo");
-        DerivedIntegerProbe differenceProbe = ProbeFactory.createDerivedIntegerProbe("differenceProbe");
-        //
-        // ////////////////////////////////////////////////////////////////////
-
-        long t1 = System.nanoTime();
-
         // initialize ProbeSpec
+        long t1 = System.nanoTime();
         JavaProbeManager pm = new JavaProbeManager(BlackboardType.SIMPLE);
-
+        
+        // create and register probes
+        pm.registerProbe(new IntegerProbe("StartProbe"), "StartAction");
+        pm.registerProbe(new IntegerProbe("StopProbe"), "StopAction");
+        
         // register a listener for Integer measurements
         pm.addMeasurementListener(new PrintMeasurementsListener());
 
-        // now bind each derived probe to exactly one calculator
-        pm.installCalculator(new PlusOneCalculator()).bindInput(thirdProbe).bindOutput(plusOneProbe);
-        pm.installCalculator(new PlusOneCalculator()).bindInput(plusOneProbe).bindOutput(plusOneProbeTwo);
-        pm.installCalculator(new DifferenceCalculator()).bindInput(plusOneProbe, thirdProbe).bindOutput(differenceProbe);
+        // create and install an calculator which stores calculated results to an additional probe
+        DerivedIntegerProbe responseTimeProbe = new DerivedIntegerProbe("responseTimeProbe");
+        Probe<Integer> startProbe = pm.getProbe("StartAction", IntegerProbe.class);
+        Probe<Integer> stopProbe = pm.getProbe("StopAction", IntegerProbe.class);
+        pm.installCalculator(new DifferenceCalculator()).bindInput(startProbe, stopProbe).bindOutput(responseTimeProbe);
 
         // create an unbound calculator, which should raise a warning
 //         pm.installCalculator(new PlusOneCalculator(plusOneProbe));
 
         // generate some dummy measurements for demonstration purposes
         for (int i = 0; i < 5; i++) {
-            pm.addMeasurement(i, firstProbe);
+            startProbe.addMeasurement(i);
         }
-        pm.addMeasurement(5.0, secondProbe);
-        pm.addMeasurement(5, thirdProbe);
+        stopProbe.addMeasurement(7);
 
         // TODO synchronisation should not be exposed to API clients
         pm.synchronise();
@@ -93,6 +78,19 @@ public class APIExample {
             return Integer.class;
         }
 
+    }
+    
+    private static class DerivedIntegerProbe extends IntegerProbe implements DerivedProbe<Integer>  {
+        
+        public DerivedIntegerProbe(String name) {
+            super(name);
+        }
+
+        @Override
+        public Class<Integer> getGenericClass() {
+            return Integer.class;
+        }
+        
     }
 
 }

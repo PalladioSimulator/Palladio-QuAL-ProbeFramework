@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.probespec.framework.blackboard.writer;
 
-import edu.kit.ipd.sdq.probespec.Probe;
+import edu.kit.ipd.sdq.probespec.framework.Probe;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementMetadata;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.SimpleBlackboardRegion;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;

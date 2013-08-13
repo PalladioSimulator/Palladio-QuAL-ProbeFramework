@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.probespec.framework.calculators;
 
-import edu.kit.ipd.sdq.probespec.Probe;
+import edu.kit.ipd.sdq.probespec.framework.Probe;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.writer.IBlackboardWriter;
 
