@@ -2,7 +2,6 @@ package edu.kit.ipd.sdq.probespec.framework.test.example;
 
 import org.apache.log4j.Logger;
 
-import edu.kit.ipd.sdq.probespec.framework.DerivedProbe;
 import edu.kit.ipd.sdq.probespec.framework.Probe;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardType;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
@@ -80,7 +79,7 @@ public class APIExample {
 
     }
     
-    private static class DerivedIntegerProbe extends IntegerProbe implements DerivedProbe<Integer>  {
+    private static class DerivedIntegerProbe extends IntegerProbe  {
         
         public DerivedIntegerProbe(String name) {
             super(name);

@@ -1,10 +1,10 @@
 package edu.kit.ipd.sdq.probespec.framework.calculators.binary.binding;
 
-import edu.kit.ipd.sdq.probespec.framework.DerivedProbe;
+import edu.kit.ipd.sdq.probespec.framework.Probe;
 
 
 public interface IBinaryPartiallyBoundCalculator<OUT> {
     
-    public IBinaryBoundCalculator bindOutput(DerivedProbe<OUT> outProbe);
+    public IBinaryBoundCalculator bindOutput(Probe<OUT> outProbe);
     
 }

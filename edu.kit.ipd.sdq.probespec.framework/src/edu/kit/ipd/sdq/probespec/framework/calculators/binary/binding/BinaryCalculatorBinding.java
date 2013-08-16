@@ -2,7 +2,6 @@ package edu.kit.ipd.sdq.probespec.framework.calculators.binary.binding;
 
 import org.apache.log4j.Logger;
 
-import edu.kit.ipd.sdq.probespec.framework.DerivedProbe;
 import edu.kit.ipd.sdq.probespec.framework.Probe;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
@@ -37,7 +36,7 @@ public class BinaryCalculatorBinding<IN1, IN2, OUT, T> implements ICalculatorBin
         this.in2Listener = new Input2Listener();
     }
 
-    public IBinaryBoundCalculator bindOutput(DerivedProbe<OUT> outProbe) {
+    public IBinaryBoundCalculator bindOutput(Probe<OUT> outProbe) {
         // setup blackboard writer
         IBlackboardWriter<OUT> writer = blackboard.getWriter(outProbe);
         calculator.setupBlackboardWriter(writer);

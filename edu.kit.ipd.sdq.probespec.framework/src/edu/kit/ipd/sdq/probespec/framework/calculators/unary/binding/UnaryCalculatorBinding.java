@@ -2,7 +2,6 @@ package edu.kit.ipd.sdq.probespec.framework.calculators.unary.binding;
 
 import org.apache.log4j.Logger;
 
-import edu.kit.ipd.sdq.probespec.framework.DerivedProbe;
 import edu.kit.ipd.sdq.probespec.framework.Probe;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
@@ -34,7 +33,7 @@ public class UnaryCalculatorBinding<IN, OUT, T> implements ICalculatorBinding, I
         this.inListener = new ProbeListener();
     }
 
-    public IUnaryBoundCalculator bindOutput(DerivedProbe<OUT> outProbe) {
+    public IUnaryBoundCalculator bindOutput(Probe<OUT> outProbe) {
         // setup blackboard writer
         IBlackboardWriter<OUT> writer = blackboard.getWriter(outProbe);
         calculator.setupBlackboardWriter(writer);
