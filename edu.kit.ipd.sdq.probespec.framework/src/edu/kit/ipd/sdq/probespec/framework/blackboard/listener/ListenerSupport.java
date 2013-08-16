@@ -45,9 +45,14 @@ public class ListenerSupport<V, T> {
         probeListeners.get(probe).add(l);
     }
 
-    public void removeMeasurementListener(IBlackboardListener<V, T> l) {
-        // TODO implement method
-        throw new UnsupportedOperationException("Not yet implemented");
+    public void removeMeasurementListener(IBlackboardListener<?, T> l) {
+        probeListeners.remove(l);
+    }
+
+    public void removeMeasurementListener(IBlackboardListener<?, T> l, Probe<?> probe) {
+        if (probeListeners.containsKey(probe)) {
+            probeListeners.get(probe).remove(l);
+        }
     }
 
 }

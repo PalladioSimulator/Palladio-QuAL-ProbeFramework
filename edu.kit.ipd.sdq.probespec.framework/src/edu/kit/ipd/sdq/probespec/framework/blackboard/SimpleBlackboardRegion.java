@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import edu.kit.ipd.sdq.probespec.framework.IMetadata;
 import edu.kit.ipd.sdq.probespec.framework.ITimestampGenerator;
 import edu.kit.ipd.sdq.probespec.framework.Probe;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
@@ -51,13 +52,13 @@ public class SimpleBlackboardRegion<V, T> implements IBlackboardRegion<V, T> {
 
     @Override
     public void addMeasurement(V value, Probe<V> probe, IMeasurementContext... contexts) {
-        addMeasurement(value, probe, IMeasurementMetadata.EMPTY_METADATA, contexts);
+        addMeasurement(value, probe, IMetadata.EMPTY_METADATA, contexts);
     }
 
     @Override
-    public void addMeasurement(V value, Probe<V> probe, IMeasurementMetadata metadata, IMeasurementContext... contexts) {
+    public void addMeasurement(V value, Probe<V> probe, IMetadata metadata, IMeasurementContext... contexts) {    
         // wrap value into measurement object
-        Measurement<V, T> measurement = new Measurement<V, T>(value, timestampBuilder.now());
+        Measurement<V, T> measurement = new Measurement<V, T>(value, timestampBuilder.now(), probe);
 
         // create composite key
         String key = keyBuilder.createKey(probe, contexts);
@@ -131,8 +132,13 @@ public class SimpleBlackboardRegion<V, T> implements IBlackboardRegion<V, T> {
     }
 
     @Override
-    public void removeMeasurementListener(IBlackboardListener<V, T> l) {
+    public void removeMeasurementListener(IBlackboardListener<?, T> l) {
         listenerSupport.removeMeasurementListener(l);
+    }
+    
+    @Override
+    public void removeMeasurementListener(IBlackboardListener<?, T> l, Probe<?> probe) {
+        listenerSupport.removeMeasurementListener(l, probe);
     }
 
     @Override

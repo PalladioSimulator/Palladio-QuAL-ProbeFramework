@@ -4,12 +4,12 @@ import java.util.concurrent.CountDownLatch;
 
 import org.apache.log4j.Logger;
 
+import edu.kit.ipd.sdq.probespec.framework.IMetadata;
 import edu.kit.ipd.sdq.probespec.framework.ITimestampGenerator;
 import edu.kit.ipd.sdq.probespec.framework.Probe;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardFactory;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardType;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.IMeasurementMetadata;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.IBlackboardReader;
@@ -48,7 +48,7 @@ public class ConcurrentBlackboard<T> implements IBlackboard<T> {
     }
 
     @Override
-    public <V> void addMeasurement(V value, Probe<V> probe, IMeasurementMetadata metadata) {
+    public <V> void addMeasurement(V value, Probe<V> probe, IMetadata metadata) {
         queue.put(new AddMeasurementAction<V>(value, probe, metadata));
     }
 
@@ -58,7 +58,7 @@ public class ConcurrentBlackboard<T> implements IBlackboard<T> {
     }
 
     @Override
-    public <V> void addMeasurement(V value, Probe<V> probe, IMeasurementMetadata metadata, IMeasurementContext... contexts) {
+    public <V> void addMeasurement(V value, Probe<V> probe, IMetadata metadata, IMeasurementContext... contexts) {
         queue.put(new AddMeasurementAction<V>(value, probe, metadata, contexts));
     }
 
@@ -83,8 +83,13 @@ public class ConcurrentBlackboard<T> implements IBlackboard<T> {
     }
 
     @Override
-    public <V> void removeMeasurementListener(IBlackboardListener<V, T> l) {
+    public void removeMeasurementListener(IBlackboardListener<?, T> l) {
         delegatee.removeMeasurementListener(l);
+    }
+
+    @Override
+    public void removeMeasurementListener(IBlackboardListener<?, T> l, Probe<?> probe) {
+        delegatee.removeMeasurementListener(l, probe);
     }
 
     @Override
@@ -130,15 +135,15 @@ public class ConcurrentBlackboard<T> implements IBlackboard<T> {
 
         private Probe<V> probe;
 
-        private IMeasurementMetadata metadata;
+        private IMetadata metadata;
 
         private IMeasurementContext[] contexts;
 
         public AddMeasurementAction(V value, Probe<V> probe, IMeasurementContext... contexts) {
-            this(value, probe, IMeasurementMetadata.EMPTY_METADATA, contexts);
+            this(value, probe, IMetadata.EMPTY_METADATA, contexts);
         }
 
-        public AddMeasurementAction(V value, Probe<V> probe, IMeasurementMetadata metadata, IMeasurementContext... contexts) {
+        public AddMeasurementAction(V value, Probe<V> probe, IMetadata metadata, IMeasurementContext... contexts) {
             this.value = value;
             this.probe = probe;
             this.metadata = metadata;

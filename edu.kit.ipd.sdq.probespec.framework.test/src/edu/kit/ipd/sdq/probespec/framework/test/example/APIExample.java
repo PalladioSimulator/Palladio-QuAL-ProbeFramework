@@ -26,8 +26,8 @@ public class APIExample {
         JavaProbeManager pm = new JavaProbeManager(BlackboardType.SIMPLE);
         
         // create and register probes
-        pm.registerProbe(new IntegerProbe("StartProbe"), "StartAction");
-        pm.registerProbe(new IntegerProbe("StopProbe"), "StopAction");
+        pm.mountProbe(new IntegerProbe("StartProbe"), "StartAction");
+        pm.mountProbe(new IntegerProbe("StopProbe"), "StopAction");
         
         // register a listener for Integer measurements
         pm.addMeasurementListener(new PrintMeasurementsListener());

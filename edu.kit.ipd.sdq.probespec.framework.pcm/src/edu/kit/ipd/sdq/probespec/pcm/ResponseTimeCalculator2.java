@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.probespec.pcm;
 
-import edu.kit.ipd.sdq.probespec.Probe;
+import edu.kit.ipd.sdq.probespec.framework.Probe;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.ILookupStrategy;
@@ -8,9 +8,9 @@ import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.SameOrParentContext
 import edu.kit.ipd.sdq.probespec.framework.calculators.binary.AbstractBinaryCalculator;
 import edu.kit.ipd.sdq.probespec.pcm.contexts.UsageContext;
 
-public class ResponseTimeCalculator extends AbstractBinaryCalculator<Double, Double, Double, Double> {
+public class ResponseTimeCalculator2 extends AbstractBinaryCalculator<Double, Double, Double, Double> {
 
-    public ResponseTimeCalculator() {
+    public ResponseTimeCalculator2() {
         super(Double.class, Double.class, Double.class);
     }
 

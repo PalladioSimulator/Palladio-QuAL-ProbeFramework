@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import edu.kit.ipd.sdq.probespec.framework.IMetadata;
 import edu.kit.ipd.sdq.probespec.framework.ITimestampGenerator;
 import edu.kit.ipd.sdq.probespec.framework.Probe;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
@@ -31,7 +32,7 @@ public class SimpleBlackboard<T> implements IBlackboard<T> {
     }
 
     @Override
-    public <V> void addMeasurement(V value, Probe<V> probe, IMeasurementMetadata metadata) {
+    public <V> void addMeasurement(V value, Probe<V> probe, IMetadata metadata) {
         createOrFindRegion(probe.getGenericClass()).addMeasurement(value, probe, metadata);
     }
 
@@ -41,7 +42,7 @@ public class SimpleBlackboard<T> implements IBlackboard<T> {
     }
 
     @Override
-    public <V> void addMeasurement(V value, Probe<V> probe, IMeasurementMetadata metadata,
+    public <V> void addMeasurement(V value, Probe<V> probe, IMetadata metadata,
             IMeasurementContext... contexts) {
         createOrFindRegion(probe.getGenericClass()).addMeasurement(value, probe, metadata, contexts);
     }
@@ -69,8 +70,13 @@ public class SimpleBlackboard<T> implements IBlackboard<T> {
     }
 
     @Override
-    public <V> void removeMeasurementListener(IBlackboardListener<V, T> l) {
+    public void removeMeasurementListener(IBlackboardListener<?, T> l) {
         createOrFindRegion(l.getGenericType()).removeMeasurementListener(l);
+    }
+    
+    @Override
+    public void removeMeasurementListener(IBlackboardListener<?, T> l, Probe<?> probe) {
+        createOrFindRegion(l.getGenericType()).removeMeasurementListener(l, probe);
     }
 
     @Override

@@ -3,8 +3,12 @@ package edu.kit.ipd.sdq.probespec.framework;
 
 public interface IProbeRegistryRegion<V> {
     
-    public Probe<V> getProbe(Object annotatedEntity, Class<? extends Probe<?>> probeType);
+    public Probe<V> getProbe(Object entity, Class<? extends Probe<?>> probeType);
     
-    public void registerProbe(Probe<V> probe, Object annotatedEntity);
+    public Probe<V> getProbe(Object entity, Object mountPoint, Class<? extends Probe<?>> probeType);
+    
+    public void mountProbe(Probe<V> probe, Object entity);
+    
+    public void mountProbe(Probe<V> probe, Object entity, Object mountPoint);
 
 }

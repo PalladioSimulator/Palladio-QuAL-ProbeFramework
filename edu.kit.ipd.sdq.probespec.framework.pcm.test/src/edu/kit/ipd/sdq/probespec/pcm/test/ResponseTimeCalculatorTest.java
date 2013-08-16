@@ -4,11 +4,8 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import edu.kit.ipd.sdq.probespec.DerivedDoubleProbe;
-import edu.kit.ipd.sdq.probespec.DoubleProbe;
-import edu.kit.ipd.sdq.probespec.Probe;
 import edu.kit.ipd.sdq.probespec.framework.ITimestampGenerator;
-import edu.kit.ipd.sdq.probespec.framework.ProbeFactory;
+import edu.kit.ipd.sdq.probespec.framework.Probe;
 import edu.kit.ipd.sdq.probespec.framework.ProbeManager;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardType;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
@@ -16,8 +13,9 @@ import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContex
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContextHelper;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.IBlackboardReader;
+import edu.kit.ipd.sdq.probespec.framework.test.util.DoubleProbe;
 import edu.kit.ipd.sdq.probespec.framework.test.util.LoggingUtils;
-import edu.kit.ipd.sdq.probespec.pcm.ResponseTimeCalculator;
+import edu.kit.ipd.sdq.probespec.pcm.ResponseTimeCalculator2;
 import edu.kit.ipd.sdq.probespec.pcm.contexts.UsageContext;
 
 public class ResponseTimeCalculatorTest {
@@ -39,7 +37,7 @@ public class ResponseTimeCalculatorTest {
         DoubleProbe stopProbe = ProbeFactory.createDoubleProbe("stopProbe");
 
         DerivedDoubleProbe responseTimeProbe = ProbeFactory.createDerivedDoubleProbe("responseTimeProbe");
-        ps.getCalculatorRegistry().add(new ResponseTimeCalculator()).bindInput(startProbe, stopProbe).bindOutput(responseTimeProbe);
+        ps.getCalculatorRegistry().add(new ResponseTimeCalculator2()).bindInput(startProbe, stopProbe).bindOutput(responseTimeProbe);
         IBlackboardReader<Double, Double> responseTimeReader = ps.getBlackboard().getReader(responseTimeProbe);
 
         IMeasurementContext rootCtx = new UsageContext("root");

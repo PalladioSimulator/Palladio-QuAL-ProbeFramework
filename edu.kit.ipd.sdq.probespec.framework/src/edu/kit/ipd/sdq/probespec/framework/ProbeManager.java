@@ -27,7 +27,7 @@ import edu.kit.ipd.sdq.probespec.framework.calculators.unary.binding.IUnaryUnbou
  *            the type of timestamps. Must be equal to the the type parameter {@code T} of the
  *            {@link ITimestampGenerator} to be used.
  */
-public class ProbeManager<T> implements IProbeManager<T> {
+public abstract class ProbeManager<T> implements IProbeManager<T> {
 
     private static final Logger logger = Logger.getLogger(ProbeManager.class);
 
@@ -63,8 +63,12 @@ public class ProbeManager<T> implements IProbeManager<T> {
         return calculatorRegistry;
     }
     
-    public <V> Probe<V> getProbe(Object annotatedEntity, Class<? extends Probe<V>> probeType) {
-        return probeRegistry.getProbe(annotatedEntity, probeType);
+    public <V> Probe<V> getProbe(Object entity, Class<? extends Probe<V>> probeType) {
+        return probeRegistry.getProbe(entity, probeType);
+    }
+    
+    public <V> Probe<V> getProbe(Object entity, Object mountPoint, Class<? extends Probe<V>> probeType) {
+        return probeRegistry.getProbe(entity, mountPoint, probeType);
     }
 
     public ThreadManager getThreadManager() {
@@ -94,9 +98,13 @@ public class ProbeManager<T> implements IProbeManager<T> {
         }
     }
     
-    public <V> void registerProbe(Probe<V> probe, Object mountPoint) {
-        // TODO
-        probeRegistry.registerProbe(probe, mountPoint);
+    public <V> void mountProbe(Probe<V> probe, Object entity, Object mountPoint) {
+        probeRegistry.mountProbe(probe, entity, mountPoint);
+        probe.setBlackboard(blackboard);
+    }
+    
+    public <V> void mountProbe(Probe<V> probe, Object entity) {
+        probeRegistry.mountProbe(probe, entity);
         probe.setBlackboard(blackboard);
     }
     
