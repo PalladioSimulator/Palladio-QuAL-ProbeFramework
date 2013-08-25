@@ -26,7 +26,9 @@ public class PalladioProbeManager extends ProbeManager<Double> {
     @Override
     public <V> void mountProbe(final Probe<V> probe, Object entity, Object mountPoint) {
         super.mountProbe(probe, entity, mountPoint);
-        sfa.addProbe(probe);
+        if (!probe.isTransient()) {
+            sfa.addProbe(probe);
+        }
         probe.addProbeStateListener(new IProbeStateListener() {
 
             @Override
@@ -48,7 +50,9 @@ public class PalladioProbeManager extends ProbeManager<Double> {
     @Override
     public <V> void mountProbe(final Probe<V> probe, Object entity) {
         super.mountProbe(probe, entity);
-        sfa.addProbe(probe);
+        if (!probe.isTransient()) {
+            sfa.addProbe(probe);
+        }
         probe.addProbeStateListener(new IProbeStateListener() {
 
             @Override
