@@ -26,7 +26,7 @@ public class MeasurementContextHelper {
         for (int i = 0; i < contexts.length; i++) {
             IMeasurementContext c = contexts[i];
             if (type.isInstance(c)) {
-                result[i] = c.getParent();
+                result[i] = c.getParent() != null ? c.getParent() : c;
             } else {
                 result[i] = c;
             }
