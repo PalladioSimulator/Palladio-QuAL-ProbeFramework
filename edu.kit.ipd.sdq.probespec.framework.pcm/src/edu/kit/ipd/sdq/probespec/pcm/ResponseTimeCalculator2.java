@@ -8,11 +8,18 @@ import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContex
 import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.ILookupStrategy;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.SameOrParentContextLookupStrategy;
 import edu.kit.ipd.sdq.probespec.framework.calculators.binary.AbstractBinaryCalculator;
-import edu.kit.ipd.sdq.probespec.pcm.contexts.UsageContext;
+import edu.kit.ipd.sdq.probespec.pcm.contexts.AssemblyContextWrapper;
+import edu.kit.ipd.sdq.probespec.pcm.contexts.RequestContext2;
 
 public class ResponseTimeCalculator2 extends AbstractBinaryCalculator<Double, Double, Double, Double> {
 
+    private AssemblyContextWrapper assemblyCtx;
+    
     public ResponseTimeCalculator2() {
+        super(Double.class, Double.class, Double.class);
+    }
+    
+    public ResponseTimeCalculator2(AssemblyContextWrapper assemblyCtx) {
         super(Double.class, Double.class, Double.class);
     }
 
@@ -20,9 +27,9 @@ public class ResponseTimeCalculator2 extends AbstractBinaryCalculator<Double, Do
     public void calculate(Probe<?> probe, IMeasurementContext... contexts) {
         if (probe.equals(in1Probe)) {
             return;
-        }
+        }        
 
-        ILookupStrategy lookupStrategy = new SameOrParentContextLookupStrategy(UsageContext.class);
+        ILookupStrategy lookupStrategy = new SameOrParentContextLookupStrategy(RequestContext2.class);
         Measurement<Double, Double> mm1 = in1Reader.getLatestMeasurement(lookupStrategy, contexts);
         Measurement<Double, Double> mm2 = in2Reader.getLatestMeasurement(contexts);
 

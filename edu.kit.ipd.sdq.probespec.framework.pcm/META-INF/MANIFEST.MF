@@ -8,6 +8,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: edu.kit.ipd.sdq.probespec.framework;bundle-version="2.0.0",
  org.apache.log4j;bundle-version="1.2.15",
  de.uka.ipd.sdq.simulation.abstractsimengine;bundle-version="1.0.0",
- edu.kit.ipd.sdq.probespec.persistence.sensorframework;bundle-version="1.0.0"
+ edu.kit.ipd.sdq.probespec.persistence.sensorframework;bundle-version="1.0.0",
+ de.uka.ipd.sdq.pcm;bundle-version="3.2.0"
 Export-Package: edu.kit.ipd.sdq.probespec.pcm,
  edu.kit.ipd.sdq.probespec.pcm.contexts
