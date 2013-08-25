@@ -25,6 +25,14 @@ public abstract class AbstractProbe<V> implements Probe<V> {
 
     private List<IProbeStateListener> listeners;
 
+    public AbstractProbe(String name) {
+        this(UUID.randomUUID().toString(), name);
+    }
+    
+    public AbstractProbe(String name, boolean _transient) {
+        this(UUID.randomUUID().toString(), name, _transient);
+    }
+    
     public AbstractProbe(String id, String name) {
         this(id, name, false);
     }
@@ -35,10 +43,6 @@ public abstract class AbstractProbe<V> implements Probe<V> {
         this.metadata = new Metadata();
         this.listeners = new ArrayList<IProbeStateListener>();
         this._transient = _transient;
-    }
-
-    public AbstractProbe(String name) {
-        this(UUID.randomUUID().toString(), name);
     }
 
     @Override
@@ -87,6 +91,7 @@ public abstract class AbstractProbe<V> implements Probe<V> {
         ((IBlackboard<T>) this.blackboard).addMeasurementListener(listener, this);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <T> void removeMeasurementListener(IBlackboardListener<?, T> listener) {
         ((IBlackboard<T>) this.blackboard).removeMeasurementListener(listener, this);
