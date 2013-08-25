@@ -39,13 +39,13 @@ public class SameOrParentContextLookupStrategy implements ILookupStrategy {
                 return new ContextIterator(contexts);
             }
         }
-        
+
     }
 
     private class ContextIterator implements Iterator<List<IMeasurementContext>> {
 
         private IMeasurementContext[] currentContexts;
-        
+
         private IMeasurementContext[] nextContexts;
 
         public ContextIterator(IMeasurementContext... contexts) {
@@ -55,7 +55,7 @@ public class SameOrParentContextLookupStrategy implements ILookupStrategy {
 
         @Override
         public boolean hasNext() {
-            return currentContexts != nextContexts;
+            return !Arrays.deepEquals(currentContexts, nextContexts);
         }
 
         @Override
