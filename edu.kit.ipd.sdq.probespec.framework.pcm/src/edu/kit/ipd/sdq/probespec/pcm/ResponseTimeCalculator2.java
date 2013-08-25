@@ -1,5 +1,7 @@
 package edu.kit.ipd.sdq.probespec.pcm;
 
+import java.math.BigDecimal;
+
 import edu.kit.ipd.sdq.probespec.framework.Probe;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
@@ -26,7 +28,17 @@ public class ResponseTimeCalculator2 extends AbstractBinaryCalculator<Double, Do
 
         if (mm1 != null) {
             assert (mm1.getTimestamp() < mm2.getTimestamp());
-            Double value = mm2.getValue() - mm1.getValue();
+
+            // the following type conversions shall ensure backward-compatibility to ProbeSpec 1.x
+            // such that calculations yield exactly (!) the same result. Simply subtracting two
+            // doubles reveals the limited double precision, which earlier ProbeSpec versions
+            // addressed via BigDecimal.
+            //
+            // TODO: for a performance gain, the backward-compatibility could be dropped
+            Double value = BigDecimal.valueOf(mm2.getValue()).subtract(BigDecimal.valueOf(mm1.getValue()))
+                    .doubleValue();
+            // Double value = mm2.getValue() - mm1.getValue();
+
             outWriter.addMeasurement(value, contexts);
         }
     }
