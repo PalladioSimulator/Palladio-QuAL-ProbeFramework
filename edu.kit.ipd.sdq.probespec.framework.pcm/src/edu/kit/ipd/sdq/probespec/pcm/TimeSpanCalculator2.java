@@ -11,24 +11,33 @@ import edu.kit.ipd.sdq.probespec.framework.calculators.binary.AbstractBinaryCalc
 import edu.kit.ipd.sdq.probespec.pcm.contexts.AssemblyContextWrapper;
 import edu.kit.ipd.sdq.probespec.pcm.contexts.RequestContext2;
 
-public class ResponseTimeCalculator2 extends AbstractBinaryCalculator<Double, Double, Double, Double> {
+public class TimeSpanCalculator2 extends AbstractBinaryCalculator<Double, Double, Double, Double> {
 
     private AssemblyContextWrapper assemblyCtx;
-    
-    public ResponseTimeCalculator2() {
+
+    public TimeSpanCalculator2() {
         super(Double.class, Double.class, Double.class);
     }
-    
-    public ResponseTimeCalculator2(AssemblyContextWrapper assemblyCtx) {
+
+    public TimeSpanCalculator2(AssemblyContextWrapper assemblyCtx) {
         super(Double.class, Double.class, Double.class);
     }
 
     @Override
     public void calculate(Probe<?> probe, IMeasurementContext... contexts) {
+        // nothing to calculate if we observe the 1st measurement because the 2nd measurement
+        // is still pending
         if (probe.equals(in1Probe)) {
             return;
-        }        
+        }
 
+        // if an assembly context has been specified, this calculator shall react only to
+        // measurements originating from that assembly context
+        if (assemblyCtx != null && !containsAssemblyContext(contexts, assemblyCtx)) {
+            return;
+        }
+
+        // retrieve 1st and 2nd measurement
         ILookupStrategy lookupStrategy = new SameOrParentContextLookupStrategy(RequestContext2.class);
         Measurement<Double, Double> mm1 = in1Reader.getLatestMeasurement(lookupStrategy, contexts);
         Measurement<Double, Double> mm2 = in2Reader.getLatestMeasurement(contexts);
@@ -48,6 +57,15 @@ public class ResponseTimeCalculator2 extends AbstractBinaryCalculator<Double, Do
 
             outWriter.addMeasurement(value, contexts);
         }
+    }
+
+    private boolean containsAssemblyContext(IMeasurementContext[] contexts, AssemblyContextWrapper assemblyCtx) {
+        for (IMeasurementContext ctx : contexts) {
+            if (ctx.equals(assemblyCtx)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
