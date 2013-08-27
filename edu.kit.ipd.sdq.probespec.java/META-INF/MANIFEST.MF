@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: PobeSpecification for Java instrumentation
-Bundle-SymbolicName: edu.kit.ipd.sdq.probespec.framework.java
+Bundle-SymbolicName: edu.kit.ipd.sdq.probespec.java
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: sdq.ipd.kit.edu
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
