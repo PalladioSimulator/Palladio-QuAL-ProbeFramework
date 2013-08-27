@@ -1,7 +1,7 @@
 package edu.kit.ipd.sdq.probespec.palladio;
 
-import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.BlackboardListener;
+import edu.kit.ipd.sdq.probespec.framework.MeasurementListener;
 
-public interface PalladioBlackboardListener<V> extends BlackboardListener<V, Double> {
+public interface PalladioBlackboardListener<V> extends MeasurementListener<V, Double> {
 
 }

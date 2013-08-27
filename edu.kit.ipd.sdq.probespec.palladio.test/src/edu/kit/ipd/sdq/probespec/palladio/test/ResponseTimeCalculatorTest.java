@@ -4,13 +4,13 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import edu.kit.ipd.sdq.probespec.framework.MeasurementListener;
 import edu.kit.ipd.sdq.probespec.framework.TimestampGenerator;
 import edu.kit.ipd.sdq.probespec.framework.AbstractProbeManager;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardType;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContextHelper;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.BlackboardListener;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.BlackboardReader;
 import edu.kit.ipd.sdq.probespec.framework.probes.Probe;
 import edu.kit.ipd.sdq.probespec.framework.test.util.DoubleProbe;
@@ -95,7 +95,7 @@ public class ResponseTimeCalculatorTest {
 
     }
 
-    private static class PrintMeasurementsListener implements BlackboardListener<Double, Double> {
+    private static class PrintMeasurementsListener implements MeasurementListener<Double, Double> {
 
         @Override
         public void measurementArrived(Measurement<Double, Double> measurement, Probe<Double> probe,

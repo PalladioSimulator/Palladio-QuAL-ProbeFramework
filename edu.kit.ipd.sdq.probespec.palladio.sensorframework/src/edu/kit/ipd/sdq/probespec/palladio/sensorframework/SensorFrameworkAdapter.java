@@ -9,9 +9,9 @@ import de.uka.ipd.sdq.sensorframework.SensorFrameworkDataset;
 import de.uka.ipd.sdq.sensorframework.entities.Experiment;
 import de.uka.ipd.sdq.sensorframework.entities.ExperimentRun;
 import de.uka.ipd.sdq.sensorframework.entities.dao.IDAOFactory;
+import edu.kit.ipd.sdq.probespec.framework.MeasurementListener;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContext;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.BlackboardListener;
 import edu.kit.ipd.sdq.probespec.framework.probes.Probe;
 import edu.kit.ipd.sdq.probespec.palladio.sensorframework.strategies.ISensorWrapper;
 import edu.kit.ipd.sdq.probespec.palladio.sensorframework.strategies.StateSensorWrapper;
@@ -39,12 +39,12 @@ public class SensorFrameworkAdapter {
 
     private boolean flushed;
 
-    private Map<Probe<?>, BlackboardListener<?, Double>> listenerMap;
+    private Map<Probe<?>, MeasurementListener<?, Double>> listenerMap;
 
     public SensorFrameworkAdapter(long dataSourceId, String experimentName, String experimentRunName) {
         this.experimentName = experimentName + " (PS2)";
         this.experimentRunName = experimentRunName;
-        this.listenerMap = new HashMap<Probe<?>, BlackboardListener<?, Double>>();
+        this.listenerMap = new HashMap<Probe<?>, MeasurementListener<?, Double>>();
 
         initialiseNewSensorframework(dataSourceId);
     }
@@ -62,7 +62,7 @@ public class SensorFrameworkAdapter {
         s.initialise(probe);
 
         final ISensorWrapper sensor = s;
-        BlackboardListener<V, Double> l = new BlackboardListener<V, Double>() {
+        MeasurementListener<V, Double> l = new MeasurementListener<V, Double>() {
 
             @Override
             public void measurementArrived(Measurement<V, Double> measurement, Probe<V> probe,
@@ -83,7 +83,7 @@ public class SensorFrameworkAdapter {
     }
 
     public void removeProbe(final Probe<?> probe) {
-        BlackboardListener<?, Double> l = listenerMap.get(probe);
+        MeasurementListener<?, Double> l = listenerMap.get(probe);
         if (l != null) {
             probe.removeMeasurementListener(l);
         } else {
