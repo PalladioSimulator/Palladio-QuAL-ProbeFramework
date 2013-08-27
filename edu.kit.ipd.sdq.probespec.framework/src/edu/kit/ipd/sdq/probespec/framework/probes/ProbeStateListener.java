@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.probespec.framework.probes;
 
-public interface IProbeStateListener {
+public interface ProbeStateListener {
 
     void isActive(boolean active);
     

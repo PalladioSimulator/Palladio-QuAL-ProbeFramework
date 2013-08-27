@@ -9,10 +9,10 @@ import de.uka.ipd.sdq.sensorframework.SensorFrameworkDataset;
 import de.uka.ipd.sdq.sensorframework.entities.Experiment;
 import de.uka.ipd.sdq.sensorframework.entities.ExperimentRun;
 import de.uka.ipd.sdq.sensorframework.entities.dao.IDAOFactory;
-import edu.kit.ipd.sdq.probespec.framework.Probe;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContext;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.BlackboardListener;
+import edu.kit.ipd.sdq.probespec.framework.probes.Probe;
 import edu.kit.ipd.sdq.probespec.palladio.sensorframework.strategies.ISensorWrapper;
 import edu.kit.ipd.sdq.probespec.palladio.sensorframework.strategies.StateSensorWrapper;
 import edu.kit.ipd.sdq.probespec.palladio.sensorframework.strategies.TimeSpanSensorWrapper;
@@ -39,12 +39,12 @@ public class SensorFrameworkAdapter {
 
     private boolean flushed;
 
-    private Map<Probe<?>, IBlackboardListener<?, Double>> listenerMap;
+    private Map<Probe<?>, BlackboardListener<?, Double>> listenerMap;
 
     public SensorFrameworkAdapter(long dataSourceId, String experimentName, String experimentRunName) {
         this.experimentName = experimentName + " (PS2)";
         this.experimentRunName = experimentRunName;
-        this.listenerMap = new HashMap<Probe<?>, IBlackboardListener<?, Double>>();
+        this.listenerMap = new HashMap<Probe<?>, BlackboardListener<?, Double>>();
 
         initialiseNewSensorframework(dataSourceId);
     }
@@ -62,11 +62,11 @@ public class SensorFrameworkAdapter {
         s.initialise(probe);
 
         final ISensorWrapper sensor = s;
-        IBlackboardListener<V, Double> l = new IBlackboardListener<V, Double>() {
+        BlackboardListener<V, Double> l = new BlackboardListener<V, Double>() {
 
             @Override
             public void measurementArrived(Measurement<V, Double> measurement, Probe<V> probe,
-                    IMeasurementContext... contexts) {
+                    MeasurementContext... contexts) {
                 sensor.addMeasurement((Measurement<?, Double>) measurement, probe, contexts);
             }
 
@@ -83,7 +83,7 @@ public class SensorFrameworkAdapter {
     }
 
     public void removeProbe(final Probe<?> probe) {
-        IBlackboardListener<?, Double> l = listenerMap.get(probe);
+        BlackboardListener<?, Double> l = listenerMap.get(probe);
         if (l != null) {
             probe.removeMeasurementListener(l);
         } else {

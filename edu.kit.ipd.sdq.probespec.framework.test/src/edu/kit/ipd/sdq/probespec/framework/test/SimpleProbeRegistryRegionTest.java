@@ -5,9 +5,9 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.kit.ipd.sdq.probespec.framework.AbstractProbe;
-import edu.kit.ipd.sdq.probespec.framework.Probe;
-import edu.kit.ipd.sdq.probespec.framework.SimpleProbeRegistryRegion;
+import edu.kit.ipd.sdq.probespec.framework.probes.AbstractProbe;
+import edu.kit.ipd.sdq.probespec.framework.probes.Probe;
+import edu.kit.ipd.sdq.probespec.framework.probes.SimpleProbeRegistryRegion;
 
 public class SimpleProbeRegistryRegionTest {
 

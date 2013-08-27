@@ -4,15 +4,15 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import edu.kit.ipd.sdq.probespec.framework.ITimestampGenerator;
-import edu.kit.ipd.sdq.probespec.framework.Probe;
-import edu.kit.ipd.sdq.probespec.framework.ProbeManager;
+import edu.kit.ipd.sdq.probespec.framework.TimestampGenerator;
+import edu.kit.ipd.sdq.probespec.framework.AbstractProbeManager;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardType;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContextHelper;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.IBlackboardReader;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.BlackboardListener;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.BlackboardReader;
+import edu.kit.ipd.sdq.probespec.framework.probes.Probe;
 import edu.kit.ipd.sdq.probespec.framework.test.util.DoubleProbe;
 import edu.kit.ipd.sdq.probespec.framework.test.util.LoggingUtils;
 import edu.kit.ipd.sdq.probespec.pcm.ResponseTimeCalculator2;
@@ -28,7 +28,7 @@ public class ResponseTimeCalculatorTest {
 
     @Test
     public void testResponseTimeCalculator() {
-        ProbeManager<Double> ps = new ProbeManager<Double>(new MockupTimestampGenerator(),
+        AbstractProbeManager<Double> ps = new AbstractProbeManager<Double>(new MockupTimestampGenerator(),
                 BlackboardType.SIMPLE);
 
         ps.getBlackboard().addMeasurementListener(new PrintMeasurementsListener());
@@ -38,11 +38,11 @@ public class ResponseTimeCalculatorTest {
 
         DerivedDoubleProbe responseTimeProbe = ProbeFactory.createDerivedDoubleProbe("responseTimeProbe");
         ps.getCalculatorRegistry().add(new ResponseTimeCalculator2()).bindInput(startProbe, stopProbe).bindOutput(responseTimeProbe);
-        IBlackboardReader<Double, Double> responseTimeReader = ps.getBlackboard().getReader(responseTimeProbe);
+        BlackboardReader<Double, Double> responseTimeReader = ps.getBlackboard().getReader(responseTimeProbe);
 
-        IMeasurementContext rootCtx = new UsageContext("root");
-        IMeasurementContext childCtx = new UsageContext("child", (UsageContext) rootCtx);
-        IMeasurementContext childOfChildCtx = new UsageContext("childOfChild", (UsageContext) childCtx);
+        MeasurementContext rootCtx = new UsageContext("root");
+        MeasurementContext childCtx = new UsageContext("child", (UsageContext) rootCtx);
+        MeasurementContext childOfChildCtx = new UsageContext("childOfChild", (UsageContext) childCtx);
 
         // ////////////////////////////////////
         ps.getBlackboard().addMeasurement(10.0, startProbe, rootCtx);
@@ -86,7 +86,7 @@ public class ResponseTimeCalculatorTest {
         ps.shutdown();
     }
 
-    private class MockupTimestampGenerator implements ITimestampGenerator<Double> {
+    private class MockupTimestampGenerator implements TimestampGenerator<Double> {
 
         @Override
         public Double now() {
@@ -95,11 +95,11 @@ public class ResponseTimeCalculatorTest {
 
     }
 
-    private static class PrintMeasurementsListener implements IBlackboardListener<Double, Double> {
+    private static class PrintMeasurementsListener implements BlackboardListener<Double, Double> {
 
         @Override
         public void measurementArrived(Measurement<Double, Double> measurement, Probe<Double> probe,
-                IMeasurementContext... contexts) {
+                MeasurementContext... contexts) {
             System.out.println("Encountered " + measurement + " for probe " + probe.getName() + " in "
                     + MeasurementContextHelper.filter(UsageContext.class, contexts));
         }

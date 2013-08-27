@@ -7,18 +7,18 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import edu.kit.ipd.sdq.probespec.framework.IMetadata;
-import edu.kit.ipd.sdq.probespec.framework.ITimestampGenerator;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
+import edu.kit.ipd.sdq.probespec.framework.TimestampGenerator;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.index.IndexManager;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.BlackboardListener;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.ListenerSupport;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.BlackboardReaderSupport;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.IBlackboardReader;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.BlackboardReader;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.writer.BlackboardWriterImpl;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.writer.BlackboardWriter;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.writer.IBlackboardWriter;
 import edu.kit.ipd.sdq.probespec.framework.probes.Probe;
 
-public class SimpleBlackboardRegion<V, T> implements IBlackboardRegion<V, T> {
+public class SimpleBlackboardRegion<V, T> implements BlackboardRegion<V, T> {
 
     private static final Logger logger = Logger.getLogger(SimpleBlackboardRegion.class);
 
@@ -29,13 +29,13 @@ public class SimpleBlackboardRegion<V, T> implements IBlackboardRegion<V, T> {
      * <code>T</code> (generic class parameter).
      * <p>
      * Doing so should be considered a last resort; usually, it is totally appropriate that
-     * timestamps are generated automatically in the background using an {@link ITimestampGenerator}.
+     * timestamps are generated automatically in the background using an {@link TimestampGenerator}.
      */
     public static final Integer TIMESTAMP_OVERRIDE_METADATA_KEY = 0xf00;
 
     private Class<V> type;
 
-    private IBlackboard<T> blackboard;
+    private Blackboard<T> blackboard;
 
     private ListenerSupport<V, T> listenerSupport;
 
@@ -47,9 +47,9 @@ public class SimpleBlackboardRegion<V, T> implements IBlackboardRegion<V, T> {
 
     private KeyBuilder keyBuilder;
 
-    private ITimestampGenerator<T> timestampBuilder;
+    private TimestampGenerator<T> timestampBuilder;
 
-    public SimpleBlackboardRegion(IBlackboard<T> blackboard, Class<V> type, ITimestampGenerator<T> timestampBuilder) {
+    public SimpleBlackboardRegion(Blackboard<T> blackboard, Class<V> type, TimestampGenerator<T> timestampBuilder) {
         this.type = type;
         this.blackboard = blackboard;
         this.timestampBuilder = timestampBuilder;
@@ -62,13 +62,13 @@ public class SimpleBlackboardRegion<V, T> implements IBlackboardRegion<V, T> {
     }
 
     @Override
-    public void addMeasurement(V value, Probe<V> probe, IMeasurementContext... contexts) {
+    public void addMeasurement(V value, Probe<V> probe, MeasurementContext... contexts) {
         addMeasurement(value, probe, IMetadata.EMPTY_METADATA, contexts);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public void addMeasurement(V value, Probe<V> probe, IMetadata metadata, IMeasurementContext... contexts) {
+    public void addMeasurement(V value, Probe<V> probe, IMetadata metadata, MeasurementContext... contexts) {
         // generate timestamp or get timestamp from metadata if one is supplied
         T timestamp;
         if (!metadata.containsKey(TIMESTAMP_OVERRIDE_METADATA_KEY)) {
@@ -101,7 +101,7 @@ public class SimpleBlackboardRegion<V, T> implements IBlackboardRegion<V, T> {
     }
 
     @Override
-    public Measurement<V, T> getLatestMeasurement(Probe<V> probe, IMeasurementContext... contexts) {
+    public Measurement<V, T> getLatestMeasurement(Probe<V> probe, MeasurementContext... contexts) {
         // create composite key
         String key = keyBuilder.createKey(probe, contexts);
 
@@ -114,7 +114,7 @@ public class SimpleBlackboardRegion<V, T> implements IBlackboardRegion<V, T> {
     }
 
     @Override
-    public void deleteMeasurements(IMeasurementContext context) {
+    public void deleteMeasurements(MeasurementContext context) {
         // delete measurements
         int counter = 0;
         for (WeakReference<String> keyRef : indices.values(context)) {
@@ -134,7 +134,7 @@ public class SimpleBlackboardRegion<V, T> implements IBlackboardRegion<V, T> {
     }
 
     @Override
-    public void deleteMeasurement(Probe<V> probe, IMeasurementContext... contexts) {
+    public void deleteMeasurement(Probe<V> probe, MeasurementContext... contexts) {
         // create composite key
         String key = keyBuilder.createKey(probe, contexts);
 
@@ -143,22 +143,22 @@ public class SimpleBlackboardRegion<V, T> implements IBlackboardRegion<V, T> {
     }
 
     @Override
-    public void addMeasurementListener(IBlackboardListener<V, T> l) {
+    public void addMeasurementListener(BlackboardListener<V, T> l) {
         listenerSupport.addMeasurementListener(blackboard, l);
     }
 
     @Override
-    public void addMeasurementListener(IBlackboardListener<V, T> l, Probe<V> probe) {
+    public void addMeasurementListener(BlackboardListener<V, T> l, Probe<V> probe) {
         listenerSupport.addMeasurementListener(blackboard, l, probe);
     }
 
     @Override
-    public void removeMeasurementListener(IBlackboardListener<?, T> l) {
+    public void removeMeasurementListener(BlackboardListener<?, T> l) {
         listenerSupport.removeMeasurementListener(l);
     }
 
     @Override
-    public void removeMeasurementListener(IBlackboardListener<?, T> l, Probe<?> probe) {
+    public void removeMeasurementListener(BlackboardListener<?, T> l, Probe<?> probe) {
         listenerSupport.removeMeasurementListener(l, probe);
     }
 
@@ -168,13 +168,13 @@ public class SimpleBlackboardRegion<V, T> implements IBlackboardRegion<V, T> {
     }
 
     @Override
-    public IBlackboardReader<V, T> getReader(Probe<V> probe) {
+    public BlackboardReader<V, T> getReader(Probe<V> probe) {
         return readerSupport.getReader(probe, this);
     }
 
     @Override
-    public IBlackboardWriter<V> getWriter(Probe<V> probe) {
-        return new BlackboardWriter<V, T>(probe, this);
+    public BlackboardWriter<V> getWriter(Probe<V> probe) {
+        return new BlackboardWriterImpl<V, T>(probe, this);
     }
 
 }

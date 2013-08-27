@@ -7,15 +7,15 @@ import java.util.Map;
 import java.util.Set;
 
 
-public class Metadata implements IMetadata {
+public class HashMapMetadata implements IMetadata {
 
     private Map<Object, Object> map;
 
-    public Metadata() {
+    public HashMapMetadata() {
         this(false);
     }
 
-    private Metadata(boolean immutable) {
+    private HashMapMetadata(boolean immutable) {
         if (immutable) {
             map = Collections.emptyMap();
         } else {
@@ -24,7 +24,7 @@ public class Metadata implements IMetadata {
     }
     
     public static IMetadata emptyMetadata() {
-        return new Metadata(true);
+        return new HashMapMetadata(true);
     }
 
     @Override

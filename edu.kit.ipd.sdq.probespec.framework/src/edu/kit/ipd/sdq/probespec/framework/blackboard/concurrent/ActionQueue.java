@@ -10,10 +10,10 @@ public class ActionQueue implements StoppableRunnable {
 
     private boolean keepRunning = true;
 
-    private LinkedBlockingQueue<IQueuableAction> queue;
+    private LinkedBlockingQueue<QueuableAction> queue;
 
     public ActionQueue() {
-        this.queue = new LinkedBlockingQueue<IQueuableAction>();
+        this.queue = new LinkedBlockingQueue<QueuableAction>();
     }
 
     @Override
@@ -40,7 +40,7 @@ public class ActionQueue implements StoppableRunnable {
         }
     }
 
-    public void put(IQueuableAction action) {
+    public void put(QueuableAction action) {
         try {
             queue.put(action);
         } catch (InterruptedException e) {
@@ -57,7 +57,7 @@ public class ActionQueue implements StoppableRunnable {
      * When added to the queue, this action shuts down the thread responsible for processing
      * enqueued actions. Sometimes, this is also referred to as "poison pill".
      */
-    private class ShutdownQueueAction implements IQueuableAction {
+    private class ShutdownQueueAction implements QueuableAction {
 
         @Override
         public void execute() {

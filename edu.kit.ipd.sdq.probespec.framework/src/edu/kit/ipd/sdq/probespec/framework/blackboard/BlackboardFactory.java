@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.probespec.framework.blackboard;
 
-import edu.kit.ipd.sdq.probespec.framework.ITimestampGenerator;
+import edu.kit.ipd.sdq.probespec.framework.TimestampGenerator;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.concurrent.ConcurrentBlackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.concurrent.ThreadManager;
 
@@ -26,7 +26,7 @@ public class BlackboardFactory {
      *            blackboard; <code>null</code> else
      * @return the created blackboard
      */
-    public static <T> IBlackboard<T> createBlackboard(BlackboardType type, ITimestampGenerator<T> timestampBuilder,
+    public static <T> Blackboard<T> createBlackboard(BlackboardType type, TimestampGenerator<T> timestampBuilder,
             ThreadManager threadManager) {
         switch (type) {
         case SIMPLE:

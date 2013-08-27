@@ -9,7 +9,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 
-import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.test.mockup.AssemblyContext;
 
 public class MeasurementContextTest {
@@ -37,18 +37,18 @@ public class MeasurementContextTest {
     @Test
     public void testGetChildren() {
         // test if root has exactly 3 children: child1, child2, child3
-        List<IMeasurementContext> childsOfRoot = root.getChildren();
+        List<MeasurementContext> childsOfRoot = root.getChildren();
         Assert.assertEquals(3, childsOfRoot.size());
         Assert.assertTrue(childsOfRoot.contains(child1));
         Assert.assertTrue(childsOfRoot.contains(child2));
         Assert.assertTrue(childsOfRoot.contains(child3));
 
         // test if child1 has no children
-        List<IMeasurementContext> childsOfChild1 = child1.getChildren();
+        List<MeasurementContext> childsOfChild1 = child1.getChildren();
         Assert.assertEquals(0, childsOfChild1.size());
 
         // test if child2 has exactly 1 children: childOfChild2
-        List<IMeasurementContext> childsOfChild2 = child2.getChildren();
+        List<MeasurementContext> childsOfChild2 = child2.getChildren();
         Assert.assertEquals(1, childsOfChild2.size());
         Assert.assertTrue(childsOfChild2.contains(childOfChild2));
     }

@@ -4,9 +4,9 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-import edu.kit.ipd.sdq.probespec.framework.AbstractProbe;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.KeyBuilder;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContext;
+import edu.kit.ipd.sdq.probespec.framework.probes.AbstractProbe;
 import edu.kit.ipd.sdq.probespec.framework.test.mockup.AssemblyContext;
 import edu.kit.ipd.sdq.probespec.framework.test.mockup.UsageContext;
 
@@ -16,8 +16,8 @@ public class KeyBuilderTest {
     public void testCreateKey() {
         IntegerProbe probe = new IntegerProbe("testProbe", "testProbe");
 
-        IMeasurementContext assCtx = new AssemblyContext("AssCtx1");
-        IMeasurementContext usgCtx = new UsageContext("UsgCtx1");
+        MeasurementContext assCtx = new AssemblyContext("AssCtx1");
+        MeasurementContext usgCtx = new UsageContext("UsgCtx1");
 
         KeyBuilder builder = new KeyBuilder();
 

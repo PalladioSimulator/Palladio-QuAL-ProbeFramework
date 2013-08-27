@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.probespec.framework;
 
-public interface ITimestampGenerator<T> {
+public interface TimestampGenerator<T> {
 
     public T now();
     

@@ -2,40 +2,40 @@ package edu.kit.ipd.sdq.probespec.framework.calculators.unary.binding;
 
 import org.apache.log4j.Logger;
 
-import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.Blackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.IBlackboardReader;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.writer.IBlackboardWriter;
-import edu.kit.ipd.sdq.probespec.framework.calculators.ICalculatorBinding;
-import edu.kit.ipd.sdq.probespec.framework.calculators.unary.IUnaryCalculator;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContext;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.BlackboardListener;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.BlackboardReader;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.writer.BlackboardWriter;
+import edu.kit.ipd.sdq.probespec.framework.calculators.CalculatorBinding;
+import edu.kit.ipd.sdq.probespec.framework.calculators.unary.UnaryCalculator;
 import edu.kit.ipd.sdq.probespec.framework.probes.Probe;
 
-public class UnaryCalculatorBinding<IN, OUT, T> implements ICalculatorBinding, IUnaryUnboundCalculator<IN, OUT>,
-        IUnaryPartiallyBoundCalculator<OUT>, IUnaryBoundCalculator {
+public class UnaryCalculatorBinding<IN, OUT, T> implements CalculatorBinding, UnaryUnboundCalculator<IN, OUT>,
+        UnaryPartiallyBoundCalculator<OUT>, UnaryBoundCalculator {
 
     private static final Logger logger = Logger.getLogger(UnaryCalculatorBinding.class);
 
-    private IBlackboard<T> blackboard;
+    private Blackboard<T> blackboard;
 
-    private IBlackboardListener<IN, T> inListener;
+    private BlackboardListener<IN, T> inListener;
 
-    private IUnaryCalculator<IN, OUT, T> calculator;
+    private UnaryCalculator<IN, OUT, T> calculator;
 
     private boolean isInputBound;
 
     private boolean isOutputBound;
 
-    public UnaryCalculatorBinding(IUnaryCalculator<IN, OUT, T> calculator, IBlackboard<T> blackboard) {
+    public UnaryCalculatorBinding(UnaryCalculator<IN, OUT, T> calculator, Blackboard<T> blackboard) {
         this.blackboard = blackboard;
         this.calculator = calculator;
         this.inListener = new ProbeListener();
     }
 
-    public IUnaryBoundCalculator bindOutput(Probe<OUT> outProbe) {
+    public UnaryBoundCalculator bindOutput(Probe<OUT> outProbe) {
         // setup blackboard writer
-        IBlackboardWriter<OUT> writer = blackboard.getWriter(outProbe);
+        BlackboardWriter<OUT> writer = blackboard.getWriter(outProbe);
         calculator.setupBlackboardWriter(writer);
 
         isOutputBound = true;
@@ -43,7 +43,7 @@ public class UnaryCalculatorBinding<IN, OUT, T> implements ICalculatorBinding, I
         return this;
     }
 
-    public IUnaryPartiallyBoundCalculator<OUT> bindInput(Probe<IN> inProbe) {
+    public UnaryPartiallyBoundCalculator<OUT> bindInput(Probe<IN> inProbe) {
         if (inProbe == null) {
             throw new IllegalArgumentException("Cannot bind calculator to probe because it is null.");
         }
@@ -53,7 +53,7 @@ public class UnaryCalculatorBinding<IN, OUT, T> implements ICalculatorBinding, I
         calculator.setupBinding(inProbe);
 
         // setup blackboard reader
-        IBlackboardReader<IN, T> reader = blackboard.getReader(inProbe);
+        BlackboardReader<IN, T> reader = blackboard.getReader(inProbe);
         calculator.setupBlackboardReader(reader);
 
         isInputBound = true;
@@ -81,10 +81,10 @@ public class UnaryCalculatorBinding<IN, OUT, T> implements ICalculatorBinding, I
         return calculator.toString();
     }
 
-    protected class ProbeListener implements IBlackboardListener<IN, T> {
+    protected class ProbeListener implements BlackboardListener<IN, T> {
 
         @Override
-        public void measurementArrived(Measurement<IN, T> measurement, Probe<IN> probe, IMeasurementContext... contexts) {
+        public void measurementArrived(Measurement<IN, T> measurement, Probe<IN> probe, MeasurementContext... contexts) {
             calculator.calculate(probe, contexts);
         }
 

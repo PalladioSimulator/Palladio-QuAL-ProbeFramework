@@ -2,11 +2,11 @@ package edu.kit.ipd.sdq.probespec.framework.test.example;
 
 import org.apache.log4j.Logger;
 
-import edu.kit.ipd.sdq.probespec.framework.Probe;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardType;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContext;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.BlackboardListener;
+import edu.kit.ipd.sdq.probespec.framework.probes.Probe;
 import edu.kit.ipd.sdq.probespec.framework.test.util.IntegerProbe;
 import edu.kit.ipd.sdq.probespec.framework.test.util.LoggingUtils;
 import edu.kit.ipd.sdq.probespec.java.DifferenceCalculator;
@@ -63,11 +63,11 @@ public class APIExample {
         System.out.println("Took " + diff / (1000 * 1000) + " ms.");
     }
 
-    private static class PrintMeasurementsListener implements IBlackboardListener<Integer, Long> {
+    private static class PrintMeasurementsListener implements BlackboardListener<Integer, Long> {
         
         @Override
         public void measurementArrived(Measurement<Integer, Long> measurement, Probe<Integer> probe,
-                IMeasurementContext... contexts) {
+                MeasurementContext... contexts) {
             logger.info("Encountered " + measurement + " for probe "
                     + probe.getName());
         }

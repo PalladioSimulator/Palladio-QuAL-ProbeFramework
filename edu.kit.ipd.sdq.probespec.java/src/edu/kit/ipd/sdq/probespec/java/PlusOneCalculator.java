@@ -1,13 +1,13 @@
 package edu.kit.ipd.sdq.probespec.java;
 
-import edu.kit.ipd.sdq.probespec.framework.Probe;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.IBlackboardReader;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContext;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.BlackboardReader;
 import edu.kit.ipd.sdq.probespec.framework.calculators.unary.AbstractUnaryCalculator;
+import edu.kit.ipd.sdq.probespec.framework.probes.Probe;
 
 public class PlusOneCalculator extends AbstractUnaryCalculator<Integer, Integer, Long> {
 
-    private IBlackboardReader<Integer, Long> inReader;
+    private BlackboardReader<Integer, Long> inReader;
 
     public PlusOneCalculator() {
         // Provide generic class parameters to super class. This is necessary because generic
@@ -18,13 +18,13 @@ public class PlusOneCalculator extends AbstractUnaryCalculator<Integer, Integer,
     }
 
     @Override
-    public void setupBlackboardReader(IBlackboardReader<Integer, Long> reader) {
+    public void setupBlackboardReader(BlackboardReader<Integer, Long> reader) {
         this.inReader = reader;
 
     }
 
     @Override
-    public void calculate(Probe<?> probe, IMeasurementContext... contexts) {
+    public void calculate(Probe<?> probe, MeasurementContext... contexts) {
         Integer value = inReader.getLatestMeasurement().getValue() + 1;
         outWriter.addMeasurement(value);
     }

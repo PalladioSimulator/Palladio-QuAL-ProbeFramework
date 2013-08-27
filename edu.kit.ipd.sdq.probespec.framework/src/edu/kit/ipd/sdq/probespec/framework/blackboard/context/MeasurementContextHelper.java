@@ -1,7 +1,7 @@
 package edu.kit.ipd.sdq.probespec.framework.blackboard.context;
 
 /**
- * Static helper methods for instances of {@link IMeasurementContext}.
+ * Static helper methods for instances of {@link MeasurementContext}.
  * 
  * @author Philipp Merkle
  * @since 2.0
@@ -11,7 +11,7 @@ public class MeasurementContextHelper {
 
     /**
      * Returns the passed {@code contexts} where each context of the specified {@code type} is
-     * replaced with its parent context using {@link IMeasurementContext#getParent()}. If the
+     * replaced with its parent context using {@link MeasurementContext#getParent()}. If the
      * contexts parameter does not contain an entry of the given type, this method simply returns
      * the {@code contexts} parameter.
      * 
@@ -19,12 +19,12 @@ public class MeasurementContextHelper {
      * @param contexts
      * @return
      */
-    public static IMeasurementContext[] parentContext(Class<? extends IMeasurementContext> type,
-            IMeasurementContext... contexts) {
+    public static MeasurementContext[] parentContext(Class<? extends MeasurementContext> type,
+            MeasurementContext... contexts) {
         assert (type != null);
-        IMeasurementContext[] result = new IMeasurementContext[contexts.length];
+        MeasurementContext[] result = new MeasurementContext[contexts.length];
         for (int i = 0; i < contexts.length; i++) {
-            IMeasurementContext c = contexts[i];
+            MeasurementContext c = contexts[i];
             if (type.isInstance(c)) {
                 result[i] = c.getParent() != null ? c.getParent() : c;
             } else {
@@ -44,9 +44,9 @@ public class MeasurementContextHelper {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public static <T extends IMeasurementContext> T filter(Class<T> type, IMeasurementContext... contexts) {
+    public static <T extends MeasurementContext> T filter(Class<T> type, MeasurementContext... contexts) {
         assert (type != null);
-        for (IMeasurementContext c : contexts) {
+        for (MeasurementContext c : contexts) {
             if (type.isInstance(c)) {
                 return (T) c;
             }

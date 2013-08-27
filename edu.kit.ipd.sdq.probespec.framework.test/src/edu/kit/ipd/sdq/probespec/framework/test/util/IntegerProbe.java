@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.probespec.framework.test.util;
 
-import edu.kit.ipd.sdq.probespec.framework.AbstractProbe;
+import edu.kit.ipd.sdq.probespec.framework.probes.AbstractProbe;
 
 public class IntegerProbe extends AbstractProbe<Integer>  {
     

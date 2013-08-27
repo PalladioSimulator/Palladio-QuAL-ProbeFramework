@@ -6,34 +6,34 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContextHelper;
 
-public class SameOrParentContextLookupStrategy implements ILookupStrategy {
+public class SameOrParentContextLookupStrategy implements LookupStrategy {
 
-    private Class<? extends IMeasurementContext> clazz;
+    private Class<? extends MeasurementContext> clazz;
 
-    public SameOrParentContextLookupStrategy(Class<? extends IMeasurementContext> clazz) {
+    public SameOrParentContextLookupStrategy(Class<? extends MeasurementContext> clazz) {
         this.clazz = clazz;
     }
 
     @Override
-    public Iterable<List<IMeasurementContext>> lookup(IMeasurementContext... contexts) {
+    public Iterable<List<MeasurementContext>> lookup(MeasurementContext... contexts) {
         return new ContextIterable(contexts);
     }
 
-    private class ContextIterable implements Iterable<List<IMeasurementContext>> {
+    private class ContextIterable implements Iterable<List<MeasurementContext>> {
 
-        private IMeasurementContext[] contexts;
+        private MeasurementContext[] contexts;
 
-        public ContextIterable(IMeasurementContext... contexts) {
+        public ContextIterable(MeasurementContext... contexts) {
             this.contexts = contexts;
         }
 
         @Override
-        public Iterator<List<IMeasurementContext>> iterator() {
+        public Iterator<List<MeasurementContext>> iterator() {
             if (contexts.length == 0) {
-                Iterator<List<IMeasurementContext>> it = Collections.emptyIterator();
+                Iterator<List<MeasurementContext>> it = Collections.emptyIterator();
                 return it;
             } else {
                 return new ContextIterator(contexts);
@@ -42,13 +42,13 @@ public class SameOrParentContextLookupStrategy implements ILookupStrategy {
 
     }
 
-    private class ContextIterator implements Iterator<List<IMeasurementContext>> {
+    private class ContextIterator implements Iterator<List<MeasurementContext>> {
 
-        private IMeasurementContext[] currentContexts;
+        private MeasurementContext[] currentContexts;
 
-        private IMeasurementContext[] nextContexts;
+        private MeasurementContext[] nextContexts;
 
-        public ContextIterator(IMeasurementContext... contexts) {
+        public ContextIterator(MeasurementContext... contexts) {
             // Note: currentContexts has been intentionally left null
             this.nextContexts = contexts;
         }
@@ -59,7 +59,7 @@ public class SameOrParentContextLookupStrategy implements ILookupStrategy {
         }
 
         @Override
-        public List<IMeasurementContext> next() {
+        public List<MeasurementContext> next() {
             if (!hasNext()) {
                 throw new NoSuchElementException("Iteration has no more elements");
             }

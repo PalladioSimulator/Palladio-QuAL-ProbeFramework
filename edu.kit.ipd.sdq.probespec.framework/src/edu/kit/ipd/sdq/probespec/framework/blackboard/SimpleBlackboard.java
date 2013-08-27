@@ -6,23 +6,23 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import edu.kit.ipd.sdq.probespec.framework.IMetadata;
-import edu.kit.ipd.sdq.probespec.framework.ITimestampGenerator;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.IBlackboardReader;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.writer.IBlackboardWriter;
+import edu.kit.ipd.sdq.probespec.framework.TimestampGenerator;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContext;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.BlackboardListener;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.BlackboardReader;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.writer.BlackboardWriter;
 import edu.kit.ipd.sdq.probespec.framework.probes.Probe;
 
-public class SimpleBlackboard<T> implements IBlackboard<T> {
+public class SimpleBlackboard<T> implements Blackboard<T> {
 
     private static final Logger logger = Logger.getLogger(SimpleBlackboard.class);
 
-    private Map<Class<?>, IBlackboardRegion<?, T>> regions;
+    private Map<Class<?>, BlackboardRegion<?, T>> regions;
 
-    private ITimestampGenerator<T> timestampBuilder;
+    private TimestampGenerator<T> timestampBuilder;
 
-    public SimpleBlackboard(ITimestampGenerator<T> timestampBuilder) {
-        this.regions = new HashMap<Class<?>, IBlackboardRegion<?, T>>();
+    public SimpleBlackboard(TimestampGenerator<T> timestampBuilder) {
+        this.regions = new HashMap<Class<?>, BlackboardRegion<?, T>>();
         this.timestampBuilder = timestampBuilder;
     }
 
@@ -37,61 +37,61 @@ public class SimpleBlackboard<T> implements IBlackboard<T> {
     }
 
     @Override
-    public <V> void addMeasurement(V value, Probe<V> probe, IMeasurementContext... contexts) {
+    public <V> void addMeasurement(V value, Probe<V> probe, MeasurementContext... contexts) {
         createOrFindRegion(probe.getGenericClass()).addMeasurement(value, probe, contexts);
     }
 
     @Override
     public <V> void addMeasurement(V value, Probe<V> probe, IMetadata metadata,
-            IMeasurementContext... contexts) {
+            MeasurementContext... contexts) {
         createOrFindRegion(probe.getGenericClass()).addMeasurement(value, probe, metadata, contexts);
     }
 
     @Override
-    public void deleteMeasurements(IMeasurementContext context) {
-        for (IBlackboardRegion<?, T> r : regions.values()) {
+    public void deleteMeasurements(MeasurementContext context) {
+        for (BlackboardRegion<?, T> r : regions.values()) {
             r.deleteMeasurements(context);
         }
     }
 
     @Override
-    public <V> void deleteMeasurement(Probe<V> probe, IMeasurementContext... contexts) {
+    public <V> void deleteMeasurement(Probe<V> probe, MeasurementContext... contexts) {
         createOrFindRegion(probe.getGenericClass()).deleteMeasurement(probe, contexts);
     }
 
     @Override
-    public <V> void addMeasurementListener(IBlackboardListener<V, T> l, Probe<V> probe) {
+    public <V> void addMeasurementListener(BlackboardListener<V, T> l, Probe<V> probe) {
         createOrFindRegion(probe.getGenericClass()).addMeasurementListener(l, probe);
     }
 
     @Override
-    public <V> void addMeasurementListener(IBlackboardListener<V, T> l) {
+    public <V> void addMeasurementListener(BlackboardListener<V, T> l) {
         createOrFindRegion(l.getGenericType()).addMeasurementListener(l);
     }
 
     @Override
-    public void removeMeasurementListener(IBlackboardListener<?, T> l) {
+    public void removeMeasurementListener(BlackboardListener<?, T> l) {
         createOrFindRegion(l.getGenericType()).removeMeasurementListener(l);
     }
     
     @Override
-    public void removeMeasurementListener(IBlackboardListener<?, T> l, Probe<?> probe) {
+    public void removeMeasurementListener(BlackboardListener<?, T> l, Probe<?> probe) {
         createOrFindRegion(l.getGenericType()).removeMeasurementListener(l, probe);
     }
 
     @Override
-    public <V> IBlackboardReader<V, T> getReader(Probe<V> probe) {
+    public <V> BlackboardReader<V, T> getReader(Probe<V> probe) {
         return createOrFindRegion(probe.getGenericClass()).getReader(probe);
     }
 
     @Override
-    public <V> IBlackboardWriter<V> getWriter(Probe<V> probe) {
+    public <V> BlackboardWriter<V> getWriter(Probe<V> probe) {
         return createOrFindRegion(probe.getGenericClass()).getWriter(probe);
     }
 
-    private <V> IBlackboardRegion<V, T> createOrFindRegion(Class<V> clazz) {
+    private <V> BlackboardRegion<V, T> createOrFindRegion(Class<V> clazz) {
         @SuppressWarnings("unchecked")
-        IBlackboardRegion<V, T> r = (IBlackboardRegion<V, T>) this.regions.get(clazz);
+        BlackboardRegion<V, T> r = (BlackboardRegion<V, T>) this.regions.get(clazz);
         if (r == null) {
             r = new SimpleBlackboardRegion<V, T>(this, clazz, timestampBuilder);
             this.regions.put(clazz, r);

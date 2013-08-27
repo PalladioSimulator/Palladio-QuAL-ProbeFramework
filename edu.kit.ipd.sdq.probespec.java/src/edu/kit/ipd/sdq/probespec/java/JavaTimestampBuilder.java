@@ -1,8 +1,8 @@
 package edu.kit.ipd.sdq.probespec.java;
 
-import edu.kit.ipd.sdq.probespec.framework.ITimestampGenerator;
+import edu.kit.ipd.sdq.probespec.framework.TimestampGenerator;
 
-public class JavaTimestampBuilder implements ITimestampGenerator<Long> {
+public class JavaTimestampBuilder implements TimestampGenerator<Long> {
 
     @Override
     public Long now() {

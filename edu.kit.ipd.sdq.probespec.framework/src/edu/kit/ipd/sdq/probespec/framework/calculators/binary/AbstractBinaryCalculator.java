@@ -1,11 +1,11 @@
 package edu.kit.ipd.sdq.probespec.framework.calculators.binary;
 
-import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.IBlackboardReader;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.BlackboardReader;
 import edu.kit.ipd.sdq.probespec.framework.calculators.AbstractCalculator;
 import edu.kit.ipd.sdq.probespec.framework.probes.Probe;
 
 public abstract class AbstractBinaryCalculator<IN1, IN2, OUT, T> extends AbstractCalculator<OUT> implements
-        IBinaryCalculator<IN1, IN2, OUT, T> {
+        BinaryCalculator<IN1, IN2, OUT, T> {
 
     private Class<IN1> in1Class;
 
@@ -13,9 +13,9 @@ public abstract class AbstractBinaryCalculator<IN1, IN2, OUT, T> extends Abstrac
 
     private Class<OUT> outClass;
 
-    protected IBlackboardReader<IN1, T> in1Reader;
+    protected BlackboardReader<IN1, T> in1Reader;
 
-    protected IBlackboardReader<IN2, T> in2Reader;
+    protected BlackboardReader<IN2, T> in2Reader;
 
     protected Probe<IN1> in1Probe;
 
@@ -44,7 +44,7 @@ public abstract class AbstractBinaryCalculator<IN1, IN2, OUT, T> extends Abstrac
     }
 
     @Override
-    public void setupBlackboardReader(IBlackboardReader<IN1, T> in1Reader, IBlackboardReader<IN2, T> in2Reader) {
+    public void setupBlackboardReader(BlackboardReader<IN1, T> in1Reader, BlackboardReader<IN2, T> in2Reader) {
         this.in1Reader = in1Reader;
         this.in2Reader = in2Reader;
     }

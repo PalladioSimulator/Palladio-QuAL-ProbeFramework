@@ -8,7 +8,7 @@ import org.junit.Test;
 import org.junit.rules.TestName;
 
 import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardType;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.test.mockup.AssemblyContext;
 import edu.kit.ipd.sdq.probespec.framework.test.mockup.UsageContext;
 import edu.kit.ipd.sdq.probespec.framework.test.util.IntegerProbe;
@@ -102,8 +102,8 @@ public class PerformanceTest {
         }
 
         // create artificial measurement data
-        IMeasurementContext assCtx = new AssemblyContext("MyAssemblyContext");
-        IMeasurementContext usgCtx = new UsageContext("User1");
+        MeasurementContext assCtx = new AssemblyContext("MyAssemblyContext");
+        MeasurementContext usgCtx = new UsageContext("User1");
 
         long t0 = System.nanoTime();
         for (int i = 0; i < numberOfMeasurements; i++) {

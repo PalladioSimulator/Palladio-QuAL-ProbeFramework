@@ -2,12 +2,12 @@ package edu.kit.ipd.sdq.probespec.palladio;
 
 import java.math.BigDecimal;
 
-import edu.kit.ipd.sdq.probespec.framework.Probe;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.ILookupStrategy;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContext;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.LookupStrategy;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.SameOrParentContextLookupStrategy;
 import edu.kit.ipd.sdq.probespec.framework.calculators.binary.AbstractBinaryCalculator;
+import edu.kit.ipd.sdq.probespec.framework.probes.Probe;
 import edu.kit.ipd.sdq.probespec.palladio.contexts.AssemblyContextWrapper;
 import edu.kit.ipd.sdq.probespec.palladio.contexts.RequestContext2;
 
@@ -24,7 +24,7 @@ public class TimeSpanCalculator2 extends AbstractBinaryCalculator<Double, Double
     }
 
     @Override
-    public void calculate(Probe<?> probe, IMeasurementContext... contexts) {
+    public void calculate(Probe<?> probe, MeasurementContext... contexts) {
         // nothing to calculate if we observe the 1st measurement because the 2nd measurement
         // is still pending
         if (probe.equals(in1Probe)) {
@@ -38,7 +38,7 @@ public class TimeSpanCalculator2 extends AbstractBinaryCalculator<Double, Double
         }
 
         // retrieve 1st and 2nd measurement
-        ILookupStrategy lookupStrategy = new SameOrParentContextLookupStrategy(RequestContext2.class);
+        LookupStrategy lookupStrategy = new SameOrParentContextLookupStrategy(RequestContext2.class);
         Measurement<Double, Double> mm1 = in1Reader.getLatestMeasurement(lookupStrategy, contexts);
         Measurement<Double, Double> mm2 = in2Reader.getLatestMeasurement(contexts);
 
@@ -59,8 +59,8 @@ public class TimeSpanCalculator2 extends AbstractBinaryCalculator<Double, Double
         }
     }
 
-    private boolean containsAssemblyContext(IMeasurementContext[] contexts, AssemblyContextWrapper assemblyCtx) {
-        for (IMeasurementContext ctx : contexts) {
+    private boolean containsAssemblyContext(MeasurementContext[] contexts, AssemblyContextWrapper assemblyCtx) {
+        for (MeasurementContext ctx : contexts) {
             if (ctx.equals(assemblyCtx)) {
                 return true;
             }

@@ -1,9 +1,9 @@
 package edu.kit.ipd.sdq.probespec.framework.probes;
 
 import edu.kit.ipd.sdq.probespec.framework.IMetadata;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.Blackboard;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContext;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.BlackboardListener;
 
 public interface Probe<V> {
 
@@ -36,19 +36,19 @@ public interface Probe<V> {
 
     void addMeasurement(V value, IMetadata metadata);
 
-    void addMeasurement(V value, IMeasurementContext... contexts);
+    void addMeasurement(V value, MeasurementContext... contexts);
 
-    void addMeasurement(V value, IMetadata metadata, IMeasurementContext... contexts);
+    void addMeasurement(V value, IMetadata metadata, MeasurementContext... contexts);
     
-    void addProbeStateListener(IProbeStateListener listener);
+    void addProbeStateListener(ProbeStateListener listener);
 
     /**
      * This method is not intended to be invoked by clients.
      */
-    void setBlackboard(IBlackboard<?> blackboard);
+    void setBlackboard(Blackboard<?> blackboard);
 
-    <T> void addMeasurementListener(IBlackboardListener<V, T> listener);
+    <T> void addMeasurementListener(BlackboardListener<V, T> listener);
     
-    <T> void removeMeasurementListener(IBlackboardListener<?, T> listener);
+    <T> void removeMeasurementListener(BlackboardListener<?, T> listener);
 
 }

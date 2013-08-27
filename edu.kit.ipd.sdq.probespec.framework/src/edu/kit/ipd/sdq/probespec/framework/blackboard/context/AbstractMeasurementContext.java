@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class AbstractMeasurementContext implements IMeasurementContext {
+public class AbstractMeasurementContext implements MeasurementContext {
 
     private String id;
 
-    private IMeasurementContext parent;
+    private MeasurementContext parent;
 
-    private List<IMeasurementContext> children;
+    private List<MeasurementContext> children;
 
     public AbstractMeasurementContext(String id) {
         this(id, null);
@@ -31,8 +31,8 @@ public class AbstractMeasurementContext implements IMeasurementContext {
     }
 
     @Override
-    public IMeasurementContext getRoot() {
-        IMeasurementContext context = this;
+    public MeasurementContext getRoot() {
+        MeasurementContext context = this;
         while (context.getParent() != null) {
             context = context.getParent();
         }
@@ -45,21 +45,21 @@ public class AbstractMeasurementContext implements IMeasurementContext {
     }
 
     @Override
-    public IMeasurementContext getParent() {
+    public MeasurementContext getParent() {
         return parent;
     }
 
     @Override
-    public List<IMeasurementContext> getChildren() {
+    public List<MeasurementContext> getChildren() {
         if (children == null) {
-            children = new ArrayList<IMeasurementContext>();
+            children = new ArrayList<MeasurementContext>();
         }
         return Collections.unmodifiableList(children);
     }
     
     private void addChildren(AbstractMeasurementContext context) {
         if (children == null) {
-            children = new ArrayList<IMeasurementContext>();
+            children = new ArrayList<MeasurementContext>();
         }
         children.add(context);
     }

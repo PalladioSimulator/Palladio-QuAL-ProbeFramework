@@ -4,7 +4,7 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
 
-public class SimpleProbeRegistryRegion<V> implements IProbeRegistryRegion<V> {
+public class SimpleProbeRegistryRegion<V> implements ProbeRegistryRegion<V> {
 
     /** maps (entity, mountPoint)-pairs to probes */
     private Multimap<KeyPair<Object, Object>, Probe<V>> probeMap;

@@ -7,15 +7,15 @@ import java.util.Iterator;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
-import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContext;
 
 public class WeakIndex {
 
-    private Class<? extends IMeasurementContext> contextType;
+    private Class<? extends MeasurementContext> contextType;
 
     private Multimap<String, WeakReference<String>> index;
 
-    public WeakIndex(Class<? extends IMeasurementContext> contextType) {
+    public WeakIndex(Class<? extends MeasurementContext> contextType) {
         this.contextType = contextType;
         index = HashMultimap.create();
     }

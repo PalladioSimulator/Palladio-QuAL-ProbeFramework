@@ -5,51 +5,51 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.Blackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.probes.Probe;
 
 public class ListenerSupport<V, T> {
 
-    private List<IBlackboardListener<V, T>> listeners;
+    private List<BlackboardListener<V, T>> listeners;
 
-    private Map<Probe<?>, List<IBlackboardListener<V, T>>> probeListeners;
+    private Map<Probe<?>, List<BlackboardListener<V, T>>> probeListeners;
 
     public ListenerSupport() {
-        listeners = new ArrayList<IBlackboardListener<V, T>>();
-        probeListeners = new HashMap<Probe<?>, List<IBlackboardListener<V, T>>>();
+        listeners = new ArrayList<BlackboardListener<V, T>>();
+        probeListeners = new HashMap<Probe<?>, List<BlackboardListener<V, T>>>();
     }
 
-    public void notifyMeasurementListeners(IBlackboard<T> blackboard, Measurement<V, T> measurement, Probe<V> probe,
-            IMeasurementContext... contexts) {
-        for (IBlackboardListener<V, T> l : listeners) {
+    public void notifyMeasurementListeners(Blackboard<T> blackboard, Measurement<V, T> measurement, Probe<V> probe,
+            MeasurementContext... contexts) {
+        for (BlackboardListener<V, T> l : listeners) {
             l.measurementArrived(measurement, probe, contexts);
         }
 
         if (probeListeners.containsKey(probe)) {
-            for (IBlackboardListener<V, T> l : probeListeners.get(probe)) {
+            for (BlackboardListener<V, T> l : probeListeners.get(probe)) {
                 l.measurementArrived(measurement, probe, contexts);
             }
         }
     }
 
-    public void addMeasurementListener(IBlackboard<T> blackboard, IBlackboardListener<V, T> l) {
+    public void addMeasurementListener(Blackboard<T> blackboard, BlackboardListener<V, T> l) {
         listeners.add(l);
     }
 
-    public void addMeasurementListener(IBlackboard<T> blackboard, IBlackboardListener<V, T> l, Probe<V> probe) {
+    public void addMeasurementListener(Blackboard<T> blackboard, BlackboardListener<V, T> l, Probe<V> probe) {
         if (!probeListeners.containsKey(probe)) {
-            probeListeners.put(probe, new ArrayList<IBlackboardListener<V, T>>());
+            probeListeners.put(probe, new ArrayList<BlackboardListener<V, T>>());
         }
         probeListeners.get(probe).add(l);
     }
 
-    public void removeMeasurementListener(IBlackboardListener<?, T> l) {
+    public void removeMeasurementListener(BlackboardListener<?, T> l) {
         probeListeners.remove(l);
     }
 
-    public void removeMeasurementListener(IBlackboardListener<?, T> l, Probe<?> probe) {
+    public void removeMeasurementListener(BlackboardListener<?, T> l, Probe<?> probe) {
         if (probeListeners.containsKey(probe)) {
             probeListeners.get(probe).remove(l);
         }

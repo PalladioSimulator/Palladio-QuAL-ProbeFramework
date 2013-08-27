@@ -1,16 +1,16 @@
 package edu.kit.ipd.sdq.probespec.framework.garbagecollection;
 
-import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.Blackboard;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContext;
 
-public class DefaultGarbageCollector extends RegionBasedGarbageCollector<IMeasurementContext> {
+public class DefaultGarbageCollector extends AbstractRegionBasedGarbageCollector<MeasurementContext> {
 
-    public DefaultGarbageCollector(IBlackboard<?> blackboard) {
+    public DefaultGarbageCollector(Blackboard<?> blackboard) {
         super(blackboard);
     }
 
     @Override
-    public void cleanRegion(IMeasurementContext context) {
+    public void cleanRegion(MeasurementContext context) {
         getBlackboard().deleteMeasurements(context);
     }
 

@@ -1,10 +1,10 @@
 package edu.kit.ipd.sdq.probespec.java;
 
-import edu.kit.ipd.sdq.probespec.framework.Probe;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.IBlackboardReader;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContext;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.BlackboardReader;
 import edu.kit.ipd.sdq.probespec.framework.calculators.binary.AbstractBinaryCalculator;
+import edu.kit.ipd.sdq.probespec.framework.probes.Probe;
 
 public class DifferenceCalculator extends AbstractBinaryCalculator<Integer, Integer, Integer, Long> {
 
@@ -17,14 +17,14 @@ public class DifferenceCalculator extends AbstractBinaryCalculator<Integer, Inte
     }
 
     @Override
-    public void setupBlackboardReader(IBlackboardReader<Integer, Long> in1Reader,
-            IBlackboardReader<Integer, Long> in2Reader) {
+    public void setupBlackboardReader(BlackboardReader<Integer, Long> in1Reader,
+            BlackboardReader<Integer, Long> in2Reader) {
         this.in1Reader = in1Reader;
         this.in2Reader = in2Reader;
     }
 
     @Override
-    public void calculate(Probe<?> probe, IMeasurementContext... contexts) {
+    public void calculate(Probe<?> probe, MeasurementContext... contexts) {
         Measurement<Integer, Long> mm1 = in1Reader.getLatestMeasurement();
         Measurement<Integer, Long> mm2 = in2Reader.getLatestMeasurement();
 

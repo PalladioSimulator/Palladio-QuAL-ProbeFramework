@@ -5,14 +5,14 @@ import java.util.List;
 import java.util.UUID;
 
 import edu.kit.ipd.sdq.probespec.framework.IMetadata;
-import edu.kit.ipd.sdq.probespec.framework.Metadata;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
+import edu.kit.ipd.sdq.probespec.framework.HashMapMetadata;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.Blackboard;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContext;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.BlackboardListener;
 
 public abstract class AbstractProbe<V> implements Probe<V> {
 
-    private IBlackboard<?> blackboard;
+    private Blackboard<?> blackboard;
 
     private String id;
 
@@ -25,7 +25,7 @@ public abstract class AbstractProbe<V> implements Probe<V> {
     private boolean _transient = false; // "transient" is a keyword, which is the reason for the
                                         // underscore
 
-    private List<IProbeStateListener> listeners;
+    private List<ProbeStateListener> listeners;
 
     public AbstractProbe(String name) {
         this(UUID.randomUUID().toString(), name);
@@ -42,8 +42,8 @@ public abstract class AbstractProbe<V> implements Probe<V> {
     public AbstractProbe(String id, String name, boolean _transient) {
         this.id = id;
         this.name = name;
-        this.metadata = new Metadata();
-        this.listeners = new ArrayList<IProbeStateListener>();
+        this.metadata = new HashMapMetadata();
+        this.listeners = new ArrayList<ProbeStateListener>();
         this._transient = _transient;
     }
 
@@ -73,38 +73,38 @@ public abstract class AbstractProbe<V> implements Probe<V> {
     }
 
     @Override
-    public void addMeasurement(V value, IMeasurementContext... contexts) {
+    public void addMeasurement(V value, MeasurementContext... contexts) {
         getBlackboard().addMeasurement(value, this, contexts);
     }
 
     @Override
-    public void addMeasurement(V value, IMetadata metadata, IMeasurementContext... contexts) {
+    public void addMeasurement(V value, IMetadata metadata, MeasurementContext... contexts) {
         getBlackboard().addMeasurement(value, this, metadata, contexts);
     }
 
     @Override
-    public final void setBlackboard(IBlackboard<?> blackboard) {
+    public final void setBlackboard(Blackboard<?> blackboard) {
         this.blackboard = blackboard;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> void addMeasurementListener(IBlackboardListener<V, T> listener) {
-        ((IBlackboard<T>) this.blackboard).addMeasurementListener(listener, this);
+    public <T> void addMeasurementListener(BlackboardListener<V, T> listener) {
+        ((Blackboard<T>) this.blackboard).addMeasurementListener(listener, this);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> void removeMeasurementListener(IBlackboardListener<?, T> listener) {
-        ((IBlackboard<T>) this.blackboard).removeMeasurementListener(listener, this);
+    public <T> void removeMeasurementListener(BlackboardListener<?, T> listener) {
+        ((Blackboard<T>) this.blackboard).removeMeasurementListener(listener, this);
     }
 
     @Override
-    public void addProbeStateListener(IProbeStateListener listener) {
+    public void addProbeStateListener(ProbeStateListener listener) {
         listeners.add(listener);
     }
 
-    private IBlackboard<?> getBlackboard() {
+    private Blackboard<?> getBlackboard() {
         if (blackboard == null) {
             throw new IllegalStateException("Probes must be registered with a ProbeManager before use.");
         } else {
@@ -119,7 +119,7 @@ public abstract class AbstractProbe<V> implements Probe<V> {
 
         // notify listeners
         if (_transientOld != _transient) {
-            for (IProbeStateListener l : listeners) {
+            for (ProbeStateListener l : listeners) {
                 l.isTransient(_transient);
             }
         }
@@ -137,7 +137,7 @@ public abstract class AbstractProbe<V> implements Probe<V> {
 
         // notify listeners
         if (activeOld != active) {
-            for (IProbeStateListener l : listeners) {
+            for (ProbeStateListener l : listeners) {
                 l.isActive(active);
             }
         }

@@ -5,7 +5,7 @@ import java.util.Map;
 
 public interface IMetadata extends Map<Object, Object> {
 
-    public static final IMetadata EMPTY_METADATA = Metadata.emptyMetadata();
+    public static final IMetadata EMPTY_METADATA = HashMapMetadata.emptyMetadata();
     
     // intentionally left blank
     

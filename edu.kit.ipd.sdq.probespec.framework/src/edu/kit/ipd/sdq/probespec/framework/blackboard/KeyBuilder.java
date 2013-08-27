@@ -3,24 +3,24 @@ package edu.kit.ipd.sdq.probespec.framework.blackboard;
 import java.util.HashMap;
 import java.util.Map;
 
-import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.probes.Probe;
 
 public class KeyBuilder {
 
     private static final String DEFAULT_SEPARATOR = "::";
 
-    private Map<Class<? extends IMeasurementContext>, Integer> numberedContexts;
+    private Map<Class<? extends MeasurementContext>, Integer> numberedContexts;
 
     public KeyBuilder() {
-        numberedContexts = new HashMap<Class<? extends IMeasurementContext>, Integer>();
+        numberedContexts = new HashMap<Class<? extends MeasurementContext>, Integer>();
     }
 
-    public String createKey(Probe<?> probe, IMeasurementContext... contexts) {
+    public String createKey(Probe<?> probe, MeasurementContext... contexts) {
         maintainNumberedContexts(contexts);
 
         String[] partialKeys = new String[numberedContexts.size()];
-        for (IMeasurementContext c : contexts) {
+        for (MeasurementContext c : contexts) {
             int idx = numberedContexts.get(c.getClass());
             partialKeys[idx] = c.getId();
         }
@@ -35,15 +35,15 @@ public class KeyBuilder {
         return compositeKey.toString();
     }
 
-    private void maintainNumberedContexts(IMeasurementContext... contexts) {
-        for (IMeasurementContext c : contexts) {
+    private void maintainNumberedContexts(MeasurementContext... contexts) {
+        for (MeasurementContext c : contexts) {
             if (!numberedContexts.containsKey(c.getClass())) {
                 addContext(c.getClass());
             }
         }
     }
 
-    private void addContext(Class<? extends IMeasurementContext> context) {
+    private void addContext(Class<? extends MeasurementContext> context) {
         numberedContexts.put(context, numberedContexts.size());
     }
 

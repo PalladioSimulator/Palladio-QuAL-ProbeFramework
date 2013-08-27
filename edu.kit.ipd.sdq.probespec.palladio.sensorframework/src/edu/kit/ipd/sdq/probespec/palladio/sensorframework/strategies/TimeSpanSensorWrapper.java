@@ -4,9 +4,9 @@ import de.uka.ipd.sdq.sensorframework.entities.Experiment;
 import de.uka.ipd.sdq.sensorframework.entities.ExperimentRun;
 import de.uka.ipd.sdq.sensorframework.entities.TimeSpanSensor;
 import de.uka.ipd.sdq.sensorframework.entities.dao.IDAOFactory;
-import edu.kit.ipd.sdq.probespec.framework.Probe;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContext;
+import edu.kit.ipd.sdq.probespec.framework.probes.Probe;
 
 public class TimeSpanSensorWrapper extends AbstractSensorWrapper {
 
@@ -15,7 +15,7 @@ public class TimeSpanSensorWrapper extends AbstractSensorWrapper {
     }
 
     @Override
-    public void addMeasurement(Measurement<?, Double> measurement, Probe<?> probe, IMeasurementContext... contexts) {
+    public void addMeasurement(Measurement<?, Double> measurement, Probe<?> probe, MeasurementContext... contexts) {
         run.addTimeSpanMeasurement((TimeSpanSensor) sensor, measurement.getTimestamp(), (Double) measurement.getValue());
     }
 

@@ -1,12 +1,12 @@
 package edu.kit.ipd.sdq.probespec.palladio;
 
-import edu.kit.ipd.sdq.probespec.framework.IProbeStateListener;
-import edu.kit.ipd.sdq.probespec.framework.Probe;
-import edu.kit.ipd.sdq.probespec.framework.ProbeManager;
+import edu.kit.ipd.sdq.probespec.framework.AbstractProbeManager;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardType;
+import edu.kit.ipd.sdq.probespec.framework.probes.ProbeStateListener;
+import edu.kit.ipd.sdq.probespec.framework.probes.Probe;
 import edu.kit.ipd.sdq.probespec.palladio.sensorframework.SensorFrameworkAdapter;
 
-public class PalladioProbeManager extends ProbeManager<Double> {
+public class PalladioProbeManager extends AbstractProbeManager<Double> {
 
     private SensorFrameworkAdapter sfa;
 
@@ -29,7 +29,7 @@ public class PalladioProbeManager extends ProbeManager<Double> {
         if (!probe.isTransient()) {
             sfa.addProbe(probe);
         }
-        probe.addProbeStateListener(new IProbeStateListener() {
+        probe.addProbeStateListener(new ProbeStateListener() {
 
             @Override
             public void isTransient(boolean _transient) {
@@ -53,7 +53,7 @@ public class PalladioProbeManager extends ProbeManager<Double> {
         if (!probe.isTransient()) {
             sfa.addProbe(probe);
         }
-        probe.addProbeStateListener(new IProbeStateListener() {
+        probe.addProbeStateListener(new ProbeStateListener() {
 
             @Override
             public void isTransient(boolean _transient) {

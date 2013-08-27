@@ -16,16 +16,16 @@ public class ProbeRegistry<T> {
      * allows looking up the region for a given probe type (represented by its class)
      */
     @SuppressWarnings("rawtypes")
-    private Map<Class<? extends Probe>, IProbeRegistryRegion<?>> probeTypeToRegionMap;
+    private Map<Class<? extends Probe>, ProbeRegistryRegion<?>> probeTypeToRegionMap;
 
-    private Map<Class<?>, IProbeRegistryRegion<?>> regions;
+    private Map<Class<?>, ProbeRegistryRegion<?>> regions;
 
     private Set<String> probeIds;
 
     @SuppressWarnings("rawtypes")
     public ProbeRegistry() {
-        this.probeTypeToRegionMap = new HashMap<Class<? extends Probe>, IProbeRegistryRegion<?>>();
-        this.regions = new HashMap<Class<?>, IProbeRegistryRegion<?>>();
+        this.probeTypeToRegionMap = new HashMap<Class<? extends Probe>, ProbeRegistryRegion<?>>();
+        this.regions = new HashMap<Class<?>, ProbeRegistryRegion<?>>();
         this.probeIds = new HashSet<String>();
     }
 
@@ -54,15 +54,15 @@ public class ProbeRegistry<T> {
         return findRegionForProbeType(probeType).getProbe(entity, mountPoint, probeType);
     }
 
-    private <V> IProbeRegistryRegion<V> findRegionForProbeType(Class<? extends Probe<V>> probeType) {
+    private <V> ProbeRegistryRegion<V> findRegionForProbeType(Class<? extends Probe<V>> probeType) {
         @SuppressWarnings("unchecked")
-        IProbeRegistryRegion<V> r = (IProbeRegistryRegion<V>) probeTypeToRegionMap.get(probeType);
+        ProbeRegistryRegion<V> r = (ProbeRegistryRegion<V>) probeTypeToRegionMap.get(probeType);
         return r;
     }
 
-    private <V> IProbeRegistryRegion<V> createOrFindRegion(Class<V> clazz) {
+    private <V> ProbeRegistryRegion<V> createOrFindRegion(Class<V> clazz) {
         @SuppressWarnings("unchecked")
-        IProbeRegistryRegion<V> r = (IProbeRegistryRegion<V>) this.regions.get(clazz);
+        ProbeRegistryRegion<V> r = (ProbeRegistryRegion<V>) this.regions.get(clazz);
         if (r == null) {
             r = new SimpleProbeRegistryRegion<V>();
             this.regions.put(clazz, r);

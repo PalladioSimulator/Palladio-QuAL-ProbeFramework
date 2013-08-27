@@ -1,13 +1,13 @@
 package edu.kit.ipd.sdq.probespec.framework.calculators;
 
-import edu.kit.ipd.sdq.probespec.framework.blackboard.writer.IBlackboardWriter;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.writer.BlackboardWriter;
 
-public abstract class AbstractCalculator<OUT> implements ICalculator<OUT> {
+public abstract class AbstractCalculator<OUT> implements Calculator<OUT> {
     
-    protected IBlackboardWriter<OUT> outWriter;
+    protected BlackboardWriter<OUT> outWriter;
 
     @Override
-    public void setupBlackboardWriter(IBlackboardWriter<OUT> writer) {
+    public void setupBlackboardWriter(BlackboardWriter<OUT> writer) {
         this.outWriter = writer;
     }
     

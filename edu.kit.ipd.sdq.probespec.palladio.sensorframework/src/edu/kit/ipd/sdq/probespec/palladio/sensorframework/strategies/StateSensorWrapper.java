@@ -7,9 +7,9 @@ import de.uka.ipd.sdq.sensorframework.entities.ExperimentRun;
 import de.uka.ipd.sdq.sensorframework.entities.State;
 import de.uka.ipd.sdq.sensorframework.entities.StateSensor;
 import de.uka.ipd.sdq.sensorframework.entities.dao.IDAOFactory;
-import edu.kit.ipd.sdq.probespec.framework.Probe;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContext;
+import edu.kit.ipd.sdq.probespec.framework.probes.Probe;
 import edu.kit.ipd.sdq.probespec.palladio.sensorframework.SensorHelper;
 
 public class StateSensorWrapper extends AbstractSensorWrapper {
@@ -25,7 +25,7 @@ public class StateSensorWrapper extends AbstractSensorWrapper {
     }
 
     @Override
-    public void addMeasurement(Measurement<?, Double> measurement, Probe<?> probe, IMeasurementContext... contexts) {
+    public void addMeasurement(Measurement<?, Double> measurement, Probe<?> probe, MeasurementContext... contexts) {
         int numericState = (Integer) measurement.getValue();
         State state = null;
         if (numericState == 0) {

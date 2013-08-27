@@ -1,39 +1,16 @@
 package edu.kit.ipd.sdq.probespec.framework.blackboard.writer;
 
 import edu.kit.ipd.sdq.probespec.framework.IMetadata;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.SimpleBlackboardRegion;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
-import edu.kit.ipd.sdq.probespec.framework.probes.Probe;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContext;
 
-public class BlackboardWriter<V, T> implements IBlackboardWriter<V> {
+public interface BlackboardWriter<V> {
 
-    private Probe<V> probe;
+    public void addMeasurement(V value);
 
-    private SimpleBlackboardRegion<V, T> blackboardRegion;
+    public void addMeasurement(V value, IMetadata metadata);
 
-    public BlackboardWriter(Probe<V> probe, SimpleBlackboardRegion<V, T> blackboardRegion) {
-        this.probe = probe;
-        this.blackboardRegion = blackboardRegion;
-    }
+    public void addMeasurement(V value, MeasurementContext... contexts);
 
-    @Override
-    public void addMeasurement(V value) {
-        blackboardRegion.addMeasurement(value, probe);
-    }
+    public void addMeasurement(V value, IMetadata metadata, MeasurementContext... contexts);
 
-    @Override
-    public void addMeasurement(V value, IMetadata metadata) {
-        blackboardRegion.addMeasurement(value, probe, metadata);
-    }
-
-    @Override
-    public void addMeasurement(V value, IMeasurementContext... contexts) {
-        blackboardRegion.addMeasurement(value, probe, contexts);
-    }
-
-    @Override
-    public void addMeasurement(V value, IMetadata metadata, IMeasurementContext... contexts) {
-        blackboardRegion.addMeasurement(value, probe, metadata, contexts);
-    }
-    
 }

@@ -1,7 +1,7 @@
 package edu.kit.ipd.sdq.probespec.framework.probes;
 
 
-public interface IProbeRegistryRegion<V> {
+public interface ProbeRegistryRegion<V> {
     
     public Probe<V> getProbe(Object entity, Class<? extends Probe<?>> probeType);
     

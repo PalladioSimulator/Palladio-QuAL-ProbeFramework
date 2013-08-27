@@ -1,12 +1,12 @@
 package edu.kit.ipd.sdq.probespec.java;
 
-import edu.kit.ipd.sdq.probespec.framework.ITimestampGenerator;
-import edu.kit.ipd.sdq.probespec.framework.ProbeManager;
+import edu.kit.ipd.sdq.probespec.framework.TimestampGenerator;
+import edu.kit.ipd.sdq.probespec.framework.AbstractProbeManager;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardType;
 
-public class JavaProbeManager extends ProbeManager<Long> {
+public class JavaProbeManager extends AbstractProbeManager<Long> {
 
-    private static final ITimestampGenerator<Long> TIMESTAMP_GENERFATOR = new JavaTimestampBuilder();
+    private static final TimestampGenerator<Long> TIMESTAMP_GENERFATOR = new JavaTimestampBuilder();
 
     public JavaProbeManager() {
         super(TIMESTAMP_GENERFATOR);

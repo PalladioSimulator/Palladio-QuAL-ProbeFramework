@@ -1,172 +1,29 @@
 package edu.kit.ipd.sdq.probespec.framework;
 
-import java.util.List;
-
-import org.apache.log4j.Logger;
-
-import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardFactory;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardType;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.concurrent.ConcurrentBlackboard;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.concurrent.ThreadManager;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.IBlackboardReader;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.writer.IBlackboardWriter;
-import edu.kit.ipd.sdq.probespec.framework.calculators.CalculatorRegistry;
-import edu.kit.ipd.sdq.probespec.framework.calculators.ICalculatorBinding;
-import edu.kit.ipd.sdq.probespec.framework.calculators.binary.IBinaryCalculator;
-import edu.kit.ipd.sdq.probespec.framework.calculators.binary.binding.IBinaryUnboundCalculator;
-import edu.kit.ipd.sdq.probespec.framework.calculators.unary.IUnaryCalculator;
-import edu.kit.ipd.sdq.probespec.framework.calculators.unary.binding.IUnaryUnboundCalculator;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.BlackboardListener;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.BlackboardReader;
+import edu.kit.ipd.sdq.probespec.framework.blackboard.writer.BlackboardWriter;
+import edu.kit.ipd.sdq.probespec.framework.calculators.binary.BinaryCalculator;
+import edu.kit.ipd.sdq.probespec.framework.calculators.binary.binding.BinaryUnboundCalculator;
+import edu.kit.ipd.sdq.probespec.framework.calculators.unary.UnaryCalculator;
+import edu.kit.ipd.sdq.probespec.framework.calculators.unary.binding.UnaryUnboundCalculator;
 import edu.kit.ipd.sdq.probespec.framework.probes.Probe;
-import edu.kit.ipd.sdq.probespec.framework.probes.ProbeRegistry;
 
-/**
- * 
- * @author Philipp Merkle
- * 
- * @param <T>
- *            the type of timestamps. Must be equal to the the type parameter {@code T} of the
- *            {@link ITimestampGenerator} to be used.
- */
-public abstract class ProbeManager<T> implements IProbeManager<T> {
+public interface ProbeManager<T> {
 
-    private static final Logger logger = Logger.getLogger(ProbeManager.class);
+    public <IN, OUT> UnaryUnboundCalculator<IN, OUT> installCalculator(UnaryCalculator<IN, OUT, T> calculator);
 
-    private IBlackboard<T> blackboard;
+    public <IN1, IN2, OUT> BinaryUnboundCalculator<IN1, IN2, OUT> installCalculator(
+            BinaryCalculator<IN1, IN2, OUT, T> calculator);
 
-    private CalculatorRegistry<T> calculatorRegistry;
-    
-    private ProbeRegistry<T> probeRegistry;
+    public <V> BlackboardReader<V, T> getReader(Probe<V> probe);
 
-    private ThreadManager threadManager;
+    public <V> BlackboardWriter<V> getWriter(Probe<V> probe);
 
-    private BlackboardType blackboardType;
+    public <V> void addMeasurementListener(BlackboardListener<V, T> l, Probe<V> probe);
 
-    public ProbeManager(ITimestampGenerator<T> timestampBuilder) {
-        this(timestampBuilder, BlackboardType.SIMPLE);
-    }
+    public <V> void addMeasurementListener(BlackboardListener<V, T> l);
 
-    public ProbeManager(ITimestampGenerator<T> timestampBuilder, BlackboardType blackboardType) {
-        logger.info("Initialising ProbeSpecification with " + blackboardType.toString() + " blackboard...");
+    public <V> void removeMeasurementListener(BlackboardListener<V, T> l);
 
-        this.blackboardType = blackboardType;
-        this.threadManager = new ThreadManager();
-        this.blackboard = BlackboardFactory.createBlackboard(blackboardType, timestampBuilder, threadManager);
-        this.calculatorRegistry = new CalculatorRegistry<T>(blackboard);
-        this.probeRegistry = new ProbeRegistry<T>();
-    }
-
-    protected IBlackboard<T> getBlackboard() {
-        return blackboard;
-    }
-
-    private CalculatorRegistry<T> getCalculatorRegistry() {
-        return calculatorRegistry;
-    }
-    
-    public <V> Probe<V> getProbe(Object entity, Class<? extends Probe<V>> probeType) {
-        return probeRegistry.getProbe(entity, probeType);
-    }
-    
-    public <V> Probe<V> getProbe(Object entity, Object mountPoint, Class<? extends Probe<V>> probeType) {
-        return probeRegistry.getProbe(entity, mountPoint, probeType);
-    }
-
-    public ThreadManager getThreadManager() {
-        return threadManager;
-    }
-
-    public BlackboardType getBlackboardType() {
-        return blackboardType;
-    }
-
-    public void shutdown() {
-        // TODO where to put this check!?
-        List<ICalculatorBinding> unboundCalculators = getCalculatorRegistry().getUnboundCalculators();
-        for (ICalculatorBinding c : unboundCalculators) {
-            logger.warn("Encountered unbound calculator: " + c);
-        }
-
-        threadManager.stopThreads();
-
-        logger.info("Shut down ProbeSpecification");
-    }
-
-    // TODO where to put this method!?
-    public void synchronise() {
-        if (blackboardType.equals(BlackboardType.CONCURRENT)) {
-            ((ConcurrentBlackboard<T>) getBlackboard()).synchronise();
-        }
-    }
-    
-    public <V> void mountProbe(Probe<V> probe, Object entity, Object mountPoint) {
-        probeRegistry.mountProbe(probe, entity, mountPoint);
-        probe.setBlackboard(blackboard);
-    }
-    
-    public <V> void mountProbe(Probe<V> probe, Object entity) {
-        probeRegistry.mountProbe(probe, entity);
-        probe.setBlackboard(blackboard);
-    }
-    
-    /* (non-Javadoc)
-     * @see edu.kit.ipd.sdq.probespec.framework.IProbeManager#installCalculator(edu.kit.ipd.sdq.probespec.framework.calculators.unary.IUnaryCalculator)
-     */
-    @Override
-    public <IN, OUT> IUnaryUnboundCalculator<IN, OUT> installCalculator(IUnaryCalculator<IN, OUT, T> calculator) {
-        return getCalculatorRegistry().add(calculator);
-    }
-
-    /* (non-Javadoc)
-     * @see edu.kit.ipd.sdq.probespec.framework.IProbeManager#installCalculator(edu.kit.ipd.sdq.probespec.framework.calculators.binary.IBinaryCalculator)
-     */
-    @Override
-    public <IN1, IN2, OUT> IBinaryUnboundCalculator<IN1, IN2, OUT> installCalculator(
-            IBinaryCalculator<IN1, IN2, OUT, T> calculator) {
-        return getCalculatorRegistry().add(calculator);
-    }
-    
-
-    /* (non-Javadoc)
-     * @see edu.kit.ipd.sdq.probespec.framework.IProbeManager#getReader(edu.kit.ipd.sdq.probespec.framework.Probe)
-     */
-    @Override
-    public <V> IBlackboardReader<V, T> getReader(Probe<V> probe) {
-        return getBlackboard().getReader(probe);
-    }
-    
-
-    /* (non-Javadoc)
-     * @see edu.kit.ipd.sdq.probespec.framework.IProbeManager#getWriter(edu.kit.ipd.sdq.probespec.framework.Probe)
-     */
-    @Override
-    public <V> IBlackboardWriter<V> getWriter(Probe<V> probe) {
-        return getBlackboard().getWriter(probe);
-    }
-    
-    /* (non-Javadoc)
-     * @see edu.kit.ipd.sdq.probespec.framework.IProbeManager#addMeasurementListener(edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener, edu.kit.ipd.sdq.probespec.framework.Probe)
-     */
-    @Override
-    public <V> void addMeasurementListener(IBlackboardListener<V, T> l, Probe<V> probe) {
-        getBlackboard().addMeasurementListener(l, probe);
-    }
-
-    /* (non-Javadoc)
-     * @see edu.kit.ipd.sdq.probespec.framework.IProbeManager#addMeasurementListener(edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener)
-     */
-    @Override
-    public <V> void addMeasurementListener(IBlackboardListener<V, T> l) {
-        getBlackboard().addMeasurementListener(l);
-    }
-    
-    /* (non-Javadoc)
-     * @see edu.kit.ipd.sdq.probespec.framework.IProbeManager#removeMeasurementListener(edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener)
-     */
-    @Override
-    public <V> void removeMeasurementListener(IBlackboardListener<V, T> l) {
-        getBlackboard().removeMeasurementListener(l);
-    }
-    
 }

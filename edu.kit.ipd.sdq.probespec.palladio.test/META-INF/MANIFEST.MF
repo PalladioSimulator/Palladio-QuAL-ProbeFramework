@@ -4,9 +4,9 @@ Bundle-Name: Test
 Bundle-SymbolicName: edu.kit.ipd.sdq.probespec.palladio.test
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Require-Bundle: edu.kit.ipd.sdq.probespec.framework.palladio;bundle-version="1.0.0",
- edu.kit.ipd.sdq.probespec.framework;bundle-version="2.0.0",
+Require-Bundle: edu.kit.ipd.sdq.probespec.framework;bundle-version="2.0.0",
  org.junit;bundle-version="4.10.0",
  org.apache.log4j;bundle-version="1.2.15",
- edu.kit.ipd.sdq.probespec.framework.java;bundle-version="1.0.0",
- edu.kit.ipd.sdq.probespec.framework.test;bundle-version="2.0.0"
+ edu.kit.ipd.sdq.probespec.framework.test;bundle-version="2.0.0",
+ edu.kit.ipd.sdq.probespec.java;bundle-version="1.0.0",
+ edu.kit.ipd.sdq.probespec.palladio;bundle-version="1.0.0"
