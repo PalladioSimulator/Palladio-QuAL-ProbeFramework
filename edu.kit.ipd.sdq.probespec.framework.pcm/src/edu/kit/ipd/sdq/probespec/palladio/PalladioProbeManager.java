@@ -1,20 +1,20 @@
-package edu.kit.ipd.sdq.probespec.pcm;
+package edu.kit.ipd.sdq.probespec.palladio;
 
 import edu.kit.ipd.sdq.probespec.framework.IProbeStateListener;
 import edu.kit.ipd.sdq.probespec.framework.Probe;
 import edu.kit.ipd.sdq.probespec.framework.ProbeManager;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardType;
-import edu.kit.ipd.sdq.probespec.persistence.sensorframework.SensorFrameworkAdapter;
+import edu.kit.ipd.sdq.probespec.palladio.sensorframework.SensorFrameworkAdapter;
 
 public class PalladioProbeManager extends ProbeManager<Double> {
 
-    private SensorFrameworkAdapter<Double> sfa;
+    private SensorFrameworkAdapter sfa;
 
     public PalladioProbeManager(PalladioTimestampBuilder timestampBuilder) {
         super(timestampBuilder);
     }
 
-    public PalladioProbeManager(PalladioTimestampBuilder timestampBuilder, SensorFrameworkAdapter<Double> sfa) {
+    public PalladioProbeManager(PalladioTimestampBuilder timestampBuilder, SensorFrameworkAdapter sfa) {
         super(timestampBuilder);
         this.sfa = sfa;
     }

@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.probespec.pcm;
+package edu.kit.ipd.sdq.probespec.palladio;
 
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;
 

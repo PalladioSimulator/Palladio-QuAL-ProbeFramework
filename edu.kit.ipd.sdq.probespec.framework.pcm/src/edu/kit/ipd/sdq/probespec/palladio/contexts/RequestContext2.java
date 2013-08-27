@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.probespec.pcm.contexts;
+package edu.kit.ipd.sdq.probespec.palladio.contexts;
 
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.AbstractMeasurementContext;
 

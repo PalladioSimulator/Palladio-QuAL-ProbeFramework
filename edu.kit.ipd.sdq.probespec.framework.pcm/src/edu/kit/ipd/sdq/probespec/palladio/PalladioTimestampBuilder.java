@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.probespec.pcm;
+package edu.kit.ipd.sdq.probespec.palladio;
 
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
 import edu.kit.ipd.sdq.probespec.framework.ITimestampGenerator;

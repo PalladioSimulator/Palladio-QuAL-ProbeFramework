@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.probespec.pcm;
+package edu.kit.ipd.sdq.probespec.palladio;
 
 import java.math.BigDecimal;
 
@@ -8,8 +8,8 @@ import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContex
 import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.ILookupStrategy;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.SameOrParentContextLookupStrategy;
 import edu.kit.ipd.sdq.probespec.framework.calculators.binary.AbstractBinaryCalculator;
-import edu.kit.ipd.sdq.probespec.pcm.contexts.AssemblyContextWrapper;
-import edu.kit.ipd.sdq.probespec.pcm.contexts.RequestContext2;
+import edu.kit.ipd.sdq.probespec.palladio.contexts.AssemblyContextWrapper;
+import edu.kit.ipd.sdq.probespec.palladio.contexts.RequestContext2;
 
 public class TimeSpanCalculator2 extends AbstractBinaryCalculator<Double, Double, Double, Double> {
 
