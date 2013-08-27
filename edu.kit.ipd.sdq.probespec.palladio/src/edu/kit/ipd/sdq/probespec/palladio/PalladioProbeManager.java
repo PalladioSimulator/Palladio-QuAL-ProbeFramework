@@ -1,9 +1,9 @@
 package edu.kit.ipd.sdq.probespec.palladio;
 
 import edu.kit.ipd.sdq.probespec.framework.AbstractProbeManager;
+import edu.kit.ipd.sdq.probespec.framework.Probe;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardType;
 import edu.kit.ipd.sdq.probespec.framework.probes.ProbeStateListener;
-import edu.kit.ipd.sdq.probespec.framework.probes.Probe;
 import edu.kit.ipd.sdq.probespec.palladio.sensorframework.SensorFrameworkAdapter;
 
 public class PalladioProbeManager extends AbstractProbeManager<Double> {

@@ -1,6 +1,5 @@
 package edu.kit.ipd.sdq.probespec.framework;
 
-import edu.kit.ipd.sdq.probespec.framework.probes.Probe;
 
 
 public final class Measurement<V, T> {

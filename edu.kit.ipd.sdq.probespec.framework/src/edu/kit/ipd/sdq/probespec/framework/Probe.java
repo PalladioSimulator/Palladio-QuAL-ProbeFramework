@@ -1,9 +1,8 @@
-package edu.kit.ipd.sdq.probespec.framework.probes;
+package edu.kit.ipd.sdq.probespec.framework;
 
-import edu.kit.ipd.sdq.probespec.framework.MeasurementListener;
-import edu.kit.ipd.sdq.probespec.framework.Metadata;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Blackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContext;
+import edu.kit.ipd.sdq.probespec.framework.probes.ProbeStateListener;
 
 public interface Probe<V> {
 

@@ -4,7 +4,7 @@ import de.uka.ipd.sdq.sensorframework.entities.Experiment;
 import de.uka.ipd.sdq.sensorframework.entities.ExperimentRun;
 import de.uka.ipd.sdq.sensorframework.entities.Sensor;
 import de.uka.ipd.sdq.sensorframework.entities.dao.IDAOFactory;
-import edu.kit.ipd.sdq.probespec.framework.probes.Probe;
+import edu.kit.ipd.sdq.probespec.framework.Probe;
 import edu.kit.ipd.sdq.probespec.palladio.sensorframework.SensorHelper;
 
 public abstract class AbstractSensorWrapper implements ISensorWrapper {

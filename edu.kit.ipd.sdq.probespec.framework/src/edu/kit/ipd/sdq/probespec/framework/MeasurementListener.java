@@ -1,7 +1,6 @@
 package edu.kit.ipd.sdq.probespec.framework;
 
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContext;
-import edu.kit.ipd.sdq.probespec.framework.probes.Probe;
 
 public interface MeasurementListener<V, T> {
 

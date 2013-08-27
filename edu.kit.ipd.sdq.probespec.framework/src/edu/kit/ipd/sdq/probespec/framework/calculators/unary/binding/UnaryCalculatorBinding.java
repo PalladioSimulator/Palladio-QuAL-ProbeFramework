@@ -4,13 +4,13 @@ import org.apache.log4j.Logger;
 
 import edu.kit.ipd.sdq.probespec.framework.Measurement;
 import edu.kit.ipd.sdq.probespec.framework.MeasurementListener;
+import edu.kit.ipd.sdq.probespec.framework.Probe;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Blackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.BlackboardReader;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.writer.BlackboardWriter;
 import edu.kit.ipd.sdq.probespec.framework.calculators.CalculatorBinding;
 import edu.kit.ipd.sdq.probespec.framework.calculators.unary.UnaryCalculator;
-import edu.kit.ipd.sdq.probespec.framework.probes.Probe;
 
 public class UnaryCalculatorBinding<IN, OUT, T> implements CalculatorBinding, UnaryUnboundCalculator<IN, OUT>,
         UnaryPartiallyBoundCalculator<OUT>, UnaryBoundCalculator {

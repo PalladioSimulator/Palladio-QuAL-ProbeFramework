@@ -8,8 +8,8 @@ import de.uka.ipd.sdq.sensorframework.entities.State;
 import de.uka.ipd.sdq.sensorframework.entities.StateSensor;
 import de.uka.ipd.sdq.sensorframework.entities.dao.IDAOFactory;
 import edu.kit.ipd.sdq.probespec.framework.Measurement;
+import edu.kit.ipd.sdq.probespec.framework.Probe;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContext;
-import edu.kit.ipd.sdq.probespec.framework.probes.Probe;
 import edu.kit.ipd.sdq.probespec.palladio.sensorframework.SensorHelper;
 
 public class StateSensorWrapper extends AbstractSensorWrapper {

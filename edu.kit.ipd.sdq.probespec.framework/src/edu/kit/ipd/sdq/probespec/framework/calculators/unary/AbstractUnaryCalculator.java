@@ -1,7 +1,7 @@
 package edu.kit.ipd.sdq.probespec.framework.calculators.unary;
 
+import edu.kit.ipd.sdq.probespec.framework.Probe;
 import edu.kit.ipd.sdq.probespec.framework.calculators.AbstractCalculator;
-import edu.kit.ipd.sdq.probespec.framework.probes.Probe;
 
 public abstract class AbstractUnaryCalculator<IN, OUT, T> extends AbstractCalculator<OUT> implements
         UnaryCalculator<IN, OUT, T> {

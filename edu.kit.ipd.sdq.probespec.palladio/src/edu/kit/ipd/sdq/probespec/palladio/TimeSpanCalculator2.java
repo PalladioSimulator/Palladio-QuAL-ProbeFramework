@@ -3,11 +3,11 @@ package edu.kit.ipd.sdq.probespec.palladio;
 import java.math.BigDecimal;
 
 import edu.kit.ipd.sdq.probespec.framework.Measurement;
+import edu.kit.ipd.sdq.probespec.framework.Probe;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.LookupStrategy;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.SameOrParentContextLookupStrategy;
 import edu.kit.ipd.sdq.probespec.framework.calculators.binary.AbstractBinaryCalculator;
-import edu.kit.ipd.sdq.probespec.framework.probes.Probe;
 import edu.kit.ipd.sdq.probespec.palladio.contexts.AssemblyContextWrapper;
 import edu.kit.ipd.sdq.probespec.palladio.contexts.RequestContext2;
 

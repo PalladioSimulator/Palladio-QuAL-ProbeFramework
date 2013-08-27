@@ -1,5 +1,7 @@
 package edu.kit.ipd.sdq.probespec.framework.probes;
 
+import edu.kit.ipd.sdq.probespec.framework.Probe;
+
 
 public interface ProbeRegistryRegion<V> {
     

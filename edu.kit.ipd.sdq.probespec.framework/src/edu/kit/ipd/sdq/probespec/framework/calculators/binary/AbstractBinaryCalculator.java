@@ -1,8 +1,8 @@
 package edu.kit.ipd.sdq.probespec.framework.calculators.binary;
 
+import edu.kit.ipd.sdq.probespec.framework.Probe;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.BlackboardReader;
 import edu.kit.ipd.sdq.probespec.framework.calculators.AbstractCalculator;
-import edu.kit.ipd.sdq.probespec.framework.probes.Probe;
 
 public abstract class AbstractBinaryCalculator<IN1, IN2, OUT, T> extends AbstractCalculator<OUT> implements
         BinaryCalculator<IN1, IN2, OUT, T> {

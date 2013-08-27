@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.probespec.framework.calculators.binary.binding;
 
-import edu.kit.ipd.sdq.probespec.framework.probes.Probe;
+import edu.kit.ipd.sdq.probespec.framework.Probe;
 
 
 public interface BinaryPartiallyBoundCalculator<OUT> {

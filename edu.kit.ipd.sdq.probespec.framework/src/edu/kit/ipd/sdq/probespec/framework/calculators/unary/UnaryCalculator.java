@@ -1,8 +1,8 @@
 package edu.kit.ipd.sdq.probespec.framework.calculators.unary;
 
+import edu.kit.ipd.sdq.probespec.framework.Probe;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.BlackboardReader;
 import edu.kit.ipd.sdq.probespec.framework.calculators.Calculator;
-import edu.kit.ipd.sdq.probespec.framework.probes.Probe;
 
 public interface UnaryCalculator<IN, OUT, T> extends Calculator<OUT> {
 
