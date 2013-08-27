@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.probespec.framework;
+package edu.kit.ipd.sdq.probespec.framework.probes;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+
 
 public class ProbeRegistry<T> {
 

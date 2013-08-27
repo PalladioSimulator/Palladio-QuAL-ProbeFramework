@@ -1,9 +1,9 @@
 package edu.kit.ipd.sdq.probespec.framework.blackboard.writer;
 
 import edu.kit.ipd.sdq.probespec.framework.IMetadata;
-import edu.kit.ipd.sdq.probespec.framework.Probe;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.SimpleBlackboardRegion;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
+import edu.kit.ipd.sdq.probespec.framework.probes.Probe;
 
 public class BlackboardWriter<V, T> implements IBlackboardWriter<V> {
 

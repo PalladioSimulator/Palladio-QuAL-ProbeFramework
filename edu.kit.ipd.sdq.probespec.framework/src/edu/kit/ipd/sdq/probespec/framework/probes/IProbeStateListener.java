@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.probespec.framework;
+package edu.kit.ipd.sdq.probespec.framework.probes;
 
 public interface IProbeStateListener {
 

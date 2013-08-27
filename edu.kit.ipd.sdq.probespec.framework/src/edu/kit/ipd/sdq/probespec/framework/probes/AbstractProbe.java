@@ -1,9 +1,11 @@
-package edu.kit.ipd.sdq.probespec.framework;
+package edu.kit.ipd.sdq.probespec.framework.probes;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import edu.kit.ipd.sdq.probespec.framework.IMetadata;
+import edu.kit.ipd.sdq.probespec.framework.Metadata;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener;

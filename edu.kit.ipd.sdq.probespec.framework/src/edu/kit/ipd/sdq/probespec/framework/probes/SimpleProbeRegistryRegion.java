@@ -1,7 +1,8 @@
-package edu.kit.ipd.sdq.probespec.framework;
+package edu.kit.ipd.sdq.probespec.framework.probes;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+
 
 public class SimpleProbeRegistryRegion<V> implements IProbeRegistryRegion<V> {
 

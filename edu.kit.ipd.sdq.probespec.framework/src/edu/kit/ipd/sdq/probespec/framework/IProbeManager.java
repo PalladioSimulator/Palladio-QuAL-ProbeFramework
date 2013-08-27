@@ -7,6 +7,7 @@ import edu.kit.ipd.sdq.probespec.framework.calculators.binary.IBinaryCalculator;
 import edu.kit.ipd.sdq.probespec.framework.calculators.binary.binding.IBinaryUnboundCalculator;
 import edu.kit.ipd.sdq.probespec.framework.calculators.unary.IUnaryCalculator;
 import edu.kit.ipd.sdq.probespec.framework.calculators.unary.binding.IUnaryUnboundCalculator;
+import edu.kit.ipd.sdq.probespec.framework.probes.Probe;
 
 public interface IProbeManager<T> {
 

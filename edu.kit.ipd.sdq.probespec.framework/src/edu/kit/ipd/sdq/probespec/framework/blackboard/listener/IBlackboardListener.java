@@ -1,8 +1,8 @@
 package edu.kit.ipd.sdq.probespec.framework.blackboard.listener;
 
-import edu.kit.ipd.sdq.probespec.framework.Probe;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
+import edu.kit.ipd.sdq.probespec.framework.probes.Probe;
 
 public interface IBlackboardListener<V, T> {
 

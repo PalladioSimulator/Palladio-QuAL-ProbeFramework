@@ -2,7 +2,6 @@ package edu.kit.ipd.sdq.probespec.framework.calculators.binary.binding;
 
 import org.apache.log4j.Logger;
 
-import edu.kit.ipd.sdq.probespec.framework.Probe;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.IBlackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
@@ -11,6 +10,7 @@ import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.IBlackboardReader;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.writer.IBlackboardWriter;
 import edu.kit.ipd.sdq.probespec.framework.calculators.ICalculatorBinding;
 import edu.kit.ipd.sdq.probespec.framework.calculators.binary.IBinaryCalculator;
+import edu.kit.ipd.sdq.probespec.framework.probes.Probe;
 
 public class BinaryCalculatorBinding<IN1, IN2, OUT, T> implements ICalculatorBinding,
         IBinaryUnboundCalculator<IN1, IN2, OUT>, IBinaryPartiallyBoundCalculator<OUT>, IBinaryBoundCalculator {
