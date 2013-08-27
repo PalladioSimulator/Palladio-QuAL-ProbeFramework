@@ -3,7 +3,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: ProbeSpecification Framework
 Bundle-SymbolicName: edu.kit.ipd.sdq.probespec.framework
 Bundle-Version: 2.0.0.qualifier
-Bundle-Activator: edu.kit.ipd.sdq.probespec.framework.Activator
 Bundle-Vendor: sdq.ipd.kit.edu
 Require-Bundle: org.eclipse.core.runtime,
  org.apache.log4j;bundle-version="1.2.15"
