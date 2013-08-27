@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.probespec.pcm.test;
+package edu.kit.ipd.sdq.probespec.palladio.test;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
