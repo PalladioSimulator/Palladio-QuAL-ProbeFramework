@@ -9,7 +9,7 @@ import java.util.Set;
 
 public class Metadata implements IMetadata {
 
-    private Map<String, String> map;
+    private Map<Object, Object> map;
 
     public Metadata() {
         this(false);
@@ -19,7 +19,7 @@ public class Metadata implements IMetadata {
         if (immutable) {
             map = Collections.emptyMap();
         } else {
-            map = new HashMap<String, String>();
+            map = new HashMap<Object, Object>();
         }
     }
     
@@ -43,7 +43,7 @@ public class Metadata implements IMetadata {
     }
 
     @Override
-    public Set<Entry<String, String>> entrySet() {
+    public Set<Entry<Object, Object>> entrySet() {
         return map.entrySet();
     }
 
@@ -53,7 +53,7 @@ public class Metadata implements IMetadata {
     }
 
     @Override
-    public String get(Object key) {
+    public Object get(Object key) {
         return map.get(key);
     }
 
@@ -68,22 +68,22 @@ public class Metadata implements IMetadata {
     }
 
     @Override
-    public Set<String> keySet() {
+    public Set<Object> keySet() {
         return map.keySet();
     }
 
     @Override
-    public String put(String key, String value) {
+    public Object put(Object key, Object value) {
         return map.put(key, value);
     }
 
     @Override
-    public void putAll(Map<? extends String, ? extends String> m) {
+    public void putAll(Map<? extends Object, ? extends Object> m) {
         map.putAll(m);
     }
 
     @Override
-    public String remove(Object key) {
+    public Object remove(Object key) {
         return map.remove(key);
     }
 
@@ -93,7 +93,7 @@ public class Metadata implements IMetadata {
     }
 
     @Override
-    public Collection<String> values() {
+    public Collection<Object> values() {
         return map.values();
     }
 
