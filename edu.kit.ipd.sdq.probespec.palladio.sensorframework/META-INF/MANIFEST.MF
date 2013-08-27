@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Sensorframework Adapter
+Bundle-SymbolicName: edu.kit.ipd.sdq.probespec.palladio.sensorframework
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: org.eclipse.core.runtime,
+ de.uka.ipd.sdq.pipesandfilters.framework;bundle-version="1.0.0",
+ org.apache.log4j;bundle-version="1.2.15",
+ de.uka.ipd.sdq.sensorframework;bundle-version="1.1.0",
+ edu.kit.ipd.sdq.probespec.framework;bundle-version="2.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
+Export-Package: edu.kit.ipd.sdq.probespec.palladio.sensorframework,
+ edu.kit.ipd.sdq.probespec.palladio.sensorframework.launch,
+ edu.kit.ipd.sdq.probespec.palladio.sensorframework.strategies
