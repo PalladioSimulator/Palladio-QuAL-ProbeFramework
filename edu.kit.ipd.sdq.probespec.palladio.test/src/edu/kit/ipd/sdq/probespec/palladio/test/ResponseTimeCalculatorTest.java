@@ -4,11 +4,11 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import edu.kit.ipd.sdq.probespec.framework.Measurement;
 import edu.kit.ipd.sdq.probespec.framework.MeasurementListener;
 import edu.kit.ipd.sdq.probespec.framework.TimestampGenerator;
 import edu.kit.ipd.sdq.probespec.framework.AbstractProbeManager;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardType;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContextHelper;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.BlackboardReader;

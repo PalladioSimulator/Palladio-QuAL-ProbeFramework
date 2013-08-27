@@ -2,9 +2,9 @@ package edu.kit.ipd.sdq.probespec.framework.test.example;
 
 import org.apache.log4j.Logger;
 
+import edu.kit.ipd.sdq.probespec.framework.Measurement;
 import edu.kit.ipd.sdq.probespec.framework.MeasurementListener;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardType;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.probes.Probe;
 import edu.kit.ipd.sdq.probespec.framework.test.util.IntegerProbe;

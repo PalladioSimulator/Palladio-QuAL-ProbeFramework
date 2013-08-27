@@ -1,5 +1,6 @@
 package edu.kit.ipd.sdq.probespec.framework.blackboard;
 
+import edu.kit.ipd.sdq.probespec.framework.Measurement;
 import edu.kit.ipd.sdq.probespec.framework.MeasurementListener;
 import edu.kit.ipd.sdq.probespec.framework.Metadata;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContext;
