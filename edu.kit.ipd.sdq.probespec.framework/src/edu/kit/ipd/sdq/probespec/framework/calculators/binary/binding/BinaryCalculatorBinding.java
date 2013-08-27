@@ -2,10 +2,10 @@ package edu.kit.ipd.sdq.probespec.framework.calculators.binary.binding;
 
 import org.apache.log4j.Logger;
 
+import edu.kit.ipd.sdq.probespec.framework.MeasurementListener;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Blackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContext;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.BlackboardListener;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.BlackboardReader;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.writer.BlackboardWriter;
 import edu.kit.ipd.sdq.probespec.framework.calculators.CalculatorBinding;
@@ -19,9 +19,9 @@ public class BinaryCalculatorBinding<IN1, IN2, OUT, T> implements CalculatorBind
 
     private Blackboard<T> blackboard;
 
-    private BlackboardListener<IN1, T> in1Listener;
+    private MeasurementListener<IN1, T> in1Listener;
 
-    private BlackboardListener<IN2, T> in2Listener;
+    private MeasurementListener<IN2, T> in2Listener;
 
     private BinaryCalculator<IN1, IN2, OUT, T> calculator;
 
@@ -87,7 +87,7 @@ public class BinaryCalculatorBinding<IN1, IN2, OUT, T> implements CalculatorBind
         return calculator.toString();
     }
 
-    private class Input1Listener implements BlackboardListener<IN1, T> {
+    private class Input1Listener implements MeasurementListener<IN1, T> {
 
         @Override
         public void measurementArrived(Measurement<IN1, T> measurement, Probe<IN1> probe,
@@ -102,7 +102,7 @@ public class BinaryCalculatorBinding<IN1, IN2, OUT, T> implements CalculatorBind
 
     }
 
-    private class Input2Listener implements BlackboardListener<IN2, T> {
+    private class Input2Listener implements MeasurementListener<IN2, T> {
 
         @Override
         public void measurementArrived(Measurement<IN2, T> measurement, Probe<IN2> probe,

@@ -1,9 +1,9 @@
 package edu.kit.ipd.sdq.probespec.framework.probes;
 
+import edu.kit.ipd.sdq.probespec.framework.MeasurementListener;
 import edu.kit.ipd.sdq.probespec.framework.Metadata;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Blackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContext;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.BlackboardListener;
 
 public interface Probe<V> {
 
@@ -47,8 +47,8 @@ public interface Probe<V> {
      */
     void setBlackboard(Blackboard<?> blackboard);
 
-    <T> void addMeasurementListener(BlackboardListener<V, T> listener);
+    <T> void addMeasurementListener(MeasurementListener<V, T> listener);
     
-    <T> void removeMeasurementListener(BlackboardListener<?, T> listener);
+    <T> void removeMeasurementListener(MeasurementListener<?, T> listener);
 
 }

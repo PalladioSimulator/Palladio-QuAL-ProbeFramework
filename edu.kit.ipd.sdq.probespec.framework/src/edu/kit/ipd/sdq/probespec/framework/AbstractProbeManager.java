@@ -9,7 +9,6 @@ import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardType;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Blackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.concurrent.ConcurrentBlackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.concurrent.ThreadManager;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.BlackboardListener;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.BlackboardReader;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.writer.BlackboardWriter;
 import edu.kit.ipd.sdq.probespec.framework.calculators.CalculatorRegistry;
@@ -149,7 +148,7 @@ public abstract class AbstractProbeManager<T> implements ProbeManager<T> {
      * @see edu.kit.ipd.sdq.probespec.framework.IProbeManager#addMeasurementListener(edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener, edu.kit.ipd.sdq.probespec.framework.Probe)
      */
     @Override
-    public <V> void addMeasurementListener(BlackboardListener<V, T> l, Probe<V> probe) {
+    public <V> void addMeasurementListener(MeasurementListener<V, T> l, Probe<V> probe) {
         getBlackboard().addMeasurementListener(l, probe);
     }
 
@@ -157,7 +156,7 @@ public abstract class AbstractProbeManager<T> implements ProbeManager<T> {
      * @see edu.kit.ipd.sdq.probespec.framework.IProbeManager#addMeasurementListener(edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener)
      */
     @Override
-    public <V> void addMeasurementListener(BlackboardListener<V, T> l) {
+    public <V> void addMeasurementListener(MeasurementListener<V, T> l) {
         getBlackboard().addMeasurementListener(l);
     }
     
@@ -165,7 +164,7 @@ public abstract class AbstractProbeManager<T> implements ProbeManager<T> {
      * @see edu.kit.ipd.sdq.probespec.framework.IProbeManager#removeMeasurementListener(edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener)
      */
     @Override
-    public <V> void removeMeasurementListener(BlackboardListener<V, T> l) {
+    public <V> void removeMeasurementListener(MeasurementListener<V, T> l) {
         getBlackboard().removeMeasurementListener(l);
     }
     

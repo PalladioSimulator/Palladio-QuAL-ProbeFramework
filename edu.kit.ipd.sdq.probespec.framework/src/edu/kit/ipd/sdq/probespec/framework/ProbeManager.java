@@ -1,6 +1,5 @@
 package edu.kit.ipd.sdq.probespec.framework;
 
-import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.BlackboardListener;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.BlackboardReader;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.writer.BlackboardWriter;
 import edu.kit.ipd.sdq.probespec.framework.calculators.binary.BinaryCalculator;
@@ -20,10 +19,10 @@ public interface ProbeManager<T> {
 
     public <V> BlackboardWriter<V> getWriter(Probe<V> probe);
 
-    public <V> void addMeasurementListener(BlackboardListener<V, T> l, Probe<V> probe);
+    public <V> void addMeasurementListener(MeasurementListener<V, T> l, Probe<V> probe);
 
-    public <V> void addMeasurementListener(BlackboardListener<V, T> l);
+    public <V> void addMeasurementListener(MeasurementListener<V, T> l);
 
-    public <V> void removeMeasurementListener(BlackboardListener<V, T> l);
+    public <V> void removeMeasurementListener(MeasurementListener<V, T> l);
 
 }

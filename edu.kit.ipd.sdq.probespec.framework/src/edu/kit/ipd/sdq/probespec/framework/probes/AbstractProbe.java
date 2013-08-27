@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import edu.kit.ipd.sdq.probespec.framework.MeasurementListener;
 import edu.kit.ipd.sdq.probespec.framework.Metadata;
 import edu.kit.ipd.sdq.probespec.framework.HashMapMetadata;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Blackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContext;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.BlackboardListener;
 
 public abstract class AbstractProbe<V> implements Probe<V> {
 
@@ -89,13 +89,13 @@ public abstract class AbstractProbe<V> implements Probe<V> {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> void addMeasurementListener(BlackboardListener<V, T> listener) {
+    public <T> void addMeasurementListener(MeasurementListener<V, T> listener) {
         ((Blackboard<T>) this.blackboard).addMeasurementListener(listener, this);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> void removeMeasurementListener(BlackboardListener<?, T> listener) {
+    public <T> void removeMeasurementListener(MeasurementListener<?, T> listener) {
         ((Blackboard<T>) this.blackboard).removeMeasurementListener(listener, this);
     }
 

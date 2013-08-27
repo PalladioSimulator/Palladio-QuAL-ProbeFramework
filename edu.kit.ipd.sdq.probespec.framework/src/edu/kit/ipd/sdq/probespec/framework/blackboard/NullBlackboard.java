@@ -1,8 +1,8 @@
 package edu.kit.ipd.sdq.probespec.framework.blackboard;
 
+import edu.kit.ipd.sdq.probespec.framework.MeasurementListener;
 import edu.kit.ipd.sdq.probespec.framework.Metadata;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContext;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.BlackboardListener;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.BlackboardReader;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.writer.BlackboardWriter;
 import edu.kit.ipd.sdq.probespec.framework.probes.Probe;
@@ -50,22 +50,22 @@ public class NullBlackboard<T> implements Blackboard<T> {
     }
 
     @Override
-    public <V> void addMeasurementListener(BlackboardListener<V, T> l, Probe<V> probe) {
+    public <V> void addMeasurementListener(MeasurementListener<V, T> l, Probe<V> probe) {
         // nothing to do
     }
 
     @Override
-    public <V> void addMeasurementListener(BlackboardListener<V, T> l) {
+    public <V> void addMeasurementListener(MeasurementListener<V, T> l) {
         // nothing to do
     }
 
     @Override
-    public void removeMeasurementListener(BlackboardListener<?, T> l) {
+    public void removeMeasurementListener(MeasurementListener<?, T> l) {
         // nothing to do
     }
 
     @Override
-    public void removeMeasurementListener(BlackboardListener<?, T> l, Probe<?> probe) {
+    public void removeMeasurementListener(MeasurementListener<?, T> l, Probe<?> probe) {
         // nothing to do
     }
 

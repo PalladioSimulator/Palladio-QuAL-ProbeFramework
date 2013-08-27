@@ -6,12 +6,11 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import edu.kit.ipd.sdq.probespec.framework.MeasurementListener;
 import edu.kit.ipd.sdq.probespec.framework.Metadata;
 import edu.kit.ipd.sdq.probespec.framework.TimestampGenerator;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.index.IndexManager;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.BlackboardListener;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.ListenerSupport;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.BlackboardReaderSupport;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.BlackboardReader;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.writer.BlackboardWriterImpl;
@@ -143,22 +142,22 @@ public class SimpleBlackboardRegion<V, T> implements BlackboardRegion<V, T> {
     }
 
     @Override
-    public void addMeasurementListener(BlackboardListener<V, T> l) {
+    public void addMeasurementListener(MeasurementListener<V, T> l) {
         listenerSupport.addMeasurementListener(blackboard, l);
     }
 
     @Override
-    public void addMeasurementListener(BlackboardListener<V, T> l, Probe<V> probe) {
+    public void addMeasurementListener(MeasurementListener<V, T> l, Probe<V> probe) {
         listenerSupport.addMeasurementListener(blackboard, l, probe);
     }
 
     @Override
-    public void removeMeasurementListener(BlackboardListener<?, T> l) {
+    public void removeMeasurementListener(MeasurementListener<?, T> l) {
         listenerSupport.removeMeasurementListener(l);
     }
 
     @Override
-    public void removeMeasurementListener(BlackboardListener<?, T> l, Probe<?> probe) {
+    public void removeMeasurementListener(MeasurementListener<?, T> l, Probe<?> probe) {
         listenerSupport.removeMeasurementListener(l, probe);
     }
 

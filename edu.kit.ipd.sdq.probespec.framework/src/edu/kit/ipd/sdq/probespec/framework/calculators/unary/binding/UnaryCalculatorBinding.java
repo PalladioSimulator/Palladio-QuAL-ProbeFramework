@@ -2,10 +2,10 @@ package edu.kit.ipd.sdq.probespec.framework.calculators.unary.binding;
 
 import org.apache.log4j.Logger;
 
+import edu.kit.ipd.sdq.probespec.framework.MeasurementListener;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Blackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Measurement;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContext;
-import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.BlackboardListener;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.BlackboardReader;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.writer.BlackboardWriter;
 import edu.kit.ipd.sdq.probespec.framework.calculators.CalculatorBinding;
@@ -19,7 +19,7 @@ public class UnaryCalculatorBinding<IN, OUT, T> implements CalculatorBinding, Un
 
     private Blackboard<T> blackboard;
 
-    private BlackboardListener<IN, T> inListener;
+    private MeasurementListener<IN, T> inListener;
 
     private UnaryCalculator<IN, OUT, T> calculator;
 
@@ -81,7 +81,7 @@ public class UnaryCalculatorBinding<IN, OUT, T> implements CalculatorBinding, Un
         return calculator.toString();
     }
 
-    protected class ProbeListener implements BlackboardListener<IN, T> {
+    protected class ProbeListener implements MeasurementListener<IN, T> {
 
         @Override
         public void measurementArrived(Measurement<IN, T> measurement, Probe<IN> probe, MeasurementContext... contexts) {
