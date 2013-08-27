@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.probespec.framework.blackboard.writer;
 
-import edu.kit.ipd.sdq.probespec.framework.IMetadata;
+import edu.kit.ipd.sdq.probespec.framework.Metadata;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.SimpleBlackboardRegion;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.probes.Probe;
@@ -22,7 +22,7 @@ public class BlackboardWriterImpl<V, T> implements BlackboardWriter<V> {
     }
 
     @Override
-    public void addMeasurement(V value, IMetadata metadata) {
+    public void addMeasurement(V value, Metadata metadata) {
         blackboardRegion.addMeasurement(value, probe, metadata);
     }
 
@@ -32,7 +32,7 @@ public class BlackboardWriterImpl<V, T> implements BlackboardWriter<V> {
     }
 
     @Override
-    public void addMeasurement(V value, IMetadata metadata, MeasurementContext... contexts) {
+    public void addMeasurement(V value, Metadata metadata, MeasurementContext... contexts) {
         blackboardRegion.addMeasurement(value, probe, metadata, contexts);
     }
     

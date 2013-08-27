@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import edu.kit.ipd.sdq.probespec.framework.IMetadata;
+import edu.kit.ipd.sdq.probespec.framework.Metadata;
 import edu.kit.ipd.sdq.probespec.framework.HashMapMetadata;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Blackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContext;
@@ -18,7 +18,7 @@ public abstract class AbstractProbe<V> implements Probe<V> {
 
     private String name;
 
-    private IMetadata metadata;
+    private Metadata metadata;
 
     private boolean active = true;
 
@@ -58,7 +58,7 @@ public abstract class AbstractProbe<V> implements Probe<V> {
     }
 
     @Override
-    public IMetadata getMetadata() {
+    public Metadata getMetadata() {
         return metadata;
     }
 
@@ -68,7 +68,7 @@ public abstract class AbstractProbe<V> implements Probe<V> {
     }
 
     @Override
-    public void addMeasurement(V value, IMetadata metadata) {
+    public void addMeasurement(V value, Metadata metadata) {
         getBlackboard().addMeasurement(value, this, metadata);
     }
 
@@ -78,7 +78,7 @@ public abstract class AbstractProbe<V> implements Probe<V> {
     }
 
     @Override
-    public void addMeasurement(V value, IMetadata metadata, MeasurementContext... contexts) {
+    public void addMeasurement(V value, Metadata metadata, MeasurementContext... contexts) {
         getBlackboard().addMeasurement(value, this, metadata, contexts);
     }
 

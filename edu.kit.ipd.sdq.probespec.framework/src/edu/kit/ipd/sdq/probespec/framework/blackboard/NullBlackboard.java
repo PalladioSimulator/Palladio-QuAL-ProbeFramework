@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.probespec.framework.blackboard;
 
-import edu.kit.ipd.sdq.probespec.framework.IMetadata;
+import edu.kit.ipd.sdq.probespec.framework.Metadata;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.BlackboardListener;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.BlackboardReader;
@@ -25,7 +25,7 @@ public class NullBlackboard<T> implements Blackboard<T> {
     }
 
     @Override
-    public <V> void addMeasurement(V value, Probe<V> probe, IMetadata metadata) {
+    public <V> void addMeasurement(V value, Probe<V> probe, Metadata metadata) {
         // nothing to do
     }
 
@@ -35,7 +35,7 @@ public class NullBlackboard<T> implements Blackboard<T> {
     }
 
     @Override
-    public <V> void addMeasurement(V value, Probe<V> probe, IMetadata metadata, MeasurementContext... contexts) {
+    public <V> void addMeasurement(V value, Probe<V> probe, Metadata metadata, MeasurementContext... contexts) {
         // nothing to do
     }
 

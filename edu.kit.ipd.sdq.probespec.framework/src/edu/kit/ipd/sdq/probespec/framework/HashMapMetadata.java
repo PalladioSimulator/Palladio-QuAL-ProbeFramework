@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 
-public class HashMapMetadata implements IMetadata {
+public class HashMapMetadata implements Metadata {
 
     private Map<Object, Object> map;
 
@@ -23,7 +23,7 @@ public class HashMapMetadata implements IMetadata {
         }
     }
     
-    public static IMetadata emptyMetadata() {
+    public static Metadata emptyMetadata() {
         return new HashMapMetadata(true);
     }
 

@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import edu.kit.ipd.sdq.probespec.framework.IMetadata;
+import edu.kit.ipd.sdq.probespec.framework.Metadata;
 import edu.kit.ipd.sdq.probespec.framework.TimestampGenerator;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.BlackboardListener;
@@ -32,7 +32,7 @@ public class SimpleBlackboard<T> implements Blackboard<T> {
     }
 
     @Override
-    public <V> void addMeasurement(V value, Probe<V> probe, IMetadata metadata) {
+    public <V> void addMeasurement(V value, Probe<V> probe, Metadata metadata) {
         createOrFindRegion(probe.getGenericClass()).addMeasurement(value, probe, metadata);
     }
 
@@ -42,7 +42,7 @@ public class SimpleBlackboard<T> implements Blackboard<T> {
     }
 
     @Override
-    public <V> void addMeasurement(V value, Probe<V> probe, IMetadata metadata,
+    public <V> void addMeasurement(V value, Probe<V> probe, Metadata metadata,
             MeasurementContext... contexts) {
         createOrFindRegion(probe.getGenericClass()).addMeasurement(value, probe, metadata, contexts);
     }

@@ -4,7 +4,7 @@ import java.util.concurrent.CountDownLatch;
 
 import org.apache.log4j.Logger;
 
-import edu.kit.ipd.sdq.probespec.framework.IMetadata;
+import edu.kit.ipd.sdq.probespec.framework.Metadata;
 import edu.kit.ipd.sdq.probespec.framework.TimestampGenerator;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardFactory;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardType;
@@ -48,7 +48,7 @@ public class ConcurrentBlackboard<T> implements Blackboard<T> {
     }
 
     @Override
-    public <V> void addMeasurement(V value, Probe<V> probe, IMetadata metadata) {
+    public <V> void addMeasurement(V value, Probe<V> probe, Metadata metadata) {
         queue.put(new AddMeasurementAction<V>(value, probe, metadata));
     }
 
@@ -58,7 +58,7 @@ public class ConcurrentBlackboard<T> implements Blackboard<T> {
     }
 
     @Override
-    public <V> void addMeasurement(V value, Probe<V> probe, IMetadata metadata, MeasurementContext... contexts) {
+    public <V> void addMeasurement(V value, Probe<V> probe, Metadata metadata, MeasurementContext... contexts) {
         queue.put(new AddMeasurementAction<V>(value, probe, metadata, contexts));
     }
 
@@ -135,15 +135,15 @@ public class ConcurrentBlackboard<T> implements Blackboard<T> {
 
         private Probe<V> probe;
 
-        private IMetadata metadata;
+        private Metadata metadata;
 
         private MeasurementContext[] contexts;
 
         public AddMeasurementAction(V value, Probe<V> probe, MeasurementContext... contexts) {
-            this(value, probe, IMetadata.EMPTY_METADATA, contexts);
+            this(value, probe, Metadata.EMPTY_METADATA, contexts);
         }
 
-        public AddMeasurementAction(V value, Probe<V> probe, IMetadata metadata, MeasurementContext... contexts) {
+        public AddMeasurementAction(V value, Probe<V> probe, Metadata metadata, MeasurementContext... contexts) {
             this.value = value;
             this.probe = probe;
             this.metadata = metadata;

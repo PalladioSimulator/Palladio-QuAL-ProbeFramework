@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.probespec.framework.probes;
 
-import edu.kit.ipd.sdq.probespec.framework.IMetadata;
+import edu.kit.ipd.sdq.probespec.framework.Metadata;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.Blackboard;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.BlackboardListener;
@@ -13,7 +13,7 @@ public interface Probe<V> {
 
     Class<V> getGenericClass();
 
-    IMetadata getMetadata();
+    Metadata getMetadata();
 
     /**
      * Makes this probe transient or persistent (i.e., non-transient). For transient probes,
@@ -34,11 +34,11 @@ public interface Probe<V> {
 
     void addMeasurement(V value);
 
-    void addMeasurement(V value, IMetadata metadata);
+    void addMeasurement(V value, Metadata metadata);
 
     void addMeasurement(V value, MeasurementContext... contexts);
 
-    void addMeasurement(V value, IMetadata metadata, MeasurementContext... contexts);
+    void addMeasurement(V value, Metadata metadata, MeasurementContext... contexts);
     
     void addProbeStateListener(ProbeStateListener listener);
 

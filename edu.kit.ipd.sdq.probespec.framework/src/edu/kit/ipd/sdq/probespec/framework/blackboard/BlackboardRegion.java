@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.probespec.framework.blackboard;
 
-import edu.kit.ipd.sdq.probespec.framework.IMetadata;
+import edu.kit.ipd.sdq.probespec.framework.Metadata;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.listener.BlackboardListener;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.reader.BlackboardReader;
@@ -11,7 +11,7 @@ public interface BlackboardRegion<V, T> {
 
     public void addMeasurement(V value, Probe<V> probe, MeasurementContext... contexts);
     
-    public void addMeasurement(V value, Probe<V> probe, IMetadata metadata, MeasurementContext... contexts);
+    public void addMeasurement(V value, Probe<V> probe, Metadata metadata, MeasurementContext... contexts);
 
     public Measurement<V, T> getLatestMeasurement(Probe<V> probe, MeasurementContext... contexts);
 

@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import edu.kit.ipd.sdq.probespec.framework.IMetadata;
+import edu.kit.ipd.sdq.probespec.framework.Metadata;
 import edu.kit.ipd.sdq.probespec.framework.TimestampGenerator;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.MeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.index.IndexManager;
@@ -63,12 +63,12 @@ public class SimpleBlackboardRegion<V, T> implements BlackboardRegion<V, T> {
 
     @Override
     public void addMeasurement(V value, Probe<V> probe, MeasurementContext... contexts) {
-        addMeasurement(value, probe, IMetadata.EMPTY_METADATA, contexts);
+        addMeasurement(value, probe, Metadata.EMPTY_METADATA, contexts);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public void addMeasurement(V value, Probe<V> probe, IMetadata metadata, MeasurementContext... contexts) {
+    public void addMeasurement(V value, Probe<V> probe, Metadata metadata, MeasurementContext... contexts) {
         // generate timestamp or get timestamp from metadata if one is supplied
         T timestamp;
         if (!metadata.containsKey(TIMESTAMP_OVERRIDE_METADATA_KEY)) {
