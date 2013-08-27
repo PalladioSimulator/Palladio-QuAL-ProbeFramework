@@ -7,15 +7,12 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 
-import edu.kit.ipd.sdq.probespec.DerivedIntegerProbe;
-import edu.kit.ipd.sdq.probespec.IntegerProbe;
-import edu.kit.ipd.sdq.probespec.framework.ProbeFactory;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.BlackboardType;
 import edu.kit.ipd.sdq.probespec.framework.blackboard.context.IMeasurementContext;
 import edu.kit.ipd.sdq.probespec.framework.test.mockup.AssemblyContext;
 import edu.kit.ipd.sdq.probespec.framework.test.mockup.UsageContext;
-import edu.kit.ipd.sdq.probespec.framework.test.util.LoggingUtils;
 import edu.kit.ipd.sdq.probespec.framework.test.util.IntegerProbe;
+import edu.kit.ipd.sdq.probespec.framework.test.util.LoggingUtils;
 import edu.kit.ipd.sdq.probespec.java.DifferenceCalculator;
 import edu.kit.ipd.sdq.probespec.java.JavaProbeManager;
 
@@ -87,13 +84,17 @@ public class PerformanceTest {
         System.out.println("...................................................");
 
         // create two basic probes
-        startProbe = ProbeFactory.createIntegerProbe("startProbe");
-        stopProbe = ProbeFactory.createIntegerProbe("stopProbeOne");
+        startProbe = new IntegerProbe("startProbe");
+        stopProbe = new IntegerProbe("stopProbeOne");
+        
+        ps.mountProbe(startProbe, "AnEntity");
+        ps.mountProbe(stopProbe, "AnEntity");
 
-        DerivedIntegerProbe[] derivedProbes = new DerivedIntegerProbe[numberOfderivedProbes];
+        IntegerProbe[] derivedProbes = new IntegerProbe[numberOfderivedProbes];
         for (int i = 0; i < numberOfderivedProbes; i++) {
             // create a derived probe to calculate the difference between the start and stop probe
-            DerivedIntegerProbe differenceProbe = ProbeFactory.createDerivedIntegerProbe("differenceProbe");
+            IntegerProbe differenceProbe = new IntegerProbe("differenceProbe");
+            ps.mountProbe(differenceProbe, "AnEntity");
             derivedProbes[i] = differenceProbe;
             
             // bind derived probe
@@ -106,8 +107,8 @@ public class PerformanceTest {
 
         long t0 = System.nanoTime();
         for (int i = 0; i < numberOfMeasurements; i++) {
-            ps.addMeasurement(i, startProbe);
-            ps.addMeasurement(i + 20, stopProbe);
+            startProbe.addMeasurement(i);
+            stopProbe.addMeasurement(i + 20);
         }
 
         // -------------------

@@ -32,7 +32,7 @@ public class APIExample {
         pm.addMeasurementListener(new PrintMeasurementsListener());
 
         // create and install an calculator which stores calculated results to an additional probe
-        DerivedIntegerProbe responseTimeProbe = new DerivedIntegerProbe("responseTimeProbe");
+        IntegerProbe responseTimeProbe = new IntegerProbe("responseTimeProbe");
         Probe<Integer> startProbe = pm.getProbe("StartAction", IntegerProbe.class);
         Probe<Integer> stopProbe = pm.getProbe("StopAction", IntegerProbe.class);
         pm.installCalculator(new DifferenceCalculator()).bindInput(startProbe, stopProbe).bindOutput(responseTimeProbe);
@@ -77,19 +77,6 @@ public class APIExample {
             return Integer.class;
         }
 
-    }
-    
-    private static class DerivedIntegerProbe extends IntegerProbe  {
-        
-        public DerivedIntegerProbe(String name) {
-            super(name);
-        }
-
-        @Override
-        public Class<Integer> getGenericClass() {
-            return Integer.class;
-        }
-        
     }
 
 }
