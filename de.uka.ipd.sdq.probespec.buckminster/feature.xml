@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="de.uka.ipd.sdq.probespec.buckminster"
+      label="Palladio ProbeSpecification"
+      version="1.0.0.qualifier">
+
+   <url>
+      <discovery label="Palladio Commons" url="http://sdqweb.ipd.kit.edu/eclipse/commons/releases/1.3"/>
+      <discovery label="Palladio SensorFramework" url="http://sdqweb.ipd.kit.edu/eclipse/sensorframework/releases/1.3"/>
+      <discovery label="Eclipse Orbit" url="http://download.eclipse.org/tools/orbit/downloads/drops/R20130827064939/repository"/>
+   </url>
+
+   <includes
+         id="de.uka.ipd.sdq.probespec.feature"
+         version="0.0.0"/>
+
+</feature>
