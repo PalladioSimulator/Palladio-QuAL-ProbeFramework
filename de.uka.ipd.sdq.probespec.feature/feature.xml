@@ -2,7 +2,7 @@
 <feature
       id="de.uka.ipd.sdq.probespec.feature"
       label="ProbeSpecification Feature"
-      version="1.1.0.qualifier"
+      version="1.2.0.qualifier"
       provider-name="sdq.ipd.kit.edu">
 
    <description url="http://sdq.ipd.kit.edu/">
