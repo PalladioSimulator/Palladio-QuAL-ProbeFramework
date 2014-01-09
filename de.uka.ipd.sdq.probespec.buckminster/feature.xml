@@ -6,7 +6,7 @@
 
    <url>
       <discovery label="Palladio Commons" url="http://sdqweb.ipd.kit.edu/eclipse/commons/releases/1.3"/>
-      <discovery label="Palladio SensorFramework" url="http://sdqweb.ipd.kit.edu/eclipse/sensorframework/releases/1.3"/>
+      <discovery label="Palladio SensorFramework" url="http://sdqweb.ipd.kit.edu/eclipse/sensorframework/releases/3.5"/>
       <discovery label="Eclipse Orbit" url="http://download.eclipse.org/tools/orbit/downloads/drops/R20130827064939/repository"/>
    </url>
 
