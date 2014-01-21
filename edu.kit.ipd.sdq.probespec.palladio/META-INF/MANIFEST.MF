@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ProbeSpec PCM
+Bundle-SymbolicName: edu.kit.ipd.sdq.probespec.palladio
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: sdq.ipd.kit.edu
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: edu.kit.ipd.sdq.probespec.framework;bundle-version="2.0.0",
+ org.apache.log4j;bundle-version="1.2.15",
+ de.uka.ipd.sdq.simulation.abstractsimengine;bundle-version="1.0.0",
+ edu.kit.ipd.sdq.probespec.palladio.sensorframework;bundle-version="1.0.0",
+ de.uka.ipd.sdq.pcm;bundle-version="3.2.0",
+ edu.kit.ipd.sdq.probespec.config.emf;bundle-version="1.0.0",
+ com.google.guava;bundle-version="10.0.1"
+Export-Package: edu.kit.ipd.sdq.probespec.palladio,
+ edu.kit.ipd.sdq.probespec.palladio.calculators,
+ edu.kit.ipd.sdq.probespec.palladio.contexts,
+ edu.kit.ipd.sdq.probespec.palladio.pobes
