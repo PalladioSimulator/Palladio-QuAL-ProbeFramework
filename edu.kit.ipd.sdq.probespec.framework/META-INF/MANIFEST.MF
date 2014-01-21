@@ -1,0 +1,26 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ProbeSpecification Framework
+Bundle-SymbolicName: edu.kit.ipd.sdq.probespec.framework
+Bundle-Version: 2.0.0.qualifier
+Bundle-Vendor: sdq.ipd.kit.edu
+Require-Bundle: org.eclipse.core.runtime,
+ org.apache.log4j;bundle-version="1.2.15"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
+Export-Package: edu.kit.ipd.sdq.probespec.framework,
+ edu.kit.ipd.sdq.probespec.framework.blackboard,
+ edu.kit.ipd.sdq.probespec.framework.blackboard.concurrent,
+ edu.kit.ipd.sdq.probespec.framework.blackboard.context,
+ edu.kit.ipd.sdq.probespec.framework.blackboard.index,
+ edu.kit.ipd.sdq.probespec.framework.blackboard.reader,
+ edu.kit.ipd.sdq.probespec.framework.blackboard.writer,
+ edu.kit.ipd.sdq.probespec.framework.calculators,
+ edu.kit.ipd.sdq.probespec.framework.calculators.binary,
+ edu.kit.ipd.sdq.probespec.framework.calculators.binary.binding,
+ edu.kit.ipd.sdq.probespec.framework.calculators.unary,
+ edu.kit.ipd.sdq.probespec.framework.calculators.unary.binding,
+ edu.kit.ipd.sdq.probespec.framework.garbagecollection,
+ edu.kit.ipd.sdq.probespec.framework.probes
+Bundle-ClassPath: lib/guava-13.0.1.jar,
+ .
