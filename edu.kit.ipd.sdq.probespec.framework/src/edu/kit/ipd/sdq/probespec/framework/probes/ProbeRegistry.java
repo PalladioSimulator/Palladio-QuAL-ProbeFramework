@@ -7,8 +7,8 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
+import edu.kit.ipd.sdq.probespec.framework.Calculator;
 import edu.kit.ipd.sdq.probespec.framework.Probe;
-
 
 public class ProbeRegistry<T> {
 
@@ -22,38 +22,65 @@ public class ProbeRegistry<T> {
 
     private Map<Class<?>, ProbeRegistryRegion<?>> regions;
 
-    private Set<String> probeIds;
-
     @SuppressWarnings("rawtypes")
     public ProbeRegistry() {
         this.probeTypeToRegionMap = new HashMap<Class<? extends Probe>, ProbeRegistryRegion<?>>();
         this.regions = new HashMap<Class<?>, ProbeRegistryRegion<?>>();
-        this.probeIds = new HashSet<String>();
     }
 
     public <V> void mountProbe(Probe<V> probe, Object entity) {
-        mountProbe(probe, entity, null); // TODO: use DEFAULT_MOUNT_POINT or the like
+        createOrFindRegion(probe.getGenericClass()).mountProbe(probe, entity);
+        probeTypeToRegionMap.put(probe.getClass(), createOrFindRegion(probe.getGenericClass()));
     }
 
     public <V> void mountProbe(Probe<V> probe, Object entity, Object mountPoint) {
-        // ensure uniqueness of probe IDs
-        if (probeIds.contains(probe.getId())) {
-            logger.error("Cannot register probe with ID \"" + probe.getId() + "\" because this ID is already in use. "
-                    + "Make sure that probes have unique IDs and that probes are registered only once.");
-        }
-        probeIds.add(probe.getId());
-
-        // register probe
         createOrFindRegion(probe.getGenericClass()).mountProbe(probe, entity, mountPoint);
+        probeTypeToRegionMap.put(probe.getClass(), createOrFindRegion(probe.getGenericClass()));
+    }
+
+    public <V> void mountCalculatedProbe(Probe<V> probe, Calculator<V> calculator) {
+        createOrFindRegion(probe.getGenericClass()).mountProbe(probe, calculator);
         probeTypeToRegionMap.put(probe.getClass(), createOrFindRegion(probe.getGenericClass()));
     }
 
     public <V> Probe<V> getProbe(Object entity, Class<? extends Probe<V>> probeType) {
         return findRegionForProbeType(probeType).getProbe(entity, probeType);
     }
-    
+
     public <V> Probe<V> getProbe(Object entity, Object mountPoint, Class<? extends Probe<V>> probeType) {
         return findRegionForProbeType(probeType).getProbe(entity, mountPoint, probeType);
+    }
+
+    public Set<Probe<?>> getProbes(Object entity, Object mountPoint) {
+        Set<Probe<?>> probes = new HashSet<Probe<?>>();
+        for (ProbeRegistryRegion<?> r : regions.values()) {
+            probes.addAll(r.getProbes(entity, mountPoint));
+        }
+        return probes;
+    }
+
+    public Set<Probe<?>> getProbes() {
+        Set<Probe<?>> probes = new HashSet<Probe<?>>();
+        for (ProbeRegistryRegion<?> r : regions.values()) {
+            probes.addAll(r.getProbes());
+        }
+        return probes;
+    }
+
+    public Set<Object> getEntities() {
+        Set<Object> entities = new HashSet<Object>();
+        for (ProbeRegistryRegion<?> region : regions.values()) {
+            entities.addAll(region.getEntities());
+        }
+        return entities;
+    }
+
+    public Set<Object> getMeasuringPointsForEntity(Object entity) {
+        Set<Object> measuringPoints = new HashSet<Object>();
+        for (ProbeRegistryRegion<?> region : regions.values()) {
+            measuringPoints.addAll(region.getMeasuringPointsForEntity(entity));
+        }
+        return measuringPoints;
     }
 
     private <V> ProbeRegistryRegion<V> findRegionForProbeType(Class<? extends Probe<V>> probeType) {
@@ -71,6 +98,15 @@ public class ProbeRegistry<T> {
             logger.debug("Created probe registry region for " + clazz);
         }
         return r;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder result = new StringBuilder();
+        for (ProbeRegistryRegion<?> region : regions.values()) {
+            result.append(region.toString() + "\n");
+        }
+        return result.toString();
     }
 
 }

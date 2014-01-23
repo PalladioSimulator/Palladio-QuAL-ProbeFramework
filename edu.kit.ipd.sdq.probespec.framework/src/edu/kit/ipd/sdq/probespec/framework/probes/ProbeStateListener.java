@@ -2,8 +2,8 @@ package edu.kit.ipd.sdq.probespec.framework.probes;
 
 public interface ProbeStateListener {
 
-    void isActive(boolean active);
+    void activationChanged(boolean active);
     
-    void isTransient(boolean _transient);
+    void persistenceChanged(boolean persistent);
     
 }

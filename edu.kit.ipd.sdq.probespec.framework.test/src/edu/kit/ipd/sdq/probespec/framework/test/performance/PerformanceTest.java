@@ -87,14 +87,14 @@ public class PerformanceTest {
         startProbe = new IntegerProbe("startProbe");
         stopProbe = new IntegerProbe("stopProbeOne");
         
-        ps.mountProbe(startProbe, "AnEntity");
-        ps.mountProbe(stopProbe, "AnEntity");
+        ps.mountCalculatedProbe(startProbe, "AnEntity");
+        ps.mountCalculatedProbe(stopProbe, "AnEntity");
 
         IntegerProbe[] derivedProbes = new IntegerProbe[numberOfderivedProbes];
         for (int i = 0; i < numberOfderivedProbes; i++) {
             // create a derived probe to calculate the difference between the start and stop probe
             IntegerProbe differenceProbe = new IntegerProbe("differenceProbe");
-            ps.mountProbe(differenceProbe, "AnEntity");
+            ps.mountCalculatedProbe(differenceProbe, "AnEntity");
             derivedProbes[i] = differenceProbe;
             
             // bind derived probe

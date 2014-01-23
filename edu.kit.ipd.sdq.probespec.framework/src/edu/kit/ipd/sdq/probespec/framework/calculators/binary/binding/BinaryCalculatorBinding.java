@@ -29,6 +29,12 @@ public class BinaryCalculatorBinding<IN1, IN2, OUT, T> implements CalculatorBind
 
     private boolean isOutputBound;
 
+    private Probe<IN1> in1Probe;
+
+    private Probe<IN2> in2Probe;
+
+    private Probe<OUT> outProbe;
+
     public BinaryCalculatorBinding(BinaryCalculator<IN1, IN2, OUT, T> calculator, Blackboard<T> blackboard) {
         this.blackboard = blackboard;
         this.calculator = calculator;
@@ -37,6 +43,8 @@ public class BinaryCalculatorBinding<IN1, IN2, OUT, T> implements CalculatorBind
     }
 
     public BinaryBoundCalculator bindOutput(Probe<OUT> outProbe) {
+        this.outProbe = outProbe;
+
         // setup blackboard writer
         BlackboardWriter<OUT> writer = blackboard.getWriter(outProbe);
         calculator.setupBlackboardWriter(writer);
@@ -50,6 +58,8 @@ public class BinaryCalculatorBinding<IN1, IN2, OUT, T> implements CalculatorBind
         if (in1Probe == null || in2Probe == null) {
             throw new IllegalArgumentException("Cannot bind calculator to probes because at least one is null.");
         }
+        this.in1Probe = in1Probe;
+        this.in2Probe = in2Probe;
 
         // setup binding
         blackboard.addMeasurementListener(in1Listener, in1Probe);
@@ -80,6 +90,22 @@ public class BinaryCalculatorBinding<IN1, IN2, OUT, T> implements CalculatorBind
         } else {
             logger.warn("Tried to unbind a calculator which has not been bound before: " + calculator);
         }
+    }
+
+    public Probe<IN1> getIn1Probe() {
+        return in1Probe;
+    }
+
+    public Probe<IN2> getIn2Probe() {
+        return in2Probe;
+    }
+
+    public Probe<OUT> getOutProbe() {
+        return outProbe;
+    }
+
+    public BinaryCalculator<IN1, IN2, OUT, T> getCalculator() {
+        return calculator;
     }
 
     @Override

@@ -31,11 +31,11 @@ public abstract class AbstractProbeManager<T> implements ProbeManager<T> {
 
     private static final Logger logger = Logger.getLogger(AbstractProbeManager.class);
 
-    private Blackboard<T> blackboard;
+    protected Blackboard<T> blackboard;
 
-    private CalculatorRegistry<T> calculatorRegistry;
-    
-    private ProbeRegistry<T> probeRegistry;
+    protected CalculatorRegistry<T> calculatorRegistry;
+
+    protected ProbeRegistry<T> probeRegistry;
 
     private ThreadManager threadManager;
 
@@ -62,11 +62,11 @@ public abstract class AbstractProbeManager<T> implements ProbeManager<T> {
     private CalculatorRegistry<T> getCalculatorRegistry() {
         return calculatorRegistry;
     }
-    
+
     public <V> Probe<V> getProbe(Object entity, Class<? extends Probe<V>> probeType) {
         return probeRegistry.getProbe(entity, probeType);
     }
-    
+
     public <V> Probe<V> getProbe(Object entity, Object mountPoint, Class<? extends Probe<V>> probeType) {
         return probeRegistry.getProbe(entity, mountPoint, probeType);
     }
@@ -78,7 +78,8 @@ public abstract class AbstractProbeManager<T> implements ProbeManager<T> {
     public BlackboardType getBlackboardType() {
         return blackboardType;
     }
-
+    
+    @Override
     public void shutdown() {
         // TODO where to put this check!?
         List<CalculatorBinding> unboundCalculators = getCalculatorRegistry().getUnboundCalculators();
@@ -87,6 +88,8 @@ public abstract class AbstractProbeManager<T> implements ProbeManager<T> {
         }
 
         threadManager.stopThreads();
+
+        logger.info("/////////////////////\n" + probeRegistry.toString() + "\n/////////////////////");
 
         logger.info("Shut down ProbeSpecification");
     }
@@ -97,74 +100,106 @@ public abstract class AbstractProbeManager<T> implements ProbeManager<T> {
             ((ConcurrentBlackboard<T>) getBlackboard()).synchronise();
         }
     }
-    
+
     public <V> void mountProbe(Probe<V> probe, Object entity, Object mountPoint) {
         probeRegistry.mountProbe(probe, entity, mountPoint);
         probe.setBlackboard(blackboard);
     }
-    
+
     public <V> void mountProbe(Probe<V> probe, Object entity) {
         probeRegistry.mountProbe(probe, entity);
         probe.setBlackboard(blackboard);
     }
-    
-    /* (non-Javadoc)
-     * @see edu.kit.ipd.sdq.probespec.framework.IProbeManager#installCalculator(edu.kit.ipd.sdq.probespec.framework.calculators.unary.IUnaryCalculator)
+
+    public <V> void mountCalculatedProbe(Probe<V> probe, Calculator<V> calculator) {
+        probeRegistry.mountCalculatedProbe(probe, calculator);
+        probe.setBlackboard(blackboard);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * edu.kit.ipd.sdq.probespec.framework.IProbeManager#installCalculator(edu.kit.ipd.sdq.probespec
+     * .framework.calculators.unary.IUnaryCalculator)
      */
     @Override
     public <IN, OUT> UnaryUnboundCalculator<IN, OUT> installCalculator(UnaryCalculator<IN, OUT, T> calculator) {
         return getCalculatorRegistry().add(calculator);
     }
 
-    /* (non-Javadoc)
-     * @see edu.kit.ipd.sdq.probespec.framework.IProbeManager#installCalculator(edu.kit.ipd.sdq.probespec.framework.calculators.binary.IBinaryCalculator)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * edu.kit.ipd.sdq.probespec.framework.IProbeManager#installCalculator(edu.kit.ipd.sdq.probespec
+     * .framework.calculators.binary.IBinaryCalculator)
      */
     @Override
     public <IN1, IN2, OUT> BinaryUnboundCalculator<IN1, IN2, OUT> installCalculator(
             BinaryCalculator<IN1, IN2, OUT, T> calculator) {
         return getCalculatorRegistry().add(calculator);
     }
-    
 
-    /* (non-Javadoc)
-     * @see edu.kit.ipd.sdq.probespec.framework.IProbeManager#getReader(edu.kit.ipd.sdq.probespec.framework.Probe)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * edu.kit.ipd.sdq.probespec.framework.IProbeManager#getReader(edu.kit.ipd.sdq.probespec.framework
+     * .Probe)
      */
     @Override
     public <V> BlackboardReader<V, T> getReader(Probe<V> probe) {
         return getBlackboard().getReader(probe);
     }
-    
 
-    /* (non-Javadoc)
-     * @see edu.kit.ipd.sdq.probespec.framework.IProbeManager#getWriter(edu.kit.ipd.sdq.probespec.framework.Probe)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * edu.kit.ipd.sdq.probespec.framework.IProbeManager#getWriter(edu.kit.ipd.sdq.probespec.framework
+     * .Probe)
      */
     @Override
     public <V> BlackboardWriter<V> getWriter(Probe<V> probe) {
         return getBlackboard().getWriter(probe);
     }
-    
-    /* (non-Javadoc)
-     * @see edu.kit.ipd.sdq.probespec.framework.IProbeManager#addMeasurementListener(edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener, edu.kit.ipd.sdq.probespec.framework.Probe)
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * edu.kit.ipd.sdq.probespec.framework.IProbeManager#addMeasurementListener(edu.kit.ipd.sdq.
+     * probespec.framework.blackboard.listener.IBlackboardListener,
+     * edu.kit.ipd.sdq.probespec.framework.Probe)
      */
     @Override
     public <V> void addMeasurementListener(MeasurementListener<V, T> l, Probe<V> probe) {
         getBlackboard().addMeasurementListener(l, probe);
     }
 
-    /* (non-Javadoc)
-     * @see edu.kit.ipd.sdq.probespec.framework.IProbeManager#addMeasurementListener(edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * edu.kit.ipd.sdq.probespec.framework.IProbeManager#addMeasurementListener(edu.kit.ipd.sdq.
+     * probespec.framework.blackboard.listener.IBlackboardListener)
      */
     @Override
     public <V> void addMeasurementListener(MeasurementListener<V, T> l) {
         getBlackboard().addMeasurementListener(l);
     }
-    
-    /* (non-Javadoc)
-     * @see edu.kit.ipd.sdq.probespec.framework.IProbeManager#removeMeasurementListener(edu.kit.ipd.sdq.probespec.framework.blackboard.listener.IBlackboardListener)
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * edu.kit.ipd.sdq.probespec.framework.IProbeManager#removeMeasurementListener(edu.kit.ipd.sdq
+     * .probespec.framework.blackboard.listener.IBlackboardListener)
      */
     @Override
     public <V> void removeMeasurementListener(MeasurementListener<V, T> l) {
         getBlackboard().removeMeasurementListener(l);
     }
-    
+
 }

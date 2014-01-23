@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.probespec.palladio;
+package edu.kit.ipd.sdq.probespec.palladio.calculators;
 
 import java.math.BigDecimal;
 
@@ -13,7 +13,11 @@ import edu.kit.ipd.sdq.probespec.palladio.contexts.RequestContext2;
 
 public class TimeSpanCalculator2 extends AbstractBinaryCalculator<Double, Double, Double, Double> {
 
+    public static final String ASSEMBLY_CONTEXT_PARAMETER = "assembly_context_parameter";
+    
     private AssemblyContextWrapper assemblyCtx;
+
+    private static LookupStrategy lookupStrategy = new SameOrParentContextLookupStrategy(RequestContext2.class);
 
     public TimeSpanCalculator2() {
         super(Double.class, Double.class, Double.class);
@@ -21,6 +25,8 @@ public class TimeSpanCalculator2 extends AbstractBinaryCalculator<Double, Double
 
     public TimeSpanCalculator2(AssemblyContextWrapper assemblyCtx) {
         super(Double.class, Double.class, Double.class);
+        this.assemblyCtx = assemblyCtx;
+        setParameter(ASSEMBLY_CONTEXT_PARAMETER, assemblyCtx.getId());
     }
 
     @Override
@@ -38,7 +44,6 @@ public class TimeSpanCalculator2 extends AbstractBinaryCalculator<Double, Double
         }
 
         // retrieve 1st and 2nd measurement
-        LookupStrategy lookupStrategy = new SameOrParentContextLookupStrategy(RequestContext2.class);
         Measurement<Double, Double> mm1 = in1Reader.getLatestMeasurement(lookupStrategy, contexts);
         Measurement<Double, Double> mm2 = in2Reader.getLatestMeasurement(contexts);
 

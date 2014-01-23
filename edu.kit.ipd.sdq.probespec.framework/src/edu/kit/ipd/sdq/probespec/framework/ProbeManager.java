@@ -9,6 +9,10 @@ import edu.kit.ipd.sdq.probespec.framework.calculators.unary.binding.UnaryUnboun
 
 public interface ProbeManager<T> {
 
+    public void initialise();
+    
+    public void shutdown();
+    
     public <IN, OUT> UnaryUnboundCalculator<IN, OUT> installCalculator(UnaryCalculator<IN, OUT, T> calculator);
 
     public <IN1, IN2, OUT> BinaryUnboundCalculator<IN1, IN2, OUT> installCalculator(

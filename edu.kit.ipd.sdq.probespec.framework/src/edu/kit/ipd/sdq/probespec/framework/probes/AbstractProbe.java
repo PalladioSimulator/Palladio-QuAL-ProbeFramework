@@ -23,29 +23,29 @@ public abstract class AbstractProbe<V> implements Probe<V> {
 
     private boolean active = true;
 
-    private boolean _transient = false; // "transient" is a keyword, which is the reason for the
-                                        // underscore
+    private boolean persistent = true;
 
     private List<ProbeStateListener> listeners;
 
     public AbstractProbe(String name) {
         this(UUID.randomUUID().toString(), name);
     }
-    
-    public AbstractProbe(String name, boolean _transient) {
-        this(UUID.randomUUID().toString(), name, _transient);
+
+    public AbstractProbe(String name, boolean persistent) {
+        this(UUID.randomUUID().toString(), name, persistent);
+        System.out.println("Creaded id " + id + " for probe " + name);
     }
-    
+
     public AbstractProbe(String id, String name) {
         this(id, name, false);
     }
-    
-    public AbstractProbe(String id, String name, boolean _transient) {
+
+    public AbstractProbe(String id, String name, boolean persistent) {
         this.id = id;
         this.name = name;
         this.metadata = new HashMapMetadata();
         this.listeners = new ArrayList<ProbeStateListener>();
-        this._transient = _transient;
+        this.persistent = persistent;
     }
 
     @Override
@@ -56,6 +56,12 @@ public abstract class AbstractProbe<V> implements Probe<V> {
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
+
     }
 
     @Override
@@ -114,21 +120,24 @@ public abstract class AbstractProbe<V> implements Probe<V> {
     }
 
     @Override
-    public void setTransient(boolean _transient) {
-        boolean _transientOld = this._transient;
-        this._transient = _transient;
+    public void setPersistent(boolean persistent) {
+        boolean persistentOld = this.persistent;
+        System.out.println("Probe " + id + "(" + name + ") set persistent: " + persistent + " (was " + persistentOld
+                + ")");
 
         // notify listeners
-        if (_transientOld != _transient) {
+        if (persistentOld != persistent) {
             for (ProbeStateListener l : listeners) {
-                l.isTransient(_transient);
+                l.persistenceChanged(persistent);
             }
         }
+        this.persistent = persistent;
     }
 
     @Override
-    public boolean isTransient() {
-        return _transient;
+    public boolean isPersistent() {
+        System.out.println("Probe " + id + " is persistent: " + persistent);
+        return persistent;
     }
 
     @Override
@@ -139,7 +148,7 @@ public abstract class AbstractProbe<V> implements Probe<V> {
         // notify listeners
         if (activeOld != active) {
             for (ProbeStateListener l : listeners) {
-                l.isActive(active);
+                l.activationChanged(active);
             }
         }
     }
