@@ -1,7 +1,7 @@
 package de.uka.ipd.sdq.probespec.framework.test.mockup;
 
 import de.uka.ipd.sdq.probespec.framework.ProbeSetAndRequestContext;
-import de.uka.ipd.sdq.probespec.framework.RegionBasedGarbageCollector;
+import de.uka.ipd.sdq.probespec.framework.garbagecollection.RegionBasedGarbageCollector;
 import de.uka.ipd.sdq.probespec.framework.RequestContext;
 import de.uka.ipd.sdq.probespec.framework.SampleBlackboard;
 

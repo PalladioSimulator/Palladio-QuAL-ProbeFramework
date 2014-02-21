@@ -2,7 +2,7 @@ package de.uka.ipd.sdq.probespec.framework.test;
 
 import de.uka.ipd.sdq.probespec.framework.BlackboardVote;
 import de.uka.ipd.sdq.probespec.framework.ProbeSetSample;
-import de.uka.ipd.sdq.probespec.framework.RegionBasedGarbageCollector;
+import de.uka.ipd.sdq.probespec.framework.garbagecollection.RegionBasedGarbageCollector;
 import de.uka.ipd.sdq.probespec.framework.RequestContext;
 import de.uka.ipd.sdq.probespec.framework.SampleBlackboard;
 import de.uka.ipd.sdq.probespec.framework.test.mockup.BlackboardListenerMockup;
