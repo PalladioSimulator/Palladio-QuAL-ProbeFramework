@@ -33,10 +33,10 @@ public class Edp2AggregationWriteStrategy extends Edp2WriteStrategy implements
 	 * necessary EDP2 members.
 	 */
 	protected void prepareExperimentRun() {
-		experimentRun.getMeasurement().add(measurement);
+		experimentRun.getMeasurements().add(measurements);
 		experimentSetting.getExperimentRuns().add(experimentRun);
 
-		measurementRange = MeasurementsUtility.addMeasurementRange(measurement);
+		measurementsRange = MeasurementsUtility.addMeasurementRange(measurements);
 	}
 
 	/**
@@ -67,7 +67,7 @@ public class Edp2AggregationWriteStrategy extends Edp2WriteStrategy implements
 						.getAggregationFunctionDescription());
 		aggregatedMeasurements.setFunction(desc);
 
-		measurementRange.getAggregatedMeasurements()
+		measurementsRange.getAggregatedMeasurements()
 				.add(aggregatedMeasurements);
 		//TODO: add aggregated measurements properly. 
 		/*MeasurementsUtility.addDataSeries(aggregatedMeasurements,
@@ -99,7 +99,7 @@ public class Edp2AggregationWriteStrategy extends Edp2WriteStrategy implements
 		intervals.setWidth(metaData.getWidth());
 		intervals.setNumberOfIntervals(metaData.getNumberOfIntervals());
 
-		((FixedWidthAggregatedMeasurements) measurementRange
+		((FixedWidthAggregatedMeasurements) measurementsRange
 				.getAggregatedMeasurements().get(aggregatedMeasurementsIndex))
 				.setIntervals(intervals);
 	}
@@ -114,10 +114,10 @@ public class Edp2AggregationWriteStrategy extends Edp2WriteStrategy implements
 		long endTime = new Date().getTime();
 		experimentRun.setDuration(Measure.valueOf(endTime - startTime,
 				SI.SECOND));
-		measurementRange.setStartTime(Measure.valueOf(startTime, SI.SECOND));
-		measurementRange.setEndTime(Measure.valueOf(endTime, SI.SECOND));
+		measurementsRange.setStartTime(Measure.valueOf(startTime, SI.SECOND));
+		measurementsRange.setEndTime(Measure.valueOf(endTime, SI.SECOND));
 
-		for (AggregatedMeasurements measurements : measurementRange
+		for (AggregatedMeasurements measurements : measurementsRange
 				.getAggregatedMeasurements()) {
 			FixedWidthAggregatedMeasurements fixedMeas = ((FixedWidthAggregatedMeasurements) measurements);
 

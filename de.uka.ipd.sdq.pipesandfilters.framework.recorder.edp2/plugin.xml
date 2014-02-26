@@ -7,7 +7,7 @@
       <recorder
             configuration="de.uka.ipd.sdq.pipesandfilters.framework.recorder.edp2.launch.EDP2Config"
             launchConfigTab="de.uka.ipd.sdq.pipesandfilters.framework.recorder.edp2.launch.EDP2Tab"
-            name="EDP2"
+            name="Experiment Data Persistency &amp; Presentation (EDP2)"
             writeStrategy="de.uka.ipd.sdq.pipesandfilters.framework.recorder.edp2.Edp2WriteStrategy">
       </recorder>
    </extension>

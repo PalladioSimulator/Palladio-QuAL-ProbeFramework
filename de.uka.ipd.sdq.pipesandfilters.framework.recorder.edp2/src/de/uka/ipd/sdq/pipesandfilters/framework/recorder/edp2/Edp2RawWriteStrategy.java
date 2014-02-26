@@ -27,14 +27,15 @@ public class Edp2RawWriteStrategy extends Edp2WriteStrategy implements IRawWrite
 //		measurement.setMeasure(measure);
 //		experimentRun = ExperimentDataFactory.eINSTANCE.createExperimentRun();
 		
-		experimentRun.getMeasurement().add(measurement);
+		experimentRun.getMeasurements().add(measurements);
 		experimentSetting.getExperimentRuns().add(experimentRun);
 
-		measurementRange = MeasurementsUtility.addMeasurementRange(measurement);
-		measurementRange.setRawMeasurements(ExperimentDataFactory.eINSTANCE
+		measurementsRange = MeasurementsUtility.addMeasurementRange(measurements);
+		measurementsRange.setRawMeasurements(ExperimentDataFactory.eINSTANCE
 				.createRawMeasurements());
 
-		MeasurementsUtility.addDataSeries(measurementRange.getRawMeasurements());
+		// TODO check whether this is needed
+		//MeasurementsUtility.addDataSeries(measurementsRange.getRawMeasurements());
 	}
 
 	/**
@@ -47,8 +48,8 @@ public class Edp2RawWriteStrategy extends Edp2WriteStrategy implements IRawWrite
 		long endTime = new Date().getTime();
 		experimentRun.setDuration(Measure.valueOf(endTime - startTime,
 				SI.SECOND));
-		measurementRange.setStartTime(Measure.valueOf(startTime, SI.SECOND));
-		measurementRange.setEndTime(Measure.valueOf(endTime, SI.SECOND));
+		measurementsRange.setStartTime(Measure.valueOf(startTime, SI.SECOND));
+		measurementsRange.setEndTime(Measure.valueOf(endTime, SI.SECOND));
 
 /*	Now superfluous?
  * 	for (DataSeries ds : measurementRange.getRawMeasurements().getDataSeries())

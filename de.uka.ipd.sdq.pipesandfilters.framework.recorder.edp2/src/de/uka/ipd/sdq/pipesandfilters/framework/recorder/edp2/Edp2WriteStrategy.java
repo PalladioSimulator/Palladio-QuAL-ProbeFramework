@@ -1,17 +1,18 @@
 package de.uka.ipd.sdq.pipesandfilters.framework.recorder.edp2;
 
+import de.uka.ipd.sdq.edp2.impl.Measurement;
 import de.uka.ipd.sdq.edp2.impl.MeasurementsUtility;
 import de.uka.ipd.sdq.edp2.models.ExperimentData.BaseMetricDescription;
+import de.uka.ipd.sdq.edp2.models.ExperimentData.Edp2Measure;
 import de.uka.ipd.sdq.edp2.models.ExperimentData.ExperimentDataFactory;
 import de.uka.ipd.sdq.edp2.models.ExperimentData.ExperimentGroup;
 import de.uka.ipd.sdq.edp2.models.ExperimentData.ExperimentRun;
 import de.uka.ipd.sdq.edp2.models.ExperimentData.ExperimentSetting;
-import de.uka.ipd.sdq.edp2.models.ExperimentData.Measurement;
-import de.uka.ipd.sdq.edp2.models.ExperimentData.MeasurementRange;
+import de.uka.ipd.sdq.edp2.models.ExperimentData.Measurements;
+import de.uka.ipd.sdq.edp2.models.ExperimentData.MeasurementsRange;
 import de.uka.ipd.sdq.edp2.models.ExperimentData.MetricSetDescription;
 import de.uka.ipd.sdq.edp2.models.ExperimentData.Monotonic;
-import de.uka.ipd.sdq.edp2.models.ExperimentData.OrdinalMeasure;
-import de.uka.ipd.sdq.edp2.models.ExperimentData.PersistenceKindOptions;
+import de.uka.ipd.sdq.edp2.models.ExperimentData.NumericalBaseMetricDescription;
 import de.uka.ipd.sdq.pipesandfilters.framework.MeasurementMetric;
 import de.uka.ipd.sdq.pipesandfilters.framework.MetaDataInit;
 import de.uka.ipd.sdq.pipesandfilters.framework.PipeData;
@@ -31,7 +32,7 @@ public abstract class Edp2WriteStrategy {
 	/**
 	 * The EDP2 measure.
 	 */
-	protected OrdinalMeasure measure;
+	protected Edp2Measure measure;
 	/**
 	 * The EDP2 experiment setting.
 	 */
@@ -41,17 +42,17 @@ public abstract class Edp2WriteStrategy {
 	 */
 	protected ExperimentGroup experimentGroup;
 	/**
-	 * The EDP2 measurement.
+	 * The EDP2 measurements.
 	 */
-	protected Measurement measurement;
+	protected Measurements measurements;
 	/**
 	 * The EDP2 experiment run.
 	 */
 	protected ExperimentRun experimentRun;
 	/**
-	 * The EDP2 measurement range.
+	 * The EDP2 measurements range.
 	 */
-	protected MeasurementRange measurementRange;
+	protected MeasurementsRange measurementsRange;
 
 	/**
 	 * A string containing the name of the directory the data is stored at.
@@ -112,6 +113,7 @@ public abstract class Edp2WriteStrategy {
 
 	/**
 	 * Converts a MeasurementMetric object to a BaseMetricDescription object.
+	 * TODO check whether NumericalBaseMetricDescription is the only case or whether TextualBaseMetricDescription can also occur.
 	 * 
 	 * @param measuredObject
 	 *            The MeasurementMetric object.
@@ -119,13 +121,12 @@ public abstract class Edp2WriteStrategy {
 	 */
 	protected BaseMetricDescription convertMeasurementMetricToBaseMetricDescription(
 			MeasurementMetric measuredObject) {
-		BaseMetricDescription desc = ExperimentDataFactory.eINSTANCE
-				.createBaseMetricDescription();
+		NumericalBaseMetricDescription desc = ExperimentDataFactory.eINSTANCE.createNumericalBaseMetricDescription();
 
 		// CaptureType:
 		if (measuredObject.getCaptureType() == de.uka.ipd.sdq.pipesandfilters.framework.CaptureType.NATURAL_NUMBER) {
 			desc
-					.setCaptureType(de.uka.ipd.sdq.edp2.models.ExperimentData.CaptureType.NATURAL_NUMBER);
+					.setCaptureType(de.uka.ipd.sdq.edp2.models.ExperimentData.CaptureType.INTEGER_NUMBER);
 		} else if (measuredObject.getCaptureType() == de.uka.ipd.sdq.pipesandfilters.framework.CaptureType.REAL_NUMBER) {
 			desc
 					.setCaptureType(de.uka.ipd.sdq.edp2.models.ExperimentData.CaptureType.REAL_NUMBER);
@@ -189,8 +190,9 @@ public abstract class Edp2WriteStrategy {
 		}
 
 		// Initialize measure
-		measure = ExperimentDataFactory.eINSTANCE.createOrdinalMeasure();
-		measure.setPersistencyKind(PersistenceKindOptions.BINARY_PREFERRED);
+		measure = ExperimentDataFactory.eINSTANCE.createEdp2Measure();
+		// TODO check whether that was needed ;)
+		//measure.setPersistencyKind(PersistenceKindOptions.BINARY_PREFERRED);
 		measure.setMetric(metric);
 		measure.setMeasuredObject(edp2MetaData.getMeasurementName());
 		// Important: Identifiers are not supported by the probespec so far
@@ -211,9 +213,9 @@ public abstract class Edp2WriteStrategy {
 		experimentRun = edp2MetaData.getExperimentRun();
 
 		// Set up measurement
-		measurement = ExperimentDataFactory.eINSTANCE.createMeasurement();
-		measurement.setMeasure(measure);
-		measurement.getAdditionalInformation().put("ModelElementID",
+		measurements = ExperimentDataFactory.eINSTANCE.createMeasurements();
+		measurements.setMeasure(measure);
+		measurements.getAdditionalInformation().put("ModelElementID",
 				metaData.getModelElementID());
 
 		prepareExperimentRun();
@@ -221,15 +223,19 @@ public abstract class Edp2WriteStrategy {
 	
 	/**
 	 * This method writes given measurement data to the EDP2.
+	 * 
+	 * FIXME I just hacked a measurement object into that code (before there was just the Object[] array). No idea whether this is correct.
 	 */
 	public void writeData(PipeData pipeData) {
 		Object[] data = new Object[pipeData.getTupleSize()];
 		
+		Measurement measurement = new Measurement(metric);
 		for (int i = 0; i < pipeData.getTupleSize(); i++) {
 			data[i] = pipeData.getTupleElement(i);
-		}
-
-		MeasurementsUtility.storeMeasurement(measurement, data);
+			measurement.setMeasuredValue(i, data[i]);
+		}		
+		
+		MeasurementsUtility.storeMeasurement(measurements, measurement);
 	}
 	
 	/**

@@ -9,6 +9,7 @@ import de.uka.ipd.sdq.edp2.models.ExperimentData.ExperimentRun;
 import de.uka.ipd.sdq.edp2.models.ExperimentData.ExperimentSetting;
 import de.uka.ipd.sdq.pipesandfilters.framework.MeasurementMetric;
 import de.uka.ipd.sdq.pipesandfilters.framework.MetaDataInit;
+import de.uka.ipd.sdq.pipesandfilters.framework.recorder.launch.IRecorderConfiguration;
 
 /**
  * This class contains all meta data information necessary for EDP2 data. This
@@ -31,8 +32,9 @@ public class EDP2MetaDataInit extends MetaDataInit {
 	 * @param measuredMetrics
 	 *            A vector of all measured metrics of a calculator.
 	 */
-	public EDP2MetaDataInit(Vector<MeasurementMetric> measuredMetrics) {
-		super(measuredMetrics);
+	public EDP2MetaDataInit(Vector<MeasurementMetric> measuredMetrics, IRecorderConfiguration recorderConfiguration) {
+	    super(measuredMetrics, recorderConfiguration);
+	    
 
 		experimentRun = ExperimentDataFactory.eINSTANCE.createExperimentRun();
 		experimentRun.setStartTime(new Date());
@@ -53,10 +55,9 @@ public class EDP2MetaDataInit extends MetaDataInit {
 	 * @param experimentName
 	 *            The name of the performed experiment.
 	 */
-	public EDP2MetaDataInit(Vector<MeasurementMetric> measuredObjects,
+	public EDP2MetaDataInit(Vector<MeasurementMetric> measuredObjects, IRecorderConfiguration recorderConfiguration,
 			String metricName, String measurementName, String experimentName) {
-
-		super(measuredObjects, metricName, measurementName, experimentName);
+	    super(measuredObjects, recorderConfiguration, metricName, measurementName, experimentName);
 
 		experimentRun = ExperimentDataFactory.eINSTANCE.createExperimentRun();
 		experimentRun.setStartTime(new Date());
@@ -76,9 +77,9 @@ public class EDP2MetaDataInit extends MetaDataInit {
 	 *            The experiment setting of the initialized EDP2 experiment run.
 	 */
 	public EDP2MetaDataInit(Vector<MeasurementMetric> measuredMetrics,
-			ExperimentGroup experimentGroup, ExperimentSetting experimentSetting) {
+			ExperimentGroup experimentGroup, ExperimentSetting experimentSetting, IRecorderConfiguration recorderConfiguration) {
 
-		super(measuredMetrics);
+		super(measuredMetrics, recorderConfiguration);
 
 		experimentRun = ExperimentDataFactory.eINSTANCE.createExperimentRun();
 		experimentRun.setStartTime(new Date());
