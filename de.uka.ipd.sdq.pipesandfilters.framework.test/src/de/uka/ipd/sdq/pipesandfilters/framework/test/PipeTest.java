@@ -16,7 +16,7 @@ import de.uka.ipd.sdq.pipesandfilters.framework.MetaDataInit;
 import de.uka.ipd.sdq.pipesandfilters.framework.PipeData;
 import de.uka.ipd.sdq.pipesandfilters.framework.PipesAndFiltersManager;
 import de.uka.ipd.sdq.pipesandfilters.framework.Scale;
-import de.uka.ipd.sdq.pipesandfilters.framework.edp2.EDP2MetaDataInit;
+import de.uka.ipd.sdq.pipesandfilters.framework.recorder.edp2.EDP2MetaDataInit;
 import de.uka.ipd.sdq.pipesandfilters.framework.filters.ExampleFilter;
 import de.uka.ipd.sdq.pipesandfilters.framework.filters.Filter;
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.RawRecorder;
