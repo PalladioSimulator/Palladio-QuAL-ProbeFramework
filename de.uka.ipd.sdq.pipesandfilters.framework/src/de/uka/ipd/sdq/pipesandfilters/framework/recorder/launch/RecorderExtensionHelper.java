@@ -70,19 +70,29 @@ public class RecorderExtensionHelper {
 
 	public static String getWriteStrategyClassNameForName(String recorderName)
 			throws CoreException {
-		List<IExtension> recorderExtensions = loadExtensions("de.uka.ipd.sdq.pipesandfilters.framework.recorder");
-		for (IExtension extension : recorderExtensions) {
-			IConfigurationElement e = obtainConfigurationElement("recorder",
-					extension);
-			if (e != null && e.getAttribute("name").equals(recorderName)) {
-				Object writeStrategy = e.getAttribute("writeStrategy");
-				if (writeStrategy != null) {
-					return (String) writeStrategy;
-				}
-			}
-		}
-		return null;
+	    return getClassNameForName(recorderName, "writeStrategy");
 	}
+	
+    public static String getMetaDataInitFactoryClassNameForName(String recorderName) 
+            throws CoreException {
+        return getClassNameForName(recorderName, "metaDataInitFactory");
+    }
+	
+	private static String getClassNameForName(String recorderName, String attributeName)
+	            throws CoreException {
+        List<IExtension> recorderExtensions = loadExtensions("de.uka.ipd.sdq.pipesandfilters.framework.recorder");
+        for (IExtension extension : recorderExtensions) {
+            IConfigurationElement e = obtainConfigurationElement("recorder",
+                    extension);
+            if (e != null && e.getAttribute("name").equals(recorderName)) {
+                Object writeStrategy = e.getAttribute(attributeName);
+                if (writeStrategy != null) {
+                    return (String) writeStrategy;
+                }
+            }
+        }
+        return null;
+    }
 
 	public static String getNameForExtensionIdentifier(String extensionID)
 			throws CoreException {
