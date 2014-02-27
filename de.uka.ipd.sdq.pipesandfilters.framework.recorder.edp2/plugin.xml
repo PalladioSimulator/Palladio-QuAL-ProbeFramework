@@ -7,7 +7,7 @@
       <recorder
             configuration="de.uka.ipd.sdq.pipesandfilters.framework.recorder.edp2.launch.EDP2Config"
             launchConfigTab="de.uka.ipd.sdq.pipesandfilters.framework.recorder.edp2.launch.EDP2Tab"
-            metaDataInitFactory="de.uka.ipd.sdq.pipesandfilters.framework.edp2.EDP2MetaDataInitFactory"
+            metaDataInitFactory="de.uka.ipd.sdq.pipesandfilters.framework.recorder.edp2.EDP2MetaDataInitFactory"
             name="Experiment Data Persistency &amp; Presentation (EDP2)"
             writeStrategy="de.uka.ipd.sdq.pipesandfilters.framework.recorder.edp2.Edp2RawWriteStrategy">
       </recorder>
