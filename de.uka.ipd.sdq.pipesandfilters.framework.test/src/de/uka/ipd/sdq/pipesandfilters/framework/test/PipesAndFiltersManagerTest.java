@@ -6,17 +6,16 @@ import javax.measure.Measure;
 import javax.measure.quantity.Quantity;
 import javax.measure.unit.SI;
 
+import junit.framework.TestCase;
 import de.uka.ipd.sdq.pipesandfilters.framework.CaptureType;
 import de.uka.ipd.sdq.pipesandfilters.framework.MeasurementMetric;
 import de.uka.ipd.sdq.pipesandfilters.framework.PipeData;
 import de.uka.ipd.sdq.pipesandfilters.framework.PipesAndFiltersManager;
 import de.uka.ipd.sdq.pipesandfilters.framework.Scale;
-import de.uka.ipd.sdq.pipesandfilters.framework.recorder.edp2.EDP2MetaDataInit;
 import de.uka.ipd.sdq.pipesandfilters.framework.filters.ExampleFilter;
 import de.uka.ipd.sdq.pipesandfilters.framework.filters.SimpleWarmUpFilter;
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.SlidingMeanRecorder;
-
-import junit.framework.TestCase;
+import de.uka.ipd.sdq.pipesandfilters.framework.recorder.edp2.EDP2MetaDataInit;
 
 /**
  * This TestCase tests the pipes and filters manager, and all so far implemented
@@ -46,7 +45,7 @@ public class PipesAndFiltersManagerTest extends TestCase {
 		MeasurementMetric o = new MeasurementMetric(CaptureType.REAL_NUMBER, SI
 				.MILLI(SI.SECOND), Scale.ORDINAL);
 		measuredObjects.add(o);
-		EDP2MetaDataInit metaInit = new EDP2MetaDataInit(measuredObjects);
+		EDP2MetaDataInit metaInit = new EDP2MetaDataInit(measuredObjects, null);
 
 		// Create filters and recorders for the chain.
 		warmupFilter = new SimpleWarmUpFilter(10);
