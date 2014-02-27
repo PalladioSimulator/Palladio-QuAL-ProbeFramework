@@ -1,4 +1,4 @@
-package de.uka.ipd.sdq.pipesandfilters.framework.edp2;
+package de.uka.ipd.sdq.pipesandfilters.framework.recorder.edp2;
 
 import java.util.Date;
 import java.util.Map;

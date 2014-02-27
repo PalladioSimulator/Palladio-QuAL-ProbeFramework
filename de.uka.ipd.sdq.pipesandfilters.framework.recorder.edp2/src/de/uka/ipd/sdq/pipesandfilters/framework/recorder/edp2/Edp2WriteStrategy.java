@@ -16,7 +16,6 @@ import de.uka.ipd.sdq.edp2.models.ExperimentData.NumericalBaseMetricDescription;
 import de.uka.ipd.sdq.pipesandfilters.framework.MeasurementMetric;
 import de.uka.ipd.sdq.pipesandfilters.framework.MetaDataInit;
 import de.uka.ipd.sdq.pipesandfilters.framework.PipeData;
-import de.uka.ipd.sdq.pipesandfilters.framework.edp2.EDP2MetaDataInit;
 
 /**
  * This abstract class provides methods necessary to write raw or aggregated measurements to the EDP2.
