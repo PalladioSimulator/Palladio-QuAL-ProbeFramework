@@ -1,5 +1,6 @@
 package de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework;
 
+import java.util.Map;
 import java.util.Vector;
 
 import de.uka.ipd.sdq.pipesandfilters.framework.MeasurementMetric;
@@ -8,15 +9,20 @@ import de.uka.ipd.sdq.pipesandfilters.framework.recorder.launch.IRecorderConfigu
 
 public class SensorFrameworkMetaDataInit extends MetaDataInit {
 
-	private boolean isRemoteRun;
-
+	private boolean isRemoteRun;	
+    
 	public SensorFrameworkMetaDataInit(
 			Vector<MeasurementMetric> measuredMetrics,
 			IRecorderConfiguration recorderConfiguration) {
 		super(measuredMetrics, recorderConfiguration);
-	}
+	}	
 
-	public boolean isRemoteRun() {
+	public SensorFrameworkMetaDataInit(Vector<MeasurementMetric> measuredMetrics,
+            IRecorderConfiguration recorderConfiguration, Map<Integer, String> executionResultTypes) {
+	    super(measuredMetrics, recorderConfiguration, executionResultTypes);
+    }
+
+    public boolean isRemoteRun() {
 		return isRemoteRun;
 	}
 

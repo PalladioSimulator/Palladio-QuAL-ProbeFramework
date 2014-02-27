@@ -7,6 +7,7 @@
       <recorder
             configuration="de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework.launch.SensorFrameworkConfig"
             launchConfigTab="de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework.launch.SensorFrameworkTab"
+            metaDataInit="de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework.SensorFrameworkMetaDataInit"
             name="SensorFramework"
             writeStrategy="de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework.SensorFrameworkWriteStrategy">
       </recorder>

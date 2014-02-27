@@ -86,6 +86,16 @@
                </appinfo>
             </annotation>
          </attribute>
+         <attribute name="metaDataInit" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn="de.uka.ipd.sdq.pipesandfilters.framework.MetaDataInit:"/>
+               </appinfo>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 

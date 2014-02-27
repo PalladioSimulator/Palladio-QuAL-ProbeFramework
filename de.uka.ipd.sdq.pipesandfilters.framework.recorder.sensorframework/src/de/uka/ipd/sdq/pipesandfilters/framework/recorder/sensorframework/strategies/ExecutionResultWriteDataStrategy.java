@@ -10,7 +10,6 @@ import javax.measure.unit.SI;
 
 import de.uka.ipd.sdq.pipesandfilters.framework.MetaDataInit;
 import de.uka.ipd.sdq.pipesandfilters.framework.PipeData;
-import de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework.ExecutionResultMetaDataInit;
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework.SensorHelper;
 import de.uka.ipd.sdq.sensorframework.entities.Experiment;
 import de.uka.ipd.sdq.sensorframework.entities.ExperimentRun;
@@ -134,8 +133,7 @@ public class ExecutionResultWriteDataStrategy extends AbstractWriteDataStrategy 
 	 *            the meta data for the initialization of the strategy
 	 */
 	private void initStatesCache(final MetaDataInit metaData) {
-		Map<Integer, String> resultTypes = ((ExecutionResultMetaDataInit) metaData)
-				.getExecutionResultTypes();
+		Map<Integer, String> resultTypes = metaData.getExecutionResultTypes();
 		for (Integer key : resultTypes.keySet()) {
 			State state = SensorHelper.createOrReuseState(daoFactory,
 					resultTypes.get(key));

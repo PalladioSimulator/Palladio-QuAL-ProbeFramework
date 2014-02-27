@@ -1,6 +1,7 @@
 package de.uka.ipd.sdq.pipesandfilters.framework.edp2;
 
 import java.util.Date;
+import java.util.Map;
 import java.util.Vector;
 
 import de.uka.ipd.sdq.edp2.models.ExperimentData.ExperimentDataFactory;
@@ -16,7 +17,7 @@ import de.uka.ipd.sdq.pipesandfilters.framework.recorder.launch.IRecorderConfigu
  * includes the specification of an EDP2 experimentGroup, experimentSetting and
  * experimentGroup.
  * 
- * @author Baum
+ * @author Baum, Sebastian Lehrig
  * 
  */
 public class EDP2MetaDataInit extends MetaDataInit {
@@ -41,6 +42,16 @@ public class EDP2MetaDataInit extends MetaDataInit {
 		experimentSetting = ExperimentDataFactory.eINSTANCE.createExperimentSetting();
 		experimentGroup = ExperimentDataFactory.eINSTANCE.createExperimentGroup();
 	}
+	
+	public EDP2MetaDataInit(Vector<MeasurementMetric> measuredMetrics,
+            IRecorderConfiguration recorderConfiguration, Map<Integer, String> executionResultTypes) {
+        super(measuredMetrics, recorderConfiguration, executionResultTypes);
+        
+        experimentRun = ExperimentDataFactory.eINSTANCE.createExperimentRun();
+        experimentRun.setStartTime(new Date());
+        experimentSetting = ExperimentDataFactory.eINSTANCE.createExperimentSetting();
+        experimentGroup = ExperimentDataFactory.eINSTANCE.createExperimentGroup();
+    }
 
 	/**
 	 * The constructor of EDP2MetaDataInit. This constructor also instantiate

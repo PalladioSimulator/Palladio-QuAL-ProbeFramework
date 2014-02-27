@@ -1,5 +1,6 @@
 package de.uka.ipd.sdq.pipesandfilters.framework;
 
+import java.util.Map;
 import java.util.Vector;
 
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.launch.IRecorderConfiguration;
@@ -51,6 +52,12 @@ public abstract class MetaDataInit {
 	private String modelElementID;
 
 	/**
+     * The mapping of numerical values to strings representing the possible
+     * execution results.
+     */
+    private Map<Integer, String> executionResultTypes;
+    
+	/**
 	 * The constructor of MetaDataInit
 	 * 
 	 * @param measuredMetrics
@@ -85,6 +92,31 @@ public abstract class MetaDataInit {
 		this.measurementName = measurementName;
 		this.experimentName = experimentName;
 	}
+	
+	/**
+     * The constructor. Represents the meta data for initialization of an
+     * ExecutionResultWriteDataStrategy.
+     * 
+     * In addition to the other constructors, this constructor contains a mapping from numerical
+     * values to strings representing the different possible execution results. This
+     * is necessary so that during the simulation, only the numerical values need to
+     * be piped to the target sensor.
+     * 
+     * @param measuredMetrics
+     *            a vector of all measured metrics of a calculator
+     * @param recorderConfiguration
+     *            the recorder configuration
+     * @param executionResultTypes
+     *            the mapping of numerical values to strings representing the
+     *            possible execution results
+     */
+    public MetaDataInit(
+            final Vector<MeasurementMetric> measuredMetrics,
+            final IRecorderConfiguration recorderConfiguration,
+            final Map<Integer, String> executionResultTypes) {
+        this(measuredMetrics, recorderConfiguration);
+        this.executionResultTypes = executionResultTypes;
+    }
 
 	/**
 	 * TODO Comment
@@ -218,5 +250,13 @@ public abstract class MetaDataInit {
 	public String getModelElementID() {
 		return modelElementID;
 	}
-
+	
+	/**
+     * Retrieves the collection of execution result types.
+     * 
+     * @return the execution result types
+     */
+    public Map<Integer, String> getExecutionResultTypes() {
+        return executionResultTypes;
+    }
 }
