@@ -9,6 +9,9 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
 
+import de.uka.ipd.sdq.pipesandfilters.framework.IMetaDataInitFactory;
+import de.uka.ipd.sdq.pipesandfilters.framework.recorder.IRawWriteStrategy;
+
 public class RecorderExtensionHelper {
 
 	public static String[] getRecorderNames() throws CoreException {
@@ -68,31 +71,34 @@ public class RecorderExtensionHelper {
 		return null;
 	}
 
-	public static String getWriteStrategyClassNameForName(String recorderName)
-			throws CoreException {
-	    return getClassNameForName(recorderName, "writeStrategy");
-	}
-	
-    public static String getMetaDataInitFactoryClassNameForName(String recorderName) 
-            throws CoreException {
-        return getClassNameForName(recorderName, "metaDataInitFactory");
+    public static IRawWriteStrategy instantiateWriteStrategyForRecorder(String recorderName) {
+        try {
+            return (IRawWriteStrategy) instantiateExecutableExtension(recorderName, "writeStrategy");
+        } catch (CoreException e) {
+            throw new RuntimeException("Could not instantiate write strategy for recorder named " + recorderName);
+        }
     }
 	
-	private static String getClassNameForName(String recorderName, String attributeName)
-	            throws CoreException {
-        List<IExtension> recorderExtensions = loadExtensions("de.uka.ipd.sdq.pipesandfilters.framework.recorder");
-        for (IExtension extension : recorderExtensions) {
+    public static IMetaDataInitFactory instantiateMetaDataInitFactoryForRecorder(String recorderName) {
+        try {
+            return (IMetaDataInitFactory) instantiateExecutableExtension(recorderName, "metaDataInitFactory");
+        } catch (CoreException e) {
+            throw new RuntimeException("Could not instantiate MetaDataInit factory for recorder named " + recorderName);
+        }
+    }
+	
+	private static Object instantiateExecutableExtension(String recorderName, String attributeName)
+	        throws CoreException {
+	    List<IExtension> recorderExtensions = loadExtensions("de.uka.ipd.sdq.pipesandfilters.framework.recorder");
+        for (IExtension extension : recorderExtensions) {            
             IConfigurationElement e = obtainConfigurationElement("recorder",
-                    extension);
+                    extension);            
             if (e != null && e.getAttribute("name").equals(recorderName)) {
-                Object writeStrategy = e.getAttribute(attributeName);
-                if (writeStrategy != null) {
-                    return (String) writeStrategy;
-                }
+                return e.createExecutableExtension(attributeName);
             }
         }
         return null;
-    }
+	}
 
 	public static String getNameForExtensionIdentifier(String extensionID)
 			throws CoreException {
