@@ -23,6 +23,9 @@ import de.uka.ipd.sdq.pipesandfilters.framework.recorder.IAggregationWriteStrate
  * This class provides methods necessary to write aggregated measurements to the
  * EDP2.
  * 
+ * TODO This class is not considered by the current extension. Some extensions are needed to enable such aggregated measurements.
+ * 
+ * 
  * @author Baum
  * 
  */
