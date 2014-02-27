@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.Vector;
 
 import de.uka.ipd.sdq.pipesandfilters.framework.MeasurementMetric;
-import de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework.launch.SensorFrameworkConfig;
+import de.uka.ipd.sdq.pipesandfilters.framework.recorder.launch.IRecorderConfiguration;
 
 /**
  * Represents the meta data for initialization of an
@@ -39,7 +39,7 @@ public class ExecutionResultMetaDataInit extends SensorFrameworkMetaDataInit {
 	 */
 	public ExecutionResultMetaDataInit(
 			final Vector<MeasurementMetric> measuredMetrics,
-			final SensorFrameworkConfig recorderConfiguration,
+			final IRecorderConfiguration recorderConfiguration,
 			final Map<Integer, String> executionResultTypes) {
 		super(measuredMetrics, recorderConfiguration);
 		this.executionResultTypes = executionResultTypes;
