@@ -231,10 +231,11 @@ public abstract class Edp2WriteStrategy {
 		Measurement measurement = new Measurement(metric);
 		for (int i = 0; i < pipeData.getTupleSize(); i++) {
 			//data[i] = pipeData.getTupleElement(i);
-			measurement.setMeasuredValue(i, pipeData.getTupleElement(i));
-		}		
+			measurement.setMeasuredValue(0, pipeData.getTupleElement(i));
+			MeasurementsUtility.storeMeasurement(measurements, measurement);
+		}
 		
-		MeasurementsUtility.storeMeasurement(measurements, measurement);
+		// MeasurementsUtility.storeMeasurement(measurements, data);
 	}
 	
 	/**
