@@ -1,6 +1,8 @@
 package de.uka.ipd.sdq.pipesandfilters.framework.test;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.measure.Measure;
@@ -22,18 +24,23 @@ import de.uka.ipd.sdq.pipesandfilters.framework.recorder.RawRecorder;
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.Recorder;
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.edp2.EDP2MetaDataInit;
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.edp2.Edp2RawWriteStrategy;
+import de.uka.ipd.sdq.pipesandfilters.framework.recorder.edp2.launch.EDP2Config;
+import de.uka.ipd.sdq.pipesandfilters.framework.recorder.launch.IRecorderConfiguration;
 
 /**
  * A simple pipes and filters test, consisting of only an example filter and a
  * raw recorder. This test case actually stores the created measurements to
  * EDP2, so new files are generated whenever the test is executed.
  * 
- * @author Baum
+ * @author Baum, Sebastian Lehrig
  * 
  */
 public class PipeTest extends TestCase {
 
-	private Filter testfilter;
+    /** Directory for test case measurements */
+	private static final String TEST_CASE_MEASUREMENTS = "TestCaseMeasurements";
+	
+    private Filter testfilter;
 	private Recorder recorder;
 	private Edp2RawWriteStrategy writeStrat;
 	private PipesAndFiltersManager manager;
@@ -59,8 +66,17 @@ public class PipeTest extends TestCase {
 				.MILLI(SI.SECOND), Scale.ORDINAL);
 		measuredObjects.add(o3);
 
+		
+		// Create repository and suitable recorder configuration.
+		LocalDirectoryRepository repo = RepositoryManager.initializeLocalDirectoryRepository(new File(TEST_CASE_MEASUREMENTS));
+        RepositoryManager.addRepository(RepositoryManager.getCentralRepository(), repo);
+        IRecorderConfiguration edp2Config = new EDP2Config();
+        Map<String, Object> configuration = new HashMap<String, Object>();
+        configuration.put(EDP2Config.REPOSITORY_ID, repo.getUuid());
+        edp2Config.setConfiguration(configuration);
+        
 		// Create filters and recorders for the chain.
-		MetaDataInit metaInit = new EDP2MetaDataInit(measuredObjects, null);
+		MetaDataInit metaInit = new EDP2MetaDataInit(measuredObjects, edp2Config);
 		metaInit.setExperimentName("Experiment 1");
 		metaInit.setMeasurementName("Calculator 1");
 
@@ -70,7 +86,9 @@ public class PipeTest extends TestCase {
 		recorder = new RawRecorder(writeStrat);
 
 		// Set filters and recorders properties.
-		writeStrat.setDirectoryName("TestCaseMeasurements");
+		writeStrat.setDirectoryName(TEST_CASE_MEASUREMENTS);
+		
+		// TODO add repo?
 
 		manager = new PipesAndFiltersManager(testfilter);
 		manager.addElement(recorder);

@@ -4,12 +4,17 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Vector;
 
+import javax.xml.bind.TypeConstraintException;
+
+import de.uka.ipd.sdq.edp2.impl.RepositoryManager;
 import de.uka.ipd.sdq.edp2.models.ExperimentData.ExperimentDataFactory;
 import de.uka.ipd.sdq.edp2.models.ExperimentData.ExperimentGroup;
 import de.uka.ipd.sdq.edp2.models.ExperimentData.ExperimentRun;
 import de.uka.ipd.sdq.edp2.models.ExperimentData.ExperimentSetting;
+import de.uka.ipd.sdq.edp2.models.Repository.Repository;
 import de.uka.ipd.sdq.pipesandfilters.framework.MeasurementMetric;
 import de.uka.ipd.sdq.pipesandfilters.framework.MetaDataInit;
+import de.uka.ipd.sdq.pipesandfilters.framework.recorder.edp2.launch.EDP2Config;
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.launch.IRecorderConfiguration;
 
 /**
@@ -22,9 +27,11 @@ import de.uka.ipd.sdq.pipesandfilters.framework.recorder.launch.IRecorderConfigu
  */
 public class EDP2MetaDataInit extends MetaDataInit {
 
+    private Repository repository;
+    private ExperimentGroup experimentGroup;
+    private ExperimentSetting experimentSetting;
 	private ExperimentRun experimentRun;
-	private ExperimentSetting experimentSetting;
-	private ExperimentGroup experimentGroup;
+	
 
 	/**
 	 * The constructor of EDP2MetaDataInit. This constructor also instantiate
@@ -36,21 +43,25 @@ public class EDP2MetaDataInit extends MetaDataInit {
 	public EDP2MetaDataInit(Vector<MeasurementMetric> measuredMetrics, IRecorderConfiguration recorderConfiguration) {
 	    super(measuredMetrics, recorderConfiguration);
 	    
-
+	    initRepository(recorderConfiguration);
 		experimentRun = ExperimentDataFactory.eINSTANCE.createExperimentRun();
 		experimentRun.setStartTime(new Date());
 		experimentSetting = ExperimentDataFactory.eINSTANCE.createExperimentSetting();
-		experimentGroup = ExperimentDataFactory.eINSTANCE.createExperimentGroup();
+		experimentGroup = ExperimentDataFactory.eINSTANCE.createExperimentGroup();		
+		repository.getExperimentGroups().add(experimentGroup);
 	}
-	
-	public EDP2MetaDataInit(Vector<MeasurementMetric> measuredMetrics,
+		
+
+    public EDP2MetaDataInit(Vector<MeasurementMetric> measuredMetrics,
             IRecorderConfiguration recorderConfiguration, Map<Integer, String> executionResultTypes) {
         super(measuredMetrics, recorderConfiguration, executionResultTypes);
         
+        initRepository(recorderConfiguration);
         experimentRun = ExperimentDataFactory.eINSTANCE.createExperimentRun();
         experimentRun.setStartTime(new Date());
         experimentSetting = ExperimentDataFactory.eINSTANCE.createExperimentSetting();
         experimentGroup = ExperimentDataFactory.eINSTANCE.createExperimentGroup();
+        repository.getExperimentGroups().add(experimentGroup);
     }
 
 	/**
@@ -70,11 +81,13 @@ public class EDP2MetaDataInit extends MetaDataInit {
 			String metricName, String measurementName, String experimentName) {
 	    super(measuredObjects, recorderConfiguration, metricName, measurementName, experimentName);
 
+	    initRepository(recorderConfiguration);
 		experimentRun = ExperimentDataFactory.eINSTANCE.createExperimentRun();
 		experimentRun.setStartTime(new Date());
 		experimentSetting = ExperimentDataFactory.eINSTANCE.createExperimentSetting();
 		experimentSetting.setDescription(experimentName);
 		experimentGroup = ExperimentDataFactory.eINSTANCE.createExperimentGroup();
+		repository.getExperimentGroups().add(experimentGroup);
 	}
 
 	/**
@@ -89,16 +102,36 @@ public class EDP2MetaDataInit extends MetaDataInit {
 	 */
 	public EDP2MetaDataInit(Vector<MeasurementMetric> measuredMetrics,
 			ExperimentGroup experimentGroup, ExperimentSetting experimentSetting, IRecorderConfiguration recorderConfiguration) {
-
 		super(measuredMetrics, recorderConfiguration);
 
+		initRepository(recorderConfiguration);
 		experimentRun = ExperimentDataFactory.eINSTANCE.createExperimentRun();
 		experimentRun.setStartTime(new Date());
 		this.experimentSetting = experimentSetting;
 		setExperimentName(experimentSetting.getDescription());
 		this.experimentGroup = experimentGroup;
+		repository.getExperimentGroups().add(experimentGroup);
 	}
 
+	/**
+	 * Initializes an EDP2 Repository based on the given recorder configuration.
+	 * 
+	 * @param recorderConfiguration Recorder configuration for EDP2 (type EDP2Config expected)
+	 */
+	private void initRepository(IRecorderConfiguration recorderConfiguration) {
+	    if(recorderConfiguration == null) {
+	        throw new NullPointerException("RecorderConfiguration null! EDP2 needs a recorderConfiguration to initialize a Repository!");
+	    }
+	    if(!(recorderConfiguration instanceof EDP2Config)) {
+            throw new TypeConstraintException("RecorderConfiguration is of wrong type! EDP2 needs an EDP2Config!");
+        }
+	    
+	    EDP2Config edp2Config = (EDP2Config) recorderConfiguration;
+	    String repositoryID = edp2Config.getRepositoryID();
+
+        this.repository = RepositoryManager.getRepositoryFromUUID(repositoryID);
+    }
+	
 	/**
 	 * Sets the name of the experiment.
 	 * 

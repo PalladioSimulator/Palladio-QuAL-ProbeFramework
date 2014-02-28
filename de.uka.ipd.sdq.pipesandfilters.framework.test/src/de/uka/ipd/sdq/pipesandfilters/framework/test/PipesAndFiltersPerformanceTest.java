@@ -1,5 +1,8 @@
 package de.uka.ipd.sdq.pipesandfilters.framework.test;
 
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.measure.Measure;
@@ -7,6 +10,8 @@ import javax.measure.quantity.Quantity;
 import javax.measure.unit.SI;
 
 import junit.framework.TestCase;
+import de.uka.ipd.sdq.edp2.impl.RepositoryManager;
+import de.uka.ipd.sdq.edp2.models.Repository.LocalDirectoryRepository;
 import de.uka.ipd.sdq.pipesandfilters.framework.CaptureType;
 import de.uka.ipd.sdq.pipesandfilters.framework.MeasurementMetric;
 import de.uka.ipd.sdq.pipesandfilters.framework.PipeData;
@@ -16,17 +21,22 @@ import de.uka.ipd.sdq.pipesandfilters.framework.filters.ExampleFilter;
 import de.uka.ipd.sdq.pipesandfilters.framework.filters.Filter;
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.RawRecorder;
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.edp2.EDP2MetaDataInit;
+import de.uka.ipd.sdq.pipesandfilters.framework.recorder.edp2.launch.EDP2Config;
+import de.uka.ipd.sdq.pipesandfilters.framework.recorder.launch.IRecorderConfiguration;
 
 /**
  * This TestCase is supposed to check the performance of a filter chain
  * consisting of 10 filters and a raw recorder provided with a million data
  * objects.
  * 
- * @author Baum
+ * @author Baum, Sebastian Lehrig
  * 
  */
 public class PipesAndFiltersPerformanceTest extends TestCase {
 
+    /** Directory for test case measurements */
+    private static final String TEST_CASE_MEASUREMENTS = "TestCaseMeasurements";
+    
 	private Filter[] filter = new ExampleFilter[9];
 	private PipesAndFiltersManager manager;
 	private DummyRawWriteStrategy writeStrategy;
@@ -41,7 +51,16 @@ public class PipesAndFiltersPerformanceTest extends TestCase {
 		MeasurementMetric o = new MeasurementMetric(CaptureType.REAL_NUMBER, SI
 				.MILLI(SI.SECOND), Scale.ORDINAL);
 		measuredObjects.add(o);
-		EDP2MetaDataInit metaInit = new EDP2MetaDataInit(measuredObjects, null);
+		
+		// Create repository and suitable recorder configuration.
+        LocalDirectoryRepository repo = RepositoryManager.initializeLocalDirectoryRepository(new File(TEST_CASE_MEASUREMENTS));
+        RepositoryManager.addRepository(RepositoryManager.getCentralRepository(), repo);
+        IRecorderConfiguration edp2Config = new EDP2Config();
+        Map<String, Object> configuration = new HashMap<String, Object>();
+        configuration.put(EDP2Config.REPOSITORY_ID, repo.getUuid());
+        edp2Config.setConfiguration(configuration);
+        
+		EDP2MetaDataInit metaInit = new EDP2MetaDataInit(measuredObjects, edp2Config);
 
 		manager = new PipesAndFiltersManager(new ExampleFilter());
 		for (int i = 0; i < 9; i++) {

@@ -20,7 +20,7 @@ import de.uka.ipd.sdq.pipesandfilters.framework.PipeData;
 /**
  * This abstract class provides methods necessary to write raw or aggregated measurements to the EDP2.
  * 
- * @author Baum
+ * @author Baum, Sebastian Lehrig
  * 
  */
 public abstract class Edp2WriteStrategy {
@@ -112,7 +112,7 @@ public abstract class Edp2WriteStrategy {
 
 	/**
 	 * Converts a MeasurementMetric object to a BaseMetricDescription object.
-	 * TODO check whether NumericalBaseMetricDescription is the only case or whether TextualBaseMetricDescription can also occur.
+	 * TODO Lehrig: check whether NumericalBaseMetricDescription is the only case or whether TextualBaseMetricDescription can also occur.
 	 * 
 	 * @param measuredObject
 	 *            The MeasurementMetric object.
@@ -190,7 +190,7 @@ public abstract class Edp2WriteStrategy {
 
 		// Initialize measure
 		measure = ExperimentDataFactory.eINSTANCE.createEdp2Measure();
-		// TODO check whether that was needed ;)
+		// TODO Lehrig: I removed the following line. Check whether that was actually needed ;)
 		//measure.setPersistencyKind(PersistenceKindOptions.BINARY_PREFERRED);
 		measure.setMetric(metric);
 		measure.setMeasuredObject(edp2MetaData.getMeasurementName());
@@ -223,15 +223,15 @@ public abstract class Edp2WriteStrategy {
 	/**
 	 * This method writes given measurement data to the EDP2.
 	 * 
-	 * FIXME I just hacked a measurement object into that code (before there was just the Object[] array). No idea whether this is correct.
+	 * FIXME Lehrig: I just hacked a measurement object into that code (before there was just the Object[] array). No idea whether this is correct.
 	 */
 	public void writeData(PipeData pipeData) {
-		Object[] data = new Object[pipeData.getTupleSize()];
+		//Object[] data = new Object[pipeData.getTupleSize()];
 		
 		Measurement measurement = new Measurement(metric);
 		for (int i = 0; i < pipeData.getTupleSize(); i++) {
-			data[i] = pipeData.getTupleElement(i);
-			measurement.setMeasuredValue(i, data[i]);
+			//data[i] = pipeData.getTupleElement(i);
+			measurement.setMeasuredValue(i, pipeData.getTupleElement(i));
 		}		
 		
 		MeasurementsUtility.storeMeasurement(measurements, measurement);
