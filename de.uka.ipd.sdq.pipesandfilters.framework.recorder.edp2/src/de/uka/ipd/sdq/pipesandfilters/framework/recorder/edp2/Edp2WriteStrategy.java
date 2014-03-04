@@ -24,92 +24,106 @@ import de.uka.ipd.sdq.pipesandfilters.framework.PipeData;
  * 
  */
 public abstract class Edp2WriteStrategy {
-	/**
-	 * The metric of the measured data.
-	 */
+	
+	/** The metric of the measured data. */
 	protected MetricSetDescription metric;
-	/**
-	 * The EDP2 measure.
-	 */
+	
+	/** The EDP2 measure. */
 	protected Edp2Measure measure;
-	/**
-	 * The EDP2 experiment setting.
-	 */
+	
+	/** The EDP2 experiment setting. */
 	protected ExperimentSetting experimentSetting;
-	/**
-	 * The EDP2 experiment group.
-	 */
+	
+	/** The EDP2 experiment group. */
 	protected ExperimentGroup experimentGroup;
-	/**
-	 * The EDP2 measurements.
-	 */
+	
+	/** The EDP2 measurements. */
 	protected Measurements measurements;
-	/**
-	 * The EDP2 experiment run.
-	 */
+	
+	/** The EDP2 experiment run. */
 	protected ExperimentRun experimentRun;
-	/**
-	 * The EDP2 measurements range.
-	 */
+	
+	/** The EDP2 measurements range. */
 	protected MeasurementsRange measurementsRange;
 
-	/**
-	 * A string containing the name of the directory the data is stored at.
-	 */
+	/** A string containing the name of the directory the data is stored at. */
 	protected String directoryName;
 
 
 	/**
-	 * The constructor of Edp2AggregationWriteStrategy.
+	 * The constructor of Edp2WriteStrategy.
 	 */
 	public Edp2WriteStrategy() {
 		directoryName = "Edp2Measurements";
 	}
 	
 	/**
-	 * Returns the name of the directory the incoming data is stored at.
-	 * 
-	 * @return The name of the directory.
-	 */
-	public String getDirectoryName() {
-		return directoryName;
-	}
-
-	/**
-	 * Sets the name of the directory incoming data is stored at. Note: The
-	 * specified directory must exist.
-	 * 
-	 * @param directoryName
-	 *            The name of the directory.
-	 */
-	public void setDirectoryName(String directoryName) {
-		this.directoryName = directoryName;
-	}
-
-	/**
-	 * Returns the experiment group used by this writer.
-	 * 
-	 * @return The experiment group this writer is using.
-	 */
-	public ExperimentGroup getExperimentGroup() {
-		return experimentGroup;
-	}
-
-	/**
-	 * Returns the experiment setting of this writer.
-	 * 
-	 * @return The experiment setting of this writer.
-	 */
-	public ExperimentSetting getExperimentSetting() {
-		return experimentSetting;
-	}
-	
-	/**
-	 * In this method an EDP2 experiment run is prepared by initializing all
+	 * In this method, an EDP2 experiment run is prepared by initializing all
 	 * necessary EDP2 members.
 	 */
-	protected abstract void prepareExperimentRun();
+	protected abstract void prepareExperimentRun();	
+	
+	/**
+	 * This method should end the current experiment and close the data output
+	 * stream.
+	 */
+	public abstract void flush();
+	
+	/**
+	 * The initializing meta data provided by the recorder is used to define all
+	 * EDP2 metrics and the experiment setup.
+	 */
+	public void initialize(MetaDataInit metaData) {
+		// Get EDP2MetaDataInit object
+		if (!(metaData instanceof EDP2MetaDataInit)) {			
+			throw new IllegalArgumentException(
+					"Argument metaData must be of the type EDP2MetaDataInit");
+		}			
+		EDP2MetaDataInit edp2MetaData = (EDP2MetaDataInit) metaData;
 
+		// Initialize the metric
+		metric = ExperimentDataFactory.eINSTANCE.createMetricSetDescription();
+		metric.setName(edp2MetaData.getMetricName());
+
+		for (MeasurementMetric measuredObject : edp2MetaData
+				.getMeasuredMetrics()) {
+
+			BaseMetricDescription desc = convertMeasurementMetricToBaseMetricDescription(measuredObject);
+			metric.getSubsumedMetrics().add(desc);
+		}
+
+		// Initialize measure
+		measure = ExperimentDataFactory.eINSTANCE.createEdp2Measure();
+		// TODO Lehrig: I removed the following line. Check whether that was actually needed ;)
+		//measure.setPersistencyKind(PersistenceKindOptions.BINARY_PREFERRED);
+		measure.setMetric(metric);
+		measure.setMeasuredObject(edp2MetaData.getMeasurementName());
+		// Important: Identifiers are not supported by the probespec so far
+		// because ordinal values are used instead to represent nominal values.
+		// If identifiers should be allowed, the initial identifier must
+		// be set here.
+
+		// Get experiment setting
+		experimentSetting = edp2MetaData.getExperimentSetting();
+		//experimentSetting.getMeasure().add(measure);
+
+		// Get experiment group
+		experimentGroup = edp2MetaData.getExperimentGroup();
+		experimentGroup.getExperimentSettings().add(experimentSetting);
+		experimentGroup.getMeasure().add(measure);
+
+		// Get experiment run
+		experimentRun = edp2MetaData.getExperimentRun();
+
+		// Set up measurement
+		measurements = ExperimentDataFactory.eINSTANCE.createMeasurements();
+		measurements.setMeasure(measure);
+		measurements.getAdditionalInformation().put("ModelElementID",
+				metaData.getModelElementID());
+
+		prepareExperimentRun();
+	}
+	
 	/**
 	 * Converts a MeasurementMetric object to a BaseMetricDescription object.
 	 * TODO Lehrig: check whether NumericalBaseMetricDescription is the only case or whether TextualBaseMetricDescription can also occur.
@@ -162,63 +176,7 @@ public abstract class Edp2WriteStrategy {
 		return desc;
 	}
 	
-	/**
-	 * The initializing meta data provided by the recorder is used to define all
-	 * metrics which are necessary for the EDP2.
-	 */
-	public void initialize(MetaDataInit metaData) {
-
-		EDP2MetaDataInit edp2MetaData;
-
-		if (metaData instanceof EDP2MetaDataInit) {
-			edp2MetaData = (EDP2MetaDataInit) metaData;
-		} else {
-			throw new IllegalArgumentException(
-					"Argument metaData must be of the type EDP2MetaDataInit");
-		}
-
-		// Initialize the metric
-		metric = ExperimentDataFactory.eINSTANCE.createMetricSetDescription();
-		metric.setName(edp2MetaData.getMetricName());
-
-		for (MeasurementMetric measuredObject : edp2MetaData
-				.getMeasuredMetrics()) {
-
-			BaseMetricDescription desc = convertMeasurementMetricToBaseMetricDescription(measuredObject);
-			metric.getSubsumedMetrics().add(desc);
-		}
-
-		// Initialize measure
-		measure = ExperimentDataFactory.eINSTANCE.createEdp2Measure();
-		// TODO Lehrig: I removed the following line. Check whether that was actually needed ;)
-		//measure.setPersistencyKind(PersistenceKindOptions.BINARY_PREFERRED);
-		measure.setMetric(metric);
-		measure.setMeasuredObject(edp2MetaData.getMeasurementName());
-		// Important: Identifiers are not supported by the probespec so far
-		// because ordinal values are used instead to represent nominal values.
-		// If identifiers should be allowed, the initial identifier must
-		// be set here.
-
-		// Get experiment setting
-		experimentSetting = edp2MetaData.getExperimentSetting();
-		//experimentSetting.getMeasure().add(measure);
-
-		// Get experiment group
-		experimentGroup = edp2MetaData.getExperimentGroup();
-		experimentGroup.getExperimentSettings().add(experimentSetting);
-		experimentGroup.getMeasure().add(measure);
-
-		// Get experiment run
-		experimentRun = edp2MetaData.getExperimentRun();
-
-		// Set up measurement
-		measurements = ExperimentDataFactory.eINSTANCE.createMeasurements();
-		measurements.setMeasure(measure);
-		measurements.getAdditionalInformation().put("ModelElementID",
-				metaData.getModelElementID());
-
-		prepareExperimentRun();
-	}
+	
 	
 	/**
 	 * This method writes given measurement data to the EDP2.
@@ -239,8 +197,40 @@ public abstract class Edp2WriteStrategy {
 	}
 	
 	/**
-	 * This method should end the current experiment and close the data output
-	 * stream.
+	 * Returns the name of the directory the incoming data is stored at.
+	 * 
+	 * @return The name of the directory.
 	 */
-	public abstract void flush();
+	public String getDirectoryName() {
+		return directoryName;
+	}
+
+	/**
+	 * Sets the name of the directory incoming data is stored at. Note: The
+	 * specified directory must exist.
+	 * 
+	 * @param directoryName
+	 *            The name of the directory.
+	 */
+	public void setDirectoryName(String directoryName) {
+		this.directoryName = directoryName;
+	}
+
+	/**
+	 * Returns the experiment group used by this writer.
+	 * 
+	 * @return The experiment group this writer is using.
+	 */
+	public ExperimentGroup getExperimentGroup() {
+		return experimentGroup;
+	}
+
+	/**
+	 * Returns the experiment setting of this writer.
+	 * 
+	 * @return The experiment setting of this writer.
+	 */
+	public ExperimentSetting getExperimentSetting() {
+		return experimentSetting;
+	}	
 }

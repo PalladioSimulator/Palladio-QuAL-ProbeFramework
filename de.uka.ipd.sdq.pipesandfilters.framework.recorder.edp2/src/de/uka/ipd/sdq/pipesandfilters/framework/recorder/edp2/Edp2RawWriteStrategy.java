@@ -12,8 +12,7 @@ import de.uka.ipd.sdq.pipesandfilters.framework.recorder.IRawWriteStrategy;
 /**
  * This class provides methods necessary to write raw measurements to the EDP2.
  * 
- * @author Baum
- * 
+ * @author Baum, Sebastian Lehrig
  */
 public class Edp2RawWriteStrategy extends Edp2WriteStrategy implements IRawWriteStrategy {
 

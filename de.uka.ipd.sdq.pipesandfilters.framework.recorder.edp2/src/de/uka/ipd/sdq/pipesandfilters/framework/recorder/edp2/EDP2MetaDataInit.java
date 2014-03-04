@@ -27,42 +27,31 @@ import de.uka.ipd.sdq.pipesandfilters.framework.recorder.launch.IRecorderConfigu
  */
 public class EDP2MetaDataInit extends MetaDataInit {
 
+	/** Repository where data should be stored. */
     private Repository repository;
+    
+    /** This experiment's experiment group that is attached to the repository. */
     private ExperimentGroup experimentGroup;
+    
+    /** This experiment's experiment setting that is attached to the experiment group and links to requested EDP2Measures. */
     private ExperimentSetting experimentSetting;
+    
+    /** This experiment's run, attached to the experiment setting. */
 	private ExperimentRun experimentRun;
 	
-
 	/**
 	 * The constructor of EDP2MetaDataInit. This constructor also instantiate
 	 * the experiment setting, experiment setting and experiment group.
 	 * 
 	 * @param measuredMetrics
 	 *            A vector of all measured metrics of a calculator.
+	 * @param recorderConfiguration
+	 * 			  An EDP2Config recorder configuration.
 	 */
 	public EDP2MetaDataInit(Vector<MeasurementMetric> measuredMetrics, IRecorderConfiguration recorderConfiguration) {
-	    super(measuredMetrics, recorderConfiguration);
-	    
-	    initRepository(recorderConfiguration);
-		experimentRun = ExperimentDataFactory.eINSTANCE.createExperimentRun();
-		experimentRun.setStartTime(new Date());
-		experimentSetting = ExperimentDataFactory.eINSTANCE.createExperimentSetting();
-		experimentGroup = ExperimentDataFactory.eINSTANCE.createExperimentGroup();		
-		repository.getExperimentGroups().add(experimentGroup);
+		this(measuredMetrics, recorderConfiguration, null);
 	}
-		
 
-    public EDP2MetaDataInit(Vector<MeasurementMetric> measuredMetrics,
-            IRecorderConfiguration recorderConfiguration, Map<Integer, String> executionResultTypes) {
-        super(measuredMetrics, recorderConfiguration, executionResultTypes);
-        
-        initRepository(recorderConfiguration);
-        experimentRun = ExperimentDataFactory.eINSTANCE.createExperimentRun();
-        experimentRun.setStartTime(new Date());
-        experimentSetting = ExperimentDataFactory.eINSTANCE.createExperimentSetting();
-        experimentGroup = ExperimentDataFactory.eINSTANCE.createExperimentGroup();
-        repository.getExperimentGroups().add(experimentGroup);
-    }
 
 	/**
 	 * The constructor of EDP2MetaDataInit. This constructor also instantiate
@@ -70,48 +59,27 @@ public class EDP2MetaDataInit extends MetaDataInit {
 	 * 
 	 * @param measuredMetrics
 	 *            A vector of all measured metrics of a calculator.
-	 * @param metricName
-	 *            The name of the metric that is measured.
-	 * @param measurementName
-	 *            The name of the performed measurement.
-	 * @param experimentName
-	 *            The name of the performed experiment.
+	 * @param recorderConfiguration
+	 * 			  An EDP2Config recorder configuration.
+	 * @param executionResultTypes
+	 * 			  Execution result types of an EDP2 run.
 	 */
-	public EDP2MetaDataInit(Vector<MeasurementMetric> measuredObjects, IRecorderConfiguration recorderConfiguration,
-			String metricName, String measurementName, String experimentName) {
-	    super(measuredObjects, recorderConfiguration, metricName, measurementName, experimentName);
-
-	    initRepository(recorderConfiguration);
-		experimentRun = ExperimentDataFactory.eINSTANCE.createExperimentRun();
-		experimentRun.setStartTime(new Date());
-		experimentSetting = ExperimentDataFactory.eINSTANCE.createExperimentSetting();
-		experimentSetting.setDescription(experimentName);
-		experimentGroup = ExperimentDataFactory.eINSTANCE.createExperimentGroup();
-		repository.getExperimentGroups().add(experimentGroup);
-	}
-
-	/**
-	 * The constructor of EDP2MetaDataInit.
-	 * 
-	 * @param measuredMetrics
-	 *            A vector of all measured metrics of a calculator.
-	 * @param experimentGroup
-	 *            The experiment group of the initialized EDP2 experiment run.
-	 * @param experimentSetting
-	 *            The experiment setting of the initialized EDP2 experiment run.
-	 */
-	public EDP2MetaDataInit(Vector<MeasurementMetric> measuredMetrics,
-			ExperimentGroup experimentGroup, ExperimentSetting experimentSetting, IRecorderConfiguration recorderConfiguration) {
-		super(measuredMetrics, recorderConfiguration);
-
-		initRepository(recorderConfiguration);
-		experimentRun = ExperimentDataFactory.eINSTANCE.createExperimentRun();
-		experimentRun.setStartTime(new Date());
-		this.experimentSetting = experimentSetting;
-		setExperimentName(experimentSetting.getDescription());
-		this.experimentGroup = experimentGroup;
-		repository.getExperimentGroups().add(experimentGroup);
-	}
+    public EDP2MetaDataInit(Vector<MeasurementMetric> measuredMetrics,
+            IRecorderConfiguration recorderConfiguration, Map<Integer, String> executionResultTypes) {
+        super(measuredMetrics, recorderConfiguration, executionResultTypes);        
+        
+        experimentRun = ExperimentDataFactory.eINSTANCE.createExperimentRun();
+        experimentRun.setStartTime(new Date());
+        
+        experimentSetting = ExperimentDataFactory.eINSTANCE.createExperimentSetting();
+        experimentSetting.getExperimentRuns().add(experimentRun);
+        
+        experimentGroup = ExperimentDataFactory.eINSTANCE.createExperimentGroup();
+        experimentGroup.getExperimentSettings().add(experimentSetting);
+        
+        initRepository(recorderConfiguration);
+        repository.getExperimentGroups().add(experimentGroup);
+    }
 
 	/**
 	 * Initializes an EDP2 Repository based on the given recorder configuration.
@@ -131,17 +99,6 @@ public class EDP2MetaDataInit extends MetaDataInit {
 
         this.repository = RepositoryManager.getRepositoryFromUUID(repositoryID);
     }
-	
-	/**
-	 * Sets the name of the experiment.
-	 * 
-	 * @param experimentName
-	 *            The name of the experiment.
-	 */
-	public void setExperimentName(String experimentName) {
-		super.setExperimentName(experimentName);
-		experimentSetting.setDescription(experimentName);
-	}
 
 	/**
 	 * Returns the experiment run.
