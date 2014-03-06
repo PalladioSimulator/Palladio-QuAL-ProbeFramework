@@ -1,17 +1,13 @@
 package de.uka.ipd.sdq.probespec.framework.calculator;
 
-import java.util.Vector;
-
-import javax.measure.Measure;
-import javax.measure.quantity.Quantity;
+import java.util.Arrays;
+import java.util.List;
 
 import de.uka.ipd.sdq.pipesandfilters.framework.MeasurementMetric;
 import de.uka.ipd.sdq.probespec.framework.BlackboardVote;
-import de.uka.ipd.sdq.probespec.framework.ISampleBlackboard;
 import de.uka.ipd.sdq.probespec.framework.ProbeSetAndRequestContext;
 import de.uka.ipd.sdq.probespec.framework.ProbeSetSample;
 import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
-import de.uka.ipd.sdq.probespec.framework.exceptions.CalculatorException;
 import de.uka.ipd.sdq.probespec.framework.utils.ProbeSpecUtils;
 
 /**
@@ -21,84 +17,75 @@ import de.uka.ipd.sdq.probespec.framework.utils.ProbeSpecUtils;
  * set.
  * <p>
  * As soon as a sample arrives that originates from the end probe set, the
- * binary calculator does its calculation by invoking
+ * binary calculator does its calculation by invoking the template method
  * {@link #calculate(ProbeSetSample, ProbeSetSample)}. When a sample originating
  * from the start probe set arrives, the calculator does nothing.
  * 
- * @author Philipp Merkle
+ * @author Philipp Merkle, Sebastian Lehrig, Steffen Becker
  * @see Calculator
  * 
  */
-public abstract class BinaryCalculator extends Calculator {
-
-	private ISampleBlackboard blackboard; 
+public abstract class BinaryCalculator extends Calculator { 	
 	
-	private Integer startProbeSetID;
+	private final Integer startProbeSetID;
 
-	private Integer endProbeSetID;
+	private final Integer endProbeSetID;
 
-    public BinaryCalculator(ProbeSpecContext ctx, Integer startProbeSetID, Integer endProbeSetID) {
-	    super(ctx);
-		this.blackboard = ctx.getSampleBlackboard();
+    public BinaryCalculator(ProbeSpecContext ctx, List<MeasurementMetric> measurementMetrics, Integer startProbeSetID, Integer endProbeSetID) {
+	    super(ctx, measurementMetrics);
 		this.startProbeSetID = startProbeSetID;
 		this.endProbeSetID = endProbeSetID;
 		
-		blackboard.addBlackboardListener(this, startProbeSetID, endProbeSetID);
+		ctx.getSampleBlackboard().addBlackboardListener(this, startProbeSetID, endProbeSetID);
 	}
 
-	abstract protected Vector<Measure<?, ? extends Quantity>> calculate(
-			ProbeSetSample start, ProbeSetSample end)
-			throws CalculatorException;
-
-	@Override
-	abstract protected Vector<MeasurementMetric> getConcreteMeasurementMetrics();
-
 	/**
-	 * This method is called by the
-	 * {@link #update(java.util.Observable, Object)} method as soon as a new
-	 * ProbeSetSample arrives at the blackboard (Observer Pattern). If
-	 * <code>pss</code> is an end probe set sample, the method tries to get the
-	 * corresponding start ProbeSetSample and invokes the
+	 * <p>This method is called by the {@link #update(java.util.Observable, Object)} 
+	 * method as soon as a new ProbeSetSample arrives at the blackboard (Observer
+	 * Pattern). If <code>probeSetSample</code> is an end probe set sample, the 
+	 * method tries to get the corresponding start ProbeSetSample and invokes the
 	 * {@link #calculate(ProbeSetSample, ProbeSetSample)} method. If
-	 * <code>pss</code> is an start ProbeSetSample, this method will do nothing.
-	 * <p>
-	 * After the calculation the result is passed to the pipes-and-filters
-	 * chain.
-	 * <p>
-	 * Here we make the assumption that the start ProbeSetSample always arrives
+	 * <code>probeSetSample</code> is an start ProbeSetSample, this method will
+	 * do nothing.</p>
+	 * 
+	 * <p> After the calculation the result is passed to the pipes-and-filters
+	 * chain.</p>
+	 * 
+	 * <p>Here, we make the assumption that the start ProbeSetSample always arrives
 	 * before the end ProbeSetSample. Without this assumption all binary
 	 * calculators would also have to try to get the end ProbeSetSample when the
 	 * start ProbeSetSample arrives. Probably this would have a negative effect
-	 * on the performance.
+	 * on the performance.</p>
 	 * 
-	 * @param pss
+	 * TODO Move calculate into the calculator class using a List of ProbeSetSample.
+	 *      Then, enable checking of list size and consistency between metrics and
+	 *      measures.
+	 * 
+	 * @param probeSetSample
 	 *            the last ProbeSetSample which was added to the
 	 *            SampleBlackboard and so triggered this Calculator.
+	 * @see
+	 * de.uka.ipd.sdq.probespec.framework.calculator.Calculator#execute
+	 * (de.uka.ipd.sdq.probespec.framework.ProbeSetSample)
 	 */
 	@Override
-	protected BlackboardVote execute(ProbeSetSample pss) throws CalculatorException {
-		/*
-		 * Execute only if second ProbeSetSample arrives. Here we make the
-		 * assumption that the start ProbeSetSample always arrives before the
-		 * end ProbeSetSample. See JavaDoc comment above.
-		 */
-		if (endProbeSetID.equals(pss.getProbeSetAndRequestContext().getProbeSetID())) {
-			ProbeSetSample endSetSample = pss;
-			ProbeSetSample startSetSample = blackboard.getSample(
-					new ProbeSetAndRequestContext(startProbeSetID, pss
+	public BlackboardVote sampleArrived(ProbeSetSample probeSetSample) {
+		int probeSetID = probeSetSample.getProbeSetAndRequestContext().getProbeSetID();
+		
+		if (endProbeSetID.equals(probeSetID)) {
+			ProbeSetSample endSetSample = probeSetSample;
+			ProbeSetSample startSetSample = getProbeSpecContext().getSampleBlackboard().getSample(
+					new ProbeSetAndRequestContext(startProbeSetID, probeSetSample
 							.getProbeSetAndRequestContext().getCtxID()));
 			if (startSetSample != null) {
-				Vector<Measure<?, ? extends Quantity>> resultTuple = calculate(
-						startSetSample, endSetSample);
-
-				fireCalculated(resultTuple);
+				fireCalculated(Arrays.asList(startSetSample, endSetSample));
 			} else {
-                throw new CalculatorException("Could not find sample for ProbeSetID "
+                throw new RuntimeException("Could not find sample for ProbeSetID "
                         + ProbeSpecUtils.ProbeSetIdToString(startProbeSetID, this.getProbeSpecContext())
-                        + " within context " + pss.getProbeSetAndRequestContext().getCtxID());
+                        + " within context " + probeSetSample.getProbeSetAndRequestContext().getCtxID());
 			}
 			return BlackboardVote.DISCARD;
-		} else if (startProbeSetID.equals(pss.getProbeSetAndRequestContext().getProbeSetID())) {
+		} else if (startProbeSetID.equals(probeSetID)) {
 			return BlackboardVote.RETAIN;
 		} else {
 			return BlackboardVote.DISCARD;

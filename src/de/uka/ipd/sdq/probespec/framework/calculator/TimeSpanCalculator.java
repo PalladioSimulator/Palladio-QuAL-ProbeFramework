@@ -1,92 +1,50 @@
 package de.uka.ipd.sdq.probespec.framework.calculator;
 
-import java.math.BigDecimal;
-import java.util.Vector;
+import static de.uka.ipd.sdq.probespec.framework.constants.MatchRuleConstants.CURRENT_TIME_MATCH_RULE;
+
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.measure.Measure;
 import javax.measure.quantity.Duration;
 import javax.measure.quantity.Quantity;
+import javax.measure.unit.SI;
 
-import de.uka.ipd.sdq.probespec.framework.ProbeSample;
+import de.uka.ipd.sdq.pipesandfilters.framework.MeasurementMetric;
 import de.uka.ipd.sdq.probespec.framework.ProbeSetSample;
 import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
 import de.uka.ipd.sdq.probespec.framework.ProbeType;
 import de.uka.ipd.sdq.probespec.framework.exceptions.CalculatorException;
-import de.uka.ipd.sdq.probespec.framework.matching.IMatchRule;
-import de.uka.ipd.sdq.probespec.framework.matching.ProbeTypeMatchRule;
-
 /**
  * Calculates a time span. It expects two ProbeSets each containing at least a
  * {@link ProbeType#CURRENT_TIME} probe.
  * 
- * @author Faber, Philipp Merkle
+ * @author Faber, Philipp Merkle, Sebastian Lehrig, Steffen Becker
  * 
  */
 public abstract class TimeSpanCalculator extends BinaryCalculator {
 
-    public TimeSpanCalculator(ProbeSpecContext ctx, Integer startProbeSetID, Integer endProbeSetID) {
-        super(ctx, startProbeSetID, endProbeSetID);
+    public TimeSpanCalculator(ProbeSpecContext ctx, List<MeasurementMetric> measurementMetrics, Integer startProbeSetID, Integer endProbeSetID) {
+        super(ctx, measurementMetrics, startProbeSetID, endProbeSetID);
     }
 
-	/**
-	 * Calculates the time span.
-	 * 
-	 * @param start
-	 *            the ProbeSample of the start ProbeSet (ProbeType.CURRENT_TIME)
-	 * @param end
-	 *            the ProbeSample of the end ProbeSet (ProbeType.CURRENT_TIME)
-	 * @return a result tuple containing two components. The first component is
-	 *         the calculated time span, the second component is the end time of
-	 *         the time span.
+    /**
+	 * @see
+	 * de.uka.ipd.sdq.probespec.framework.calculator.Calculator#calculate
+	 * (de.uka.ipd.sdq.probespec.framework.ProbeSetSample)
 	 */
-	@Override
-	protected Vector<Measure<?, ? extends Quantity>> calculate(
-			ProbeSetSample start, ProbeSetSample end)
-			throws CalculatorException {
-		// Obtain start time sample
-		ProbeSample<Double, Duration> startTimeSample = obtainCurrentTimeProbeSample(start);
-		if (startTimeSample == null) {
-			throw new CalculatorException(
-					"Could not access start probe sample.");
-		}
-
-		// Obtain end time sample
-		ProbeSample<Double, Duration> endTimeSample = obtainCurrentTimeProbeSample(end);
-		if (endTimeSample == null) {
-			throw new CalculatorException("Could not access end probe sample.");
-		}
-
-		// Calculate time span
-		BigDecimal endTime = BigDecimal.valueOf(endTimeSample.getMeasure().doubleValue(
-				startTimeSample.getMeasure().getUnit()));
-		BigDecimal startTime = BigDecimal.valueOf(startTimeSample.getMeasure().doubleValue(
-				startTimeSample.getMeasure().getUnit()));
+    @Override
+	protected List<Measure<?, ? extends Quantity>> calculate(List<ProbeSetSample> probeSetSamples) throws CalculatorException {
+		List<Measure<?, ? extends Quantity>> result = new LinkedList<Measure<?, ? extends Quantity>>();
 		
-		BigDecimal responseTime = endTime.subtract(startTime);
-
-		// Create result tuple
-		Measure<Double, Duration> timeSpanMeasure = Measure.valueOf(
-				responseTime.doubleValue(), startTimeSample.getMeasure().getUnit());
-		Measure<Double, Duration> endTimeMeasure = endTimeSample.getMeasure();
-		Vector<Measure<?, ? extends Quantity>> resultTuple = new Vector<Measure<?, ? extends Quantity>>();
-		resultTuple.add(timeSpanMeasure);
-		resultTuple.add(endTimeMeasure);
-
-		return resultTuple;
+		Measure<Double, Duration> startTimeMeasure = obtainMeasure(probeSetSamples.get(0), CURRENT_TIME_MATCH_RULE);
+		Measure<Double, Duration> endTimeMeasure = obtainMeasure(probeSetSamples.get(1), CURRENT_TIME_MATCH_RULE);		
+		double timeSpan = endTimeMeasure.doubleValue(SI.SECOND)-startTimeMeasure.doubleValue(SI.SECOND);
+		Measure<Double, Duration> timeSpanMeasure = Measure.valueOf(timeSpan, SI.SECOND);
+		
+		result.add(timeSpanMeasure);
+		result.add(endTimeMeasure);
+		
+		return result;
 	}
-
-	@SuppressWarnings("unchecked")
-	private ProbeSample<Double, Duration> obtainCurrentTimeProbeSample(
-			ProbeSetSample probeSetSample) {
-		IMatchRule[] rules = new IMatchRule[1];
-		rules[0] = new ProbeTypeMatchRule(ProbeType.CURRENT_TIME);
-		Vector<ProbeSample<?, ? extends Quantity>> result = probeSetSample
-				.getProbeSamples(rules);
-
-		if (result != null && result.size() > 0)
-			return (ProbeSample<Double, Duration>) result.get(0);
-
-		return null;
-	}
-
 }

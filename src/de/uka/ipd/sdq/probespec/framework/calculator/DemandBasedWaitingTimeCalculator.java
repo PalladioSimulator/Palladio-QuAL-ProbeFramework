@@ -1,19 +1,19 @@
 package de.uka.ipd.sdq.probespec.framework.calculator;
 
-import java.util.Vector;
+import static de.uka.ipd.sdq.probespec.framework.constants.MatchRuleConstants.CURRENT_TIME_MATCH_RULE;
+import static de.uka.ipd.sdq.probespec.framework.constants.MatchRuleConstants.RESOURCE_DEMAND_MATCH_RULE;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.measure.Measure;
 import javax.measure.quantity.Duration;
 import javax.measure.quantity.Quantity;
-import javax.measure.unit.Unit;
+import javax.measure.unit.SI;
 
-import de.uka.ipd.sdq.probespec.framework.ProbeSample;
 import de.uka.ipd.sdq.probespec.framework.ProbeSetSample;
 import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
-import de.uka.ipd.sdq.probespec.framework.ProbeType;
 import de.uka.ipd.sdq.probespec.framework.exceptions.CalculatorException;
-import de.uka.ipd.sdq.probespec.framework.matching.IMatchRule;
-import de.uka.ipd.sdq.probespec.framework.matching.ProbeTypeMatchRule;
 
 /**
  * Calculates the waiting time for resources in environments where the stop of
@@ -28,7 +28,7 @@ import de.uka.ipd.sdq.probespec.framework.matching.ProbeTypeMatchRule;
  * The waiting time results from calculating
  * <code>(stop - start) - demand </code>.
  * 
- * @author pmerkle
+ * @author pmerkle, Sebastian Lehrig, Steffen Becker
  * 
  */
 public class DemandBasedWaitingTimeCalculator extends WaitingTimeCalculator {
@@ -37,64 +37,37 @@ public class DemandBasedWaitingTimeCalculator extends WaitingTimeCalculator {
             Integer stopProcessingProbeSetID) {
         super(ctx, startWaitingProbeSetID, stopProcessingProbeSetID);
     }
-
-	@SuppressWarnings("unchecked")
+	
+    /**
+	 * @see
+	 * de.uka.ipd.sdq.probespec.framework.calculator.Calculator#calculate
+	 * (de.uka.ipd.sdq.probespec.framework.ProbeSetSample)
+	 */
 	@Override
-	protected Vector<Measure<?, ? extends Quantity>> calculate(
-			ProbeSetSample start, ProbeSetSample end)
-			throws CalculatorException {
-		// Obtain demand. The demand of start and end should be equal!
-		ProbeSample<Double, Duration> demandSample = obtainDemandProbeSample(start);
-		if (demandSample == null) {
-			throw new CalculatorException(
-					"Could not access demand probe sample.");
-		}
-
-		// Obtain processing time
-		Vector<Measure<?, ? extends Quantity>> timeSpanResultTuple = super
-				.calculate(start, end);
-		Measure<Double, Duration> processingTimeSpanMeasure = (Measure<Double, Duration>) timeSpanResultTuple
-				.get(0);
-		Measure<Double, Duration> endTimeMeasure = (Measure<Double, Duration>) timeSpanResultTuple
-				.get(1);
-
-		// Calculate waiting time
-		Unit<Duration> unit = processingTimeSpanMeasure.getUnit();
-		double demand = demandSample.getMeasure().doubleValue(unit);
-		double processingTime = processingTimeSpanMeasure.doubleValue(unit);
-		double waitingTime = processingTime - demand;
-		if (waitingTime < 0) {
-//			final double threshold = -0.000001;
-//			if (waitingTime < threshold) {
-//				throw new RuntimeException(
-//						"Calculated negative waiting time. This should not happen!");
-//			} else {
+	protected List<Measure<?, ? extends Quantity>> calculate(List<ProbeSetSample> probeSetSamples) throws CalculatorException {
+		// raw measures
+		Measure<Double, Duration> startTimeMeasure = obtainMeasure(probeSetSamples.get(0), CURRENT_TIME_MATCH_RULE);
+		Measure<Double, Duration> demandMeasure = obtainMeasure(probeSetSamples.get(0), RESOURCE_DEMAND_MATCH_RULE);
+		Measure<Double, Duration> endTimeMeasure = obtainMeasure(probeSetSamples.get(1), CURRENT_TIME_MATCH_RULE);		
+		
+		// time span
+		double timeSpan = endTimeMeasure.doubleValue(SI.SECOND)-startTimeMeasure.doubleValue(SI.SECOND);
+		
+		// waiting time
+		// TODO Check whether demands can be used as seconds. Note that
+		//      the demand metric is a natural number metric and no time metric. 
+		double waitingTime = timeSpan - demandMeasure.doubleValue(SI.SECOND);		
+		if (waitingTime < 0) { // necessary due to double precision errors
 				waitingTime = 0;
-//			}
 		}
+		Measure<Double, Duration> waitingTimeMeasure = Measure.valueOf(waitingTime, SI.SECOND);
+				
+		List<Measure<?, ? extends Quantity>> result = new ArrayList<Measure<?, ? extends Quantity>>(2);
+		
+		result.add(waitingTimeMeasure);
+		result.add(endTimeMeasure);
 
-		// Create result tuple
-		Measure<Double, Duration> waitingTimeMeasure = Measure.valueOf(
-				waitingTime, unit);
-		Vector<Measure<?, ? extends Quantity>> resultTuple = new Vector<Measure<?, ? extends Quantity>>();
-		resultTuple.add(waitingTimeMeasure);
-		resultTuple.add(endTimeMeasure);
-
-		return resultTuple;
-	}
-
-	@SuppressWarnings("unchecked")
-	private ProbeSample<Double, Duration> obtainDemandProbeSample(
-			ProbeSetSample probeSetSample) {
-		IMatchRule[] rules = new IMatchRule[1];
-		rules[0] = new ProbeTypeMatchRule(ProbeType.RESOURCE_DEMAND);
-		Vector<ProbeSample<?, ? extends Quantity>> result = probeSetSample
-				.getProbeSamples(rules);
-
-		if (result != null && result.size() > 0)
-			return (ProbeSample<Double, Duration>) result.get(0);
-
-		return null;
+		return result;
 	}
 
 }

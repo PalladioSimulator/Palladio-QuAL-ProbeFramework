@@ -6,28 +6,28 @@ public interface ICalculatorFactory {
 	public abstract Calculator buildResponseTimeCalculator(
 			String calculatorName, Integer startProbeSetID, Integer endProbeSetID);
 
-	public abstract WaitingTimeCalculator buildDemandBasedWaitingTimeCalculator(
+	public abstract Calculator buildDemandBasedWaitingTimeCalculator(
 			String calculatorName, Integer startWaitingProbeSetID,
 			Integer stopProcessingProbeSetID);
 
-	public abstract WaitingTimeCalculator buildWaitingTimeCalculator(
+	public abstract Calculator buildWaitingTimeCalculator(
 			String calculatorName, Integer startWaitingProbeSetID,
 			Integer stopWaitingProbeSetID);
 	
-	public abstract HoldTimeCalculator buildHoldTimeCalculator(
+	public abstract Calculator buildHoldTimeCalculator(
 			String calculatorName, Integer startWaitingProbeSetID,
 			Integer stopWaitingProbeSetID);
 
-	public abstract StateCalculator buildStateCalculator(String calculatorName,
+	public abstract Calculator buildStateCalculator(String calculatorName,
 			Integer probeSetId);
 	
-	public abstract StateCalculator buildOverallUtilizationCalculator(String calculatorName,
+	public abstract Calculator buildOverallUtilizationCalculator(String calculatorName,
 			Integer probeSetId);
 
-	public abstract DemandCalculator buildDemandCalculator(
+	public abstract Calculator buildDemandCalculator(
 			String calculatorName, Integer probeSetID);
 
-	public abstract ExecutionResultCalculator buildExecutionResultCalculator(
+	public abstract Calculator buildExecutionResultCalculator(
 			String calculatorName, Integer probeSetID);
 
 }
