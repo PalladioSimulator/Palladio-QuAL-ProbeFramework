@@ -1,24 +1,19 @@
 package de.uka.ipd.sdq.probespec.framework.calculator;
 
-import java.util.Vector;
+import static de.uka.ipd.sdq.probespec.framework.constants.MeasurementMetricConstants.HOLD_TIME_METRIC;
 
-import javax.measure.unit.SI;
+import java.util.Arrays;
 
-import de.uka.ipd.sdq.pipesandfilters.framework.CaptureType;
-import de.uka.ipd.sdq.pipesandfilters.framework.MeasurementMetric;
-import de.uka.ipd.sdq.pipesandfilters.framework.Scale;
 import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
 
 /**
  * Calculates a time span representing the hold time.
  * 
- * @author Philipp Merkle
+ * @author Philipp Merkle, Sebastian Lehrig, Steffen Becker
  */
 public class HoldTimeCalculator extends TimeSpanCalculator {
-
-	private static Vector<MeasurementMetric> concreteMeasurementMetrics;
-
-    /**
+	
+	/**
      * Default Constructor.
      * 
      * @param ctx
@@ -31,27 +26,6 @@ public class HoldTimeCalculator extends TimeSpanCalculator {
      *            measurement
      */
     public HoldTimeCalculator(ProbeSpecContext ctx, Integer startHoldProbeSetID, Integer stopHoldProbeSetID) {
-        super(ctx, startHoldProbeSetID, stopHoldProbeSetID);
+        super(ctx, Arrays.asList(HOLD_TIME_METRIC), startHoldProbeSetID, stopHoldProbeSetID);
     }
-
-	/**
-	 * Initializes the metric information for the result of this calculator
-	 * type. The method is called by the constructor of the super class.
-	 */
-	@Override
-	protected synchronized Vector<MeasurementMetric> getConcreteMeasurementMetrics() {
-		if (concreteMeasurementMetrics == null) {
-			concreteMeasurementMetrics = new Vector<MeasurementMetric>();
-			MeasurementMetric mm = new MeasurementMetric(
-					CaptureType.NATURAL_NUMBER, SI.MILLI(SI.SECOND),
-					Scale.ORDINAL);
-			mm.setDescription("This measure represents the hold time");
-			mm.setMonotonic(false);
-			mm.setName("Hold Time");
-			mm.setStrongMonotonic(false);
-			concreteMeasurementMetrics.add(mm);
-		}
-		return concreteMeasurementMetrics;
-	}
-
 }

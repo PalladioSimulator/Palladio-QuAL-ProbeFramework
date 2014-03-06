@@ -1,35 +1,36 @@
 package de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework;
 
+import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 import de.uka.ipd.sdq.pipesandfilters.framework.MeasurementMetric;
 import de.uka.ipd.sdq.pipesandfilters.framework.MetaDataInit;
-import de.uka.ipd.sdq.pipesandfilters.framework.recorder.launch.IRecorderConfiguration;
+import de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework.launch.SensorFrameworkConfig;
 
 public class SensorFrameworkMetaDataInit extends MetaDataInit {
 
-	private boolean isRemoteRun;	
-    
-	public SensorFrameworkMetaDataInit(
-			Vector<MeasurementMetric> measuredMetrics,
-			IRecorderConfiguration recorderConfiguration) {
-		super(measuredMetrics, recorderConfiguration);
-	}	
+	private final boolean isRemoteRun;	
+	
+	public SensorFrameworkMetaDataInit(List<MeasurementMetric> measuredMetrics,
+			SensorFrameworkConfig recorderConfiguration, String metricName,
+			String measurementName, String experimentName,
+			String experimentRunName, String modelElementID,
+			Map<Integer, String> executionResultTypes, boolean isRemoteRun) {
+		super(measuredMetrics, recorderConfiguration, metricName, measurementName,
+				experimentName, experimentRunName, modelElementID, executionResultTypes);
+		this.isRemoteRun = isRemoteRun;
+	}
+	
+	public SensorFrameworkMetaDataInit(List<MeasurementMetric> measuredMetrics,
+			SensorFrameworkConfig recorderConfiguration, String metricName,
+			String measurementName, String experimentName,
+			String experimentRunName, String modelElementID) {
+		this(measuredMetrics, recorderConfiguration, metricName, measurementName,
+				experimentName, experimentRunName, modelElementID, null, false);
+	}
 
-	public SensorFrameworkMetaDataInit(Vector<MeasurementMetric> measuredMetrics,
-            IRecorderConfiguration recorderConfiguration, Map<Integer, String> executionResultTypes) {
-	    super(measuredMetrics, recorderConfiguration, executionResultTypes);
-    }
 
     public boolean isRemoteRun() {
 		return isRemoteRun;
 	}
-
-	// TODO This should be called from somewhere. Or move it to
-	// SensorFrameworkRecorderConfig?
-	public void setRemoteRun(boolean isRemoteRun) {
-		this.isRemoteRun = isRemoteRun;
-	}
-
 }

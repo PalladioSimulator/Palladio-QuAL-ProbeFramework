@@ -9,7 +9,6 @@ import de.uka.ipd.sdq.probespec.framework.ProbeSample;
 import de.uka.ipd.sdq.probespec.framework.ProbeSetSample;
 import de.uka.ipd.sdq.probespec.framework.ProbeType;
 import de.uka.ipd.sdq.probespec.framework.RequestContext;
-import de.uka.ipd.sdq.probespec.framework.matching.IMatchRule;
 import de.uka.ipd.sdq.probespec.framework.matching.ProbeTypeMatchRule;
 import de.uka.ipd.sdq.probespec.framework.probes.ProbeStrategyRegistry;
 import de.uka.ipd.sdq.probespec.framework.probes.example.ExampleProbeStrategyRegistry;
@@ -52,8 +51,7 @@ public class ProbeSetSampleTest extends TestCase {
 
         // Check, whether the probeSetSample returns the correct value for the
         // previously measured simulation time
-        IMatchRule[] rules = { new ProbeTypeMatchRule(ProbeType.CURRENT_TIME) };
-        assertEquals(100d, pss.getProbeSamples(rules).get(0).getMeasure().getValue());
+        assertEquals(100d, pss.getProbeSamples(new ProbeTypeMatchRule(ProbeType.CURRENT_TIME)).get(0).getMeasure().getValue());
     }
 
 }

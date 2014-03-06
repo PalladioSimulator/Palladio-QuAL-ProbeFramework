@@ -17,18 +17,10 @@ import de.uka.ipd.sdq.pipesandfilters.framework.recorder.IRawWriteStrategy;
 public class Edp2RawWriteStrategy extends Edp2WriteStrategy implements IRawWriteStrategy {
 
 	/**
-	 * In this method an EDP2 experiment run is prepared by initializing all
-	 * necessary EDP2 members.
+	 * In this method, an EDP2 experiment run is prepared by initializing 
+	 * EDP2's MeasurementRange
 	 */
 	protected void prepareExperimentRun() {
-		
-//		measurement = ExperimentDataFactory.eINSTANCE.createMeasurement();
-//		measurement.setMeasure(measure);
-//		experimentRun = ExperimentDataFactory.eINSTANCE.createExperimentRun();
-		
-		experimentRun.getMeasurements().add(measurements);
-		experimentSetting.getExperimentRuns().add(experimentRun);
-
 		measurementsRange = MeasurementsUtility.addMeasurementRange(measurements);
 		measurementsRange.setRawMeasurements(ExperimentDataFactory.eINSTANCE
 				.createRawMeasurements());

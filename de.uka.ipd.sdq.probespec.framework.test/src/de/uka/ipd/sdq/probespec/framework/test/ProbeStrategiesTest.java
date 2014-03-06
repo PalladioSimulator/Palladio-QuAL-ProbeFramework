@@ -1,5 +1,6 @@
 package de.uka.ipd.sdq.probespec.framework.test;
 
+import javax.measure.Measure;
 import javax.measure.quantity.Dimensionless;
 import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
@@ -65,8 +66,7 @@ public class ProbeStrategiesTest extends TestCase {
 				.getProbeStrategy(ProbeType.CURRENT_TIME, null).takeSample(
 						"probeId", ctx);
 
-		assertEquals(150.0, sample.getMeasure().doubleValue(
-				SI.MILLI(SI.SECOND)));
+		assertTrue(sample.getMeasure().compareTo(Measure.valueOf(150.0, SI.SECOND)) == 0);
 	}
 
 	@SuppressWarnings("unchecked")

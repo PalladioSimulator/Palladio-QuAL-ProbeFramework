@@ -1,7 +1,7 @@
 package de.uka.ipd.sdq.pipesandfilters.framework;
 
 import java.util.Iterator;
-import java.util.Vector;
+import java.util.List;
 
 import javax.measure.Measure;
 import javax.measure.quantity.Quantity;
@@ -15,11 +15,12 @@ import javax.measure.quantity.Quantity;
  * 
  * @author Faber
  * @author Baum
+ * @author Sebastian Lehrig
  */
 
 public class PipeData implements Iterable<Measure<?, ? extends Quantity>> {
 
-	private final Vector<Measure<?, ? extends Quantity>> resultTuple;
+	private final List<Measure<?, ? extends Quantity>> resultTuple;
 
 	/**
 	 * The constructor of a pipe data element.
@@ -27,7 +28,7 @@ public class PipeData implements Iterable<Measure<?, ? extends Quantity>> {
 	 * @param resultTuple
 	 *            A vector holding the measurement result tuple.
 	 */
-	public PipeData(Vector<Measure<?, ? extends Quantity>> resultTuple) {
+	public PipeData(List<Measure<?, ? extends Quantity>> resultTuple) {
 		this.resultTuple = resultTuple;
 	}
 

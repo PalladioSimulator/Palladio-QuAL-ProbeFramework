@@ -13,6 +13,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: de.uka.ipd.sdq.probespec.framework,
  de.uka.ipd.sdq.probespec.framework.calculator,
  de.uka.ipd.sdq.probespec.framework.concurrency,
+ de.uka.ipd.sdq.probespec.framework.constants,
  de.uka.ipd.sdq.probespec.framework.exceptions,
  de.uka.ipd.sdq.probespec.framework.garbagecollection,
  de.uka.ipd.sdq.probespec.framework.matching,

@@ -1,7 +1,8 @@
 package de.uka.ipd.sdq.probespec.framework;
 
 import java.util.Collection;
-import java.util.Vector;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.measure.quantity.Quantity;
 
@@ -23,15 +24,16 @@ import de.uka.ipd.sdq.probespec.framework.matching.IMatchRule;
  * 
  * @author pmerkle
  * @author Faber
+ * @author Sebastian Lehrig
  */
 public class ProbeSetSample {
 
-	private Collection<ProbeSample<?, ? extends Quantity>> probeSamples;
+	private final Collection<ProbeSample<?, ? extends Quantity>> probeSamples;
 
-	private ProbeSetAndRequestContext probeSetAndRequestContext;
+	private final ProbeSetAndRequestContext probeSetAndRequestContext;
 
 	/** The id of the annotated model element */
-	private String modelElementID;
+	private final String modelElementID;
 
 	/**
 	 * Class constructor specifying the encapsulated probe samples, the context
@@ -51,7 +53,7 @@ public class ProbeSetSample {
 	 * @see RequestContext
 	 */
 	public ProbeSetSample(
-			Vector<ProbeSample<?, ? extends Quantity>> probeSamples,
+			List<ProbeSample<?, ? extends Quantity>> probeSamples,
 			RequestContext ctxID, String modelElementID, Integer probeSetID) {
 		super();
 
@@ -66,22 +68,19 @@ public class ProbeSetSample {
 	/**
 	 * Returns the encapsulated probe samples satisfying the specified rule set.
 	 * 
-	 * @param matchingRules
+	 * @param matchingRule
 	 *            the rule set
 	 * @return
 	 * @see ProbeSample
 	 */
-	public Vector<ProbeSample<?, ? extends Quantity>> getProbeSamples(
-			IMatchRule[] matchingRules) {
-		Vector<ProbeSample<?, ? extends Quantity>> res = new Vector<ProbeSample<?, ? extends Quantity>>();
+	public List<ProbeSample<?, ? extends Quantity>> getProbeSamples(
+			IMatchRule matchingRule) {
+		List<ProbeSample<?, ? extends Quantity>> res = new LinkedList<ProbeSample<?, ? extends Quantity>>();
 
-		for (ProbeSample<?, ? extends Quantity> sample : probeSamples) {
-			boolean match = true;
-			for (IMatchRule rule : matchingRules) {
-				match = match && rule.match(sample);
-			}
-			if (match)
+		for (ProbeSample<?, ? extends Quantity> sample : probeSamples) {			
+			if (matchingRule.match(sample)) {
 				res.add(sample);
+			}
 		}
 
 		return res;

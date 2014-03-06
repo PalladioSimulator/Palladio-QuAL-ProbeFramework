@@ -1,14 +1,7 @@
 package de.uka.ipd.sdq.probespec.framework.test;
 
-import java.util.Vector;
-
-import javax.measure.Measure;
-import javax.measure.quantity.Dimensionless;
-import javax.measure.quantity.Quantity;
-
 import junit.framework.TestCase;
 import de.uka.ipd.sdq.probespec.framework.BlackboardVote;
-import de.uka.ipd.sdq.probespec.framework.ProbeSample;
 import de.uka.ipd.sdq.probespec.framework.ProbeSetAndRequestContext;
 import de.uka.ipd.sdq.probespec.framework.ProbeSetSample;
 import de.uka.ipd.sdq.probespec.framework.RequestContext;

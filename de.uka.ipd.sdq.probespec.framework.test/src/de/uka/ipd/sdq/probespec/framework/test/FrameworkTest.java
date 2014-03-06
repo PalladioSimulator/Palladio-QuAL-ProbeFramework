@@ -1,7 +1,8 @@
 package de.uka.ipd.sdq.probespec.framework.test;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
-import java.util.Vector;
 
 import javax.measure.Measure;
 import javax.measure.quantity.Quantity;
@@ -74,7 +75,7 @@ public class FrameworkTest extends TestCase {
                 psCtx.obtainProbeSetId(PROBE_SET_ID2));
         respTimeCalc.addCalculatorListener(new ICalculatorListener() {
             @Override
-            public void calculated(Vector<Measure<?, ? extends Quantity>> resultTuple) {
+            public void calculated(List<Measure<?, ? extends Quantity>> resultTuple) {
                 respTimePipeManager.processData(new PipeData(resultTuple));
             }
         });
@@ -85,7 +86,7 @@ public class FrameworkTest extends TestCase {
         cpuCalc = new StateCalculator(psCtx, psCtx.obtainProbeSetId(PROBE_SET_ID3));
         cpuCalc.addCalculatorListener(new ICalculatorListener() {
             @Override
-            public void calculated(Vector<Measure<?, ? extends Quantity>> resultTuple) {
+            public void calculated(List<Measure<?, ? extends Quantity>> resultTuple) {
                 cpuPipeManager.processData(new PipeData(resultTuple));
             }
         });
@@ -101,7 +102,7 @@ public class FrameworkTest extends TestCase {
             // Simulate the simulation time
             simCtx.setSimulatedTime(simTime);
 
-            Vector<ProbeSample<?, ? extends Quantity>> psv1 = new Vector<ProbeSample<?, ? extends Quantity>>();
+            List<ProbeSample<?, ? extends Quantity>> psv1 = new ArrayList<ProbeSample<?, ? extends Quantity>>(1);
 
             // Take a current time measurement
             psv1.add(psCtx.getProbeStrategyRegistry().getProbeStrategy(ProbeType.CURRENT_TIME, null)
@@ -120,7 +121,7 @@ public class FrameworkTest extends TestCase {
             int jobs = i % 100;
             simCtx.getActiveResource(CPU1_NAME).setJobs(jobs);
 
-            Vector<ProbeSample<?, ? extends Quantity>> psv2 = new Vector<ProbeSample<?, ? extends Quantity>>();
+            List<ProbeSample<?, ? extends Quantity>> psv2 = new ArrayList<ProbeSample<?, ? extends Quantity>>(2);
 
             // Take a CPU state measurement
             ASimpleActiveResource cpuToMeasure = simCtx.getActiveResource(CPU1_NAME);
@@ -149,7 +150,7 @@ public class FrameworkTest extends TestCase {
             // Simulate the simulation time
             simCtx.setSimulatedTime(simTime);
 
-            Vector<ProbeSample<?, ? extends Quantity>> psv3 = new Vector<ProbeSample<?, ? extends Quantity>>();
+            List<ProbeSample<?, ? extends Quantity>> psv3 = new ArrayList<ProbeSample<?, ? extends Quantity>>(1);
 
             // Take a current time measurement
             psv3.add(psCtx.getProbeStrategyRegistry().getProbeStrategy(ProbeType.CURRENT_TIME, null)

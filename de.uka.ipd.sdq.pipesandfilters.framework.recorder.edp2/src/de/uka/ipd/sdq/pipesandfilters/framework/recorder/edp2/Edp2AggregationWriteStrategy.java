@@ -55,10 +55,10 @@ public class Edp2AggregationWriteStrategy extends Edp2WriteStrategy implements
 				.createFixedWidthAggregatedMeasurements();
 
 		// Set metric
-		aggregatedMeasurements.setMetric(metric);
+		aggregatedMeasurements.setMetric(metricSetDescription);
 
 		// Set aggregated metric
-		aggregatedMeasurements.setAggregationOn((BaseMetricDescription) metric
+		aggregatedMeasurements.setAggregationOn((BaseMetricDescription) metricSetDescription
 				.getSubsumedMetrics().get(metaData.getAggregatedMetricIndex()));
 
 		// Set aggregation function description

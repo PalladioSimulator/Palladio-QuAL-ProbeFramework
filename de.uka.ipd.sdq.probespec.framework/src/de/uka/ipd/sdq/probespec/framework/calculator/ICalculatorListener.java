@@ -1,6 +1,6 @@
 package de.uka.ipd.sdq.probespec.framework.calculator;
 
-import java.util.Vector;
+import java.util.List;
 
 import javax.measure.Measure;
 import javax.measure.quantity.Quantity;
@@ -21,6 +21,6 @@ public interface ICalculatorListener {
 	 * @param resultTuple
 	 *            the calculated result
 	 */
-	public void calculated(Vector<Measure<?, ? extends Quantity>> resultTuple);
+	public void calculated(List<Measure<?, ? extends Quantity>> resultTuple);
 
 }

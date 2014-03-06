@@ -1,41 +1,47 @@
 package de.uka.ipd.sdq.probespec.framework.calculator;
 
-import java.util.Vector;
-
-import javax.measure.Measure;
-import javax.measure.quantity.Quantity;
+import java.util.Arrays;
+import java.util.List;
 
 import de.uka.ipd.sdq.pipesandfilters.framework.MeasurementMetric;
 import de.uka.ipd.sdq.probespec.framework.BlackboardVote;
 import de.uka.ipd.sdq.probespec.framework.ProbeSetSample;
 import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
-import de.uka.ipd.sdq.probespec.framework.exceptions.CalculatorException;
 
+/**
+ * <p>This abstract class represents a unary calculator. A unary calculator
+ * expects one probe set, which is represented by its particular ID.</p>
+ * 
+ * <p>As soon as a sample arrives that originates from this probe set, the
+ * unary calculator does its calculation by invoking the template method
+ * {@link #calculate(ProbeSetSample, ProbeSetSample)}.</p>
+ * 
+ * @author Sebastian Lehrig, Steffen Becker
+ */
 public abstract class UnaryCalculator extends Calculator {
 
-	private Integer probeSetID;
+	private final Integer probeSetID;	
 	
-    protected UnaryCalculator(ProbeSpecContext ctx, Integer probeSetID) {
-        super(ctx);
+    protected UnaryCalculator(ProbeSpecContext ctx, List<MeasurementMetric> measurementMetrics, Integer probeSetID) {
+        super(ctx, measurementMetrics);
         this.probeSetID = probeSetID;
      
         ctx.getSampleBlackboard().addBlackboardListener(this, probeSetID);
     }
 	
-	abstract protected Vector<Measure<?, ? extends Quantity>> calculate(
-			ProbeSetSample sample)
-			throws CalculatorException;
-	
+	/**
+	 * @see
+	 * de.uka.ipd.sdq.probespec.framework.calculator.Calculator#execute
+	 * (de.uka.ipd.sdq.probespec.framework.ProbeSetSample)
+	 */
 	@Override
-	abstract protected Vector<MeasurementMetric> getConcreteMeasurementMetrics();
-
-	@Override
-	protected BlackboardVote execute(ProbeSetSample pss) throws CalculatorException {
-		if (probeSetID.equals(pss.getProbeSetAndRequestContext().getProbeSetID())) {
-			Vector<Measure<?, ? extends Quantity>> resultTuple = calculate(pss);
-			fireCalculated(resultTuple);
+	public BlackboardVote sampleArrived(ProbeSetSample probeSetSample) {
+		int probeSetID = probeSetSample.getProbeSetAndRequestContext().getProbeSetID();
+		
+		if (this.probeSetID.equals(probeSetID)) {
+			fireCalculated(Arrays.asList(probeSetSample));
 		}
+		
 		return BlackboardVote.DISCARD;
 	}
-
 }

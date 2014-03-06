@@ -1,7 +1,7 @@
 package de.uka.ipd.sdq.pipesandfilters.framework;
 
+import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.launch.IRecorderConfiguration;
 
@@ -10,90 +10,51 @@ import de.uka.ipd.sdq.pipesandfilters.framework.recorder.launch.IRecorderConfigu
  * meta information. It can be used by the specified WriteStrategy to store
  * detailed information about the measurements.
  * 
- * @author Baum
- * 
+ * @author Baum, Sebastian Lehrig, Steffen Becker
  */
 public abstract class MetaDataInit {
 
 	/**
-	 * This vector should hold one MeasuredMetric with measurement information
+	 * This list should hold one MeasuredMetric with measurement information
 	 * for each tuple that is inducted to the pipe by the calculators.
 	 */
-	private Vector<MeasurementMetric> measuredMetrics;
+	private final List<MeasurementMetric> measuredMetrics;
 
-	/**
-	 * TODO Comment
-	 */
-	private IRecorderConfiguration recorderConfiguration;
+	private final IRecorderConfiguration recorderConfiguration;
 
 	/**
 	 * The name of the measured metric.
 	 */
-	private String metricName;
+	private final String metricName;
 
 	/**
 	 * The name of the measurement.
 	 */
-	private String measurementName;
+	private final String measurementName;
 
 	/**
 	 * The name of the experiment.
 	 */
-	private String experimentName;
+	private final String experimentName;
 	
 	/**
 	 * The name of the experiment run.
 	 */
-	private String experimentRunName;
+	private final String experimentRunName;
 
 	/**
 	 * The id of the model element.
 	 */
-	private String modelElementID;
+	private final String modelElementID;
 
 	/**
      * The mapping of numerical values to strings representing the possible
      * execution results.
      */
-    private Map<Integer, String> executionResultTypes;
+    private final Map<Integer, String> executionResultTypes;
     
-	/**
-	 * The constructor of MetaDataInit
-	 * 
-	 * @param measuredMetrics
-	 *            A vector of all measured metrics of a calculator.
-	 */
-	public MetaDataInit(Vector<MeasurementMetric> measuredMetrics,
-			IRecorderConfiguration recorderConfiguration) {
-		if (measuredMetrics.isEmpty())
-			throw new IllegalArgumentException(
-					"Vector of measured objects must not be empty.");
-		this.measuredMetrics = measuredMetrics;
-		this.recorderConfiguration = recorderConfiguration;
-	}
 
-	/**
-	 * The constructor of MetaDataInit
-	 * 
-	 * @param measuredMetrics
-	 *            A vector of all measured metrics of a calculator.
-	 * @param metricName
-	 *            The name of the metric that is measured.
-	 * @param measurementName
-	 *            The name of the performed measurement.
-	 * @param experimentName
-	 *            The name of the performed experiment.
-	 */
-	public MetaDataInit(Vector<MeasurementMetric> measuredMetrics,
-			IRecorderConfiguration recorderConfiguration, String metricName,
-			String measurementName, String experimentName) {
-		this(measuredMetrics, recorderConfiguration);
-		this.metricName = metricName;
-		this.measurementName = measurementName;
-		this.experimentName = experimentName;
-	}
-	
-	/**
+    /**
      * The constructor. Represents the meta data for initialization of an
      * ExecutionResultWriteDataStrategy.
      * 
@@ -102,27 +63,49 @@ public abstract class MetaDataInit {
      * is necessary so that during the simulation, only the numerical values need to
      * be piped to the target sensor.
      * 
-     * @param measuredMetrics
-     *            a vector of all measured metrics of a calculator
-     * @param recorderConfiguration
-     *            the recorder configuration
-     * @param executionResultTypes
-     *            the mapping of numerical values to strings representing the
+     * @param measuredMetrics A vector of all measured metrics of a calculator
+     * @param recorderConfiguration The recorder configuration
+     * @param metricName Name of the metric
+     * @param measurementName Name of the measurement
+     * @param experimentName Name of the experiment
+     * @param experimentRunName Name of the experiment run 
+     * @param modelElementID Unique ID of the model element
+     * @param executionResultTypes The mapping of numerical values to strings representing the
      *            possible execution results
      */
-    public MetaDataInit(
-            final Vector<MeasurementMetric> measuredMetrics,
-            final IRecorderConfiguration recorderConfiguration,
-            final Map<Integer, String> executionResultTypes) {
-        this(measuredMetrics, recorderConfiguration);
-        this.executionResultTypes = executionResultTypes;
-    }
+	public MetaDataInit(List<MeasurementMetric> measuredMetrics,
+			IRecorderConfiguration recorderConfiguration, String metricName,
+			String measurementName, String experimentName,
+			String experimentRunName, String modelElementID,
+			Map<Integer, String> executionResultTypes) {
+		super();
+		
+		if( measuredMetrics == null ||
+			measuredMetrics.isEmpty() ||
+			recorderConfiguration == null ||
+			!isSet(metricName) ||
+			!isSet(measurementName) ||
+			!isSet(experimentRunName) ||
+			//!isSet(modelElementID) || // TODO enable IDs for elements
+			executionResultTypes == null
+		) {
+			throw new IllegalArgumentException("Tried to initialize MetaDataInit incorrectly");
+		}
+		
+		this.measuredMetrics = measuredMetrics;
+		this.recorderConfiguration = recorderConfiguration;
+		this.metricName = metricName;
+		this.measurementName = measurementName;
+		this.experimentName = experimentName;
+		this.experimentRunName = experimentRunName;
+		this.modelElementID = modelElementID;
+		this.executionResultTypes = executionResultTypes;
+	}
 
-	/**
-	 * TODO Comment
-	 * 
-	 * @return
-	 */
+	private boolean isSet(String string) {
+		return (string != null && !string.isEmpty());
+	}
+	
 	public IRecorderConfiguration getRecorderConfiguration() {
 		return recorderConfiguration;
 	}
@@ -137,32 +120,12 @@ public abstract class MetaDataInit {
 	}
 
 	/**
-	 * Sets the name of the metric.
-	 * 
-	 * @param metricName
-	 *            The name of the metric.
-	 */
-	public void setMetricName(String metricName) {
-		this.metricName = metricName;
-	}
-
-	/**
 	 * Returns the name of the experiment.
 	 * 
 	 * @return The name of the experiment.
 	 */
 	public String getExperimentName() {
 		return experimentName;
-	}
-
-	/**
-	 * Sets the name of the experiment.
-	 * 
-	 * @param experimentName
-	 *            The name of the experiment.
-	 */
-	public void setExperimentName(String experimentName) {
-		this.experimentName = experimentName;
 	}
 	
 	/**
@@ -174,33 +137,14 @@ public abstract class MetaDataInit {
 		return experimentRunName;
 	}
 
-	/**
-	 * Sets the name of the experiment run.
-	 * 
-	 * @param experimentRunName
-	 *            The name of the experiment run.
-	 */
-	public void setExperimentRunName(String experimentRunName) {
-		this.experimentRunName = experimentRunName;
-	}
 
 	/**
 	 * Returns the vector of all measured objects.
 	 * 
 	 * @return A Vector of measured objects.
 	 */
-	public Vector<MeasurementMetric> getMeasuredMetrics() {
+	public List<MeasurementMetric> getMeasuredMetrics() {
 		return measuredMetrics;
-	}
-
-	/**
-	 * Sets the vector of measured objects.
-	 * 
-	 * @param measuredObjects
-	 *            A vector of measured objects.
-	 */
-	public void setMeasuredObjects(Vector<MeasurementMetric> measuredMetrics) {
-		this.measuredMetrics = measuredMetrics;
 	}
 
 	/**
@@ -220,26 +164,6 @@ public abstract class MetaDataInit {
 	 */
 	public String getMeasurementName() {
 		return measurementName;
-	}
-
-	/**
-	 * Sets the name of the measurement.
-	 * 
-	 * @param measurementName
-	 *            The name of the measurement.
-	 */
-	public void setMeasurementName(String measurementName) {
-		this.measurementName = measurementName;
-	}
-
-	/**
-	 * Sets the model element ID.
-	 * 
-	 * @param modelElementID
-	 *            The model element ID.
-	 */
-	public void setModelElementID(String modelElementID) {
-		this.modelElementID = modelElementID;
 	}
 
 	/**

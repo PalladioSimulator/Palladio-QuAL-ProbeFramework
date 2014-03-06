@@ -1,6 +1,8 @@
 package de.uka.ipd.sdq.probespec.framework.test;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import javax.measure.Measure;
 import javax.measure.quantity.Quantity;
@@ -13,6 +15,7 @@ import de.uka.ipd.sdq.pipesandfilters.framework.filters.ExampleFilter;
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.ConsoleWriteStrategy;
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.RawRecorder;
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.edp2.EDP2MetaDataInit;
+import de.uka.ipd.sdq.pipesandfilters.framework.recorder.edp2.launch.EDP2Config;
 import de.uka.ipd.sdq.probespec.framework.ISampleBlackboard;
 import de.uka.ipd.sdq.probespec.framework.ProbeSample;
 import de.uka.ipd.sdq.probespec.framework.ProbeSetSample;
@@ -53,9 +56,9 @@ public class CalculatorAndPipesTest extends TestCase {
 
     private PipesAndFiltersManager manager;
 
-    private Integer PROBE_SET_ONE_ID = 1;
+    private final Integer PROBE_SET_ONE_ID = 1;
 
-    private Integer PROBE_SET_TWO_ID = 2;
+    private final Integer PROBE_SET_TWO_ID = 2;
 
     @Override
     protected void setUp() throws Exception {
@@ -83,14 +86,22 @@ public class CalculatorAndPipesTest extends TestCase {
         ResponseTimeCalculator calculator = new ResponseTimeCalculator(psCtx, PROBE_SET_ONE_ID, PROBE_SET_TWO_ID);
         calculator.addCalculatorListener(new ICalculatorListener() {
             @Override
-            public void calculated(Vector<Measure<?, ? extends Quantity>> resultTuple) {
+            public void calculated(List<Measure<?, ? extends Quantity>> resultTuple) {
                 manager.processData(new PipeData(resultTuple));
             }
         });
 
         // initialize filter chain
-        MetaDataInit metaInit = new EDP2MetaDataInit(calculator.getMeasurementMetrics(),
-                new DummyRecorderConfiguration());
+        MetaDataInit metaInit = new EDP2MetaDataInit(
+        		calculator.getMeasurementMetrics(),
+                new EDP2Config(),
+                "Test Metric Name",
+                "Test Measurement Name",
+                "Test Experiment Name",
+                "Test ExperimentRun Name",
+                "Test modelElementID",
+                new HashMap<Integer, String>(0)
+        	);
         manager.initialize(metaInit);
     }
 
@@ -101,7 +112,7 @@ public class CalculatorAndPipesTest extends TestCase {
 
         // measure simulated time, then wrap the result into a ProbeSetSample, and finally post it
         // to the blackboard
-        Vector<ProbeSample<?, ? extends Quantity>> psv1 = new Vector<ProbeSample<?, ? extends Quantity>>();
+        List<ProbeSample<?, ? extends Quantity>> psv1 = new ArrayList<ProbeSample<?, ? extends Quantity>>(1);
         psv1.add(psCtx.getProbeStrategyRegistry().getProbeStrategy(ProbeType.CURRENT_TIME, null)
                 .takeSample("theProbeID_1", simCtx));
         ProbeSetSample pss1 = new ProbeSetSample(psv1, new RequestContext("1"), "Model_1", PROBE_SET_ONE_ID);
@@ -112,7 +123,7 @@ public class CalculatorAndPipesTest extends TestCase {
 
         // measure simulated time, then wrap the result into a ProbeSetSample, and finally post it
         // to the blackboard
-        Vector<ProbeSample<?, ? extends Quantity>> psv2 = new Vector<ProbeSample<?, ? extends Quantity>>();
+        List<ProbeSample<?, ? extends Quantity>> psv2 = new ArrayList<ProbeSample<?, ? extends Quantity>>(1);
         psv2.add(psCtx.getProbeStrategyRegistry().getProbeStrategy(ProbeType.CURRENT_TIME, null)
                 .takeSample("theProbeID_2", simCtx));
         ProbeSetSample pss2 = new ProbeSetSample(psv2, new RequestContext("1"), "Model_2", PROBE_SET_TWO_ID);

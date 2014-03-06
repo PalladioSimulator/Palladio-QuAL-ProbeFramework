@@ -1,6 +1,5 @@
 package de.uka.ipd.sdq.probespec.framework.utils;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
@@ -14,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class ProbeSetIDGenerator {
 
-	private Map<String, Integer> idMap;
+	private final Map<String, Integer> idMap;
 	
 	private int lastId = -1;
 
