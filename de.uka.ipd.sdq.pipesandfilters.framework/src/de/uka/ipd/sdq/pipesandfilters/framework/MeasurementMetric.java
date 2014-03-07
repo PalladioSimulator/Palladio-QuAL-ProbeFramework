@@ -88,7 +88,7 @@ public class MeasurementMetric {
 	 */
 	public static MeasurementMetric createNewTimeMetric(final String name, final String description) {
 		return new MeasurementMetric(
-				CaptureType.NATURAL_NUMBER,
+				CaptureType.REAL_NUMBER,
 				false, false, SI.SECOND,
 				name, description, Scale.ORDINAL, Double.class);
 	}
