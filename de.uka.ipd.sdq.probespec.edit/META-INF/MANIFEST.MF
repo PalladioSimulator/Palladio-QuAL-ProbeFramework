@@ -7,7 +7,7 @@ Bundle-ClassPath: .
 Bundle-Activator: de.uka.ipd.sdq.probespec.provider.ProbeSpecificationEditPlugin$Implementation
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: de.uka.ipd.sdq.probespec.provider
 Require-Bundle: org.eclipse.core.runtime,
  de.uka.ipd.sdq.probespec;visibility:=reexport,
