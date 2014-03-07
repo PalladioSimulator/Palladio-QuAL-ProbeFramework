@@ -51,11 +51,11 @@ public class ProbeStrategiesTest extends TestCase {
 		cpu.setJobs(5);
 		ctx.addActiveResource("CPU 1", cpu);
 
-		ProbeSample<Integer, Dimensionless> sample = (ProbeSample<Integer, Dimensionless>) registry
+		ProbeSample<Long, Dimensionless> sample = (ProbeSample<Long, Dimensionless>) registry
 				.getProbeStrategy(ProbeType.RESOURCE_STATE,
 						SimpleCPUResource.class).takeSample("probeId", cpu);
 
-		assertEquals(5, sample.getMeasure().intValue(Dimensionless.UNIT));
+		assertEquals(5, sample.getMeasure().longValue(Dimensionless.UNIT));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -75,21 +75,21 @@ public class ProbeStrategiesTest extends TestCase {
 		if (mutex.canAcquire())
 			mutex.acquire();
 
-		ProbeSample<Integer, Dimensionless> sample1 = (ProbeSample<Integer, Dimensionless>) registry
+		ProbeSample<Long, Dimensionless> sample1 = (ProbeSample<Long, Dimensionless>) registry
 				.getProbeStrategy(ProbeType.RESOURCE_STATE,
 						ASimplePassiveResource.class).takeSample("probeId",
 						mutex);
 
-		assertEquals(0, sample1.getMeasure().intValue(Dimensionless.UNIT));
+		assertEquals(0, sample1.getMeasure().longValue(Dimensionless.UNIT));
 
 		mutex.release();
 
-		ProbeSample<Integer, Dimensionless> sample2 = (ProbeSample<Integer, Dimensionless>) registry
+		ProbeSample<Long, Dimensionless> sample2 = (ProbeSample<Long, Dimensionless>) registry
 				.getProbeStrategy(ProbeType.RESOURCE_STATE,
 						ASimplePassiveResource.class).takeSample("probeId",
 						mutex);
 
-		assertEquals(1, sample2.getMeasure().intValue(Dimensionless.UNIT));
+		assertEquals(1, sample2.getMeasure().longValue(Dimensionless.UNIT));
 	}
 
 	@SuppressWarnings("unchecked")

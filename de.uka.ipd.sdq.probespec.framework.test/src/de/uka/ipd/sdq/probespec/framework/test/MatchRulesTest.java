@@ -17,9 +17,9 @@ import de.uka.ipd.sdq.probespec.framework.matching.ProbeTypeMatchRule;
 
 public class MatchRulesTest extends TestCase {
 
-	private ProbeSample<Integer, Dimensionless> ps1;
+	private ProbeSample<Long, Dimensionless> ps1;
 
-	private ProbeSample<Integer, Dimensionless> ps2;
+	private ProbeSample<Long, Dimensionless> ps2;
 
 	private List<ProbeSample<?, ? extends Quantity>> v;
 
@@ -30,15 +30,15 @@ public class MatchRulesTest extends TestCase {
 		super.setUp();
 
 		// Create first probeSample
-		Measure<Integer, Dimensionless> measure1 = Measure.valueOf(100,
+		Measure<Long, Dimensionless> measure1 = Measure.valueOf(100l,
 				Dimensionless.UNIT);
-		ps1 = new ProbeSample<Integer, Dimensionless>(measure1,
+		ps1 = new ProbeSample<Long, Dimensionless>(measure1,
 				"CPUCore1Probe", ProbeType.RESOURCE_STATE);
 
 		// Create second probeSample
-		Measure<Integer, Dimensionless> measure2 = Measure.valueOf(100,
+		Measure<Long, Dimensionless> measure2 = Measure.valueOf(100l,
 				Dimensionless.UNIT);
-		ps2 = new ProbeSample<Integer, Dimensionless>(measure2,
+		ps2 = new ProbeSample<Long, Dimensionless>(measure2,
 				"CPUCore2Probe", ProbeType.RESOURCE_STATE);
 
 		// Create a probe set sample from the probe samples
