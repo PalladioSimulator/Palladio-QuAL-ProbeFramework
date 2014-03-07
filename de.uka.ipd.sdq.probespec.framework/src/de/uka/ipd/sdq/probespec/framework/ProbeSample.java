@@ -16,64 +16,64 @@ import javax.measure.quantity.Quantity;
  * @author pmerkle
  * 
  */
-public class ProbeSample<V, Q extends Quantity> {
+public final class ProbeSample<V, Q extends Quantity> {
 
-	/** the measured value and its quantity. */
-	private Measure<V, Q> measure;
+    /** the measured value and its quantity. */
+    private final Measure<V, Q> measure;
 
-	private String probeID;
+    private final String probeID;
 
-	private ProbeType probeType;
+    private final ProbeType probeType;
 
-	/**
-	 * Class constructor specifying the measured value, the id and type of the
-	 * probe.
-	 * 
-	 * @param measure
-	 *            the measured value in conjunction with its {@link Quantity}
-	 * @param probeID
-	 *            the id of the probe
-	 * @param probeType
-	 *            the type of the probe
-	 * @see Measure
-	 * @see ProbeType
-	 */
-	public ProbeSample(final Measure<V, Q> measure, final String probeID,
-			final ProbeType probeType) {
-		super();
-		this.measure = measure;
-		this.probeID = probeID;
-		this.probeType = probeType;
-	}
+    /**
+     * Class constructor specifying the measured value, the id and type of the
+     * probe.
+     * 
+     * @param measure
+     *            the measured value in conjunction with its {@link Quantity}
+     * @param probeID
+     *            the id of the probe
+     * @param probeType
+     *            the type of the probe
+     * @see Measure
+     * @see ProbeType
+     */
+    public ProbeSample(final Measure<V, Q> measure, final String probeID,
+            final ProbeType probeType) {
+        super();
+        this.measure = measure;
+        this.probeID = probeID;
+        this.probeType = probeType;
+    }
 
-	/**
-	 * Returns the encapsulated measured value in conjunction with its measured
-	 * {@link Quantity}.
-	 * 
-	 * @return the measured value and its quantity
-	 * @see Measure
-	 */
-	public Measure<V, Q> getMeasure() {
-		return measure;
-	}
+    /**
+     * Returns the encapsulated measured value in conjunction with its measured
+     * {@link Quantity}.
+     * 
+     * @return the measured value and its quantity
+     * @see Measure
+     */
+    public Measure<V, Q> getMeasure() {
+        return measure;
+    }
 
-	/**
-	 * Returns the id of the measured probe according to the underlying model.
-	 * 
-	 * @return the probe id
-	 */
-	public String getProbeID() {
-		return probeID;
-	}
+    /**
+     * Returns the id of the measured probe according to the underlying model.
+     * 
+     * @return the probe id
+     */
+    public String getProbeID() {
+        return probeID;
+    }
 
-	/**
-	 * Returns the type of the measured probe according to the underlying model.
-	 * 
-	 * @return the probe type
-	 * @see ProbeType
-	 */
-	public ProbeType getProbeType() {
-		return probeType;
-	}
+    /**
+     * Returns the type of the measured probe according to the underlying model.
+     * 
+     * @return the probe type
+     * @see ProbeType
+     */
+    public ProbeType getProbeType() {
+        return probeType;
+    }
 
 }

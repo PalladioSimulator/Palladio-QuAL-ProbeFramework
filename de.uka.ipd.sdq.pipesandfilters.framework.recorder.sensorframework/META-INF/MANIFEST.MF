@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Pipes-and-Filters SensorFramework Recorder
 Bundle-SymbolicName: de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework;singleton:=true
 Bundle-Version: 2.0.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework,
  de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework.launch
 Require-Bundle: de.uka.ipd.sdq.sensorframework;bundle-version="1.1.0",
