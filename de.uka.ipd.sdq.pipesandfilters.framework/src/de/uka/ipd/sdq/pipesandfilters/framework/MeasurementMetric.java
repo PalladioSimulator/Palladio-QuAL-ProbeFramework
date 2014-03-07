@@ -41,10 +41,6 @@ public class MeasurementMetric {
 	 * The scale of the measured object
 	 */
 	private final Scale scale;
-	/**
-	 * The value data type of the measured object, e.g., <code>Double.class</code> for time measurements
-	 */
-	private final Class<?> valueType;
 
 	/**
 	 * The constructor of MeasurementMetric, in which all necessary class
@@ -54,7 +50,7 @@ public class MeasurementMetric {
 	 * @param unit The unit of the metric.
 	 * @param scale The measurement level of the metric.
 	 */
-	private MeasurementMetric(CaptureType captureType, boolean isMonotonic, boolean isStrongMonotonic, Unit<?> unit, String name, String description, Scale scale, Class<?> valueType) {
+	private MeasurementMetric(CaptureType captureType, boolean isMonotonic, boolean isStrongMonotonic, Unit<?> unit, String name, String description, Scale scale) {
 		super();
 		
 		if(!isMonotonic && isStrongMonotonic) {
@@ -63,7 +59,7 @@ public class MeasurementMetric {
 		if(isMonotonic && scale == Scale.NOMINAL) {
 			throw new RuntimeException("A metric cannot be monotonic and nominal scale at the same time");
 		}
-		if(name == null || description == null || unit == null || valueType == null) {
+		if(name == null || description == null || unit == null) {
 			throw new IllegalArgumentException("No null values allowed in the MeasurementMetric constructor");
 		}
 		
@@ -74,7 +70,6 @@ public class MeasurementMetric {
 		this.name = name;
 		this.description = description;
 		this.scale = scale;
-		this.valueType = valueType;
 	}
 	
 	/**
@@ -90,7 +85,7 @@ public class MeasurementMetric {
 		return new MeasurementMetric(
 				CaptureType.REAL_NUMBER,
 				false, false, SI.SECOND,
-				name, description, Scale.ORDINAL, Double.class);
+				name, description, Scale.ORDINAL);
 	}
 
 	/**
@@ -106,7 +101,7 @@ public class MeasurementMetric {
 		return new MeasurementMetric(
 				CaptureType.NATURAL_NUMBER,
 				false, false, Dimensionless.UNIT,
-				name, description, Scale.ORDINAL, Integer.class);
+				name, description, Scale.ORDINAL);
 	}
 
 	/**
@@ -117,8 +112,7 @@ public class MeasurementMetric {
 		return "MeasurementMetric [captureType=" + captureType
 				+ ", isMonotonic=" + isMonotonic + ", isStrongMonotonic="
 				+ isStrongMonotonic + ", unit=" + unit + ", name=" + name
-				+ ", description=" + description + ", scale=" + scale
-				+ ", valueType=" + valueType + "]";
+				+ ", description=" + description + ", scale=" + scale + "]";
 	}
 
 	/**
@@ -137,8 +131,6 @@ public class MeasurementMetric {
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((scale == null) ? 0 : scale.hashCode());
 		result = prime * result + ((unit == null) ? 0 : unit.hashCode());
-		result = prime * result
-				+ ((valueType == null) ? 0 : valueType.hashCode());
 		return result;
 	}
 
@@ -188,13 +180,6 @@ public class MeasurementMetric {
 				return false;
 			}
 		} else if (!unit.equals(other.unit)) {
-			return false;
-		}
-		if (valueType == null) {
-			if (other.valueType != null) {
-				return false;
-			}
-		} else if (!valueType.equals(other.valueType)) {
 			return false;
 		}
 		return true;
@@ -261,14 +246,5 @@ public class MeasurementMetric {
 	 */
 	public Scale getScale() {
 		return scale;
-	}
-	
-	/**
-	 * Returns the value data type of the measured object.
-	 * 
-	 * @return The value data type of the measured object.
-	 */
-	public Class<?> getValueType() {
-		return valueType;
 	}
 }

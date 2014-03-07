@@ -8,5 +8,18 @@ package de.uka.ipd.sdq.pipesandfilters.framework;
  * 
  */
 public enum CaptureType {
-	NATURAL_NUMBER, REAL_NUMBER
+	NATURAL_NUMBER(Long.class), REAL_NUMBER(Double.class);
+
+	/**
+	 * The value data type of the measured object, e.g., <code>Double.class</code> for time measurements
+	 */
+	private final Class<?> valueType;
+
+	CaptureType(Class<?> valueType) {
+		this.valueType = valueType;
+	}
+	
+	public Class<?> getValueType() {
+		return valueType;
+	}
 }
