@@ -9,7 +9,7 @@ Require-Bundle: org.eclipse.core.runtime,
  de.uka.ipd.sdq.pipesandfilters.framework;bundle-version="1.0.0",
  org.apache.log4j;bundle-version="1.2.13"
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: de.uka.ipd.sdq.probespec.framework,
  de.uka.ipd.sdq.probespec.framework.calculator,
  de.uka.ipd.sdq.probespec.framework.concurrency,
