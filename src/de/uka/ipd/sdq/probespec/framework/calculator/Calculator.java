@@ -114,7 +114,7 @@ public abstract class Calculator implements IBlackboardListener {
 				throw new RuntimeException(MESUREMENTS_DO_NOT_CONFORM_TO_DECLARED_METRICS);
 			}
 			
-			if(calculatedMeasure.getValue().getClass() != metric.getValueType()) {
+			if(calculatedMeasure.getValue().getClass() != metric.getCaptureType().getValueType()) {
 				logger.error(MESUREMENTS_DO_NOT_CONFORM_TO_DECLARED_METRICS);
 				throw new RuntimeException(MESUREMENTS_DO_NOT_CONFORM_TO_DECLARED_METRICS);
 			}
