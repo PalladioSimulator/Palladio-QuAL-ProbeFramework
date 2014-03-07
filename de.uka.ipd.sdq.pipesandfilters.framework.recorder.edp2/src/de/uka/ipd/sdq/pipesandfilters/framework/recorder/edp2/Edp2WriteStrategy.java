@@ -2,23 +2,24 @@ package de.uka.ipd.sdq.pipesandfilters.framework.recorder.edp2;
 
 import java.util.Date;
 
-import de.uka.ipd.sdq.edp2.impl.Measurement;
-import de.uka.ipd.sdq.edp2.impl.MeasurementsUtility;
-import de.uka.ipd.sdq.edp2.impl.RepositoryManager;
-import de.uka.ipd.sdq.edp2.models.ExperimentData.BaseMetricDescription;
-import de.uka.ipd.sdq.edp2.models.ExperimentData.Description;
-import de.uka.ipd.sdq.edp2.models.ExperimentData.Edp2Measure;
-import de.uka.ipd.sdq.edp2.models.ExperimentData.ExperimentDataFactory;
-import de.uka.ipd.sdq.edp2.models.ExperimentData.ExperimentGroup;
-import de.uka.ipd.sdq.edp2.models.ExperimentData.ExperimentRun;
-import de.uka.ipd.sdq.edp2.models.ExperimentData.ExperimentSetting;
-import de.uka.ipd.sdq.edp2.models.ExperimentData.Measurements;
-import de.uka.ipd.sdq.edp2.models.ExperimentData.MeasurementsRange;
-import de.uka.ipd.sdq.edp2.models.ExperimentData.MetricSetDescription;
-import de.uka.ipd.sdq.edp2.models.ExperimentData.Monotonic;
-import de.uka.ipd.sdq.edp2.models.ExperimentData.NumericalBaseMetricDescription;
-import de.uka.ipd.sdq.edp2.models.ExperimentData.PersistenceKindOptions;
-import de.uka.ipd.sdq.edp2.models.Repository.Repository;
+import org.palladiosimulator.edp2.impl.Measurement;
+import org.palladiosimulator.edp2.impl.MeasurementsUtility;
+import org.palladiosimulator.edp2.impl.RepositoryManager;
+import org.palladiosimulator.edp2.models.ExperimentData.BaseMetricDescription;
+import org.palladiosimulator.edp2.models.ExperimentData.Description;
+import org.palladiosimulator.edp2.models.ExperimentData.Edp2Measure;
+import org.palladiosimulator.edp2.models.ExperimentData.ExperimentDataFactory;
+import org.palladiosimulator.edp2.models.ExperimentData.ExperimentGroup;
+import org.palladiosimulator.edp2.models.ExperimentData.ExperimentRun;
+import org.palladiosimulator.edp2.models.ExperimentData.ExperimentSetting;
+import org.palladiosimulator.edp2.models.ExperimentData.Measurements;
+import org.palladiosimulator.edp2.models.ExperimentData.MeasurementsRange;
+import org.palladiosimulator.edp2.models.ExperimentData.MetricSetDescription;
+import org.palladiosimulator.edp2.models.ExperimentData.Monotonic;
+import org.palladiosimulator.edp2.models.ExperimentData.NumericalBaseMetricDescription;
+import org.palladiosimulator.edp2.models.ExperimentData.PersistenceKindOptions;
+import org.palladiosimulator.edp2.models.Repository.Repository;
+
 import de.uka.ipd.sdq.pipesandfilters.framework.MeasurementMetric;
 import de.uka.ipd.sdq.pipesandfilters.framework.MetaDataInit;
 import de.uka.ipd.sdq.pipesandfilters.framework.PipeData;
@@ -296,10 +297,10 @@ public abstract class Edp2WriteStrategy {
         // CaptureType:
         if (measuredObject.getCaptureType() == de.uka.ipd.sdq.pipesandfilters.framework.CaptureType.NATURAL_NUMBER) {
             desc
-            .setCaptureType(de.uka.ipd.sdq.edp2.models.ExperimentData.CaptureType.INTEGER_NUMBER);
+            .setCaptureType(org.palladiosimulator.edp2.models.ExperimentData.CaptureType.INTEGER_NUMBER);
         } else if (measuredObject.getCaptureType() == de.uka.ipd.sdq.pipesandfilters.framework.CaptureType.REAL_NUMBER) {
             desc
-            .setCaptureType(de.uka.ipd.sdq.edp2.models.ExperimentData.CaptureType.REAL_NUMBER);
+            .setCaptureType(org.palladiosimulator.edp2.models.ExperimentData.CaptureType.REAL_NUMBER);
         }
         else {
             throw new IllegalArgumentException("Unsupported CaptureType: "+measuredObject.getCaptureType());
@@ -325,13 +326,13 @@ public abstract class Edp2WriteStrategy {
 
         // Scale:
         if (measuredObject.getScale() == de.uka.ipd.sdq.pipesandfilters.framework.Scale.INTERVAL) {
-            desc.setScale(de.uka.ipd.sdq.edp2.models.ExperimentData.Scale.INTERVAL);
+            desc.setScale(org.palladiosimulator.edp2.models.ExperimentData.Scale.INTERVAL);
         } else if (measuredObject.getScale() == de.uka.ipd.sdq.pipesandfilters.framework.Scale.NOMINAL) {
-            desc.setScale(de.uka.ipd.sdq.edp2.models.ExperimentData.Scale.NOMINAL);
+            desc.setScale(org.palladiosimulator.edp2.models.ExperimentData.Scale.NOMINAL);
         } else if (measuredObject.getScale() == de.uka.ipd.sdq.pipesandfilters.framework.Scale.ORDINAL) {
-            desc.setScale(de.uka.ipd.sdq.edp2.models.ExperimentData.Scale.ORDINAL);
+            desc.setScale(org.palladiosimulator.edp2.models.ExperimentData.Scale.ORDINAL);
         } else if (measuredObject.getScale() == de.uka.ipd.sdq.pipesandfilters.framework.Scale.RATIO) {
-            desc.setScale(de.uka.ipd.sdq.edp2.models.ExperimentData.Scale.RATIO);
+            desc.setScale(org.palladiosimulator.edp2.models.ExperimentData.Scale.RATIO);
         }
 
         // Description:

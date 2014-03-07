@@ -11,9 +11,10 @@ import javax.measure.Measure;
 import javax.measure.quantity.Quantity;
 import javax.measure.unit.SI;
 
+import org.palladiosimulator.edp2.impl.RepositoryManager;
+import org.palladiosimulator.edp2.models.Repository.LocalDirectoryRepository;
+
 import junit.framework.TestCase;
-import de.uka.ipd.sdq.edp2.impl.RepositoryManager;
-import de.uka.ipd.sdq.edp2.models.Repository.LocalDirectoryRepository;
 import de.uka.ipd.sdq.pipesandfilters.framework.MeasurementMetric;
 import de.uka.ipd.sdq.pipesandfilters.framework.PipeData;
 import de.uka.ipd.sdq.pipesandfilters.framework.PipesAndFiltersManager;

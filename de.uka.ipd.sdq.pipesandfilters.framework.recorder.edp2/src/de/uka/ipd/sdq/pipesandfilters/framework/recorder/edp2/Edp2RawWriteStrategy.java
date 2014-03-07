@@ -5,10 +5,11 @@ import java.util.Date;
 import javax.measure.Measure;
 import javax.measure.unit.SI;
 
-import de.uka.ipd.sdq.edp2.impl.DataNotAccessibleException;
-import de.uka.ipd.sdq.edp2.impl.MeasurementsUtility;
-import de.uka.ipd.sdq.edp2.models.ExperimentData.ExperimentDataFactory;
-import de.uka.ipd.sdq.edp2.models.ExperimentData.RawMeasurements;
+import org.palladiosimulator.edp2.impl.DataNotAccessibleException;
+import org.palladiosimulator.edp2.impl.MeasurementsUtility;
+import org.palladiosimulator.edp2.models.ExperimentData.ExperimentDataFactory;
+import org.palladiosimulator.edp2.models.ExperimentData.RawMeasurements;
+
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.IRawWriteStrategy;
 
 /**

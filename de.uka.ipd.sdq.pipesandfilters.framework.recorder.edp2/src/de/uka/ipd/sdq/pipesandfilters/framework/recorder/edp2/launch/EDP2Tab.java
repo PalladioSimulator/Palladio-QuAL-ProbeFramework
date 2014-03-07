@@ -17,10 +17,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-
-import de.uka.ipd.sdq.edp2.impl.RepositoryManager;
-import de.uka.ipd.sdq.edp2.models.Repository.Repository;
-import de.uka.ipd.sdq.edp2.ui.dialogs.datasource.ConfigureDatasourceDialog;
+import org.palladiosimulator.edp2.impl.RepositoryManager;
+import org.palladiosimulator.edp2.models.Repository.Repository;
+import org.palladiosimulator.edp2.ui.dialogs.datasource.ConfigureDatasourceDialog;
 
 public class EDP2Tab extends AbstractLaunchConfigurationTab {
 

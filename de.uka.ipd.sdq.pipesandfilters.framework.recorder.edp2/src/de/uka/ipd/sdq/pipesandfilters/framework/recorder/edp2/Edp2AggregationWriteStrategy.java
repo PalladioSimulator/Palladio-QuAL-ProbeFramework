@@ -7,14 +7,15 @@ import java.util.Date;
 import javax.measure.Measure;
 import javax.measure.unit.SI;
 
-import de.uka.ipd.sdq.edp2.impl.MeasurementsUtility;
-import de.uka.ipd.sdq.edp2.models.ExperimentData.AggregatedMeasurements;
-import de.uka.ipd.sdq.edp2.models.ExperimentData.AggregationFunctionDescription;
-import de.uka.ipd.sdq.edp2.models.ExperimentData.BaseMetricDescription;
-import de.uka.ipd.sdq.edp2.models.ExperimentData.DataSeries;
-import de.uka.ipd.sdq.edp2.models.ExperimentData.ExperimentDataFactory;
-import de.uka.ipd.sdq.edp2.models.ExperimentData.FixedIntervals;
-import de.uka.ipd.sdq.edp2.models.ExperimentData.FixedWidthAggregatedMeasurements;
+import org.palladiosimulator.edp2.impl.MeasurementsUtility;
+import org.palladiosimulator.edp2.models.ExperimentData.AggregatedMeasurements;
+import org.palladiosimulator.edp2.models.ExperimentData.AggregationFunctionDescription;
+import org.palladiosimulator.edp2.models.ExperimentData.BaseMetricDescription;
+import org.palladiosimulator.edp2.models.ExperimentData.DataSeries;
+import org.palladiosimulator.edp2.models.ExperimentData.ExperimentDataFactory;
+import org.palladiosimulator.edp2.models.ExperimentData.FixedIntervals;
+import org.palladiosimulator.edp2.models.ExperimentData.FixedWidthAggregatedMeasurements;
+
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.AggregationMetaDataInit;
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.FixedWidthAggregationMetaData;
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.IAggregationWriteStrategy;
