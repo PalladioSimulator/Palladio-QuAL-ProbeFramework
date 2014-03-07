@@ -345,9 +345,6 @@ public abstract class Edp2WriteStrategy {
 
     /**
      * This method writes given measurement data to the EDP2.
-     * 
-     * FIXME Lehrig: I just hacked a measurement object into that code (before there was just the Object[] array). No idea whether this is correct.
-     * FIXME Lehrig: For Waiting & Holding Time metrics, an exception is thrown (java.lang.IndexOutOfBoundsException for setMeasuredValue)
      */
     public void writeData(final PipeData pipeData) {
         final Measurement measurement = new Measurement(metricSetDescription);
