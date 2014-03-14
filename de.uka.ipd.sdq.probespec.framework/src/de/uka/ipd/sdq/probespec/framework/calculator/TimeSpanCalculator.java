@@ -10,7 +10,8 @@ import javax.measure.quantity.Duration;
 import javax.measure.quantity.Quantity;
 import javax.measure.unit.SI;
 
-import de.uka.ipd.sdq.pipesandfilters.framework.MeasurementMetric;
+import org.palladiosimulator.edp2.models.ExperimentData.MetricDescription;
+
 import de.uka.ipd.sdq.probespec.framework.ProbeSetSample;
 import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
 import de.uka.ipd.sdq.probespec.framework.ProbeType;
@@ -24,8 +25,8 @@ import de.uka.ipd.sdq.probespec.framework.exceptions.CalculatorException;
  */
 public abstract class TimeSpanCalculator extends BinaryCalculator {
 
-    public TimeSpanCalculator(ProbeSpecContext ctx, List<MeasurementMetric> measurementMetrics, Integer startProbeSetID, Integer endProbeSetID) {
-        super(ctx, measurementMetrics, startProbeSetID, endProbeSetID);
+    public TimeSpanCalculator(ProbeSpecContext ctx, List<MetricDescription> metricDescriptions, Integer startProbeSetID, Integer endProbeSetID) {
+        super(ctx, metricDescriptions, startProbeSetID, endProbeSetID);
     }
 
     /**

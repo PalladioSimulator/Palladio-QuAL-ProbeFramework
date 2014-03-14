@@ -1,25 +1,25 @@
 package de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework.strategies;
 
 import java.util.HashMap;
+import java.util.List;
 
 import javax.measure.Measure;
 import javax.measure.quantity.Dimensionless;
 import javax.measure.quantity.Duration;
+import javax.measure.quantity.Quantity;
 import javax.measure.unit.SI;
 
 import de.uka.ipd.sdq.pipesandfilters.framework.MetaDataInit;
-import de.uka.ipd.sdq.pipesandfilters.framework.PipeData;
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework.SensorHelper;
 import de.uka.ipd.sdq.sensorframework.entities.Experiment;
 import de.uka.ipd.sdq.sensorframework.entities.ExperimentRun;
-import de.uka.ipd.sdq.sensorframework.entities.Sensor;
 import de.uka.ipd.sdq.sensorframework.entities.State;
 import de.uka.ipd.sdq.sensorframework.entities.StateSensor;
 import de.uka.ipd.sdq.sensorframework.entities.dao.IDAOFactory;
 
 public class UtilisationWriteDataStrategy extends AbstractWriteDataStrategy {
 
-	private HashMap<String, State> statesCache = new HashMap<String, State>();
+	private final HashMap<String, State> statesCache = new HashMap<String, State>();
 
 	private State idleState;
 
@@ -30,8 +30,9 @@ public class UtilisationWriteDataStrategy extends AbstractWriteDataStrategy {
 		super(daoFactory, experiment, run);
 	}	
 
+	@Override
 	public void initialise(MetaDataInit metaData) {
-		String sensorId = metaData.getMeasurementName();
+		String sensorId = metaData.getMetricDescriptions().getTextualDescription();
 		this.idleState = SensorHelper.createOrReuseState(daoFactory, "Idle");
 		this.busyState = SensorHelper.createOrReuseState(daoFactory, "Busy");
 		sensor = SensorHelper.createOrReuseStateSensor(daoFactory, experiment,
@@ -44,12 +45,12 @@ public class UtilisationWriteDataStrategy extends AbstractWriteDataStrategy {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void writeData(PipeData data) {
+	public void writeData(List<Measure<?, ? extends Quantity>> data) {
 		Measure<Double, Duration> measurementTimeMeasure = (Measure<Double, Duration>) data
-				.getTupleElement(0);
+				.get(0);
 		double measurementTime = measurementTimeMeasure.doubleValue(SI.SECOND);
 		Measure<Integer, Dimensionless> numericStateMeasure = (Measure<Integer, Dimensionless>) data
-				.getTupleElement(1);
+				.get(1);
 		int numericState = numericStateMeasure.intValue(Dimensionless.UNIT);
 		State state = null;
 		if (numericState == 0) {

@@ -1,7 +1,9 @@
 package de.uka.ipd.sdq.pipesandfilters.framework;
 
-import java.util.List;
 import java.util.Map;
+
+import org.palladiosimulator.edp2.models.ExperimentData.MetricDescription;
+import org.palladiosimulator.edp2.models.ExperimentData.MetricSetDescription;
 
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.launch.IRecorderConfiguration;
 
@@ -18,19 +20,9 @@ public abstract class MetaDataInit {
 	 * This list should hold one MeasuredMetric with measurement information
 	 * for each tuple that is inducted to the pipe by the calculators.
 	 */
-	private final List<MeasurementMetric> measuredMetrics;
+	private final MetricSetDescription metricDescriptions;
 
 	private final IRecorderConfiguration recorderConfiguration;
-
-	/**
-	 * The name of the measured metric.
-	 */
-	private final String metricName;
-
-	/**
-	 * The name of the measurement.
-	 */
-	private final String measurementName;
 
 	/**
 	 * The name of the experiment.
@@ -63,7 +55,7 @@ public abstract class MetaDataInit {
      * is necessary so that during the simulation, only the numerical values need to
      * be piped to the target sensor.
      * 
-     * @param measuredMetrics A vector of all measured metrics of a calculator
+     * @param metricDescriptions A vector of all measured metrics of a calculator
      * @param recorderConfiguration The recorder configuration
      * @param metricName Name of the metric
      * @param measurementName Name of the measurement
@@ -73,18 +65,16 @@ public abstract class MetaDataInit {
      * @param executionResultTypes The mapping of numerical values to strings representing the
      *            possible execution results
      */
-	public MetaDataInit(List<MeasurementMetric> measuredMetrics,
-			IRecorderConfiguration recorderConfiguration, String metricName,
-			String measurementName, String experimentName,
+	public MetaDataInit(MetricSetDescription metricDescriptions,
+			IRecorderConfiguration recorderConfiguration,
+			String experimentName,
 			String experimentRunName, String modelElementID,
 			Map<Integer, String> executionResultTypes) {
 		super();
 		
-		if( measuredMetrics == null ||
-			measuredMetrics.isEmpty() ||
+		if( metricDescriptions == null ||
+			metricDescriptions.getSubsumedMetrics().isEmpty() ||
 			recorderConfiguration == null ||
-			!isSet(metricName) ||
-			!isSet(measurementName) ||
 			!isSet(experimentRunName) ||
 			//!isSet(modelElementID) || // TODO enable IDs for elements
 			executionResultTypes == null
@@ -92,10 +82,8 @@ public abstract class MetaDataInit {
 			throw new IllegalArgumentException("Tried to initialize MetaDataInit incorrectly");
 		}
 		
-		this.measuredMetrics = measuredMetrics;
+		this.metricDescriptions = metricDescriptions;
 		this.recorderConfiguration = recorderConfiguration;
-		this.metricName = metricName;
-		this.measurementName = measurementName;
 		this.experimentName = experimentName;
 		this.experimentRunName = experimentRunName;
 		this.modelElementID = modelElementID;
@@ -108,15 +96,6 @@ public abstract class MetaDataInit {
 	
 	public IRecorderConfiguration getRecorderConfiguration() {
 		return recorderConfiguration;
-	}
-
-	/**
-	 * Returns the name of the metric.
-	 * 
-	 * @return The name of the metric.
-	 */
-	public String getMetricName() {
-		return metricName;
 	}
 
 	/**
@@ -143,27 +122,18 @@ public abstract class MetaDataInit {
 	 * 
 	 * @return A Vector of measured objects.
 	 */
-	public List<MeasurementMetric> getMeasuredMetrics() {
-		return measuredMetrics;
+	public MetricSetDescription getMetricDescriptions() {
+		return metricDescriptions;
 	}
 
 	/**
 	 * Adds a measured object to the vector of measured objects.
 	 * 
-	 * @param o
+	 * @param metricDescription
 	 *            The measured object to be added.
 	 */
-	public void addMeasuredObject(MeasurementMetric o) {
-		measuredMetrics.add(o);
-	}
-
-	/**
-	 * Returns the name of the measurement.
-	 * 
-	 * @return The name of the measurement.
-	 */
-	public String getMeasurementName() {
-		return measurementName;
+	public void addMeasuredObject(MetricDescription metricDescription) {
+		metricDescriptions.getSubsumedMetrics().add(metricDescription);
 	}
 
 	/**

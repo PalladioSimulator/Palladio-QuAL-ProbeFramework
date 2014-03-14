@@ -1,7 +1,5 @@
 package de.uka.ipd.sdq.pipesandfilters.framework.recorder.edp2;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Date;
 
 import javax.measure.Measure;
@@ -11,7 +9,6 @@ import org.palladiosimulator.edp2.impl.MeasurementsUtility;
 import org.palladiosimulator.edp2.models.ExperimentData.AggregatedMeasurements;
 import org.palladiosimulator.edp2.models.ExperimentData.AggregationFunctionDescription;
 import org.palladiosimulator.edp2.models.ExperimentData.BaseMetricDescription;
-import org.palladiosimulator.edp2.models.ExperimentData.DataSeries;
 import org.palladiosimulator.edp2.models.ExperimentData.ExperimentDataFactory;
 import org.palladiosimulator.edp2.models.ExperimentData.FixedIntervals;
 import org.palladiosimulator.edp2.models.ExperimentData.FixedWidthAggregatedMeasurements;
@@ -27,7 +24,7 @@ import de.uka.ipd.sdq.pipesandfilters.framework.recorder.IAggregationWriteStrate
  * TODO This class is not considered by the current extension. Some extensions are needed to enable such aggregated measurements.
  * 
  * 
- * @author Baum
+ * @author Baum, Sebastian Lehrig
  * 
  */
 public class Edp2AggregationWriteStrategy extends Edp2WriteStrategy implements
@@ -36,6 +33,7 @@ public class Edp2AggregationWriteStrategy extends Edp2WriteStrategy implements
 	 * In this method an EDP2 experiment run is prepared by initializing all
 	 * necessary EDP2 members.
 	 */
+	@Override
 	protected void prepareExperimentRun() {
 		experimentRun.getMeasurements().add(measurements);
 		experimentSetting.getExperimentRuns().add(experimentRun);
@@ -49,6 +47,7 @@ public class Edp2AggregationWriteStrategy extends Edp2WriteStrategy implements
 	 * @param metaData
 	 *            The initializing meta data.
 	 */
+	@Override
 	public void initializeAggregatedMeasurements(
 			AggregationMetaDataInit metaData) {
 
@@ -93,6 +92,7 @@ public class Edp2AggregationWriteStrategy extends Edp2WriteStrategy implements
 	 * @param metaData
 	 *            The fixed width aggregated measurements meta data.
 	 */
+	@Override
 	public void setFixedWidthAggregatedMeasurementsMetaData(
 			int aggregatedMeasurementsIndex,
 			FixedWidthAggregationMetaData metaData) {
@@ -112,6 +112,7 @@ public class Edp2AggregationWriteStrategy extends Edp2WriteStrategy implements
 	 * This method will end the current experiment and close the data output
 	 * stream.
 	 */
+	@Override
 	public void flush() {
 
 		long startTime = experimentRun.getStartTime().getTime();

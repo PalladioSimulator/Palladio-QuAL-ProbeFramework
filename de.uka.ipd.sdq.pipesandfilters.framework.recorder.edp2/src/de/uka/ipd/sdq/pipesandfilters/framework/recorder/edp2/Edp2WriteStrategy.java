@@ -1,11 +1,14 @@
 package de.uka.ipd.sdq.pipesandfilters.framework.recorder.edp2;
 
 import java.util.Date;
+import java.util.List;
+
+import javax.measure.Measure;
+import javax.measure.quantity.Quantity;
 
 import org.palladiosimulator.edp2.impl.Measurement;
 import org.palladiosimulator.edp2.impl.MeasurementsUtility;
 import org.palladiosimulator.edp2.impl.RepositoryManager;
-import org.palladiosimulator.edp2.models.ExperimentData.BaseMetricDescription;
 import org.palladiosimulator.edp2.models.ExperimentData.Description;
 import org.palladiosimulator.edp2.models.ExperimentData.Edp2Measure;
 import org.palladiosimulator.edp2.models.ExperimentData.ExperimentDataFactory;
@@ -15,14 +18,10 @@ import org.palladiosimulator.edp2.models.ExperimentData.ExperimentSetting;
 import org.palladiosimulator.edp2.models.ExperimentData.Measurements;
 import org.palladiosimulator.edp2.models.ExperimentData.MeasurementsRange;
 import org.palladiosimulator.edp2.models.ExperimentData.MetricSetDescription;
-import org.palladiosimulator.edp2.models.ExperimentData.Monotonic;
-import org.palladiosimulator.edp2.models.ExperimentData.NumericalBaseMetricDescription;
-import org.palladiosimulator.edp2.models.ExperimentData.PersistenceKindOptions;
 import org.palladiosimulator.edp2.models.Repository.Repository;
 
-import de.uka.ipd.sdq.pipesandfilters.framework.MeasurementMetric;
 import de.uka.ipd.sdq.pipesandfilters.framework.MetaDataInit;
-import de.uka.ipd.sdq.pipesandfilters.framework.PipeData;
+import de.uka.ipd.sdq.pipesandfilters.framework.recorder.Recorder;
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.edp2.launch.EDP2Config;
 
 /**
@@ -42,7 +41,7 @@ import de.uka.ipd.sdq.pipesandfilters.framework.recorder.edp2.launch.EDP2Config;
  * @author Baum, Sebastian Lehrig
  * 
  */
-public abstract class Edp2WriteStrategy {
+public abstract class Edp2WriteStrategy extends Recorder {
 
     /** EDP2 Repository where data should be stored. */
     protected static Repository repository;
@@ -87,7 +86,8 @@ public abstract class Edp2WriteStrategy {
      * This method should end the current experiment and close the data output
      * stream.
      */
-    public abstract void flush();
+    @Override
+	public abstract void flush();
 
     /**
      * The initializing meta data provided by the recorder is used to define all
@@ -95,7 +95,8 @@ public abstract class Edp2WriteStrategy {
      * 
      * @param metaData The meta data provided by the recorder; has to be of type EDP2MetaDataInit
      */
-    public void initialize(final MetaDataInit metaData) {
+    @Override
+	public void initialize(final MetaDataInit metaData) {
         // Initialize EDP2-specific recorder objects
         final EDP2MetaDataInit edp2MetaData = getEDP2MetaDataInit(metaData);
         final EDP2Config edp2Config = getEDP2RecorderConfiguration(edp2MetaData);
@@ -196,48 +197,19 @@ public abstract class Edp2WriteStrategy {
      * @param edp2MetaData Meta data object that specifies the metric of interest
      */
     private static void initializeMetricSetDescription(final EDP2MetaDataInit edp2MetaData) {
-        // TODO Lehrig: Add support for UUIDs into ProbeSpec. Then, we wouldn't have to assume unique names here.
-        final String metricName = edp2MetaData.getMetricName();
-
-        // Find existing description based on metric name (assumed to be unique)
+        final MetricSetDescription msd = edp2MetaData.getMetricDescriptions();
+        
+        // Find existing description based on metric UUID
         for(final Description d: repository.getDescriptions()) {
-            if(d.getName().equals(metricName)) {
-                if(d instanceof MetricSetDescription) {
-                    metricSetDescription = (MetricSetDescription) d;
-                    return;
-                }
+            if(d.getUuid().equals(msd.getUuid())) {
+                metricSetDescription = (MetricSetDescription) d;
+                return;
             }
         }
-
-        // Create new metric set description
-        metricSetDescription = ExperimentDataFactory.eINSTANCE.createMetricSetDescription();
-        metricSetDescription.setName(metricName);
+        
+        // Attach new metric to repository
+        metricSetDescription = msd;
         metricSetDescription.setRepository(repository);
-
-        // Add subsumed metrics
-        for (final MeasurementMetric measuredObject : edp2MetaData.getMeasuredMetrics()) {
-            final String subsumedMetricName = measuredObject.getName();
-            BaseMetricDescription desc = null;
-
-            // Find existing subsumed metric based on metric name (assumed to be unique)
-            for(final Description d: repository.getDescriptions()) {
-                if(d.getName().equals(subsumedMetricName)) {
-                    if(d instanceof BaseMetricDescription) {
-                        desc = (BaseMetricDescription) d;
-                        break;
-                    }
-                }
-            }
-
-            // Create new subsumed metric if it was not found
-            if (desc == null) {
-                desc = convertMeasurementMetricToBaseMetricDescription(measuredObject);
-                repository.getDescriptions().add(desc);
-            }
-
-            // link to metric set description
-            metricSetDescription.getSubsumedMetrics().add(desc);
-        }
     }
 
     /**
@@ -250,7 +222,7 @@ public abstract class Edp2WriteStrategy {
         // because ordinal values are used instead to represent nominal values.
         // If identifiers should be allowed, the initial identifier must
         // be set here.
-        final String measuredObject = edp2MetaData.getMeasurementName();
+        final String measuredObject = edp2MetaData.getMetricDescriptions().getTextualDescription();
 
         // Check for existing Edp2Measures in the experimentGroup
         for(final Edp2Measure edp2Measure : experimentGroup.getMeasure()) {
@@ -282,75 +254,16 @@ public abstract class Edp2WriteStrategy {
         experimentRun.getMeasurements().add(measurements);
     }
 
-    /**
-     * Converts a MeasurementMetric object to a BaseMetricDescription object.
-     * TODO Lehrig: check whether NumericalBaseMetricDescription is the only case or whether TextualBaseMetricDescription can also occur.
-     * 
-     * @param measuredObject
-     *            The MeasurementMetric object.
-     * @return The converted BaseMetricDescription object.
-     */
-    protected static BaseMetricDescription convertMeasurementMetricToBaseMetricDescription(
-            final MeasurementMetric measuredObject) {
-        final NumericalBaseMetricDescription desc = ExperimentDataFactory.eINSTANCE.createNumericalBaseMetricDescription();
-
-        // CaptureType:
-        if (measuredObject.getCaptureType() == de.uka.ipd.sdq.pipesandfilters.framework.CaptureType.NATURAL_NUMBER) {
-            desc
-            .setCaptureType(org.palladiosimulator.edp2.models.ExperimentData.CaptureType.INTEGER_NUMBER);
-        } else if (measuredObject.getCaptureType() == de.uka.ipd.sdq.pipesandfilters.framework.CaptureType.REAL_NUMBER) {
-            desc
-            .setCaptureType(org.palladiosimulator.edp2.models.ExperimentData.CaptureType.REAL_NUMBER);
-        }
-        else {
-            throw new IllegalArgumentException("Unsupported CaptureType: "+measuredObject.getCaptureType());
-        }
-
-        // DefaultUnit:
-        desc.setDefaultUnit(measuredObject.getUnit());
-
-        // PersistenceKind:
-        desc.setPersistenceKind(PersistenceKindOptions.BINARY_PREFERRED);
-
-        // Monotonic:
-        if (measuredObject.isStrongMonotonic()) {
-            desc.setMonotonic(Monotonic.STRONG);
-        } else if (measuredObject.isMonotonic()) {
-            desc.setMonotonic(Monotonic.YES);
-        } else {
-            desc.setMonotonic(Monotonic.NO);
-        }
-
-        // Name:
-        desc.setName(measuredObject.getName());
-
-        // Scale:
-        if (measuredObject.getScale() == de.uka.ipd.sdq.pipesandfilters.framework.Scale.INTERVAL) {
-            desc.setScale(org.palladiosimulator.edp2.models.ExperimentData.Scale.INTERVAL);
-        } else if (measuredObject.getScale() == de.uka.ipd.sdq.pipesandfilters.framework.Scale.NOMINAL) {
-            desc.setScale(org.palladiosimulator.edp2.models.ExperimentData.Scale.NOMINAL);
-        } else if (measuredObject.getScale() == de.uka.ipd.sdq.pipesandfilters.framework.Scale.ORDINAL) {
-            desc.setScale(org.palladiosimulator.edp2.models.ExperimentData.Scale.ORDINAL);
-        } else if (measuredObject.getScale() == de.uka.ipd.sdq.pipesandfilters.framework.Scale.RATIO) {
-            desc.setScale(org.palladiosimulator.edp2.models.ExperimentData.Scale.RATIO);
-        }
-
-        // Description:
-        desc.setTextualDescription(measuredObject.getDescription());
-
-        return desc;
-    }
-
-
 
     /**
      * This method writes given measurement data to the EDP2.
      */
-    public void writeData(final PipeData pipeData) {
+    @Override
+	public void writeData(final List<Measure<?, ? extends Quantity>> data) {
         final Measurement measurement = new Measurement(metricSetDescription);
 
-        for(int i = 0; i < pipeData.getTupleSize(); i++) {
-            measurement.setMeasuredValue(i, pipeData.getTupleElement(i));
+        for(int i = 0; i < data.size(); i++) {
+            measurement.setMeasuredValue(i, data.get(i));
         }
         MeasurementsUtility.storeMeasurement(measurements, measurement);
     }

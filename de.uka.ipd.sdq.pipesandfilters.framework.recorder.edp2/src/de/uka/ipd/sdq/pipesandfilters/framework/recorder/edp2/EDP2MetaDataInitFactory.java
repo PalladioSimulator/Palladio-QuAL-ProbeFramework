@@ -1,11 +1,11 @@
 package de.uka.ipd.sdq.pipesandfilters.framework.recorder.edp2;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
+import org.palladiosimulator.edp2.models.ExperimentData.MetricSetDescription;
+
 import de.uka.ipd.sdq.pipesandfilters.framework.IMetaDataInitFactory;
-import de.uka.ipd.sdq.pipesandfilters.framework.MeasurementMetric;
 import de.uka.ipd.sdq.pipesandfilters.framework.MetaDataInit;
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.edp2.launch.EDP2Config;
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.launch.IRecorderConfiguration;
@@ -14,10 +14,8 @@ public class EDP2MetaDataInitFactory implements IMetaDataInitFactory {
 
     @Override
     public MetaDataInit createMetaDataInit(
-    		final List<MeasurementMetric> measuredMetrics,
+    		final MetricSetDescription metricDescriptions,
             final IRecorderConfiguration recorderConfiguration,
-            final String metricName,
-			final String measurementName, 
 			final String experimentName,
 			final String experimentRunName, 
 			final String modelElementID,
@@ -30,21 +28,19 @@ public class EDP2MetaDataInitFactory implements IMetaDataInitFactory {
 							.getSimpleName() + ".");
 		}
     	
-        return new EDP2MetaDataInit(measuredMetrics, (EDP2Config) recorderConfiguration, 
-        		metricName, measurementName, experimentName, experimentRunName, modelElementID, executionResultTypes);
+        return new EDP2MetaDataInit(metricDescriptions, (EDP2Config) recorderConfiguration, 
+        		experimentName, experimentRunName, modelElementID, executionResultTypes);
         
     }
 
     @Override
     public MetaDataInit createMetaDataInit(
-    		final List<MeasurementMetric> measuredMetrics,
+    		final MetricSetDescription metricDescriptions,
             final IRecorderConfiguration recorderConfiguration,
-            final String metricName,
-			final String measurementName, 
 			final String experimentName,
 			final String experimentRunName, 
 			final String modelElementID) {
-        return createMetaDataInit(measuredMetrics, recorderConfiguration, metricName, measurementName, experimentName, experimentRunName, modelElementID, Collections.<Integer, String> emptyMap());
+        return createMetaDataInit(metricDescriptions, recorderConfiguration, experimentName, experimentRunName, modelElementID, Collections.<Integer, String> emptyMap());
     }
 
 }

@@ -3,7 +3,8 @@ package de.uka.ipd.sdq.probespec.framework.calculator;
 import java.util.Arrays;
 import java.util.List;
 
-import de.uka.ipd.sdq.pipesandfilters.framework.MeasurementMetric;
+import org.palladiosimulator.edp2.models.ExperimentData.MetricDescription;
+
 import de.uka.ipd.sdq.probespec.framework.BlackboardVote;
 import de.uka.ipd.sdq.probespec.framework.ProbeSetAndRequestContext;
 import de.uka.ipd.sdq.probespec.framework.ProbeSetSample;
@@ -31,8 +32,8 @@ public abstract class BinaryCalculator extends Calculator {
 
 	private final Integer endProbeSetID;
 
-    public BinaryCalculator(ProbeSpecContext ctx, List<MeasurementMetric> measurementMetrics, Integer startProbeSetID, Integer endProbeSetID) {
-	    super(ctx, measurementMetrics);
+    public BinaryCalculator(ProbeSpecContext ctx, List<MetricDescription> metricDescriptions, Integer startProbeSetID, Integer endProbeSetID) {
+	    super(ctx, metricDescriptions);
 		this.startProbeSetID = startProbeSetID;
 		this.endProbeSetID = endProbeSetID;
 		

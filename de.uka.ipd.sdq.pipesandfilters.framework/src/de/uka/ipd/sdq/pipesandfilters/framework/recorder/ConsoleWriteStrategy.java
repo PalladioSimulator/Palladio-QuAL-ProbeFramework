@@ -1,7 +1,11 @@
 package de.uka.ipd.sdq.pipesandfilters.framework.recorder;
 
+import java.util.List;
+
+import javax.measure.Measure;
+import javax.measure.quantity.Quantity;
+
 import de.uka.ipd.sdq.pipesandfilters.framework.MetaDataInit;
-import de.uka.ipd.sdq.pipesandfilters.framework.PipeData;
 
 public class ConsoleWriteStrategy implements IRawWriteStrategy {
 
@@ -16,10 +20,10 @@ public class ConsoleWriteStrategy implements IRawWriteStrategy {
 	}
 
 	@Override
-	public void writeData(PipeData data) {
+	public void writeData(List<Measure<?, ? extends Quantity>> data) {
 		String out = "";
-		for (int i = 0; i<data.getTupleSize(); i++) {
-			out += data.getTupleElement(i).toString() + "\t";
+		for (int i = 0; i<data.size(); i++) {
+			out += data.get(i).toString() + "\t";
 		}
 		System.out.println(out);
 	}

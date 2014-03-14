@@ -13,7 +13,7 @@ import javax.measure.quantity.Quantity;
 import de.uka.ipd.sdq.probespec.framework.ProbeSetSample;
 import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
 import de.uka.ipd.sdq.probespec.framework.ProbeType;
-import de.uka.ipd.sdq.probespec.framework.constants.MeasurementMetricConstants;
+import de.uka.ipd.sdq.probespec.framework.constants.MetricDescriptionConstants;
 import de.uka.ipd.sdq.probespec.framework.exceptions.CalculatorException;
 
 /**
@@ -36,7 +36,7 @@ public class StateCalculator extends UnaryCalculator {
      *            ID of the probe set element from the model
      */
 	public StateCalculator(ProbeSpecContext ctx, Integer probeSetID) {
-		super(ctx, Arrays.asList(MeasurementMetricConstants.CPU_STATE_METRIC), probeSetID);
+		super(ctx, Arrays.asList(MetricDescriptionConstants.CPU_STATE_METRIC), probeSetID);
 	}
 
 	/**

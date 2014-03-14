@@ -1,7 +1,11 @@
 package de.uka.ipd.sdq.pipesandfilters.framework.recorder;
 
+import java.util.List;
+
+import javax.measure.Measure;
+import javax.measure.quantity.Quantity;
+
 import de.uka.ipd.sdq.pipesandfilters.framework.MetaDataInit;
-import de.uka.ipd.sdq.pipesandfilters.framework.PipeData;
 
 /**
  * A WriteStrategy is responsible for storing the measurements 
@@ -9,6 +13,7 @@ import de.uka.ipd.sdq.pipesandfilters.framework.PipeData;
  *
  * @author pmerkle
  * @author Baum
+ * @uathor Sebastian Lehrig
  */
 public interface IWriteStrategy {
 
@@ -19,12 +24,7 @@ public interface IWriteStrategy {
 	 * @param metaData
 	 *            The meta data of the measurements.
 	 */
-	public abstract void initialize(MetaDataInit metaData);
-
-	/**
-	 * This method is called at the end of the writing process.
-	 */
-	public abstract void flush();
+	public abstract void initialize(MetaDataInit metaData);	
 
 	/**
 	 * Writes data into the storing devices.
@@ -32,5 +32,10 @@ public interface IWriteStrategy {
 	 * @param data
 	 *            The measurement that should be stored.
 	 */
-	public abstract void writeData(PipeData data);
+	public abstract void writeData(List<Measure<?, ? extends Quantity>> data);
+	
+	/**
+	 * This method is called at the end of the writing process.
+	 */
+	public abstract void flush();
 }

@@ -26,7 +26,7 @@ public abstract class AbstractWriteDataStrategy implements IWriteDataStrategy {
 
 	@Override
 	public void initialise(MetaDataInit metaData) {
-		String sensorId = metaData.getMeasurementName();
+		String sensorId = metaData.getMetricDescriptions().getTextualDescription();
 		sensor = SensorHelper.createOrReuseTimeSensor(daoFactory, experiment,
 				sensorId);
 	}

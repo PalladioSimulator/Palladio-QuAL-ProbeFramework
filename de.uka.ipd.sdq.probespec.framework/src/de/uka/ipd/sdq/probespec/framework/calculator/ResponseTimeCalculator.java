@@ -1,6 +1,6 @@
 package de.uka.ipd.sdq.probespec.framework.calculator;
 
-import static de.uka.ipd.sdq.probespec.framework.constants.MeasurementMetricConstants.RESPONSE_TIME_METRIC;
+import static de.uka.ipd.sdq.probespec.framework.constants.MetricDescriptionConstants.RESPONSE_TIME_METRIC;
 
 import java.util.Arrays;
 

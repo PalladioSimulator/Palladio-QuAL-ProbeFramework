@@ -1,6 +1,12 @@
 package de.uka.ipd.sdq.pipesandfilters.framework.recorder;
 
-import de.uka.ipd.sdq.pipesandfilters.framework.PipeElement;
+import java.util.List;
+
+import javax.measure.Measure;
+import javax.measure.quantity.Quantity;
+
+import de.uka.ipd.sdq.probespec.framework.calculator.ICalculatorListener;
+
 
 /**
  * This class is the super class of any recorder implementations. A recorder is
@@ -8,51 +14,28 @@ import de.uka.ipd.sdq.pipesandfilters.framework.PipeElement;
  * WriteStrategy. The measurements can either be aggregated before storing or be
  * stored as raw measurements.
  * 
- * @author Baum
+ * @author Baum, Sebastian Lehrig
  * 
  */
-public abstract class Recorder extends PipeElement {
+public abstract class Recorder implements IWriteStrategy, ICalculatorListener {
 
 	/**
-	 * The write strategy of the recorder. It determines in which way that
-	 * measurement data is made persistent.
-	 */
-	protected IWriteStrategy writeStrategy;
-
-	/**
-	 * The default constructor for a recorder. This constructor sets
-	 * MAX_IN_DEGREE to 1 and MAX_OUT_DEGREE to 0.
+	 * The default constructor for a recorder.
 	 * 
 	 * @param writeStrategy
 	 *            The write strategy of the recorder.
 	 */
-	public Recorder(IWriteStrategy writeStrategy) {
-		super(1, 0);
-		this.writeStrategy = writeStrategy;
+	public Recorder() {
+		super();
 	}
 
-	/**
-	 * The constructor of a Recorder.
-	 * 
-	 * @param writeStrategy
-	 *            The write strategy of the recorder.
-	 * @param MAX_INT_DEGREE
-	 *            The maximum in degree of the filter.
-	 * @param MAX_OUT_DEGREE
-	 *            The maximum out degree of the filter.
-	 */
-	public Recorder(IWriteStrategy writeStrategy, int MAX_IN_DEGREE,
-			int MAX_OUT_DEGREE) {
-		super(MAX_IN_DEGREE, MAX_OUT_DEGREE);
-		this.writeStrategy = writeStrategy;
+	@Override
+	public void calculated(List<Measure<?, ? extends Quantity>> resultTuple) {
+		this.writeData(resultTuple);
 	}
-
-	/**
-	 * Returns the write strategy of the recorder.
-	 * 
-	 * @return The recorder's write strategy.
-	 */
-	public IWriteStrategy getWriteStrategy() {
-		return writeStrategy;
+	
+	@Override
+    public void preUnregister() {
+		this.flush();
 	}
 }

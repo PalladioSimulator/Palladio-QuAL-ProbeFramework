@@ -1,9 +1,9 @@
 package de.uka.ipd.sdq.pipesandfilters.framework.recorder.edp2;
 
-import java.util.List;
 import java.util.Map;
 
-import de.uka.ipd.sdq.pipesandfilters.framework.MeasurementMetric;
+import org.palladiosimulator.edp2.models.ExperimentData.MetricSetDescription;
+
 import de.uka.ipd.sdq.pipesandfilters.framework.MetaDataInit;
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.edp2.launch.EDP2Config;
 
@@ -31,12 +31,12 @@ public class EDP2MetaDataInit extends MetaDataInit {
      * @param executionResultTypes The mapping of numerical values to strings representing the
      *            possible execution results
 	 */
-	public EDP2MetaDataInit(List<MeasurementMetric> measuredMetrics,
-			EDP2Config edp2Config, String metricName,
-			String measurementName, String experimentName,
+	public EDP2MetaDataInit(MetricSetDescription metricDescriptions,
+			EDP2Config edp2Config,
+			String experimentName,
 			String experimentRunName, String modelElementID,
 			Map<Integer, String> executionResultTypes) {
-		super(measuredMetrics, edp2Config, metricName, measurementName,
+		super(metricDescriptions, edp2Config,
 				experimentName, experimentRunName, modelElementID, executionResultTypes);
 	}
 }

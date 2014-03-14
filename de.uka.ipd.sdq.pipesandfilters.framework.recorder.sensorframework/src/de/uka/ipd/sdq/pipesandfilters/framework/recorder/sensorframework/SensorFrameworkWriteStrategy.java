@@ -1,11 +1,16 @@
 package de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework;
 
+import java.util.List;
+
+import javax.measure.Measure;
+import javax.measure.quantity.Quantity;
+
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import de.uka.ipd.sdq.pipesandfilters.framework.MetaDataInit;
-import de.uka.ipd.sdq.pipesandfilters.framework.PipeData;
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.IRawWriteStrategy;
+import de.uka.ipd.sdq.pipesandfilters.framework.recorder.Recorder;
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework.launch.SensorFrameworkConfig;
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework.strategies.DemandedTimeWriteDataStrategy;
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework.strategies.ExecutionResultWriteDataStrategy;
@@ -20,12 +25,11 @@ import de.uka.ipd.sdq.sensorframework.entities.ExperimentRun;
 import de.uka.ipd.sdq.sensorframework.entities.dao.IDAOFactory;
 
 /**
- * Write Strategy for the SensorFramework.
+ * Recorder for the SensorFramework.
  *
- * @author pmerkle
- *
+ * @author pmerkle, Sebastian Lehrig
  */
-public class SensorFrameworkWriteStrategy implements IRawWriteStrategy {
+public class SensorFrameworkWriteStrategy extends Recorder implements IRawWriteStrategy {
 
     private static Logger logger = Logger.getLogger(SensorFrameworkWriteStrategy.class.getName());
 
@@ -80,25 +84,25 @@ public class SensorFrameworkWriteStrategy implements IRawWriteStrategy {
 		// Create sensor
 		// TODO Remove hard coded metric names "Response Time", ... Use Enum
 		// instead!?
-		if (metaData.getMetricName().equals("Response Time")) {
+		if (metaData.getMetricDescriptions().getName().equals("Response Time")) {
 			writeDataStrategy = new ResponseTimeWriteDataStrategy(daoFactory,
 					experiment, run);
-		} else if (metaData.getMetricName().equals("Waiting Time")) {
+		} else if (metaData.getMetricDescriptions().getName().equals("Waiting Time")) {
 			writeDataStrategy = new WaitingTimeWriteDataStrategy(daoFactory,
 					experiment, run);
-		} else if (metaData.getMetricName().equals("Hold Time")) {
+		} else if (metaData.getMetricDescriptions().getName().equals("Hold Time")) {
 			writeDataStrategy = new WaitingTimeWriteDataStrategy(daoFactory,
 					experiment, run);
-		} else if (metaData.getMetricName().equals("Demanded Time")) {
+		} else if (metaData.getMetricDescriptions().getName().equals("Demanded Time")) {
 			writeDataStrategy = new DemandedTimeWriteDataStrategy(daoFactory,
 					experiment, run);
-		} else if (metaData.getMetricName().equals("Utilisation")) {
+		} else if (metaData.getMetricDescriptions().getName().equals("Utilisation")) {
 			writeDataStrategy = new UtilisationWriteDataStrategy(daoFactory,
 					experiment, run);
-		} else if (metaData.getMetricName().equals("Overall Utilisation")) {
+		} else if (metaData.getMetricDescriptions().getName().equals("Overall Utilisation")) {
 			writeDataStrategy = new OverallUtilisationWriteDataStrategy(
 					daoFactory, experiment, run);
-		} else if (metaData.getMetricName().equals("Execution Time")) {
+		} else if (metaData.getMetricDescriptions().getName().equals("Execution Time")) {
 			writeDataStrategy = new ExecutionResultWriteDataStrategy(
 					daoFactory, experiment, run);
 		}
@@ -108,7 +112,7 @@ public class SensorFrameworkWriteStrategy implements IRawWriteStrategy {
 	}
 
 	@Override
-	public void writeData(PipeData data) {
+	public void writeData(List<Measure<?, ? extends Quantity>> data) {
 		if (!flushed) {
 			writeDataStrategy.writeData(data);
         } else {

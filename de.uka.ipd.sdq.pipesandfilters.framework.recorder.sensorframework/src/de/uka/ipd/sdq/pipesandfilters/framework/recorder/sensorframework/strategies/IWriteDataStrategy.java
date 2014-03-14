@@ -1,12 +1,16 @@
 package de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework.strategies;
 
+import java.util.List;
+
+import javax.measure.Measure;
+import javax.measure.quantity.Quantity;
+
 import de.uka.ipd.sdq.pipesandfilters.framework.MetaDataInit;
-import de.uka.ipd.sdq.pipesandfilters.framework.PipeData;
 
 public interface IWriteDataStrategy {
 
 	public void initialise(MetaDataInit metaData);
 	
-	public void writeData(PipeData data);
+	public void writeData(List<Measure<?, ? extends Quantity>> data);
 	
 }

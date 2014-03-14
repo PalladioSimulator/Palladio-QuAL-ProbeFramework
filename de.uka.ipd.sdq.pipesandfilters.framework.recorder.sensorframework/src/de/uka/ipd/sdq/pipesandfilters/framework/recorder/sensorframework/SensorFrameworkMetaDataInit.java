@@ -1,9 +1,10 @@
 package de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework;
 
-import java.util.List;
 import java.util.Map;
 
-import de.uka.ipd.sdq.pipesandfilters.framework.MeasurementMetric;
+import org.palladiosimulator.edp2.models.ExperimentData.MetricDescription;
+import org.palladiosimulator.edp2.models.ExperimentData.MetricSetDescription;
+
 import de.uka.ipd.sdq.pipesandfilters.framework.MetaDataInit;
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework.launch.SensorFrameworkConfig;
 
@@ -11,21 +12,21 @@ public class SensorFrameworkMetaDataInit extends MetaDataInit {
 
 	private final boolean isRemoteRun;	
 	
-	public SensorFrameworkMetaDataInit(List<MeasurementMetric> measuredMetrics,
-			SensorFrameworkConfig recorderConfiguration, String metricName,
-			String measurementName, String experimentName,
+	public SensorFrameworkMetaDataInit(MetricSetDescription metricDescriptions,
+			SensorFrameworkConfig recorderConfiguration,
+			String experimentName,
 			String experimentRunName, String modelElementID,
 			Map<Integer, String> executionResultTypes, boolean isRemoteRun) {
-		super(measuredMetrics, recorderConfiguration, metricName, measurementName,
+		super(metricDescriptions, recorderConfiguration,
 				experimentName, experimentRunName, modelElementID, executionResultTypes);
 		this.isRemoteRun = isRemoteRun;
 	}
 	
-	public SensorFrameworkMetaDataInit(List<MeasurementMetric> measuredMetrics,
-			SensorFrameworkConfig recorderConfiguration, String metricName,
+	public SensorFrameworkMetaDataInit(MetricSetDescription metricDescriptions,
+			SensorFrameworkConfig recorderConfiguration, MetricDescription metricDescription,
 			String measurementName, String experimentName,
 			String experimentRunName, String modelElementID) {
-		this(measuredMetrics, recorderConfiguration, metricName, measurementName,
+		this(metricDescriptions, recorderConfiguration,
 				experimentName, experimentRunName, modelElementID, null, false);
 	}
 

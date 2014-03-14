@@ -14,7 +14,7 @@ import org.apache.log4j.Logger;
  * @author Philipp Merkle
  * 
  */
-public class MCRWarmUpFilter extends Filter {
+public class MCRWarmUpFilter {
 
 	private static Logger logger = Logger.getLogger(MCRWarmUpFilter.class.getName());
 	private int minIndex = 0;
