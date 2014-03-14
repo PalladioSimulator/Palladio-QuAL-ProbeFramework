@@ -12,7 +12,7 @@ import javax.measure.quantity.Quantity;
 
 import de.uka.ipd.sdq.probespec.framework.ProbeSetSample;
 import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
-import de.uka.ipd.sdq.probespec.framework.constants.MeasurementMetricConstants;
+import de.uka.ipd.sdq.probespec.framework.constants.MetricDescriptionConstants;
 import de.uka.ipd.sdq.probespec.framework.exceptions.CalculatorException;
 
 /**
@@ -36,7 +36,7 @@ public class DemandCalculator extends UnaryCalculator {
      *            ID of the probe set element from the model
      */
     public DemandCalculator(ProbeSpecContext ctx, Integer probeSetID) {
-        super(ctx, Arrays.asList(MeasurementMetricConstants.RESOURCE_DEMAND_METRIC), probeSetID);
+        super(ctx, Arrays.asList(MetricDescriptionConstants.RESOURCE_DEMAND_METRIC), probeSetID);
     }
 
     /**

@@ -1,7 +1,9 @@
 package de.uka.ipd.sdq.probespec.framework;
 
-import de.uka.ipd.sdq.pipesandfilters.framework.PipesAndFiltersManager;
-import de.uka.ipd.sdq.probespec.framework.calculator.CalculatorRegistry;
+import java.util.HashSet;
+import java.util.Set;
+
+import de.uka.ipd.sdq.probespec.framework.calculator.Calculator;
 import de.uka.ipd.sdq.probespec.framework.calculator.ICalculatorFactory;
 import de.uka.ipd.sdq.probespec.framework.concurrency.ThreadManager;
 import de.uka.ipd.sdq.probespec.framework.garbagecollection.IRegionBasedGarbageCollector;
@@ -16,23 +18,20 @@ public class ProbeSpecContext {
 	
 	private ISampleBlackboard sampleBlackboard;
 	
-	private ThreadManager threadManager;
+	private final ThreadManager threadManager;
 	
-	private ProbeSetIDGenerator probeSetIdGenerator;
+	private final ProbeSetIDGenerator probeSetIdGenerator;
 	
 	private IRegionBasedGarbageCollector<RequestContext> blackboardGarbageCollector;
 	
-	private CalculatorRegistry calculatorRegistry;
-	
-	private Registry<PipesAndFiltersManager> pipeManagerRegisty;
-	
+	private final Set<Calculator> calculators;
+
 	private boolean initialised;
-	
+
 	public ProbeSpecContext() {
 		threadManager = new ThreadManager();
 		probeSetIdGenerator = new ProbeSetIDGenerator();
-		calculatorRegistry = new CalculatorRegistry();
-		pipeManagerRegisty = new Registry<PipesAndFiltersManager>();
+		calculators = new HashSet<Calculator>();
 	}
 	
 	public void initialise(ISampleBlackboard blackboard,
@@ -42,6 +41,21 @@ public class ProbeSpecContext {
         this.probeStrategyRegistry = probeStrategyRegistry;
         this.calculatorFactory = calculatorFactory;
         this.initialised = true;
+	}
+	
+	public void finish() {
+	    throwExceptionIfNotInitialised();
+	    
+		// stop registered threads
+		getThreadManager().stopThreads();
+		
+		// remove all listeners from used calculators
+		for(Calculator c : calculators) {
+			c.unregisterCalculatorListeners();
+		}
+		
+		// clear calculators
+		calculators.clear();
 	}
 	
 	public Integer obtainProbeSetId(String probeSetId) {
@@ -93,26 +107,6 @@ public class ProbeSpecContext {
 		return threadManager;
 	}
 	
-	public CalculatorRegistry getCalculatorRegistry() {
-		return calculatorRegistry;
-	}
-	
-	public Registry<PipesAndFiltersManager> getPipeManagerRegisty() {
-	    throwExceptionIfNotInitialised();
-		return pipeManagerRegisty;
-	}
-
-	public void finish() {
-	    throwExceptionIfNotInitialised();
-	    
-		// stop registered threads
-		getThreadManager().stopThreads();
-		
-		// flush pipes
-		for(PipesAndFiltersManager p : pipeManagerRegisty) {
-			p.flush();
-		}
-	}
 	
     private void throwExceptionIfNotInitialised() {
         if (!initialised) {
@@ -120,4 +114,21 @@ public class ProbeSpecContext {
         }
     }
 	
+	public void addCalculator(Calculator calculator) {
+		this.calculators.add(calculator);
+	}
+
+	public Calculator getCalculatorForId(String calculatorId) {
+		for (Calculator c : calculators) {
+			if(c.getCalculatorId().equals(calculatorId)) {
+				return c;
+			}
+		}
+		
+		return null;
+	}
+	
+	public void registerCalculator(String calculatorId, Calculator calculator) {
+		calculator.setCalculatorId(calculatorId);
+	}
 }

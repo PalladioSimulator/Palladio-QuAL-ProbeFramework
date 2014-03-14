@@ -9,7 +9,7 @@ import javax.measure.quantity.Quantity;
  * Implement this interface to listen for the calculation results of a
  * {@link Calculator}.
  * 
- * @author Philipp Merkle
+ * @author Philipp Merkle, Sebastian Lehrig
  * 
  */
 public interface ICalculatorListener {
@@ -22,5 +22,11 @@ public interface ICalculatorListener {
 	 *            the calculated result
 	 */
 	public void calculated(List<Measure<?, ? extends Quantity>> resultTuple);
+	
+	/**
+	 * After having registered at a {@link Calculator}, this method gets invoked
+	 * to inform the listener about being unregistered.
+	 */
+	public void preUnregister();
 
 }
