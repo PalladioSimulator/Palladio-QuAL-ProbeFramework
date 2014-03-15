@@ -15,14 +15,14 @@
          version="0.0.0"/>
 
    <plugin
-         id="de.uka.ipd.sdq.probespec.framework.test"
+         id="de.uka.ipd.sdq.probespec.tests"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="de.uka.ipd.sdq.probespec.tests"
+         id="de.uka.ipd.sdq.probespec.framework.tests"
          download-size="0"
          install-size="0"
          version="0.0.0"
