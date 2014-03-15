@@ -6,10 +6,10 @@
  */
 package de.uka.ipd.sdq.probespec.impl;
 
+import org.eclipse.emf.ecore.EClass;
+
 import de.uka.ipd.sdq.probespec.CurrentTimeProbe;
 import de.uka.ipd.sdq.probespec.probespecPackage;
-
-import org.eclipse.emf.ecore.EClass;
 
 /**
  * <!-- begin-user-doc -->
@@ -22,22 +22,22 @@ import org.eclipse.emf.ecore.EClass;
  */
 public class CurrentTimeProbeImpl extends ProbeImpl implements CurrentTimeProbe {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected CurrentTimeProbeImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return probespecPackage.Literals.CURRENT_TIME_PROBE;
-	}
+        return probespecPackage.Literals.CURRENT_TIME_PROBE;
+    }
 
 } //CurrentTimeProbeImpl

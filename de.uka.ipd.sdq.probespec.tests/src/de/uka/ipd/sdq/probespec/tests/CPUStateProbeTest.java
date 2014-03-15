@@ -20,55 +20,55 @@ import junit.textui.TestRunner;
 public class CPUStateProbeTest extends ProbeTest {
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public static void main(String[] args) {
-		TestRunner.run(CPUStateProbeTest.class);
-	}
+        TestRunner.run(CPUStateProbeTest.class);
+    }
 
 	/**
-	 * Constructs a new CPU State Probe test case with the given name.
-	 * <!-- begin-user-doc -->
+     * Constructs a new CPU State Probe test case with the given name.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public CPUStateProbeTest(String name) {
-		super(name);
-	}
+        super(name);
+    }
 
 	/**
-	 * Returns the fixture for this CPU State Probe test case.
-	 * <!-- begin-user-doc -->
+     * Returns the fixture for this CPU State Probe test case.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected CPUStateProbe getFixture() {
-		return (CPUStateProbe)fixture;
-	}
+        return (CPUStateProbe)fixture;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see junit.framework.TestCase#setUp()
-	 * @generated
-	 */
+     * @see junit.framework.TestCase#setUp()
+     * @generated
+     */
 	@Override
 	protected void setUp() throws Exception {
-		setFixture(probespecFactory.eINSTANCE.createCPUStateProbe());
-	}
+        setFixture(probespecFactory.eINSTANCE.createCPUStateProbe());
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see junit.framework.TestCase#tearDown()
-	 * @generated
-	 */
+     * @see junit.framework.TestCase#tearDown()
+     * @generated
+     */
 	@Override
 	protected void tearDown() throws Exception {
-		setFixture(null);
-	}
+        setFixture(null);
+    }
 
 } //CPUStateProbeTest

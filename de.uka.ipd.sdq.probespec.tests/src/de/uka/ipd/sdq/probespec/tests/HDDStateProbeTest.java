@@ -20,55 +20,55 @@ import junit.textui.TestRunner;
 public class HDDStateProbeTest extends ProbeTest {
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public static void main(String[] args) {
-		TestRunner.run(HDDStateProbeTest.class);
-	}
+        TestRunner.run(HDDStateProbeTest.class);
+    }
 
 	/**
-	 * Constructs a new HDD State Probe test case with the given name.
-	 * <!-- begin-user-doc -->
+     * Constructs a new HDD State Probe test case with the given name.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public HDDStateProbeTest(String name) {
-		super(name);
-	}
+        super(name);
+    }
 
 	/**
-	 * Returns the fixture for this HDD State Probe test case.
-	 * <!-- begin-user-doc -->
+     * Returns the fixture for this HDD State Probe test case.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected HDDStateProbe getFixture() {
-		return (HDDStateProbe)fixture;
-	}
+        return (HDDStateProbe)fixture;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see junit.framework.TestCase#setUp()
-	 * @generated
-	 */
+     * @see junit.framework.TestCase#setUp()
+     * @generated
+     */
 	@Override
 	protected void setUp() throws Exception {
-		setFixture(probespecFactory.eINSTANCE.createHDDStateProbe());
-	}
+        setFixture(probespecFactory.eINSTANCE.createHDDStateProbe());
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see junit.framework.TestCase#tearDown()
-	 * @generated
-	 */
+     * @see junit.framework.TestCase#tearDown()
+     * @generated
+     */
 	@Override
 	protected void tearDown() throws Exception {
-		setFixture(null);
-	}
+        setFixture(null);
+    }
 
 } //HDDStateProbeTest

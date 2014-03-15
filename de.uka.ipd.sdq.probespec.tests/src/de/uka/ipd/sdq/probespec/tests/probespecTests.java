@@ -20,49 +20,49 @@ import junit.textui.TestRunner;
 public class probespecTests extends TestSuite {
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public static void main(String[] args) {
-		TestRunner.run(suite());
-	}
+        TestRunner.run(suite());
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public static Test suite() {
-		TestSuite suite = new probespecTests("probespec Tests");
-		suite.addTestSuite(PassiveResourceCalculatorTest.class);
-		suite.addTestSuite(ProbeSetTest.class);
-		suite.addTestSuite(PassiveResourceStateProbeTest.class);
-		suite.addTestSuite(StoExProbeTest.class);
-		suite.addTestSuite(SEFFParameterProbeTest.class);
-		suite.addTestSuite(CurrentTimeProbeTest.class);
-		suite.addTestSuite(StoExCalculatorTest.class);
-		suite.addTestSuite(SEFFParameterCalculatorTest.class);
-		suite.addTestSuite(ResponseTimeCalculatorTest.class);
-		suite.addTestSuite(WaitingTimeCalculatorTest.class);
-		suite.addTestSuite(CPUStateProbeTest.class);
-		suite.addTestSuite(HDDStateProbeTest.class);
-		suite.addTestSuite(CPUDemandProbeTest.class);
-		suite.addTestSuite(HDDDemandProbeTest.class);
-		suite.addTestSuite(HDDStateCalculatorTest.class);
-		suite.addTestSuite(CPUStateCalculatorTest.class);
-		suite.addTestSuite(CPUDemandCalculatorTest.class);
-		suite.addTestSuite(HDDDemandCalculatorTest.class);
-		return suite;
-	}
+        TestSuite suite = new probespecTests("probespec Tests");
+        suite.addTestSuite(PassiveResourceCalculatorTest.class);
+        suite.addTestSuite(ProbeSetTest.class);
+        suite.addTestSuite(PassiveResourceStateProbeTest.class);
+        suite.addTestSuite(StoExProbeTest.class);
+        suite.addTestSuite(SEFFParameterProbeTest.class);
+        suite.addTestSuite(CurrentTimeProbeTest.class);
+        suite.addTestSuite(StoExCalculatorTest.class);
+        suite.addTestSuite(SEFFParameterCalculatorTest.class);
+        suite.addTestSuite(ResponseTimeCalculatorTest.class);
+        suite.addTestSuite(WaitingTimeCalculatorTest.class);
+        suite.addTestSuite(CPUStateProbeTest.class);
+        suite.addTestSuite(HDDStateProbeTest.class);
+        suite.addTestSuite(CPUDemandProbeTest.class);
+        suite.addTestSuite(HDDDemandProbeTest.class);
+        suite.addTestSuite(HDDStateCalculatorTest.class);
+        suite.addTestSuite(CPUStateCalculatorTest.class);
+        suite.addTestSuite(CPUDemandCalculatorTest.class);
+        suite.addTestSuite(HDDDemandCalculatorTest.class);
+        return suite;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public probespecTests(String name) {
-		super(name);
-	}
+        super(name);
+    }
 
 } //probespecTests

@@ -20,55 +20,55 @@ import junit.textui.TestRunner;
 public class ResponseTimeCalculatorTest extends BinaryCalculatorTest {
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public static void main(String[] args) {
-		TestRunner.run(ResponseTimeCalculatorTest.class);
-	}
+        TestRunner.run(ResponseTimeCalculatorTest.class);
+    }
 
 	/**
-	 * Constructs a new Response Time Calculator test case with the given name.
-	 * <!-- begin-user-doc -->
+     * Constructs a new Response Time Calculator test case with the given name.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public ResponseTimeCalculatorTest(String name) {
-		super(name);
-	}
+        super(name);
+    }
 
 	/**
-	 * Returns the fixture for this Response Time Calculator test case.
-	 * <!-- begin-user-doc -->
+     * Returns the fixture for this Response Time Calculator test case.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected ResponseTimeCalculator getFixture() {
-		return (ResponseTimeCalculator)fixture;
-	}
+        return (ResponseTimeCalculator)fixture;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see junit.framework.TestCase#setUp()
-	 * @generated
-	 */
+     * @see junit.framework.TestCase#setUp()
+     * @generated
+     */
 	@Override
 	protected void setUp() throws Exception {
-		setFixture(probespecFactory.eINSTANCE.createResponseTimeCalculator());
-	}
+        setFixture(probespecFactory.eINSTANCE.createResponseTimeCalculator());
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see junit.framework.TestCase#tearDown()
-	 * @generated
-	 */
+     * @see junit.framework.TestCase#tearDown()
+     * @generated
+     */
 	@Override
 	protected void tearDown() throws Exception {
-		setFixture(null);
-	}
+        setFixture(null);
+    }
 
 } //ResponseTimeCalculatorTest

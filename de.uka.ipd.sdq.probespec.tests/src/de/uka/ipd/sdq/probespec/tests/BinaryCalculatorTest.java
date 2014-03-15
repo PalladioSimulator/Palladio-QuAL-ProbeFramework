@@ -17,24 +17,24 @@ import de.uka.ipd.sdq.probespec.BinaryCalculator;
 public abstract class BinaryCalculatorTest extends CalculatorTest {
 
 	/**
-	 * Constructs a new Binary Calculator test case with the given name.
-	 * <!-- begin-user-doc -->
+     * Constructs a new Binary Calculator test case with the given name.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public BinaryCalculatorTest(String name) {
-		super(name);
-	}
+        super(name);
+    }
 
 	/**
-	 * Returns the fixture for this Binary Calculator test case.
-	 * <!-- begin-user-doc -->
+     * Returns the fixture for this Binary Calculator test case.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected BinaryCalculator getFixture() {
-		return (BinaryCalculator)fixture;
-	}
+        return (BinaryCalculator)fixture;
+    }
 
 } //BinaryCalculatorTest

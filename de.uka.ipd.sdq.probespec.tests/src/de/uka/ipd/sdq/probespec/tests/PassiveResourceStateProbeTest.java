@@ -20,55 +20,55 @@ import junit.textui.TestRunner;
 public class PassiveResourceStateProbeTest extends ProbeTest {
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public static void main(String[] args) {
-		TestRunner.run(PassiveResourceStateProbeTest.class);
-	}
+        TestRunner.run(PassiveResourceStateProbeTest.class);
+    }
 
 	/**
-	 * Constructs a new Passive Resource State Probe test case with the given name.
-	 * <!-- begin-user-doc -->
+     * Constructs a new Passive Resource State Probe test case with the given name.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public PassiveResourceStateProbeTest(String name) {
-		super(name);
-	}
+        super(name);
+    }
 
 	/**
-	 * Returns the fixture for this Passive Resource State Probe test case.
-	 * <!-- begin-user-doc -->
+     * Returns the fixture for this Passive Resource State Probe test case.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected PassiveResourceStateProbe getFixture() {
-		return (PassiveResourceStateProbe)fixture;
-	}
+        return (PassiveResourceStateProbe)fixture;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see junit.framework.TestCase#setUp()
-	 * @generated
-	 */
+     * @see junit.framework.TestCase#setUp()
+     * @generated
+     */
 	@Override
 	protected void setUp() throws Exception {
-		setFixture(probespecFactory.eINSTANCE.createPassiveResourceStateProbe());
-	}
+        setFixture(probespecFactory.eINSTANCE.createPassiveResourceStateProbe());
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see junit.framework.TestCase#tearDown()
-	 * @generated
-	 */
+     * @see junit.framework.TestCase#tearDown()
+     * @generated
+     */
 	@Override
 	protected void tearDown() throws Exception {
-		setFixture(null);
-	}
+        setFixture(null);
+    }
 
 } //PassiveResourceStateProbeTest

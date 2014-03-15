@@ -6,10 +6,10 @@
  */
 package de.uka.ipd.sdq.probespec.impl;
 
+import org.eclipse.emf.ecore.EClass;
+
 import de.uka.ipd.sdq.probespec.SEFFParameterProbe;
 import de.uka.ipd.sdq.probespec.probespecPackage;
-
-import org.eclipse.emf.ecore.EClass;
 
 /**
  * <!-- begin-user-doc -->
@@ -22,22 +22,22 @@ import org.eclipse.emf.ecore.EClass;
  */
 public class SEFFParameterProbeImpl extends ProbeImpl implements SEFFParameterProbe {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected SEFFParameterProbeImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return probespecPackage.Literals.SEFF_PARAMETER_PROBE;
-	}
+        return probespecPackage.Literals.SEFF_PARAMETER_PROBE;
+    }
 
 } //SEFFParameterProbeImpl

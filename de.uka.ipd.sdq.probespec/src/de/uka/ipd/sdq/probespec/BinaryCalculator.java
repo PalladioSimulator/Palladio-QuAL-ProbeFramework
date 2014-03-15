@@ -26,19 +26,19 @@ import org.eclipse.emf.common.util.EList;
  */
 public interface BinaryCalculator extends Calculator {
 	/**
-	 * Returns the value of the '<em><b>Probe Set</b></em>' containment reference list.
-	 * The list contents are of type {@link de.uka.ipd.sdq.probespec.ProbeSet}.
-	 * <!-- begin-user-doc -->
+     * Returns the value of the '<em><b>Probe Set</b></em>' containment reference list.
+     * The list contents are of type {@link de.uka.ipd.sdq.probespec.ProbeSet}.
+     * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Probe Set</em>' containment reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Probe Set</em>' containment reference list.
-	 * @see de.uka.ipd.sdq.probespec.probespecPackage#getBinaryCalculator_ProbeSet()
-	 * @model containment="true" lower="2" upper="2" ordered="false"
-	 * @generated
-	 */
+     * @return the value of the '<em>Probe Set</em>' containment reference list.
+     * @see de.uka.ipd.sdq.probespec.probespecPackage#getBinaryCalculator_ProbeSet()
+     * @model containment="true" lower="2" upper="2" ordered="false"
+     * @generated
+     */
 	EList<ProbeSet> getProbeSet();
 
 } // BinaryCalculator

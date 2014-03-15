@@ -6,16 +6,35 @@
  */
 package de.uka.ipd.sdq.probespec.impl;
 
-import de.uka.ipd.sdq.probespec.*;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
-
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
+
+import de.uka.ipd.sdq.probespec.CPUDemandCalculator;
+import de.uka.ipd.sdq.probespec.CPUDemandProbe;
+import de.uka.ipd.sdq.probespec.CPUStateCalculator;
+import de.uka.ipd.sdq.probespec.CPUStateProbe;
+import de.uka.ipd.sdq.probespec.CurrentTimeProbe;
+import de.uka.ipd.sdq.probespec.HDDDemandCalculator;
+import de.uka.ipd.sdq.probespec.HDDDemandProbe;
+import de.uka.ipd.sdq.probespec.HDDStateCalculator;
+import de.uka.ipd.sdq.probespec.HDDStateProbe;
+import de.uka.ipd.sdq.probespec.PassiveResourceCalculator;
+import de.uka.ipd.sdq.probespec.PassiveResourceStateProbe;
+import de.uka.ipd.sdq.probespec.ProbeSet;
+import de.uka.ipd.sdq.probespec.ProbeSetPosition;
+import de.uka.ipd.sdq.probespec.ProbeSpecRepository;
+import de.uka.ipd.sdq.probespec.ResponseTimeCalculator;
+import de.uka.ipd.sdq.probespec.SEFFParameterCalculator;
+import de.uka.ipd.sdq.probespec.SEFFParameterProbe;
+import de.uka.ipd.sdq.probespec.StoExCalculator;
+import de.uka.ipd.sdq.probespec.StoExProbe;
+import de.uka.ipd.sdq.probespec.WaitingTimeCalculator;
+import de.uka.ipd.sdq.probespec.probespecFactory;
+import de.uka.ipd.sdq.probespec.probespecPackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -25,324 +44,324 @@ import org.eclipse.emf.ecore.plugin.EcorePlugin;
  */
 public class probespecFactoryImpl extends EFactoryImpl implements probespecFactory {
 	/**
-	 * Creates the default factory implementation.
-	 * <!-- begin-user-doc -->
+     * Creates the default factory implementation.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public static probespecFactory init() {
-		try {
-			probespecFactory theprobespecFactory = (probespecFactory)EPackage.Registry.INSTANCE.getEFactory("http://sdq.ipd.uka.de/ProbeSpec/0.1"); 
-			if (theprobespecFactory != null) {
-				return theprobespecFactory;
-			}
-		}
-		catch (Exception exception) {
-			EcorePlugin.INSTANCE.log(exception);
-		}
-		return new probespecFactoryImpl();
-	}
+        try {
+            probespecFactory theprobespecFactory = (probespecFactory)EPackage.Registry.INSTANCE.getEFactory(probespecPackage.eNS_URI);
+            if (theprobespecFactory != null) {
+                return theprobespecFactory;
+            }
+        }
+        catch (Exception exception) {
+            EcorePlugin.INSTANCE.log(exception);
+        }
+        return new probespecFactoryImpl();
+    }
 
 	/**
-	 * Creates an instance of the factory.
-	 * <!-- begin-user-doc -->
+     * Creates an instance of the factory.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public probespecFactoryImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public EObject create(EClass eClass) {
-		switch (eClass.getClassifierID()) {
-			case probespecPackage.PASSIVE_RESOURCE_CALCULATOR: return createPassiveResourceCalculator();
-			case probespecPackage.PROBE_SET: return createProbeSet();
-			case probespecPackage.PASSIVE_RESOURCE_STATE_PROBE: return createPassiveResourceStateProbe();
-			case probespecPackage.STO_EX_PROBE: return createStoExProbe();
-			case probespecPackage.SEFF_PARAMETER_PROBE: return createSEFFParameterProbe();
-			case probespecPackage.CURRENT_TIME_PROBE: return createCurrentTimeProbe();
-			case probespecPackage.STO_EX_CALCULATOR: return createStoExCalculator();
-			case probespecPackage.SEFF_PARAMETER_CALCULATOR: return createSEFFParameterCalculator();
-			case probespecPackage.RESPONSE_TIME_CALCULATOR: return createResponseTimeCalculator();
-			case probespecPackage.WAITING_TIME_CALCULATOR: return createWaitingTimeCalculator();
-			case probespecPackage.PROBE_SPEC_REPOSITORY: return createProbeSpecRepository();
-			case probespecPackage.CPU_STATE_PROBE: return createCPUStateProbe();
-			case probespecPackage.HDD_STATE_PROBE: return createHDDStateProbe();
-			case probespecPackage.CPU_DEMAND_PROBE: return createCPUDemandProbe();
-			case probespecPackage.HDD_DEMAND_PROBE: return createHDDDemandProbe();
-			case probespecPackage.HDD_STATE_CALCULATOR: return createHDDStateCalculator();
-			case probespecPackage.CPU_STATE_CALCULATOR: return createCPUStateCalculator();
-			case probespecPackage.CPU_DEMAND_CALCULATOR: return createCPUDemandCalculator();
-			case probespecPackage.HDD_DEMAND_CALCULATOR: return createHDDDemandCalculator();
-			default:
-				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
-		}
-	}
+        switch (eClass.getClassifierID()) {
+            case probespecPackage.PASSIVE_RESOURCE_CALCULATOR: return createPassiveResourceCalculator();
+            case probespecPackage.PROBE_SET: return createProbeSet();
+            case probespecPackage.PASSIVE_RESOURCE_STATE_PROBE: return createPassiveResourceStateProbe();
+            case probespecPackage.STO_EX_PROBE: return createStoExProbe();
+            case probespecPackage.SEFF_PARAMETER_PROBE: return createSEFFParameterProbe();
+            case probespecPackage.CURRENT_TIME_PROBE: return createCurrentTimeProbe();
+            case probespecPackage.STO_EX_CALCULATOR: return createStoExCalculator();
+            case probespecPackage.SEFF_PARAMETER_CALCULATOR: return createSEFFParameterCalculator();
+            case probespecPackage.RESPONSE_TIME_CALCULATOR: return createResponseTimeCalculator();
+            case probespecPackage.WAITING_TIME_CALCULATOR: return createWaitingTimeCalculator();
+            case probespecPackage.PROBE_SPEC_REPOSITORY: return createProbeSpecRepository();
+            case probespecPackage.CPU_STATE_PROBE: return createCPUStateProbe();
+            case probespecPackage.HDD_STATE_PROBE: return createHDDStateProbe();
+            case probespecPackage.CPU_DEMAND_PROBE: return createCPUDemandProbe();
+            case probespecPackage.HDD_DEMAND_PROBE: return createHDDDemandProbe();
+            case probespecPackage.HDD_STATE_CALCULATOR: return createHDDStateCalculator();
+            case probespecPackage.CPU_STATE_CALCULATOR: return createCPUStateCalculator();
+            case probespecPackage.CPU_DEMAND_CALCULATOR: return createCPUDemandCalculator();
+            case probespecPackage.HDD_DEMAND_CALCULATOR: return createHDDDemandCalculator();
+            default:
+                throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
+        }
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public Object createFromString(EDataType eDataType, String initialValue) {
-		switch (eDataType.getClassifierID()) {
-			case probespecPackage.PROBE_SET_POSITION:
-				return createProbeSetPositionFromString(eDataType, initialValue);
-			default:
-				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
-		}
-	}
+        switch (eDataType.getClassifierID()) {
+            case probespecPackage.PROBE_SET_POSITION:
+                return createProbeSetPositionFromString(eDataType, initialValue);
+            default:
+                throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
+        }
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public String convertToString(EDataType eDataType, Object instanceValue) {
-		switch (eDataType.getClassifierID()) {
-			case probespecPackage.PROBE_SET_POSITION:
-				return convertProbeSetPositionToString(eDataType, instanceValue);
-			default:
-				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
-		}
-	}
+        switch (eDataType.getClassifierID()) {
+            case probespecPackage.PROBE_SET_POSITION:
+                return convertProbeSetPositionToString(eDataType, instanceValue);
+            default:
+                throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
+        }
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public PassiveResourceCalculator createPassiveResourceCalculator() {
-		PassiveResourceCalculatorImpl passiveResourceCalculator = new PassiveResourceCalculatorImpl();
-		return passiveResourceCalculator;
-	}
+        PassiveResourceCalculatorImpl passiveResourceCalculator = new PassiveResourceCalculatorImpl();
+        return passiveResourceCalculator;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public ProbeSet createProbeSet() {
-		ProbeSetImpl probeSet = new ProbeSetImpl();
-		return probeSet;
-	}
+        ProbeSetImpl probeSet = new ProbeSetImpl();
+        return probeSet;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public PassiveResourceStateProbe createPassiveResourceStateProbe() {
-		PassiveResourceStateProbeImpl passiveResourceStateProbe = new PassiveResourceStateProbeImpl();
-		return passiveResourceStateProbe;
-	}
+        PassiveResourceStateProbeImpl passiveResourceStateProbe = new PassiveResourceStateProbeImpl();
+        return passiveResourceStateProbe;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public StoExProbe createStoExProbe() {
-		StoExProbeImpl stoExProbe = new StoExProbeImpl();
-		return stoExProbe;
-	}
+        StoExProbeImpl stoExProbe = new StoExProbeImpl();
+        return stoExProbe;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public SEFFParameterProbe createSEFFParameterProbe() {
-		SEFFParameterProbeImpl seffParameterProbe = new SEFFParameterProbeImpl();
-		return seffParameterProbe;
-	}
+        SEFFParameterProbeImpl seffParameterProbe = new SEFFParameterProbeImpl();
+        return seffParameterProbe;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public CurrentTimeProbe createCurrentTimeProbe() {
-		CurrentTimeProbeImpl currentTimeProbe = new CurrentTimeProbeImpl();
-		return currentTimeProbe;
-	}
+        CurrentTimeProbeImpl currentTimeProbe = new CurrentTimeProbeImpl();
+        return currentTimeProbe;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public StoExCalculator createStoExCalculator() {
-		StoExCalculatorImpl stoExCalculator = new StoExCalculatorImpl();
-		return stoExCalculator;
-	}
+        StoExCalculatorImpl stoExCalculator = new StoExCalculatorImpl();
+        return stoExCalculator;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public SEFFParameterCalculator createSEFFParameterCalculator() {
-		SEFFParameterCalculatorImpl seffParameterCalculator = new SEFFParameterCalculatorImpl();
-		return seffParameterCalculator;
-	}
+        SEFFParameterCalculatorImpl seffParameterCalculator = new SEFFParameterCalculatorImpl();
+        return seffParameterCalculator;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public ResponseTimeCalculator createResponseTimeCalculator() {
-		ResponseTimeCalculatorImpl responseTimeCalculator = new ResponseTimeCalculatorImpl();
-		return responseTimeCalculator;
-	}
+        ResponseTimeCalculatorImpl responseTimeCalculator = new ResponseTimeCalculatorImpl();
+        return responseTimeCalculator;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public WaitingTimeCalculator createWaitingTimeCalculator() {
-		WaitingTimeCalculatorImpl waitingTimeCalculator = new WaitingTimeCalculatorImpl();
-		return waitingTimeCalculator;
-	}
+        WaitingTimeCalculatorImpl waitingTimeCalculator = new WaitingTimeCalculatorImpl();
+        return waitingTimeCalculator;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public ProbeSpecRepository createProbeSpecRepository() {
-		ProbeSpecRepositoryImpl probeSpecRepository = new ProbeSpecRepositoryImpl();
-		return probeSpecRepository;
-	}
+        ProbeSpecRepositoryImpl probeSpecRepository = new ProbeSpecRepositoryImpl();
+        return probeSpecRepository;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public CPUStateProbe createCPUStateProbe() {
-		CPUStateProbeImpl cpuStateProbe = new CPUStateProbeImpl();
-		return cpuStateProbe;
-	}
+        CPUStateProbeImpl cpuStateProbe = new CPUStateProbeImpl();
+        return cpuStateProbe;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public HDDStateProbe createHDDStateProbe() {
-		HDDStateProbeImpl hddStateProbe = new HDDStateProbeImpl();
-		return hddStateProbe;
-	}
+        HDDStateProbeImpl hddStateProbe = new HDDStateProbeImpl();
+        return hddStateProbe;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public CPUDemandProbe createCPUDemandProbe() {
-		CPUDemandProbeImpl cpuDemandProbe = new CPUDemandProbeImpl();
-		return cpuDemandProbe;
-	}
+        CPUDemandProbeImpl cpuDemandProbe = new CPUDemandProbeImpl();
+        return cpuDemandProbe;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public HDDDemandProbe createHDDDemandProbe() {
-		HDDDemandProbeImpl hddDemandProbe = new HDDDemandProbeImpl();
-		return hddDemandProbe;
-	}
+        HDDDemandProbeImpl hddDemandProbe = new HDDDemandProbeImpl();
+        return hddDemandProbe;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public HDDStateCalculator createHDDStateCalculator() {
-		HDDStateCalculatorImpl hddStateCalculator = new HDDStateCalculatorImpl();
-		return hddStateCalculator;
-	}
+        HDDStateCalculatorImpl hddStateCalculator = new HDDStateCalculatorImpl();
+        return hddStateCalculator;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public CPUStateCalculator createCPUStateCalculator() {
-		CPUStateCalculatorImpl cpuStateCalculator = new CPUStateCalculatorImpl();
-		return cpuStateCalculator;
-	}
+        CPUStateCalculatorImpl cpuStateCalculator = new CPUStateCalculatorImpl();
+        return cpuStateCalculator;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public CPUDemandCalculator createCPUDemandCalculator() {
-		CPUDemandCalculatorImpl cpuDemandCalculator = new CPUDemandCalculatorImpl();
-		return cpuDemandCalculator;
-	}
+        CPUDemandCalculatorImpl cpuDemandCalculator = new CPUDemandCalculatorImpl();
+        return cpuDemandCalculator;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public HDDDemandCalculator createHDDDemandCalculator() {
-		HDDDemandCalculatorImpl hddDemandCalculator = new HDDDemandCalculatorImpl();
-		return hddDemandCalculator;
-	}
+        HDDDemandCalculatorImpl hddDemandCalculator = new HDDDemandCalculatorImpl();
+        return hddDemandCalculator;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public ProbeSetPosition createProbeSetPositionFromString(EDataType eDataType, String initialValue) {
-		ProbeSetPosition result = ProbeSetPosition.get(initialValue);
-		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
-		return result;
-	}
+        ProbeSetPosition result = ProbeSetPosition.get(initialValue);
+        if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+        return result;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public String convertProbeSetPositionToString(EDataType eDataType, Object instanceValue) {
-		return instanceValue == null ? null : instanceValue.toString();
-	}
+        return instanceValue == null ? null : instanceValue.toString();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public probespecPackage getprobespecPackage() {
-		return (probespecPackage)getEPackage();
-	}
+        return (probespecPackage)getEPackage();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @deprecated
-	 * @generated
-	 */
+     * @deprecated
+     * @generated
+     */
 	@Deprecated
 	public static probespecPackage getPackage() {
-		return probespecPackage.eINSTANCE;
-	}
+        return probespecPackage.eINSTANCE;
+    }
 
 } //probespecFactoryImpl

@@ -20,55 +20,55 @@ import junit.textui.TestRunner;
 public class CPUDemandProbeTest extends ProbeTest {
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public static void main(String[] args) {
-		TestRunner.run(CPUDemandProbeTest.class);
-	}
+        TestRunner.run(CPUDemandProbeTest.class);
+    }
 
 	/**
-	 * Constructs a new CPU Demand Probe test case with the given name.
-	 * <!-- begin-user-doc -->
+     * Constructs a new CPU Demand Probe test case with the given name.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public CPUDemandProbeTest(String name) {
-		super(name);
-	}
+        super(name);
+    }
 
 	/**
-	 * Returns the fixture for this CPU Demand Probe test case.
-	 * <!-- begin-user-doc -->
+     * Returns the fixture for this CPU Demand Probe test case.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected CPUDemandProbe getFixture() {
-		return (CPUDemandProbe)fixture;
-	}
+        return (CPUDemandProbe)fixture;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see junit.framework.TestCase#setUp()
-	 * @generated
-	 */
+     * @see junit.framework.TestCase#setUp()
+     * @generated
+     */
 	@Override
 	protected void setUp() throws Exception {
-		setFixture(probespecFactory.eINSTANCE.createCPUDemandProbe());
-	}
+        setFixture(probespecFactory.eINSTANCE.createCPUDemandProbe());
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see junit.framework.TestCase#tearDown()
-	 * @generated
-	 */
+     * @see junit.framework.TestCase#tearDown()
+     * @generated
+     */
 	@Override
 	protected void tearDown() throws Exception {
-		setFixture(null);
-	}
+        setFixture(null);
+    }
 
 } //CPUDemandProbeTest

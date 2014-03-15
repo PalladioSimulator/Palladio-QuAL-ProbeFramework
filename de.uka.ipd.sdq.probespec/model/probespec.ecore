@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ecore:EPackage xmi:version="2.0"
-    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="probespec"
-    nsURI="http://sdq.ipd.uka.de/ProbeSpec/0.1" nsPrefix="probespec">
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="probespec" nsURI="http://sdq.ipd.uka.de/ProbeSpec/0.1" nsPrefix="probespec">
   <eClassifiers xsi:type="ecore:EClass" name="Calculator" abstract="true" eSuperTypes="platform:/plugin/de.uka.ipd.sdq.identifier/model/identifier.ecore#//Identifier">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="active" ordered="false"
         lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
         defaultValueLiteral="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="pipeElement" ordered="false"
-        eType="ecore:EClass ../../de.uka.ipd.sdq.pipesandfilters/model/pipesandfilters.ecore#//PipeElement"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PassiveResourceCalculator" eSuperTypes="#//UnaryCalculator"/>
   <eClassifiers xsi:type="ecore:EClass" name="UnaryCalculator" abstract="true" eSuperTypes="#//Calculator">

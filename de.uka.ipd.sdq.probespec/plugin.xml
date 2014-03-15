@@ -17,4 +17,11 @@
             genModel="model/ProbeSpecification.genmodel"/>
    </extension>
 
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated ProbeSpecification -->
+      <parser
+            type="probespec"
+            class="de.uka.ipd.sdq.probespec.util.probespecResourceFactoryImpl"/>
+   </extension>
+
 </plugin>

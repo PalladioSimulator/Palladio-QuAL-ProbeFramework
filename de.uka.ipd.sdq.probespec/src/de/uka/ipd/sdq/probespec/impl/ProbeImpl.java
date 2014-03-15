@@ -6,12 +6,11 @@
  */
 package de.uka.ipd.sdq.probespec.impl;
 
-import de.uka.ipd.sdq.identifier.impl.IdentifierImpl;
+import org.eclipse.emf.ecore.EClass;
 
+import de.uka.ipd.sdq.identifier.impl.IdentifierImpl;
 import de.uka.ipd.sdq.probespec.Probe;
 import de.uka.ipd.sdq.probespec.probespecPackage;
-
-import org.eclipse.emf.ecore.EClass;
 
 /**
  * <!-- begin-user-doc -->
@@ -24,22 +23,22 @@ import org.eclipse.emf.ecore.EClass;
  */
 public abstract class ProbeImpl extends IdentifierImpl implements Probe {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected ProbeImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return probespecPackage.Literals.PROBE;
-	}
+        return probespecPackage.Literals.PROBE;
+    }
 
 } //ProbeImpl

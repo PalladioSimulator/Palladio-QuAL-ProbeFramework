@@ -17,24 +17,24 @@ import de.uka.ipd.sdq.probespec.UnaryCalculator;
 public abstract class UnaryCalculatorTest extends CalculatorTest {
 
 	/**
-	 * Constructs a new Unary Calculator test case with the given name.
-	 * <!-- begin-user-doc -->
+     * Constructs a new Unary Calculator test case with the given name.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public UnaryCalculatorTest(String name) {
-		super(name);
-	}
+        super(name);
+    }
 
 	/**
-	 * Returns the fixture for this Unary Calculator test case.
-	 * <!-- begin-user-doc -->
+     * Returns the fixture for this Unary Calculator test case.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected UnaryCalculator getFixture() {
-		return (UnaryCalculator)fixture;
-	}
+        return (UnaryCalculator)fixture;
+    }
 
 } //UnaryCalculatorTest

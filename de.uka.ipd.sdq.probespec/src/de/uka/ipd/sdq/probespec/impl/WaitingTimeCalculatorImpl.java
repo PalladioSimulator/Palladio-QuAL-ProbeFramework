@@ -6,10 +6,10 @@
  */
 package de.uka.ipd.sdq.probespec.impl;
 
+import org.eclipse.emf.ecore.EClass;
+
 import de.uka.ipd.sdq.probespec.WaitingTimeCalculator;
 import de.uka.ipd.sdq.probespec.probespecPackage;
-
-import org.eclipse.emf.ecore.EClass;
 
 /**
  * <!-- begin-user-doc -->
@@ -22,22 +22,22 @@ import org.eclipse.emf.ecore.EClass;
  */
 public class WaitingTimeCalculatorImpl extends BinaryCalculatorImpl implements WaitingTimeCalculator {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected WaitingTimeCalculatorImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return probespecPackage.Literals.WAITING_TIME_CALCULATOR;
-	}
+        return probespecPackage.Literals.WAITING_TIME_CALCULATOR;
+    }
 
 } //WaitingTimeCalculatorImpl

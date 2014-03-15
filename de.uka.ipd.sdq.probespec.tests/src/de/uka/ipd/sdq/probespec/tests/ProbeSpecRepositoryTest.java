@@ -22,72 +22,72 @@ import junit.textui.TestRunner;
 public class ProbeSpecRepositoryTest extends TestCase {
 
 	/**
-	 * The fixture for this Probe Spec Repository test case.
-	 * <!-- begin-user-doc -->
+     * The fixture for this Probe Spec Repository test case.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected ProbeSpecRepository fixture = null;
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public static void main(String[] args) {
-		TestRunner.run(ProbeSpecRepositoryTest.class);
-	}
+        TestRunner.run(ProbeSpecRepositoryTest.class);
+    }
 
 	/**
-	 * Constructs a new Probe Spec Repository test case with the given name.
-	 * <!-- begin-user-doc -->
+     * Constructs a new Probe Spec Repository test case with the given name.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public ProbeSpecRepositoryTest(String name) {
-		super(name);
-	}
+        super(name);
+    }
 
 	/**
-	 * Sets the fixture for this Probe Spec Repository test case.
-	 * <!-- begin-user-doc -->
+     * Sets the fixture for this Probe Spec Repository test case.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected void setFixture(ProbeSpecRepository fixture) {
-		this.fixture = fixture;
-	}
+        this.fixture = fixture;
+    }
 
 	/**
-	 * Returns the fixture for this Probe Spec Repository test case.
-	 * <!-- begin-user-doc -->
+     * Returns the fixture for this Probe Spec Repository test case.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected ProbeSpecRepository getFixture() {
-		return fixture;
-	}
+        return fixture;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see junit.framework.TestCase#setUp()
-	 * @generated
-	 */
+     * @see junit.framework.TestCase#setUp()
+     * @generated
+     */
 	@Override
 	protected void setUp() throws Exception {
-		setFixture(probespecFactory.eINSTANCE.createProbeSpecRepository());
-	}
+        setFixture(probespecFactory.eINSTANCE.createProbeSpecRepository());
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see junit.framework.TestCase#tearDown()
-	 * @generated
-	 */
+     * @see junit.framework.TestCase#tearDown()
+     * @generated
+     */
 	@Override
 	protected void tearDown() throws Exception {
-		setFixture(null);
-	}
+        setFixture(null);
+    }
 
 } //ProbeSpecRepositoryTest

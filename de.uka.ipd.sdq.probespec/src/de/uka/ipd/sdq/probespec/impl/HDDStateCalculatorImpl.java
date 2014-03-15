@@ -6,10 +6,10 @@
  */
 package de.uka.ipd.sdq.probespec.impl;
 
+import org.eclipse.emf.ecore.EClass;
+
 import de.uka.ipd.sdq.probespec.HDDStateCalculator;
 import de.uka.ipd.sdq.probespec.probespecPackage;
-
-import org.eclipse.emf.ecore.EClass;
 
 /**
  * <!-- begin-user-doc -->
@@ -22,22 +22,22 @@ import org.eclipse.emf.ecore.EClass;
  */
 public class HDDStateCalculatorImpl extends UnaryCalculatorImpl implements HDDStateCalculator {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected HDDStateCalculatorImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return probespecPackage.Literals.HDD_STATE_CALCULATOR;
-	}
+        return probespecPackage.Literals.HDD_STATE_CALCULATOR;
+    }
 
 } //HDDStateCalculatorImpl

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<genmodel:GenModel xmi:version="2.0"
-    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:genmodel="http://www.eclipse.org/uml2/2.2.0/GenModel" modelDirectory="/de.uka.ipd.sdq.probespec/src"
-    modelPluginID="de.uka.ipd.sdq.probespec" modelName="ProbeSpecification" importerID="org.eclipse.uml2.uml.ecore.importer"
-    complianceLevel="6.0" copyrightFields="false" usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore platform:/plugin/de.uka.ipd.sdq.identifier/model/identifier.genmodel#//identifier ../../de.uka.ipd.sdq.pipesandfilters/model/pipesandfilters.genmodel#//pipesandfilters">
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:genmodel="http://www.eclipse.org/uml2/2.2.0/GenModel"
+    modelDirectory="/de.uka.ipd.sdq.probespec/src" modelPluginID="de.uka.ipd.sdq.probespec"
+    modelName="ProbeSpecification" importerID="org.eclipse.emf.importer.ecore" complianceLevel="6.0"
+    copyrightFields="false" usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore platform:/plugin/de.uka.ipd.sdq.identifier/model/identifier.genmodel#//identifier">
   <genAnnotations source="http://www.eclipse.org/emf/2002/GenModel/importer/org.eclipse.uml2.uml.ecore.importer">
     <details key="ECORE_TAGGED_VALUES" value="PROCESS"/>
     <details key="UNION_PROPERTIES" value="REPORT"/>
@@ -22,10 +22,7 @@
     <details key="CAMEL_CASE_NAMES" value="IGNORE"/>
     <details key="SUPER_CLASS_ORDER" value="PROCESS"/>
   </genAnnotations>
-  <foreignModel>file:/D://Ecore.uml</foreignModel>
-  <foreignModel>file:/D://identifier.uml</foreignModel>
-  <foreignModel>file:/D://PipesAndFilters.uml</foreignModel>
-  <foreignModel>file:/D://ProbeSpecification.uml</foreignModel>
+  <foreignModel>probespec.ecore</foreignModel>
   <genPackages xsi:type="genmodel:GenPackage" prefix="probespec" basePackage="de.uka.ipd.sdq"
       resource="XML" disposableProviderFactory="true" ecorePackage="probespec.ecore#/">
     <genEnums xsi:type="genmodel:GenEnum" typeSafeEnumCompatible="false" ecoreEnum="probespec.ecore#//ProbeSetPosition">
@@ -35,8 +32,6 @@
     </genEnums>
     <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="probespec.ecore#//Calculator">
       <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute probespec.ecore#//Calculator/active"/>
-      <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
-          propertySortChoices="true" ecoreFeature="ecore:EReference probespec.ecore#//Calculator/pipeElement"/>
     </genClasses>
     <genClasses xsi:type="genmodel:GenClass" ecoreClass="probespec.ecore#//PassiveResourceCalculator"/>
     <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="probespec.ecore#//UnaryCalculator">

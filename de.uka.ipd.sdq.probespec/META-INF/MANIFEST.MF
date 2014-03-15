@@ -12,6 +12,6 @@ Export-Package: de.uka.ipd.sdq.probespec,
  de.uka.ipd.sdq.probespec.util
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
- de.uka.ipd.sdq.identifier,
- de.uka.ipd.sdq.pipesandfilters
+ org.eclipse.emf.ecore.xmi;visibility:=reexport,
+ de.uka.ipd.sdq.identifier
 Bundle-ActivationPolicy: lazy

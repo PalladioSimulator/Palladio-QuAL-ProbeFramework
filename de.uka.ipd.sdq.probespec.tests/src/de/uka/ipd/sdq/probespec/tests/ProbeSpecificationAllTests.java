@@ -20,32 +20,32 @@ import junit.textui.TestRunner;
 public class ProbeSpecificationAllTests extends TestSuite {
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public static void main(String[] args) {
-		TestRunner.run(suite());
-	}
+        TestRunner.run(suite());
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public static Test suite() {
-		TestSuite suite = new ProbeSpecificationAllTests("ProbeSpecification Tests");
-		suite.addTest(probespecTests.suite());
-		return suite;
-	}
+        TestSuite suite = new ProbeSpecificationAllTests("ProbeSpecification Tests");
+        suite.addTest(probespecTests.suite());
+        return suite;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public ProbeSpecificationAllTests(String name) {
-		super(name);
-	}
+        super(name);
+    }
 
 } //ProbeSpecificationAllTests

@@ -19,41 +19,41 @@ import junit.framework.TestCase;
 public abstract class ProbeTest extends TestCase {
 
 	/**
-	 * The fixture for this Probe test case.
-	 * <!-- begin-user-doc -->
+     * The fixture for this Probe test case.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected Probe fixture = null;
 
 	/**
-	 * Constructs a new Probe test case with the given name.
-	 * <!-- begin-user-doc -->
+     * Constructs a new Probe test case with the given name.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public ProbeTest(String name) {
-		super(name);
-	}
+        super(name);
+    }
 
 	/**
-	 * Sets the fixture for this Probe test case.
-	 * <!-- begin-user-doc -->
+     * Sets the fixture for this Probe test case.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected void setFixture(Probe fixture) {
-		this.fixture = fixture;
-	}
+        this.fixture = fixture;
+    }
 
 	/**
-	 * Returns the fixture for this Probe test case.
-	 * <!-- begin-user-doc -->
+     * Returns the fixture for this Probe test case.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected Probe getFixture() {
-		return fixture;
-	}
+        return fixture;
+    }
 
 } //ProbeTest

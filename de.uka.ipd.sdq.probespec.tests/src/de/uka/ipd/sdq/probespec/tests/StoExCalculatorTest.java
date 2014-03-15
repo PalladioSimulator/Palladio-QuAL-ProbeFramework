@@ -20,55 +20,55 @@ import junit.textui.TestRunner;
 public class StoExCalculatorTest extends UnaryCalculatorTest {
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public static void main(String[] args) {
-		TestRunner.run(StoExCalculatorTest.class);
-	}
+        TestRunner.run(StoExCalculatorTest.class);
+    }
 
 	/**
-	 * Constructs a new Sto Ex Calculator test case with the given name.
-	 * <!-- begin-user-doc -->
+     * Constructs a new Sto Ex Calculator test case with the given name.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public StoExCalculatorTest(String name) {
-		super(name);
-	}
+        super(name);
+    }
 
 	/**
-	 * Returns the fixture for this Sto Ex Calculator test case.
-	 * <!-- begin-user-doc -->
+     * Returns the fixture for this Sto Ex Calculator test case.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected StoExCalculator getFixture() {
-		return (StoExCalculator)fixture;
-	}
+        return (StoExCalculator)fixture;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see junit.framework.TestCase#setUp()
-	 * @generated
-	 */
+     * @see junit.framework.TestCase#setUp()
+     * @generated
+     */
 	@Override
 	protected void setUp() throws Exception {
-		setFixture(probespecFactory.eINSTANCE.createStoExCalculator());
-	}
+        setFixture(probespecFactory.eINSTANCE.createStoExCalculator());
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see junit.framework.TestCase#tearDown()
-	 * @generated
-	 */
+     * @see junit.framework.TestCase#tearDown()
+     * @generated
+     */
 	@Override
 	protected void tearDown() throws Exception {
-		setFixture(null);
-	}
+        setFixture(null);
+    }
 
 } //StoExCalculatorTest

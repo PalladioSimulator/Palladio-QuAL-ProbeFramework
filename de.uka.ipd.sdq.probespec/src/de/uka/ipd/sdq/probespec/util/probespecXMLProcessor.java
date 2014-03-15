@@ -6,15 +6,13 @@
  */
 package de.uka.ipd.sdq.probespec.util;
 
-import de.uka.ipd.sdq.probespec.probespecPackage;
-
 import java.util.Map;
 
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.resource.Resource;
-
 import org.eclipse.emf.ecore.xmi.util.XMLProcessor;
+
+import de.uka.ipd.sdq.probespec.probespecPackage;
 
 /**
  * This class contains helper methods to serialize and deserialize XML documents
@@ -25,30 +23,30 @@ import org.eclipse.emf.ecore.xmi.util.XMLProcessor;
 public class probespecXMLProcessor extends XMLProcessor {
 
 	/**
-	 * Public constructor to instantiate the helper.
-	 * <!-- begin-user-doc -->
+     * Public constructor to instantiate the helper.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public probespecXMLProcessor() {
-		super((EPackage.Registry.INSTANCE));
-		probespecPackage.eINSTANCE.eClass();
-	}
+        super((EPackage.Registry.INSTANCE));
+        probespecPackage.eINSTANCE.eClass();
+    }
 	
 	/**
-	 * Register for "*" and "xml" file extensions the probespecResourceFactoryImpl factory.
-	 * <!-- begin-user-doc -->
+     * Register for "*" and "xml" file extensions the probespecResourceFactoryImpl factory.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected Map<String, Resource.Factory> getRegistrations() {
-		if (registrations == null) {
-			super.getRegistrations();
-			registrations.put(XML_EXTENSION, new probespecResourceFactoryImpl());
-			registrations.put(STAR_EXTENSION, new probespecResourceFactoryImpl());
-		}
-		return registrations;
-	}
+        if (registrations == null) {
+            super.getRegistrations();
+            registrations.put(XML_EXTENSION, new probespecResourceFactoryImpl());
+            registrations.put(STAR_EXTENSION, new probespecResourceFactoryImpl());
+        }
+        return registrations;
+    }
 
 } //probespecXMLProcessor

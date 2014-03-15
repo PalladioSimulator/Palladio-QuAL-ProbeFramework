@@ -20,55 +20,55 @@ import junit.textui.TestRunner;
 public class HDDDemandCalculatorTest extends UnaryCalculatorTest {
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public static void main(String[] args) {
-		TestRunner.run(HDDDemandCalculatorTest.class);
-	}
+        TestRunner.run(HDDDemandCalculatorTest.class);
+    }
 
 	/**
-	 * Constructs a new HDD Demand Calculator test case with the given name.
-	 * <!-- begin-user-doc -->
+     * Constructs a new HDD Demand Calculator test case with the given name.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public HDDDemandCalculatorTest(String name) {
-		super(name);
-	}
+        super(name);
+    }
 
 	/**
-	 * Returns the fixture for this HDD Demand Calculator test case.
-	 * <!-- begin-user-doc -->
+     * Returns the fixture for this HDD Demand Calculator test case.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected HDDDemandCalculator getFixture() {
-		return (HDDDemandCalculator)fixture;
-	}
+        return (HDDDemandCalculator)fixture;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see junit.framework.TestCase#setUp()
-	 * @generated
-	 */
+     * @see junit.framework.TestCase#setUp()
+     * @generated
+     */
 	@Override
 	protected void setUp() throws Exception {
-		setFixture(probespecFactory.eINSTANCE.createHDDDemandCalculator());
-	}
+        setFixture(probespecFactory.eINSTANCE.createHDDDemandCalculator());
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see junit.framework.TestCase#tearDown()
-	 * @generated
-	 */
+     * @see junit.framework.TestCase#tearDown()
+     * @generated
+     */
 	@Override
 	protected void tearDown() throws Exception {
-		setFixture(null);
-	}
+        setFixture(null);
+    }
 
 } //HDDDemandCalculatorTest

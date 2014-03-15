@@ -25,29 +25,29 @@ package de.uka.ipd.sdq.probespec;
  */
 public interface UnaryCalculator extends Calculator {
 	/**
-	 * Returns the value of the '<em><b>Probe Set</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
+     * Returns the value of the '<em><b>Probe Set</b></em>' containment reference.
+     * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Probe Set</em>' containment reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Probe Set</em>' containment reference.
-	 * @see #setProbeSet(ProbeSet)
-	 * @see de.uka.ipd.sdq.probespec.probespecPackage#getUnaryCalculator_ProbeSet()
-	 * @model containment="true" required="true" ordered="false"
-	 * @generated
-	 */
+     * @return the value of the '<em>Probe Set</em>' containment reference.
+     * @see #setProbeSet(ProbeSet)
+     * @see de.uka.ipd.sdq.probespec.probespecPackage#getUnaryCalculator_ProbeSet()
+     * @model containment="true" required="true" ordered="false"
+     * @generated
+     */
 	ProbeSet getProbeSet();
 
 	/**
-	 * Sets the value of the '{@link de.uka.ipd.sdq.probespec.UnaryCalculator#getProbeSet <em>Probe Set</em>}' containment reference.
-	 * <!-- begin-user-doc -->
+     * Sets the value of the '{@link de.uka.ipd.sdq.probespec.UnaryCalculator#getProbeSet <em>Probe Set</em>}' containment reference.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Probe Set</em>' containment reference.
-	 * @see #getProbeSet()
-	 * @generated
-	 */
+     * @param value the new value of the '<em>Probe Set</em>' containment reference.
+     * @see #getProbeSet()
+     * @generated
+     */
 	void setProbeSet(ProbeSet value);
 
 } // UnaryCalculator
