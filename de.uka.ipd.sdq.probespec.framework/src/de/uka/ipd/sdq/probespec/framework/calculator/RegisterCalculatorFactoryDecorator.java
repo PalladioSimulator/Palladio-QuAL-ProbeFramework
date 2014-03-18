@@ -31,9 +31,11 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
     }
 
     private Calculator register(Calculator calculator, String calculatorName) {
+       // If calculator already exists, return it
        if(calculators.containsKey(calculatorName)) {
-           throw new IllegalArgumentException();
+           return calculators.get(calculatorName);
        }
+       // else create a new one
        calculators.put(calculatorName, calculator);
        
        return calculator;
