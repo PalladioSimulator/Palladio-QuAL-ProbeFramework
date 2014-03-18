@@ -31,6 +31,9 @@ public final class MetricDescriptionConstants {
     /** Specifies a CPU metric, e.g., to store CPU utilization at a certain time/state. */
     public final static BaseMetricDescription CPU_STATE_METRIC = createNewNaturalNumberMetric("State of the CPU resource", "This measure represents the state of the CPU resource", "_BoroIZMbEd6Vw8NDgVSYcgLehr0");
 
+    /** Specifies a passive resource state metric. */
+    public final static BaseMetricDescription PASSIVE_RESOURCE_STATE_METRIC = createNewNaturalNumberMetric("State of the passive resource", "This represents the number of free tokens in a passive resource", "_BoroIZMbEd6Vw8NDgVSYcgLehr5");
+
     /** Specifies an execution results metric, e.g., to store simulated failure occurances. */
     public final static BaseMetricDescription EXECUTION_RESULT_METRIC = createNewNaturalNumberMetric("Type of execution result", "This measure represents the type of execution result", "_AiroIZMbEd6Vw8NDgVSYcgLehr1");
 
