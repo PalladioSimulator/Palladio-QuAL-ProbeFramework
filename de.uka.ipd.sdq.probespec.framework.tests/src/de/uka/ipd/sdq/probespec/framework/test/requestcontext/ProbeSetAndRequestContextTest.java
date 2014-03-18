@@ -1,4 +1,4 @@
-package de.uka.ipd.sdq.probespec.framework.test;
+package de.uka.ipd.sdq.probespec.framework.test.requestcontext;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

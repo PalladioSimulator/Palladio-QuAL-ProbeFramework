@@ -1,4 +1,4 @@
-package de.uka.ipd.sdq.probespec.framework.test;
+package de.uka.ipd.sdq.probespec.framework.test.requestcontext;
 
 import junit.framework.TestCase;
 import de.uka.ipd.sdq.probespec.framework.requestcontext.RequestContext;

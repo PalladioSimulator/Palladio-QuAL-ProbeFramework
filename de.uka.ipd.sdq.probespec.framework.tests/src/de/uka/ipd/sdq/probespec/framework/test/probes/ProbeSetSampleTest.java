@@ -1,4 +1,4 @@
-package de.uka.ipd.sdq.probespec.framework.test;
+package de.uka.ipd.sdq.probespec.framework.test.probes;
 
 import static org.junit.Assert.assertTrue;
 
