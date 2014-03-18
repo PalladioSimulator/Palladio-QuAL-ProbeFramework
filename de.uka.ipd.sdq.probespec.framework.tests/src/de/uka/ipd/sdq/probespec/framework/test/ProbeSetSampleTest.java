@@ -1,10 +1,18 @@
 package de.uka.ipd.sdq.probespec.framework.test;
 
-import java.util.Vector;
+import static org.junit.Assert.assertEquals;
+
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.measure.quantity.Quantity;
 
-import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
+
 import de.uka.ipd.sdq.probespec.framework.ProbeSample;
 import de.uka.ipd.sdq.probespec.framework.ProbeSetSample;
 import de.uka.ipd.sdq.probespec.framework.ProbeType;
@@ -14,40 +22,39 @@ import de.uka.ipd.sdq.probespec.framework.probes.ProbeStrategyRegistry;
 import de.uka.ipd.sdq.probespec.framework.probes.example.ExampleProbeStrategyRegistry;
 import de.uka.ipd.sdq.probespec.framework.probes.example.SimpleSimulationContext;
 
-public class ProbeSetSampleTest extends TestCase {
+@RunWith(JUnit4.class)
+public class ProbeSetSampleTest {
 
     private ProbeStrategyRegistry probeStrategyRegistry;
 
     private SimpleSimulationContext simCtx;
 
-    @Override
+    @Before
     protected void setUp() throws Exception {
-        super.setUp();
-
         simCtx = new SimpleSimulationContext();
 
         // Obtain the suitable probeFactory
         probeStrategyRegistry = new ExampleProbeStrategyRegistry();
     }
 
-    @Override
+    @After
     protected void tearDown() throws Exception {
-        super.tearDown();
     }
 
+    @Test
     public void testProbeSetSample() {
         simCtx.setSimulatedTime(100d);
 
-        Vector<ProbeSample<?, ? extends Quantity>> v = new Vector<ProbeSample<?, ? extends Quantity>>();
+        final List<ProbeSample<?, ? extends Quantity>> v = new LinkedList<ProbeSample<?, ? extends Quantity>>();
 
         // Take a sample of the current simulation time
-        Object measurableEntity = null; // here, we measure the "simulated" time, there is no entity
+        final Object measurableEntity = null; // here, we measure the "simulated" time, there is no entity
         v.add(probeStrategyRegistry.getProbeStrategy(ProbeType.CURRENT_TIME, measurableEntity).takeSample("myProbeID", simCtx));
 
         // Create a ProbeSetSample
-        RequestContext ctxID = new RequestContext("1");
-        Integer probeSetId = 1;
-        ProbeSetSample pss = new ProbeSetSample(v, ctxID, "x", probeSetId);
+        final RequestContext ctxID = new RequestContext("1");
+        final Integer probeSetId = 1;
+        final ProbeSetSample pss = new ProbeSetSample(v, ctxID, "x", probeSetId);
 
         // Check, whether the probeSetSample returns the correct value for the
         // previously measured simulation time
