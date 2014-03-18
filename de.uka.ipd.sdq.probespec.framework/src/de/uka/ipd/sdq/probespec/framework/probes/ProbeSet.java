@@ -63,7 +63,7 @@ public class ProbeSet extends Probe {
         for (final Probe probe : subsumedProbes) {
             result.getSubsumedMetrics().add(probe.getMetricDesciption());
         }
-        return null;
+        return result;
     }
 
 }
