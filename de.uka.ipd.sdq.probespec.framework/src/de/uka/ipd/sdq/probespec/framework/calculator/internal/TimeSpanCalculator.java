@@ -1,4 +1,4 @@
-package de.uka.ipd.sdq.probespec.framework.calculator;
+package de.uka.ipd.sdq.probespec.framework.calculator.internal;
 
 import static de.uka.ipd.sdq.probespec.framework.constants.MetricDescriptionConstants.POINT_IN_TIME_METRIC;
 

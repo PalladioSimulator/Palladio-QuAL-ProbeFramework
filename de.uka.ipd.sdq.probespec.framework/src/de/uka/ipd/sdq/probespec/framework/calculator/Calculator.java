@@ -185,8 +185,10 @@ public abstract class Calculator extends MeasurementSource implements IMeasureme
     }
 
 
-    protected static MetricDescription createMetricSetDescription(final List<BaseMetricDescription> metricDescriptions) {
+    protected static MetricDescription createMetricSetDescription(final String metricName, final String metricDescription, final List<BaseMetricDescription> metricDescriptions) {
         final MetricSetDescription result = experimentDataFactory.createMetricSetDescription();
+        result.setName(metricName);
+        result.setTextualDescription(metricDescription);
         result.getSubsumedMetrics().add(POINT_IN_TIME_METRIC);
         result.getSubsumedMetrics().addAll(metricDescriptions);
 

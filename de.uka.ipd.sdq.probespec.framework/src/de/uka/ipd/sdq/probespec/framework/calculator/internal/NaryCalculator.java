@@ -1,6 +1,7 @@
-package de.uka.ipd.sdq.probespec.framework.calculator;
+package de.uka.ipd.sdq.probespec.framework.calculator.internal;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.Map;
 import org.palladiosimulator.edp2.models.ExperimentData.MetricDescription;
 
 import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
+import de.uka.ipd.sdq.probespec.framework.calculator.Calculator;
 import de.uka.ipd.sdq.probespec.framework.measurements.Measurement;
 import de.uka.ipd.sdq.probespec.framework.measurements.MeasurementSet;
 import de.uka.ipd.sdq.probespec.framework.probes.Probe;
@@ -30,12 +32,16 @@ import de.uka.ipd.sdq.probespec.framework.requestcontext.RequestContext;
  */
 public abstract class NaryCalculator extends Calculator {
 
-    protected final List<Probe> probes = new ArrayList<Probe>();
+    protected final List<Probe> probes;
     private final Map<RequestContext, List<Measurement>> arrivedMeasurementMemory = new HashMap<RequestContext, List<Measurement>>();
 
     public NaryCalculator(final ProbeSpecContext ctx, final MetricDescription metricDescription,
             final List<Probe> childProbes) {
         super(ctx, metricDescription);
+        probes = Collections.unmodifiableList(new ArrayList<Probe>(childProbes));
+        for (final Probe probe : childProbes) {
+            probe.registerProbeListener(this);
+        }
     }
 
     /**

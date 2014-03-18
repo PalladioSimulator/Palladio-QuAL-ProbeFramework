@@ -1,4 +1,4 @@
-package de.uka.ipd.sdq.probespec.framework.calculator;
+package de.uka.ipd.sdq.probespec.framework.calculator.internal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,8 +34,8 @@ import de.uka.ipd.sdq.probespec.framework.probes.Probe;
  */
 public class DemandBasedWaitingTimeCalculator extends WaitingTimeCalculator {
 
-    public DemandBasedWaitingTimeCalculator(final ProbeSpecContext ctx, final List<Probe> probes) {
-        super(ctx, probes);
+    public DemandBasedWaitingTimeCalculator(final ProbeSpecContext ctx, final String metricName, final String metricDescription, final List<Probe> probes) {
+        super(ctx, metricName, metricDescription, probes);
     }
 
     /**

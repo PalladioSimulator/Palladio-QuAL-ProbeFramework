@@ -1,4 +1,4 @@
-package de.uka.ipd.sdq.probespec.framework.calculator;
+package de.uka.ipd.sdq.probespec.framework.calculator.internal;
 
 import java.util.Arrays;
 

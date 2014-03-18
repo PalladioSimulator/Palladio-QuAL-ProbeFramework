@@ -18,6 +18,7 @@ public class ProbeSpecContext {
             throw new IllegalArgumentException("A valid calculator factory is required.");
         }
         this.calculatorFactory = calculatorFactory;
+        this.calculatorFactory.setProbeSpecContext(this);
         calculators = new HashSet<Calculator>();
     }
 

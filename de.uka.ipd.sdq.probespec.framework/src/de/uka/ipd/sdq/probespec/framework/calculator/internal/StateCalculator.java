@@ -1,4 +1,4 @@
-package de.uka.ipd.sdq.probespec.framework.calculator;
+package de.uka.ipd.sdq.probespec.framework.calculator.internal;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -7,6 +7,7 @@ import java.util.List;
 import org.palladiosimulator.edp2.models.ExperimentData.MetricSetDescription;
 
 import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
+import de.uka.ipd.sdq.probespec.framework.calculator.Calculator;
 import de.uka.ipd.sdq.probespec.framework.constants.MetricDescriptionConstants;
 import de.uka.ipd.sdq.probespec.framework.measurements.Measurement;
 import de.uka.ipd.sdq.probespec.framework.measurements.MeasurementSet;
@@ -30,8 +31,8 @@ public class StateCalculator extends UnaryCalculator {
      * @param probeSetID
      *            ID of the probe set element from the model
      */
-    public StateCalculator(final ProbeSpecContext ctx, final Probe probe) {
-        super(ctx, Calculator.createMetricSetDescription(Arrays.asList(MetricDescriptionConstants.CPU_STATE_METRIC)), probe);
+    public StateCalculator(final ProbeSpecContext ctx, final String metricName, final String metricDescription, final Probe probe) {
+        super(ctx, Calculator.createMetricSetDescription(metricName, metricDescription, Arrays.asList(MetricDescriptionConstants.CPU_STATE_METRIC)), probe);
     }
 
     /**

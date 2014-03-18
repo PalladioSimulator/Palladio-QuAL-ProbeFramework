@@ -1,4 +1,4 @@
-package de.uka.ipd.sdq.probespec.framework.calculator;
+package de.uka.ipd.sdq.probespec.framework.calculator.internal;
 
 import static de.uka.ipd.sdq.probespec.framework.constants.MetricDescriptionConstants.WAITING_TIME_METRIC;
 
@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
+import de.uka.ipd.sdq.probespec.framework.calculator.Calculator;
 import de.uka.ipd.sdq.probespec.framework.probes.Probe;
 
 /**
@@ -29,7 +30,7 @@ public class WaitingTimeCalculator extends TimeSpanCalculator {
      *            references the ProbeSet which represents the final point for
      *            the waiting time measurement
      */
-    public WaitingTimeCalculator(final ProbeSpecContext ctx, final List<Probe> probes) {
-        super(ctx, Calculator.createMetricSetDescription(Arrays.asList(WAITING_TIME_METRIC)), probes);
+    public WaitingTimeCalculator(final ProbeSpecContext ctx, final String metricName, final String metricDescription, final List<Probe> probes) {
+        super(ctx, Calculator.createMetricSetDescription(metricName, metricDescription, Arrays.asList(WAITING_TIME_METRIC)), probes);
     }
 }
