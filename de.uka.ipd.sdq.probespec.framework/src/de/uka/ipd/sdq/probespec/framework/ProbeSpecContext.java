@@ -1,8 +1,5 @@
 package de.uka.ipd.sdq.probespec.framework;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import de.uka.ipd.sdq.probespec.framework.calculator.Calculator;
 import de.uka.ipd.sdq.probespec.framework.calculator.ICalculatorFactory;
 import de.uka.ipd.sdq.probespec.framework.calculator.RegisterCalculatorFactoryDecorator;
@@ -26,6 +23,10 @@ public class ProbeSpecContext {
 
     public ICalculatorFactory getCalculatorFactory() {
         return calculatorFactory;
+    }
+    
+    public Calculator getCalculatorByName(String calculatorName) {
+        return this.calculatorFactory.getCalculatorByName(calculatorName);
     }
 
 }

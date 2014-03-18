@@ -1,10 +1,8 @@
 package de.uka.ipd.sdq.probespec.framework.calculator;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
 import de.uka.ipd.sdq.probespec.framework.probes.Probe;
@@ -26,6 +24,7 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
      * @return
      * @see de.uka.ipd.sdq.probespec.framework.calculator.ICalculatorFactory#buildResponseTimeCalculator(java.lang.String, java.util.List)
      */
+    @Override
     public Calculator buildResponseTimeCalculator(String calculatorName, List<Probe> probes) {
         return register(decoratedFactory.buildResponseTimeCalculator(calculatorName, probes), calculatorName);
     }
@@ -47,6 +46,7 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
      * @return
      * @see de.uka.ipd.sdq.probespec.framework.calculator.ICalculatorFactory#buildDemandBasedWaitingTimeCalculator(java.lang.String, java.util.List)
      */
+    @Override
     public Calculator buildDemandBasedWaitingTimeCalculator(String calculatorName, List<Probe> probes) {
         return register(decoratedFactory.buildDemandBasedWaitingTimeCalculator(calculatorName, probes), calculatorName);
     }
@@ -57,6 +57,7 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
      * @return
      * @see de.uka.ipd.sdq.probespec.framework.calculator.ICalculatorFactory#buildWaitingTimeCalculator(java.lang.String, java.util.List)
      */
+    @Override
     public Calculator buildWaitingTimeCalculator(String calculatorName, List<Probe> probes) {
         return register(decoratedFactory.buildWaitingTimeCalculator(calculatorName, probes), calculatorName);
     }
@@ -67,6 +68,7 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
      * @return
      * @see de.uka.ipd.sdq.probespec.framework.calculator.ICalculatorFactory#buildHoldTimeCalculator(java.lang.String, java.util.List)
      */
+    @Override
     public Calculator buildHoldTimeCalculator(String calculatorName, List<Probe> probes) {
         return register(decoratedFactory.buildHoldTimeCalculator(calculatorName, probes), calculatorName);
     }
@@ -77,6 +79,7 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
      * @return
      * @see de.uka.ipd.sdq.probespec.framework.calculator.ICalculatorFactory#buildStateCalculator(java.lang.String, de.uka.ipd.sdq.probespec.framework.probes.Probe)
      */
+    @Override
     public Calculator buildStateCalculator(String calculatorName, Probe probe) {
         return register(decoratedFactory.buildStateCalculator(calculatorName, probe), calculatorName);
     }
@@ -87,6 +90,7 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
      * @return
      * @see de.uka.ipd.sdq.probespec.framework.calculator.ICalculatorFactory#buildOverallUtilizationCalculator(java.lang.String, de.uka.ipd.sdq.probespec.framework.probes.Probe)
      */
+    @Override
     public Calculator buildOverallUtilizationCalculator(String calculatorName, Probe probe) {
         return register(decoratedFactory.buildOverallUtilizationCalculator(calculatorName, probe), calculatorName);
     }
@@ -97,6 +101,7 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
      * @return
      * @see de.uka.ipd.sdq.probespec.framework.calculator.ICalculatorFactory#buildDemandCalculator(java.lang.String, de.uka.ipd.sdq.probespec.framework.probes.Probe)
      */
+    @Override
     public Calculator buildDemandCalculator(String calculatorName, Probe probe) {
         return register(decoratedFactory.buildDemandCalculator(calculatorName, probe), calculatorName);
     }
@@ -107,6 +112,7 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
      * @return
      * @see de.uka.ipd.sdq.probespec.framework.calculator.ICalculatorFactory#buildExecutionResultCalculator(java.lang.String, de.uka.ipd.sdq.probespec.framework.probes.Probe)
      */
+    @Override
     public Calculator buildExecutionResultCalculator(String calculatorName, Probe probe) {
         return register(decoratedFactory.buildExecutionResultCalculator(calculatorName, probe), calculatorName);
     }
@@ -115,22 +121,26 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
      * @param probeSpecContext
      * @see de.uka.ipd.sdq.probespec.framework.calculator.ICalculatorFactory#setProbeSpecContext(de.uka.ipd.sdq.probespec.framework.ProbeSpecContext)
      */
+    @Override
     public void setProbeSpecContext(ProbeSpecContext probeSpecContext) {
         this.probeSpecContext = probeSpecContext;
         decoratedFactory.setProbeSpecContext(probeSpecContext);
     }
     
     public void finish() {
-        
-        Iterator<Entry<String, Calculator>> it = this.calculators.entrySet().iterator();
-        // remove all listeners from used calculators
-        while(it.hasNext()) {
-            Map.Entry entry = (Map.Entry) it.next();
-            ((Calculator)entry.getValue()).unregisterCalculatorListeners();
+        for (Calculator calculator : this.calculators.values()) {
+            calculator.unregisterCalculatorListeners();
         }
-
         // clear calculators
         calculators.clear();
+    }
+    
+    public Calculator getCalculatorByName(String calculatorName) {
+        // If calculator already exists, return it
+        if(calculators.containsKey(calculatorName)) {
+            return calculators.get(calculatorName);
+        }
+        throw new IllegalArgumentException("Calculator not found.");
     }
 
 }
