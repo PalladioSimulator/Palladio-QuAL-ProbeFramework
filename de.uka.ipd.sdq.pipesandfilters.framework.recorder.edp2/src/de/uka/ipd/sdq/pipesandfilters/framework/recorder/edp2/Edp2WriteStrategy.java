@@ -196,17 +196,28 @@ public abstract class Edp2WriteStrategy extends Recorder {
     private static void initializeMetricSetDescription(final EDP2MetaDataInit edp2MetaData) {
         final MetricSetDescription msd = edp2MetaData.getMetricDescriptions();
 
+        metricSetDescription = (MetricSetDescription)addMetricDescriptionToRepository(msd);
+    }
+
+    /**
+     * @param msd
+     * @return
+     */
+    private static MetricDescription addMetricDescriptionToRepository(final MetricDescription msd) {
         // Find existing description based on metric UUID
         for(final Description d: repository.getDescriptions()) {
             if(d.getUuid().equals(msd.getUuid())) {
-                metricSetDescription = (MetricSetDescription) d;
-                return;
+                return (MetricDescription)d;
             }
         }
 
-        // Attach new metric to repository
-        metricSetDescription = msd;
-        metricSetDescription.setRepository(repository);
+        msd.setRepository(repository);
+        if (msd instanceof MetricSetDescription) {
+            for (final MetricDescription md : ((MetricSetDescription)msd).getSubsumedMetrics()) {
+                addMetricDescriptionToRepository(md);
+            }
+        }
+        return msd;
     }
 
     /**
@@ -259,9 +270,8 @@ public abstract class Edp2WriteStrategy extends Recorder {
     public void writeData(final de.uka.ipd.sdq.probespec.framework.measurements.Measurement data) {
         final Measurement measurement = new Measurement(metricSetDescription);
 
-        int i = 0;
-        for(final MetricDescription childDescription : metricSetDescription.getSubsumedMetrics()) {
-            measurement.setMeasuredValue(i++, data.getMeasureForMetric(childDescription));
+        for(int i = 0; i < metricSetDescription.getSubsumedMetrics().size(); i++) {
+            measurement.setMeasuredValue(i, data.getMeasureForMetric(metricSetDescription.getSubsumedMetrics().get(i)));
         }
 
         MeasurementsUtility.storeMeasurement(measurements, measurement);

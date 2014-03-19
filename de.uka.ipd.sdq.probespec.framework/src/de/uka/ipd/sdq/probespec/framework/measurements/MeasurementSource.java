@@ -2,6 +2,7 @@ package de.uka.ipd.sdq.probespec.framework.measurements;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
+import org.palladiosimulator.edp2.models.ExperimentData.ExperimentDataPackage;
 import org.palladiosimulator.edp2.models.ExperimentData.MetricDescription;
 
 public abstract class MeasurementSource {
@@ -27,7 +28,11 @@ public abstract class MeasurementSource {
         this.metricDesciption.eAdapters().add(new AdapterImpl() {
             @Override
             public void notifyChanged(final Notification notification) {
-                throw new RuntimeException("Metric description altered after initializing. This is not allowed.");
+                if (notification.getEventType() != Notification.REMOVING_ADAPTER && notification.getEventType() != Notification.RESOLVE) {
+                    if (notification.getFeature() != ExperimentDataPackage.eINSTANCE.getDescription_Repository()) {
+                        throw new RuntimeException("Metric description altered after initializing. This is not allowed.");
+                    }
+                }
             }
         });
     }

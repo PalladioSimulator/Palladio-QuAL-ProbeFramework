@@ -25,18 +25,10 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
      */
     @Override
     public Calculator buildResponseTimeCalculator(final String calculatorName, final List<Probe> probes) {
-        return register(decoratedFactory.buildResponseTimeCalculator(calculatorName, probes), calculatorName);
-    }
-
-    private Calculator register(final Calculator calculator, final String calculatorName) {
-        // If calculator already exists, return it
         if(calculators.containsKey(calculatorName)) {
             return calculators.get(calculatorName);
         }
-        // else create a new one
-        calculators.put(calculatorName, calculator);
-
-        return calculator;
+        return register(decoratedFactory.buildResponseTimeCalculator(calculatorName, probes), calculatorName);
     }
 
     /**
@@ -47,6 +39,9 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
      */
     @Override
     public Calculator buildDemandBasedWaitingTimeCalculator(final String calculatorName, final List<Probe> probes) {
+        if(calculators.containsKey(calculatorName)) {
+            return calculators.get(calculatorName);
+        }
         return register(decoratedFactory.buildDemandBasedWaitingTimeCalculator(calculatorName, probes), calculatorName);
     }
 
@@ -58,6 +53,9 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
      */
     @Override
     public Calculator buildWaitingTimeCalculator(final String calculatorName, final List<Probe> probes) {
+        if(calculators.containsKey(calculatorName)) {
+            return calculators.get(calculatorName);
+        }
         return register(decoratedFactory.buildWaitingTimeCalculator(calculatorName, probes), calculatorName);
     }
 
@@ -69,6 +67,9 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
      */
     @Override
     public Calculator buildHoldTimeCalculator(final String calculatorName, final List<Probe> probes) {
+        if(calculators.containsKey(calculatorName)) {
+            return calculators.get(calculatorName);
+        }
         return register(decoratedFactory.buildHoldTimeCalculator(calculatorName, probes), calculatorName);
     }
 
@@ -80,6 +81,9 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
      */
     @Override
     public Calculator buildStateCalculator(final String calculatorName, final Probe probe) {
+        if(calculators.containsKey(calculatorName)) {
+            return calculators.get(calculatorName);
+        }
         return register(decoratedFactory.buildStateCalculator(calculatorName, probe), calculatorName);
     }
 
@@ -91,6 +95,9 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
      */
     @Override
     public Calculator buildOverallUtilizationCalculator(final String calculatorName, final Probe probe) {
+        if(calculators.containsKey(calculatorName)) {
+            return calculators.get(calculatorName);
+        }
         return register(decoratedFactory.buildOverallUtilizationCalculator(calculatorName, probe), calculatorName);
     }
 
@@ -102,6 +109,9 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
      */
     @Override
     public Calculator buildDemandCalculator(final String calculatorName, final Probe probe) {
+        if(calculators.containsKey(calculatorName)) {
+            return calculators.get(calculatorName);
+        }
         return register(decoratedFactory.buildDemandCalculator(calculatorName, probe), calculatorName);
     }
 
@@ -113,6 +123,9 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
      */
     @Override
     public Calculator buildExecutionResultCalculator(final String calculatorName, final Probe probe) {
+        if(calculators.containsKey(calculatorName)) {
+            return calculators.get(calculatorName);
+        }
         return register(decoratedFactory.buildExecutionResultCalculator(calculatorName, probe), calculatorName);
     }
 
@@ -139,6 +152,11 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
             return calculators.get(calculatorName);
         }
         throw new IllegalArgumentException("Calculator not found.");
+    }
+
+    private Calculator register(final Calculator calculator, final String calculatorName) {
+        calculators.put(calculatorName, calculator);
+        return calculator;
     }
 
 }
