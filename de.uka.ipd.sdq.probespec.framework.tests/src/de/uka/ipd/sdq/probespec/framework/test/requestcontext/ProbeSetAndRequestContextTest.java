@@ -14,7 +14,7 @@ import org.junit.runners.JUnit4;
 import de.uka.ipd.sdq.probespec.framework.probes.BasicProbe;
 import de.uka.ipd.sdq.probespec.framework.probes.example.ExampleTakeCurrentTimeStrategy;
 import de.uka.ipd.sdq.probespec.framework.probes.example.SimpleSimulationContext;
-import de.uka.ipd.sdq.probespec.framework.requestcontext.ProbeAndRequestContext;
+import de.uka.ipd.sdq.probespec.framework.requestcontext.MeasurementSourceAndRequestContext;
 import de.uka.ipd.sdq.probespec.framework.requestcontext.RequestContext;
 
 /**
@@ -25,11 +25,11 @@ import de.uka.ipd.sdq.probespec.framework.requestcontext.RequestContext;
 @RunWith(JUnit4.class)
 public class ProbeSetAndRequestContextTest {
 
-    private ProbeAndRequestContext pssID1_1_1;
-    private ProbeAndRequestContext pssID1_1_2;
-    private ProbeAndRequestContext pssID2_3_1;
-    private ProbeAndRequestContext pssID1_3_1;
-    private ProbeAndRequestContext pssID3_1_1;
+    private MeasurementSourceAndRequestContext pssID1_1_1;
+    private MeasurementSourceAndRequestContext pssID1_1_2;
+    private MeasurementSourceAndRequestContext pssID2_3_1;
+    private MeasurementSourceAndRequestContext pssID1_3_1;
+    private MeasurementSourceAndRequestContext pssID3_1_1;
 
     public ProbeSetAndRequestContextTest() {
     }
@@ -39,11 +39,11 @@ public class ProbeSetAndRequestContextTest {
         final BasicProbe<Double,Duration> probe1 = new ExampleTakeCurrentTimeStrategy(new SimpleSimulationContext());
         final BasicProbe<Double,Duration> probe2 = new ExampleTakeCurrentTimeStrategy(new SimpleSimulationContext());
         final BasicProbe<Double,Duration> probe3 = new ExampleTakeCurrentTimeStrategy(new SimpleSimulationContext());
-        pssID1_1_1 = new ProbeAndRequestContext(probe1, new RequestContext("1"));
-        pssID1_1_2 = new ProbeAndRequestContext(probe1, new RequestContext("1"));
-        pssID1_3_1 = new ProbeAndRequestContext(probe1, new RequestContext("3"));
-        pssID3_1_1 = new ProbeAndRequestContext(probe3, new RequestContext("1"));
-        pssID2_3_1 = new ProbeAndRequestContext(probe2, new RequestContext("3"));
+        pssID1_1_1 = new MeasurementSourceAndRequestContext(probe1, new RequestContext("1"));
+        pssID1_1_2 = new MeasurementSourceAndRequestContext(probe1, new RequestContext("1"));
+        pssID1_3_1 = new MeasurementSourceAndRequestContext(probe1, new RequestContext("3"));
+        pssID3_1_1 = new MeasurementSourceAndRequestContext(probe3, new RequestContext("1"));
+        pssID2_3_1 = new MeasurementSourceAndRequestContext(probe2, new RequestContext("3"));
     }
 
     @After

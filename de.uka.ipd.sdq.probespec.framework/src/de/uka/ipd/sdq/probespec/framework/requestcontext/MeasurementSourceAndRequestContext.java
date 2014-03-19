@@ -13,7 +13,7 @@ import de.uka.ipd.sdq.probespec.framework.measurements.MeasurementSource;
  * @author Philipp Merkle
  * 
  */
-public final class ProbeAndRequestContext {
+public final class MeasurementSourceAndRequestContext {
 
     // the ID representing the ProbeSet
     private final MeasurementSource probe;
@@ -29,7 +29,7 @@ public final class ProbeAndRequestContext {
      * @param requestContext
      *            the RequestContext
      */
-    public ProbeAndRequestContext(final MeasurementSource measuredProbe,
+    public MeasurementSourceAndRequestContext(final MeasurementSource measuredProbe,
             final RequestContext requestContext) {
         this.probe = measuredProbe;
         this.requestContext = requestContext;
@@ -72,10 +72,10 @@ public final class ProbeAndRequestContext {
         if (obj == null) {
             return false;
         }
-        if (!(obj instanceof ProbeAndRequestContext)) {
+        if (!(obj instanceof MeasurementSourceAndRequestContext)) {
             return false;
         }
-        final ProbeAndRequestContext other = (ProbeAndRequestContext) obj;
+        final MeasurementSourceAndRequestContext other = (MeasurementSourceAndRequestContext) obj;
         if (requestContext == null) {
             if (other.requestContext != null) {
                 return false;

@@ -10,6 +10,7 @@ import javax.measure.unit.SI;
 
 import de.uka.ipd.sdq.pipesandfilters.framework.MetaDataInit;
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework.SensorHelper;
+import de.uka.ipd.sdq.probespec.framework.constants.MetricDescriptionConstants;
 import de.uka.ipd.sdq.probespec.framework.measurements.Measurement;
 import de.uka.ipd.sdq.sensorframework.entities.Experiment;
 import de.uka.ipd.sdq.sensorframework.entities.ExperimentRun;
@@ -70,9 +71,9 @@ public class ExecutionResultWriteDataStrategy extends AbstractWriteDataStrategy 
      */
     @Override
     public void writeData(final Measurement data) {
-        final Measure<Double, Duration> measurementTimeMeasure = getMeasureHelper(data, 0);
+        final Measure<Double, Duration> measurementTimeMeasure = data.getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
+        final Measure<Integer, Dimensionless> numericStateMeasure = data.getMeasureForMetric(MetricDescriptionConstants.CPU_STATE_METRIC);
         final double measurementTime = measurementTimeMeasure.doubleValue(SI.SECOND);
-        final Measure<Integer, Dimensionless> numericStateMeasure = getMeasureHelper(data, 1);
         final int stateId = numericStateMeasure.intValue(Dimensionless.UNIT);
         run.addStateMeasurement((StateSensor) sensor, statesCache.get(stateId),
                 measurementTime);

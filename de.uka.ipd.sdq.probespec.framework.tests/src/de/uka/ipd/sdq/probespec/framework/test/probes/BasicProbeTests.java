@@ -45,15 +45,16 @@ public class BasicProbeTests {
         simCtx.setSimulatedTime(100d);
 
         final Measurement probeMeasurement = probe.takeMeasurement(ctxID);
-        assertTrue(probeMeasurement.getMeasuredProbe() == probe);
+        assertTrue(probeMeasurement.getMeasurementSource() == probe);
         assertTrue(probeMeasurement.getMetricDesciption() == MetricDescriptionConstants.POINT_IN_TIME_METRIC);
         assertTrue(probeMeasurement.getRequestContext() == ctxID);
 
         assertTrue(probeMeasurement instanceof BasicMeasurement<?,?>);
         final BasicMeasurement<Double, Duration> basicMeasurement = (BasicMeasurement<Double, Duration>) probeMeasurement;
+        final Measure<Double,Duration> measure = basicMeasurement.getMeasureForMetric(MetricDescriptionConstants.CPU_STATE_METRIC);
 
-        assertTrue(basicMeasurement.getMeasure().getUnit().isCompatible(SI.SECOND));
-        assertTrue(basicMeasurement.getMeasure().compareTo(Measure.valueOf(100d,SI.SECOND)) == 0);
+        assertTrue(measure.getUnit().isCompatible(SI.SECOND));
+        assertTrue(measure.compareTo(Measure.valueOf(100d,SI.SECOND)) == 0);
     }
 
     @SuppressWarnings("unchecked")
@@ -67,15 +68,16 @@ public class BasicProbeTests {
         cpuResource.setJobs(2);
         final Measurement probeMeasurement = probe.takeMeasurement(ctxID);
 
-        assertTrue(probeMeasurement.getMeasuredProbe() == probe);
+        assertTrue(probeMeasurement.getMeasurementSource() == probe);
         assertTrue(probeMeasurement.getMetricDesciption() == MetricDescriptionConstants.CPU_STATE_METRIC);
         assertTrue(probeMeasurement.getRequestContext() == ctxID);
 
         assertTrue(probeMeasurement instanceof BasicMeasurement<?,?>);
         final BasicMeasurement<Double, Dimensionless> basicMeasurement = (BasicMeasurement<Double, Dimensionless>) probeMeasurement;
 
-        assertTrue(basicMeasurement.getMeasure().getUnit().isCompatible(Unit.ONE));
-        assertTrue(basicMeasurement.getMeasure().compareTo(Measure.valueOf(2l,Unit.ONE)) == 0);
+        final Measure<Double,Dimensionless> measure = basicMeasurement.getMeasureForMetric(MetricDescriptionConstants.CPU_STATE_METRIC);
+        assertTrue(measure.getUnit().isCompatible(Unit.ONE));
+        assertTrue(measure.compareTo(Measure.valueOf(2l,Unit.ONE)) == 0);
     }
 
 

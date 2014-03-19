@@ -63,7 +63,7 @@ public class CalculatorTests {
         endProbe.takeMeasurement(requestContext);
 
         assertTrue(lastMeasurement != null);
-        assertTrue(lastMeasurement.getMeasuredProbe() == rtCalculator);
+        assertTrue(lastMeasurement.getMeasurementSource() == rtCalculator);
         assertTrue(lastMeasurement.getMetricDesciption() == rtCalculator.getMetricDesciption());
     }
 }

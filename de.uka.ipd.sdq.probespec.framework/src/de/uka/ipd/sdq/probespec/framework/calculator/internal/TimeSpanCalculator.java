@@ -40,8 +40,8 @@ public abstract class TimeSpanCalculator extends NaryCalculator {
     protected Measurement calculate(final List<Measurement> probeMeasurements) throws CalculatorException {
         final List<Measurement> result = new ArrayList<Measurement>(2);
 
-        final Measure<Double, Duration> startTimeMeasure = obtainMeasure(probeMeasurements.get(0), POINT_IN_TIME_METRIC);
-        final Measure<Double, Duration> endTimeMeasure = obtainMeasure(probeMeasurements.get(1), POINT_IN_TIME_METRIC);
+        final Measure<Double, Duration> startTimeMeasure = probeMeasurements.get(0).getMeasureForMetric(POINT_IN_TIME_METRIC);
+        final Measure<Double, Duration> endTimeMeasure = probeMeasurements.get(1).getMeasureForMetric(POINT_IN_TIME_METRIC);
         final double timeSpan = endTimeMeasure.doubleValue(SI.SECOND)-startTimeMeasure.doubleValue(SI.SECOND);
         final Measure<Double, Duration> timeSpanMeasure = Measure.valueOf(timeSpan, SI.SECOND);
 

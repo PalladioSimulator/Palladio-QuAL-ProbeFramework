@@ -4,6 +4,7 @@ import javax.measure.Measure;
 import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
 
+import de.uka.ipd.sdq.probespec.framework.constants.MetricDescriptionConstants;
 import de.uka.ipd.sdq.probespec.framework.measurements.Measurement;
 import de.uka.ipd.sdq.sensorframework.entities.Experiment;
 import de.uka.ipd.sdq.sensorframework.entities.ExperimentRun;
@@ -19,9 +20,9 @@ public class WaitingTimeWriteDataStrategy extends AbstractWriteDataStrategy {
 
     @Override
     public void writeData(final Measurement data) {
-        final Measure<Double, Duration> timeSpanMeasure = getMeasureHelper(data, 0);
+        final Measure<Double, Duration> eventTimeMeasure = data.getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
+        final Measure<Double, Duration> timeSpanMeasure = data.getMeasureForMetric(MetricDescriptionConstants.RESPONSE_TIME_METRIC);
         final double timeSpan = timeSpanMeasure.doubleValue(SI.SECOND);
-        final Measure<Double, Duration> eventTimeMeasure = getMeasureHelper(data, 1);
         final double eventTime = eventTimeMeasure.doubleValue(SI.SECOND);
         run.addTimeSpanMeasurement((TimeSpanSensor)sensor, eventTime, timeSpan);
     }

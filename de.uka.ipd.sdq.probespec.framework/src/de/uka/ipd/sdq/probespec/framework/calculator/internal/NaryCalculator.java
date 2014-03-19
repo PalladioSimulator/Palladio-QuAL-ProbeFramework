@@ -92,10 +92,10 @@ public abstract class NaryCalculator extends Calculator {
     }
 
     private boolean isMeasurementFromLastProbe(final Measurement probeMeasurement) {
-        return (probeMeasurement.getMeasuredProbe() == probes.get(probes.size() - 1));
+        return (probeMeasurement.getMeasurementSource() == probes.get(probes.size() - 1));
     }
 
     private boolean isMeasurementFromFirstProbe(final Measurement probeMeasurement) {
-        return (probeMeasurement.getMeasuredProbe() == probes.get(0));
+        return (probeMeasurement.getMeasurementSource() == probes.get(0));
     }
 }

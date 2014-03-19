@@ -1,13 +1,17 @@
 package de.uka.ipd.sdq.probespec.framework.measurements;
 
+import javax.measure.Measure;
+import javax.measure.quantity.Quantity;
+
+import org.palladiosimulator.edp2.models.ExperimentData.BaseMetricDescription;
 import org.palladiosimulator.edp2.models.ExperimentData.MetricDescription;
 
-import de.uka.ipd.sdq.probespec.framework.requestcontext.ProbeAndRequestContext;
+import de.uka.ipd.sdq.probespec.framework.requestcontext.MeasurementSourceAndRequestContext;
 import de.uka.ipd.sdq.probespec.framework.requestcontext.RequestContext;
 
 public abstract class Measurement extends MeasurementSource {
 
-    private final ProbeAndRequestContext probeAndRequestContext;
+    private final MeasurementSourceAndRequestContext measurementSourceAndRequestContext;
 
     /** The id of the annotated model element */
     private final String modelElementID;
@@ -20,15 +24,15 @@ public abstract class Measurement extends MeasurementSource {
      */
     protected Measurement(final RequestContext requestContext, final MetricDescription measuredMetric, final MeasurementSource measuredProbe, final String modelElementID) {
         super(measuredMetric);
-        this.probeAndRequestContext = new ProbeAndRequestContext(measuredProbe, requestContext);
+        this.measurementSourceAndRequestContext = new MeasurementSourceAndRequestContext(measuredProbe, requestContext);
         this.modelElementID = modelElementID;
     }
 
     /**
      * @return the measuredProbe
      */
-    public final MeasurementSource getMeasuredProbe() {
-        return probeAndRequestContext.getProbe();
+    public final MeasurementSource getMeasurementSource() {
+        return measurementSourceAndRequestContext.getProbe();
     }
 
     /**
@@ -42,7 +46,22 @@ public abstract class Measurement extends MeasurementSource {
     }
 
     public RequestContext getRequestContext() {
-        return this.probeAndRequestContext.getRequestContext();
+        return this.measurementSourceAndRequestContext.getRequestContext();
     }
+
+    @SuppressWarnings("unchecked")
+    public <V,Q extends Quantity> Measure<V,Q> getMeasureForMetric(final MetricDescription wantedMetric) {
+        if (!(wantedMetric instanceof BaseMetricDescription)) {
+            throw new IllegalArgumentException("Only base metrics have measures attached.");
+        }
+        final Measurement wantedMeasurement = getMeasurementForMetric(wantedMetric);
+        if (wantedMeasurement == null || !(wantedMeasurement instanceof BasicMeasurement<?, ?>)) {
+            throw new IllegalStateException("Measurement for a base metric is not an BasicMeasurement.");
+        }
+        final BasicMeasurement<V,Q> basicMeasurement = (BasicMeasurement<V, Q>) wantedMeasurement;
+        return basicMeasurement.getMeasure();
+    }
+
+    public abstract Measurement getMeasurementForMetric(final MetricDescription metricDesciption);
 
 }

@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.palladiosimulator.edp2.models.ExperimentData.MetricDescription;
 import org.palladiosimulator.edp2.models.ExperimentData.MetricSetDescription;
 
 import de.uka.ipd.sdq.probespec.framework.requestcontext.RequestContext;
@@ -88,5 +89,20 @@ public final class MeasurementSet extends Measurement {
             }
         }
         return result;
+    }
+
+    @Override
+    public Measurement getMeasurementForMetric(final MetricDescription wantedMetric) {
+        if (this.getMetricDesciption().equals(wantedMetric)) {
+            return this;
+        }
+
+        for (final Measurement childMeasurement : subsumedMeasurements) {
+            final Measurement childResult = childMeasurement.getMeasurementForMetric(wantedMetric);
+            if (childResult != null) {
+                return childResult;
+            }
+        }
+        return null;
     }
 }

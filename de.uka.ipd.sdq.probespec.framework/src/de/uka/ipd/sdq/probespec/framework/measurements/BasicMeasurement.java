@@ -51,7 +51,15 @@ public final class BasicMeasurement<V, Q extends Quantity> extends Measurement {
      * @return the measured value and its quantity
      * @see Measure
      */
-    public final Measure<V, Q> getMeasure() {
+    final Measure<V, Q> getMeasure() {
         return measure;
+    }
+
+    @Override
+    public BasicMeasurement<V, Q> getMeasurementForMetric(final MetricDescription metricDesciption) {
+        if (!metricDesciption.equals(this.metricDesciption)) {
+            return null;
+        }
+        return this;
     }
 }

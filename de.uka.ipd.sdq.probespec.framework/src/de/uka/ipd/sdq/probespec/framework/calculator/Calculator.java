@@ -7,9 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.measure.Measure;
-import javax.measure.quantity.Quantity;
-
 import org.apache.log4j.Logger;
 import org.palladiosimulator.edp2.models.ExperimentData.BaseMetricDescription;
 import org.palladiosimulator.edp2.models.ExperimentData.ExperimentDataFactory;
@@ -177,13 +174,6 @@ public abstract class Calculator extends MeasurementSource implements IMeasureme
         }
         throw new RuntimeException("Requested metric not found in measurments.");
     }
-
-    @SuppressWarnings("unchecked")
-    protected <V, Q extends Quantity> Measure<V, Q> obtainMeasure(final Measurement measurements, final MetricDescription wantedMetric) {
-        final Measurement measurement = obtainMeasurement(measurements, wantedMetric);
-        return ((BasicMeasurement<V,Q>)measurement).getMeasure();
-    }
-
 
     protected static MetricDescription createMetricSetDescription(final String metricName, final String metricDescription, final List<BaseMetricDescription> metricDescriptions) {
         final MetricSetDescription result = experimentDataFactory.createMetricSetDescription();

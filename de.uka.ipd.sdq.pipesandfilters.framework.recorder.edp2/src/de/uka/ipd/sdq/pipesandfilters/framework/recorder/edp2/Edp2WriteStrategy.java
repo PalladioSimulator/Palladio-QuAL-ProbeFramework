@@ -13,14 +13,13 @@ import org.palladiosimulator.edp2.models.ExperimentData.ExperimentRun;
 import org.palladiosimulator.edp2.models.ExperimentData.ExperimentSetting;
 import org.palladiosimulator.edp2.models.ExperimentData.Measurements;
 import org.palladiosimulator.edp2.models.ExperimentData.MeasurementsRange;
+import org.palladiosimulator.edp2.models.ExperimentData.MetricDescription;
 import org.palladiosimulator.edp2.models.ExperimentData.MetricSetDescription;
 import org.palladiosimulator.edp2.models.Repository.Repository;
 
 import de.uka.ipd.sdq.pipesandfilters.framework.MetaDataInit;
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.Recorder;
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.edp2.launch.EDP2Config;
-import de.uka.ipd.sdq.probespec.framework.measurements.BasicMeasurement;
-import de.uka.ipd.sdq.probespec.framework.measurements.MeasurementSet;
 
 /**
  * This abstract class provides methods necessary to write raw or aggregated measurements to the EDP2.
@@ -260,10 +259,9 @@ public abstract class Edp2WriteStrategy extends Recorder {
     public void writeData(final de.uka.ipd.sdq.probespec.framework.measurements.Measurement data) {
         final Measurement measurement = new Measurement(metricSetDescription);
 
-        final MeasurementSet measurementSet = (MeasurementSet) data;
-        for(int i = 0; i < measurementSet.getSubsumedMeasurements().size(); i++) {
-            final BasicMeasurement<?, ?> basicMeasurement = (BasicMeasurement<?, ?>) measurementSet.getSubsumedMeasurements().get(i);
-            measurement.setMeasuredValue(i, basicMeasurement.getMeasure());
+        int i = 0;
+        for(final MetricDescription childDescription : metricSetDescription.getSubsumedMetrics()) {
+            measurement.setMeasuredValue(i++, data.getMeasureForMetric(childDescription));
         }
 
         MeasurementsUtility.storeMeasurement(measurements, measurement);
