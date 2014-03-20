@@ -7,6 +7,7 @@ import java.util.List;
 
 import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
 import de.uka.ipd.sdq.probespec.framework.calculator.internal.DemandBasedWaitingTimeCalculator;
+import de.uka.ipd.sdq.probespec.framework.calculator.internal.DemandCalculator;
 import de.uka.ipd.sdq.probespec.framework.calculator.internal.HoldTimeCalculator;
 import de.uka.ipd.sdq.probespec.framework.calculator.internal.ResponseTimeCalculator;
 import de.uka.ipd.sdq.probespec.framework.calculator.internal.StateCalculator;
@@ -88,7 +89,7 @@ public class DefaultCalculatorFactory implements ICalculatorFactory {
     @Override
     public Calculator buildDemandCalculator(final String calculatorName, final Probe probe) {
         ensureValidProbe(probe);
-        return new StateCalculator(this.probeSpecContext, "Demand", "Demand at "+calculatorName, probe);
+        return new DemandCalculator(this.probeSpecContext, "Demand", "Demand at "+calculatorName, probe);
     }
 
     /* (non-Javadoc)

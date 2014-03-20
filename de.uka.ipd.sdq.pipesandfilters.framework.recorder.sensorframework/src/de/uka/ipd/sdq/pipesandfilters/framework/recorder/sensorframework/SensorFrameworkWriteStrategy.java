@@ -89,10 +89,10 @@ public class SensorFrameworkWriteStrategy extends Recorder implements IRawWriteS
         } else if (metaData.getMetricDescriptions().getName().equals("Hold Time")) {
             writeDataStrategy = new WaitingTimeWriteDataStrategy(daoFactory,
                     experiment, run);
-        } else if (metaData.getMetricDescriptions().getName().equals("Demanded Time")) {
+        } else if (metaData.getMetricDescriptions().getName().equals("Demand")) {
             writeDataStrategy = new DemandedTimeWriteDataStrategy(daoFactory,
                     experiment, run);
-        } else if (metaData.getMetricDescriptions().getName().equals("Utilisation")) {
+        } else if (metaData.getMetricDescriptions().getName().equals("State")) {
             writeDataStrategy = new UtilisationWriteDataStrategy(daoFactory,
                     experiment, run);
         } else if (metaData.getMetricDescriptions().getName().equals("Overall Utilisation")) {
