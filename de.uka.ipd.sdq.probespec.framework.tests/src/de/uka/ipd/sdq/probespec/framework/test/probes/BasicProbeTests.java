@@ -51,7 +51,7 @@ public class BasicProbeTests {
 
         assertTrue(probeMeasurement instanceof BasicMeasurement<?,?>);
         final BasicMeasurement<Double, Duration> basicMeasurement = (BasicMeasurement<Double, Duration>) probeMeasurement;
-        final Measure<Double,Duration> measure = basicMeasurement.getMeasureForMetric(MetricDescriptionConstants.CPU_STATE_METRIC);
+        final Measure<Double,Duration> measure = basicMeasurement.getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
 
         assertTrue(measure.getUnit().isCompatible(SI.SECOND));
         assertTrue(measure.compareTo(Measure.valueOf(100d,SI.SECOND)) == 0);
