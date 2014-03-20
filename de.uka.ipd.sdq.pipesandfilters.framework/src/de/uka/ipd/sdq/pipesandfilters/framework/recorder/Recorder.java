@@ -1,11 +1,7 @@
 package de.uka.ipd.sdq.pipesandfilters.framework.recorder;
 
-import java.util.List;
-
-import javax.measure.Measure;
-import javax.measure.quantity.Quantity;
-
 import de.uka.ipd.sdq.probespec.framework.calculator.ICalculatorListener;
+import de.uka.ipd.sdq.probespec.framework.measurements.Measurement;
 
 
 /**
@@ -19,23 +15,23 @@ import de.uka.ipd.sdq.probespec.framework.calculator.ICalculatorListener;
  */
 public abstract class Recorder implements IWriteStrategy, ICalculatorListener {
 
-	/**
-	 * The default constructor for a recorder.
-	 * 
-	 * @param writeStrategy
-	 *            The write strategy of the recorder.
-	 */
-	public Recorder() {
-		super();
-	}
+    /**
+     * The default constructor for a recorder.
+     * 
+     * @param writeStrategy
+     *            The write strategy of the recorder.
+     */
+    public Recorder() {
+        super();
+    }
 
-	@Override
-	public void calculated(List<Measure<?, ? extends Quantity>> resultTuple) {
-		this.writeData(resultTuple);
-	}
-	
-	@Override
+    @Override
+    public void measurementTaken(final Measurement measurement) {
+        this.writeData(measurement);
+    }
+
+    @Override
     public void preUnregister() {
-		this.flush();
-	}
+        this.flush();
+    }
 }

@@ -1,10 +1,6 @@
 package de.uka.ipd.sdq.pipesandfilters.framework.recorder.edp2;
 
 import java.util.Date;
-import java.util.List;
-
-import javax.measure.Measure;
-import javax.measure.quantity.Quantity;
 
 import org.palladiosimulator.edp2.impl.Measurement;
 import org.palladiosimulator.edp2.impl.MeasurementsUtility;
@@ -17,6 +13,7 @@ import org.palladiosimulator.edp2.models.ExperimentData.ExperimentRun;
 import org.palladiosimulator.edp2.models.ExperimentData.ExperimentSetting;
 import org.palladiosimulator.edp2.models.ExperimentData.Measurements;
 import org.palladiosimulator.edp2.models.ExperimentData.MeasurementsRange;
+import org.palladiosimulator.edp2.models.ExperimentData.MetricDescription;
 import org.palladiosimulator.edp2.models.ExperimentData.MetricSetDescription;
 import org.palladiosimulator.edp2.models.Repository.Repository;
 
@@ -87,7 +84,7 @@ public abstract class Edp2WriteStrategy extends Recorder {
      * stream.
      */
     @Override
-	public abstract void flush();
+    public abstract void flush();
 
     /**
      * The initializing meta data provided by the recorder is used to define all
@@ -96,7 +93,7 @@ public abstract class Edp2WriteStrategy extends Recorder {
      * @param metaData The meta data provided by the recorder; has to be of type EDP2MetaDataInit
      */
     @Override
-	public void initialize(final MetaDataInit metaData) {
+    public void initialize(final MetaDataInit metaData) {
         // Initialize EDP2-specific recorder objects
         final EDP2MetaDataInit edp2MetaData = getEDP2MetaDataInit(metaData);
         final EDP2Config edp2Config = getEDP2RecorderConfiguration(edp2MetaData);
@@ -198,18 +195,29 @@ public abstract class Edp2WriteStrategy extends Recorder {
      */
     private static void initializeMetricSetDescription(final EDP2MetaDataInit edp2MetaData) {
         final MetricSetDescription msd = edp2MetaData.getMetricDescriptions();
-        
+
+        metricSetDescription = (MetricSetDescription)addMetricDescriptionToRepository(msd);
+    }
+
+    /**
+     * @param msd
+     * @return
+     */
+    private static MetricDescription addMetricDescriptionToRepository(final MetricDescription msd) {
         // Find existing description based on metric UUID
         for(final Description d: repository.getDescriptions()) {
             if(d.getUuid().equals(msd.getUuid())) {
-                metricSetDescription = (MetricSetDescription) d;
-                return;
+                return (MetricDescription)d;
             }
         }
-        
-        // Attach new metric to repository
-        metricSetDescription = msd;
-        metricSetDescription.setRepository(repository);
+
+        msd.setRepository(repository);
+        if (msd instanceof MetricSetDescription) {
+            for (final MetricDescription md : ((MetricSetDescription)msd).getSubsumedMetrics()) {
+                addMetricDescriptionToRepository(md);
+            }
+        }
+        return msd;
     }
 
     /**
@@ -259,12 +267,13 @@ public abstract class Edp2WriteStrategy extends Recorder {
      * This method writes given measurement data to the EDP2.
      */
     @Override
-	public void writeData(final List<Measure<?, ? extends Quantity>> data) {
+    public void writeData(final de.uka.ipd.sdq.probespec.framework.measurements.Measurement data) {
         final Measurement measurement = new Measurement(metricSetDescription);
 
-        for(int i = 0; i < data.size(); i++) {
-            measurement.setMeasuredValue(i, data.get(i));
+        for(int i = 0; i < metricSetDescription.getSubsumedMetrics().size(); i++) {
+            measurement.setMeasuredValue(i, data.getMeasureForMetric(metricSetDescription.getSubsumedMetrics().get(i)));
         }
+
         MeasurementsUtility.storeMeasurement(measurements, measurement);
     }
 }
