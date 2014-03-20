@@ -2,34 +2,24 @@ package de.uka.ipd.sdq.probespec.framework.probes.example;
 
 import javax.measure.Measure;
 import javax.measure.quantity.Dimensionless;
+import javax.measure.unit.Unit;
 
-import de.uka.ipd.sdq.probespec.framework.ProbeSample;
-import de.uka.ipd.sdq.probespec.framework.ProbeType;
-import de.uka.ipd.sdq.probespec.framework.probes.IProbeStrategy;
+import de.uka.ipd.sdq.probespec.framework.constants.MetricDescriptionConstants;
+import de.uka.ipd.sdq.probespec.framework.probes.BasicProbe;
+import de.uka.ipd.sdq.probespec.framework.requestcontext.RequestContext;
 
-public class ExampleTakeCPUStateStrategy implements IProbeStrategy {
+public class ExampleTakeCPUStateStrategy extends BasicProbe<Long, Dimensionless>{
 
-	/**
-	 * @param o
-	 *            expects a {@link SimpleCPUResource}
-	 */
-	@Override
-	public ProbeSample<Integer, Dimensionless> takeSample(final String probeId,
-			final Object... o) {
-		ASimpleActiveResource res = null;
-		if (o[0] instanceof SimpleCPUResource) {
-			res = (ASimpleActiveResource) o[0];
-		} else {
-			throw new IllegalArgumentException("Expected an argument of type "
-					+ SimpleCPUResource.class.getSimpleName() + ".");
-		}
+    private final ASimpleActiveResource myCpu;
 
-		Measure<Integer, Dimensionless> jobs = Measure.valueOf(res.getJobs(),
-				Dimensionless.UNIT);
-		ProbeSample<Integer, Dimensionless> sample = new ProbeSample<Integer, Dimensionless>(
-				jobs, probeId, ProbeType.RESOURCE_STATE);
+    public ExampleTakeCPUStateStrategy(final ASimpleActiveResource myCpu, final ISimpleDemanding demandComputer) {
+        super(MetricDescriptionConstants.CPU_STATE_METRIC);
+        this.myCpu = myCpu;
+    }
 
-		return sample;
-	}
+    @Override
+    protected Measure<Long, Dimensionless> getBasicMeasure(final RequestContext measurementContext) {
+        return Measure.valueOf((long)myCpu.getJobs(), Unit.ONE);
+    }
 
 }

@@ -1,14 +1,12 @@
 package de.uka.ipd.sdq.probespec.framework.probes.example;
 
-import static javax.measure.unit.SI.SECOND;
-
 import javax.measure.Measure;
 import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
 
-import de.uka.ipd.sdq.probespec.framework.ProbeSample;
-import de.uka.ipd.sdq.probespec.framework.ProbeType;
-import de.uka.ipd.sdq.probespec.framework.probes.IProbeStrategy;
+import de.uka.ipd.sdq.probespec.framework.constants.MetricDescriptionConstants;
+import de.uka.ipd.sdq.probespec.framework.probes.BasicProbe;
+import de.uka.ipd.sdq.probespec.framework.requestcontext.RequestContext;
 
 /**
  * ProbeStrategy which is able to measure the current simulated time. The
@@ -17,34 +15,18 @@ import de.uka.ipd.sdq.probespec.framework.probes.IProbeStrategy;
  * @author Philipp Merkle
  * 
  */
-public class ExampleTakeCurrentTimeStrategy implements IProbeStrategy {
+public class ExampleTakeCurrentTimeStrategy extends BasicProbe<Double,Duration> {
 
-	/**
-	 * @param o
-	 *            expects a {@link SimpleSimulationContext}
-	 */
-	@Override
-	public ProbeSample<Double, Duration> takeSample(final String probeId,
-			final Object... o) {
-		SimpleSimulationContext simContext = null;
-		if (o.length >= 1 && o[0] instanceof SimpleSimulationContext) {
-			simContext = (SimpleSimulationContext) o[0];
-		} else {
-			if (o.length == 0) {
-				throw new IllegalArgumentException("Missing argument of type "
-						+ SimpleSimulationContext.class.getSimpleName() + ".");
-			} else {
-				throw new IllegalArgumentException("Expected an argument of type "
-						+ SimpleSimulationContext.class.getSimpleName()
-						+ " but was " + o[0].getClass().getSimpleName() + ".");	
-			}
-		}
+    private final SimpleSimulationContext simulationContext;
 
-		Measure<Double, Duration> time = Measure.valueOf(simContext
-				.getSimulatedTime(), SECOND);
-		ProbeSample<Double, Duration> sample = new ProbeSample<Double, Duration>(
-				time, probeId, ProbeType.CURRENT_TIME);
-		return sample;
-	}
+    public ExampleTakeCurrentTimeStrategy(final SimpleSimulationContext simCtx) {
+        super(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
+        this.simulationContext = simCtx;
+    }
+
+    @Override
+    protected Measure<Double,Duration> getBasicMeasure(final RequestContext measurementContext) {
+        return Measure.valueOf(simulationContext.getSimulatedTime(), SI.SECOND);
+    }
 
 }
