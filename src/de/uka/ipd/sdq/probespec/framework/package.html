@@ -63,7 +63,7 @@ Then (line 2-3) the needed measurements are taken - here CurrentTime and CPUStat
 <p>
 In line 4 the ProbeSetSample is created using the ProbeSample vector, a requestContextID and the ID of the ProbeSet entity in the model.
 <p>
-If the ProbeSetSample represents a start ProbeSet for a binary Calculator (e.g. ResponseTimeCalculator, WaitingTimeCalculator) the TimeToLive for this ProbeSetSample must be increased, so that it remains in the SampleBlackboard (See the {@link de.uka.ipd.sdq.probespec.framework.SampleBlackboard} and {@link de.uka.ipd.sdq.probespec.framework.ProbeSetSample} documentation for further information).
+If the ProbeSetSample represents a start ProbeSet for a binary Calculator (e.g. ResponseTimeCalculator, WaitingTimeCalculator) the TimeToLive for this ProbeSetSample must be increased, so that it remains in the SampleBlackboard (See the {@link de.uka.ipd.sdq.probespec.framework.SampleBlackboard} and {@link de.uka.ipd.sdq.probespec.framework.MeasurementSet} documentation for further information).
 <p>
 Finally (line 6) the ProbeSetSample is added to the SampleBlackboard and then forwarded to the Calculators by the observer pattern.
 
