@@ -140,6 +140,7 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
 
     public void finish() {
         for (final Calculator calculator : this.calculators.values()) {
+            calculator.detachProbes();
             calculator.unregisterCalculatorListeners();
         }
         // clear calculators
