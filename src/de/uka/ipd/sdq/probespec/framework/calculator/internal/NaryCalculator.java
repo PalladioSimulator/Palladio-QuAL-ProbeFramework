@@ -91,6 +91,16 @@ public abstract class NaryCalculator extends Calculator {
         }
     }
 
+    /* (non-Javadoc)
+     * @see de.uka.ipd.sdq.probespec.framework.calculator.Calculator#detachProbes()
+     */
+    @Override
+    public void detachProbes() {
+        for (final Probe probe : probes) {
+            probe.unregisterProbeListener(this);
+        }
+    }
+
     private boolean isMeasurementFromLastProbe(final Measurement probeMeasurement) {
         return (probeMeasurement.getMeasurementSource() == probes.get(probes.size() - 1));
     }

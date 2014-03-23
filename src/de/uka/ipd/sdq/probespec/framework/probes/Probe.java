@@ -25,6 +25,13 @@ public abstract class Probe extends MeasurementSource {
         probeListeners.add(listener);
     }
 
+    public void unregisterProbeListener(final IMeasurementSourceListener listener) {
+        if (!probeListeners.contains(listener)) {
+            throw new IllegalArgumentException("A registered listener has to be supplied");
+        }
+        probeListeners.remove(listener);
+    }
+
     public final Measurement takeMeasurement(final RequestContext measurementContext) {
         final Measurement measurement = doMeasure(measurementContext);
         if (probeListeners.size() > 0) {

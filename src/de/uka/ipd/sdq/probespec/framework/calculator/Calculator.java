@@ -100,6 +100,8 @@ public abstract class Calculator extends MeasurementSource implements IMeasureme
             throw new RuntimeException(e);
         }
 
+        // FIXME Rescue this code somewhere where it fits.
+        //
         //        if(calculatedMeasures.size() != getMetricDesciption().getSubsumedMetrics().size()) {
         //            logger.error(MESUREMENTS_DO_NOT_CONFORM_TO_DECLARED_METRICS);
         //            throw new RuntimeException(MESUREMENTS_DO_NOT_CONFORM_TO_DECLARED_METRICS);
@@ -185,4 +187,5 @@ public abstract class Calculator extends MeasurementSource implements IMeasureme
         return result;
     }
 
+    public abstract void detachProbes();
 }
