@@ -3,7 +3,9 @@ package de.uka.ipd.sdq.probespec.framework.measurements;
 import javax.measure.Measure;
 import javax.measure.quantity.Quantity;
 
+import org.palladiosimulator.edp2.models.ExperimentData.BaseMetricDescription;
 import org.palladiosimulator.edp2.models.ExperimentData.MetricDescription;
+import org.palladiosimulator.edp2.models.ExperimentData.NumericalBaseMetricDescription;
 
 import de.uka.ipd.sdq.probespec.framework.requestcontext.RequestContext;
 
@@ -40,9 +42,48 @@ public final class BasicMeasurement<V, Q extends Quantity> extends Measurement {
      * @see ProbeType
      */
     public BasicMeasurement(final Measure<V, Q> measure, final MetricDescription metricDescription,
-            final MeasurementSource measuredProbe, final RequestContext requestContext, final String modelElementID) {
-        super(requestContext, metricDescription, measuredProbe, modelElementID);
+            final MeasurementSource measurementSource, final RequestContext requestContext, final String modelElementID) {
+        super(requestContext, metricDescription, measurementSource, modelElementID);
+        if (!(metricDescription instanceof BaseMetricDescription)) {
+            throw new IllegalArgumentException("A basic measurement must have a base metric description");
+        }
+        checkMeasureDataType(measure, metricDescription);
         this.measure = measure;
+    }
+
+    /**
+     * @param measure
+     * @param metricDescription
+     */
+    protected void checkMeasureDataType(final Measure<V, Q> measure, final MetricDescription metricDescription) {
+        final BaseMetricDescription baseMetricDescription = (BaseMetricDescription) metricDescription;
+        final Class<?> valueDataType;
+        switch (baseMetricDescription.getCaptureType()) {
+        case IDENTIFIER:
+            valueDataType = String.class;
+            break;
+        case INTEGER_NUMBER:
+            valueDataType = Long.class;
+            break;
+        case REAL_NUMBER:
+            valueDataType = Double.class;
+            break;
+        default:
+            valueDataType = null;
+            break;
+        }
+
+        if (measure.getValue().getClass() != valueDataType) {
+            throw new IllegalArgumentException("Datatype of measurement not compatible with declared base metric");
+        }
+
+        if (baseMetricDescription instanceof NumericalBaseMetricDescription) {
+            final NumericalBaseMetricDescription numericalBaseMetricDescription = (NumericalBaseMetricDescription) baseMetricDescription;
+            if (!measure.getUnit().isCompatible(numericalBaseMetricDescription.getDefaultUnit())) {
+                throw new IllegalArgumentException("Unit of measurement not compatible with declared base metric");
+            }
+        }
+
     }
 
     /**

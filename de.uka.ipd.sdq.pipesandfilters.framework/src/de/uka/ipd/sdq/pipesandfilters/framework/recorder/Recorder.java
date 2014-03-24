@@ -26,7 +26,7 @@ public abstract class Recorder implements IWriteStrategy, ICalculatorListener {
     }
 
     @Override
-    public void measurementTaken(final Measurement measurement) {
+    public void newMeasurementAvailable(final Measurement measurement) {
         this.writeData(measurement);
     }
 

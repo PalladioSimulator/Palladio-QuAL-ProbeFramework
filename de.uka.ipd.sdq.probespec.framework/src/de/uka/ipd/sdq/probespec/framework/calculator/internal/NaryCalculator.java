@@ -11,6 +11,7 @@ import org.palladiosimulator.edp2.models.ExperimentData.MetricDescription;
 
 import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
 import de.uka.ipd.sdq.probespec.framework.calculator.Calculator;
+import de.uka.ipd.sdq.probespec.framework.measurements.IMeasurementSource;
 import de.uka.ipd.sdq.probespec.framework.measurements.Measurement;
 import de.uka.ipd.sdq.probespec.framework.measurements.MeasurementSet;
 import de.uka.ipd.sdq.probespec.framework.probes.Probe;
@@ -39,8 +40,8 @@ public abstract class NaryCalculator extends Calculator {
             final List<Probe> childProbes) {
         super(ctx, metricDescription);
         probes = Collections.unmodifiableList(new ArrayList<Probe>(childProbes));
-        for (final Probe probe : childProbes) {
-            probe.registerProbeListener(this);
+        for (final IMeasurementSource probe : childProbes) {
+            probe.registerMeasurementSourceListener(this);
         }
     }
 
@@ -75,7 +76,7 @@ public abstract class NaryCalculator extends Calculator {
      *      (de.uka.ipd.sdq.probespec.framework.measurements.MeasurementSet)
      */
     @Override
-    public void measurementTaken(final Measurement probeMeasurement) {
+    public void newMeasurementAvailable(final Measurement probeMeasurement) {
         if (isMeasurementFromFirstProbe(probeMeasurement)) {
             if (arrivedMeasurementMemory.containsKey(probeMeasurement.getRequestContext())) {
                 throw new IllegalStateException(
@@ -96,8 +97,8 @@ public abstract class NaryCalculator extends Calculator {
      */
     @Override
     public void detachProbes() {
-        for (final Probe probe : probes) {
-            probe.unregisterProbeListener(this);
+        for (final IMeasurementSource probe : probes) {
+            probe.unregisterMeasurementSourceListener(this);
         }
     }
 

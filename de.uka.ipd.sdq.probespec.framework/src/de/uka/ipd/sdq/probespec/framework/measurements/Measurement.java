@@ -9,7 +9,7 @@ import org.palladiosimulator.edp2.models.ExperimentData.MetricDescription;
 import de.uka.ipd.sdq.probespec.framework.requestcontext.MeasurementSourceAndRequestContext;
 import de.uka.ipd.sdq.probespec.framework.requestcontext.RequestContext;
 
-public abstract class Measurement extends MeasurementSource {
+public abstract class Measurement extends MetricEntity {
 
     private final MeasurementSourceAndRequestContext measurementSourceAndRequestContext;
 
@@ -22,17 +22,17 @@ public abstract class Measurement extends MeasurementSource {
      * @param measuredProbe
      * @param modelElementID
      */
-    protected Measurement(final RequestContext requestContext, final MetricDescription measuredMetric, final MeasurementSource measuredProbe, final String modelElementID) {
+    protected Measurement(final RequestContext requestContext, final MetricDescription measuredMetric, final MeasurementSource measurementSource, final String modelElementID) {
         super(measuredMetric);
-        this.measurementSourceAndRequestContext = new MeasurementSourceAndRequestContext(measuredProbe, requestContext);
+        this.measurementSourceAndRequestContext = new MeasurementSourceAndRequestContext(measurementSource, requestContext);
         this.modelElementID = modelElementID;
     }
 
     /**
      * @return the measuredProbe
      */
-    public final MeasurementSource getMeasurementSource() {
-        return measurementSourceAndRequestContext.getProbe();
+    public final MetricEntity getMeasurementSource() {
+        return measurementSourceAndRequestContext.getMeasurementSource();
     }
 
     /**

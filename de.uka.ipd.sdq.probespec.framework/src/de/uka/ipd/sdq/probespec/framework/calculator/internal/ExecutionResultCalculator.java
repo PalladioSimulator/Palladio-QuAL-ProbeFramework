@@ -44,8 +44,8 @@ public class ExecutionResultCalculator extends UnaryCalculator {
     @Override
     protected Measurement calculate(final List<Measurement> probeSetSamples) {
         final List<Measurement> result = new LinkedList<Measurement>();
-        result.add(obtainMeasurement(probeSetSamples.get(0), MetricDescriptionConstants.POINT_IN_TIME_METRIC));
-        result.add(obtainMeasurement(probeSetSamples.get(0), MetricDescriptionConstants.EXECUTION_RESULT_METRIC));
+        result.add(probeSetSamples.get(0).getMeasurementForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC));
+        result.add(probeSetSamples.get(0).getMeasurementForMetric(MetricDescriptionConstants.EXECUTION_RESULT_METRIC));
         return new MeasurementSet(result, (MetricSetDescription) this.metricDesciption, this);
     }
 }

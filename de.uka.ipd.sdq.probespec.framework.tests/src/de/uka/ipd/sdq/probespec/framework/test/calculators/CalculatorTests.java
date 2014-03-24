@@ -40,10 +40,10 @@ public class CalculatorTests {
     public void testResponseTimeCalculator() {
         final Calculator rtCalculator = this.probeSpecContext.getCalculatorFactory().buildResponseTimeCalculator("Test ResponseTime", Arrays.asList(startProbe,endProbe));
 
-        rtCalculator.registerCalculatorListener(new ICalculatorListener() {
+        rtCalculator.registerMeasurementSourceListener(new ICalculatorListener() {
 
             @Override
-            public void measurementTaken(final Measurement measurement) {
+            public void newMeasurementAvailable(final Measurement measurement) {
                 lastMeasurement = measurement;
             }
 

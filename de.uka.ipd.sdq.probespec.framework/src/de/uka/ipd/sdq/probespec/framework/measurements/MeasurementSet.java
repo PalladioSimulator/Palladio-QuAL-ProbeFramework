@@ -49,14 +49,22 @@ public final class MeasurementSet extends Measurement {
      * @see RequestContext
      */
     public MeasurementSet(
-            final List<Measurement> subsumedMeasurements, final MetricSetDescription metrics, final MeasurementSource measuredProbe) {
+            final List<Measurement> subsumedMeasurements, final MetricSetDescription metrics, final MeasurementSource measurementSource) {
         super(
                 getRequestContext(subsumedMeasurements),
                 metrics,
-                measuredProbe,
+                measurementSource,
                 getModelElementID(subsumedMeasurements));
-
         this.subsumedMeasurements.addAll(subsumedMeasurements);
+        checkValidParameters();
+    }
+
+    private void checkValidParameters() {
+        final MetricSetDescription metrics = (MetricSetDescription) getMetricDesciption();
+
+        if (this.subsumedMeasurements.size() != metrics.getSubsumedMetrics().size()) {
+            throw new IllegalArgumentException("Number of measurements has to match the number of child metrics in the metric set description");
+        }
     }
 
     /**
