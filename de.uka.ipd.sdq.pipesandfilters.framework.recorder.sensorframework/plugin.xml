@@ -5,7 +5,7 @@
          id="de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework"
          point="de.uka.ipd.sdq.pipesandfilters.framework.recorder">
       <recorder
-            configuration="de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework.SensorFrameworkRecorderConfiguration"
+            configurationFactory="de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework.SensorFrameworkRecorderConfigurationFactory"
             launchConfigTab="de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework.launch.SensorFrameworkTab"
             name="SensorFramework"
             writeStrategy="de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework.SensorFrameworkRecorder">

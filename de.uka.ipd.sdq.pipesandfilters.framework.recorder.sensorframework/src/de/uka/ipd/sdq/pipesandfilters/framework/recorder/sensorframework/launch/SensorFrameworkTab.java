@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework.SensorFrameworkRecorderConfiguration;
+import de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework.SensorFrameworkRecorderConfigurationFactory;
 import de.uka.ipd.sdq.sensorframework.SensorFrameworkDataset;
 import de.uka.ipd.sdq.sensorframework.dialogs.dataset.ConfigureDatasourceDialog;
 import de.uka.ipd.sdq.sensorframework.dialogs.dataset.DatasourceListLabelProvider;
@@ -26,118 +26,119 @@ import de.uka.ipd.sdq.sensorframework.entities.dao.IDAOFactory;
 
 public class SensorFrameworkTab extends AbstractLaunchConfigurationTab {
 
-	private Text dataField;
+    private Text dataField;
 
-	protected int selectedDataSourceID;
+    protected int selectedDataSourceID;
 
-	@Override
-	public void createControl(Composite parent) {
-		Composite container = new Composite(parent, SWT.NONE);
-		container.setLayout(new GridLayout());
-		setControl(container);
+    @Override
+    public void createControl(final Composite parent) {
+        final Composite container = new Composite(parent, SWT.NONE);
+        container.setLayout(new GridLayout());
+        setControl(container);
 
-		final ModifyListener modifyListener = new ModifyListener() {
+        final ModifyListener modifyListener = new ModifyListener() {
 
-			public void modifyText(ModifyEvent e) {
-				SensorFrameworkTab.this.setDirty(true);
-				SensorFrameworkTab.this.updateLaunchConfigurationDialog();
-			}
-		};
+            @Override
+            public void modifyText(final ModifyEvent e) {
+                SensorFrameworkTab.this.setDirty(true);
+                SensorFrameworkTab.this.updateLaunchConfigurationDialog();
+            }
+        };
 
-		final Group dataSetGroup = new Group(container, SWT.NONE);
-		dataSetGroup.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true,
-				false));
-		final GridLayout gridLayout_2 = new GridLayout();
-		gridLayout_2.numColumns = 3;
-		dataSetGroup.setLayout(gridLayout_2);
-		dataSetGroup.setText("Data Set");
+        final Group dataSetGroup = new Group(container, SWT.NONE);
+        dataSetGroup.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true,
+                false));
+        final GridLayout gridLayout_2 = new GridLayout();
+        gridLayout_2.numColumns = 3;
+        dataSetGroup.setLayout(gridLayout_2);
+        dataSetGroup.setText("Data Set");
 
-		final Label dataSourceLabel = new Label(dataSetGroup, SWT.NONE);
-		dataSourceLabel.setText("Data source:");
+        final Label dataSourceLabel = new Label(dataSetGroup, SWT.NONE);
+        dataSourceLabel.setText("Data source:");
 
-		dataField = new Text(dataSetGroup, SWT.BORDER | SWT.READ_ONLY);
-		dataField
-				.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-		dataField.addModifyListener(modifyListener);
+        dataField = new Text(dataSetGroup, SWT.BORDER | SWT.READ_ONLY);
+        dataField
+        .setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        dataField.addModifyListener(modifyListener);
 
-		final Button browseButton = new Button(dataSetGroup, SWT.NONE);
-		browseButton.setText("Browse...");
-		browseButton.addSelectionListener(new SelectionAdapter() {
+        final Button browseButton = new Button(dataSetGroup, SWT.NONE);
+        browseButton.setText("Browse...");
+        browseButton.addSelectionListener(new SelectionAdapter() {
 
-			/*
-			 * (non-Javadoc)
-			 * 
-			 * @see
-			 * org.eclipse.swt.events.SelectionListener#widgetSelected(org.eclipse
-			 * .swt.events.SelectionEvent)
-			 */
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				ConfigureDatasourceDialog dialog = new ConfigureDatasourceDialog(
-						e.display.getActiveShell(), "Select Datasource...",
-						true);
-				if (dialog.open() == Dialog.OK) {
-					IDAOFactory dataSet = (IDAOFactory) dialog.getResult();
-					selectedDataSourceID = (int) dataSet.getID();
-					dataField.setText(dataSet.getName() + " ["
-							+ dataSet.getID() + " ]");
-				}
-			}
-		});
+            /*
+             * (non-Javadoc)
+             * 
+             * @see
+             * org.eclipse.swt.events.SelectionListener#widgetSelected(org.eclipse
+             * .swt.events.SelectionEvent)
+             */
+            @Override
+            public void widgetSelected(final SelectionEvent e) {
+                final ConfigureDatasourceDialog dialog = new ConfigureDatasourceDialog(
+                        e.display.getActiveShell(), "Select Datasource...",
+                        true);
+                if (dialog.open() == Dialog.OK) {
+                    final IDAOFactory dataSet = (IDAOFactory) dialog.getResult();
+                    selectedDataSourceID = (int) dataSet.getID();
+                    dataField.setText(dataSet.getName() + " ["
+                            + dataSet.getID() + " ]");
+                }
+            }
+        });
 
-	}
+    }
 
-	@Override
-	public String getName() {
-		return "SensorFramework";
-	}
+    @Override
+    public String getName() {
+        return "SensorFramework";
+    }
 
-	@Override
-	public void initializeFrom(ILaunchConfiguration configuration) {
-		try {
-			selectedDataSourceID = configuration.getAttribute(
-					SensorFrameworkRecorderConfiguration.DATASOURCE_ID, -1);
-			if (SensorFrameworkDataset.singleton().getDataSourceByID(
-					selectedDataSourceID) == null)
-				dataField.setText("");
-			else {
-				IDAOFactory factory = SensorFrameworkDataset.singleton()
-						.getDataSourceByID(selectedDataSourceID);
-				dataField.setText(DatasourceListLabelProvider
-						.dataSetRepresentation(factory));
-			}
-		} catch (CoreException e) {
-			selectedDataSourceID = -1;
-			dataField.setText("");
-		}
-	}
+    @Override
+    public void initializeFrom(final ILaunchConfiguration configuration) {
+        try {
+            selectedDataSourceID = configuration.getAttribute(
+                    SensorFrameworkRecorderConfigurationFactory.DATASOURCE_ID, -1);
+            if (SensorFrameworkDataset.singleton().getDataSourceByID(
+                    selectedDataSourceID) == null) {
+                dataField.setText("");
+            } else {
+                final IDAOFactory factory = SensorFrameworkDataset.singleton()
+                        .getDataSourceByID(selectedDataSourceID);
+                dataField.setText(DatasourceListLabelProvider
+                        .dataSetRepresentation(factory));
+            }
+        } catch (final CoreException e) {
+            selectedDataSourceID = -1;
+            dataField.setText("");
+        }
+    }
 
-	@Override
-	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
-		configuration.setAttribute(SensorFrameworkRecorderConfiguration.DATASOURCE_ID,
-				selectedDataSourceID);
+    @Override
+    public void performApply(final ILaunchConfigurationWorkingCopy configuration) {
+        configuration.setAttribute(SensorFrameworkRecorderConfigurationFactory.DATASOURCE_ID,
+                selectedDataSourceID);
 
-	}
+    }
 
-	@Override
-	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
-		configuration.setAttribute(SensorFrameworkRecorderConfiguration.DATASOURCE_ID, -1);
-	}
+    @Override
+    public void setDefaults(final ILaunchConfigurationWorkingCopy configuration) {
+        configuration.setAttribute(SensorFrameworkRecorderConfigurationFactory.DATASOURCE_ID, -1);
+    }
 
-	@Override
-	public boolean isValid(ILaunchConfiguration launchConfig) {
-		if (SensorFrameworkDataset.singleton().getDataSourceByID(
-				selectedDataSourceID) == null) {
-			setErrorMessage("Data source is missing!");
-			return false;
-		}
-		return true;
-	}
-	
-	@Override
-	public void activated(ILaunchConfigurationWorkingCopy workingCopy) {}
+    @Override
+    public boolean isValid(final ILaunchConfiguration launchConfig) {
+        if (SensorFrameworkDataset.singleton().getDataSourceByID(
+                selectedDataSourceID) == null) {
+            setErrorMessage("Data source is missing!");
+            return false;
+        }
+        return true;
+    }
 
-	@Override
-	public void deactivated(ILaunchConfigurationWorkingCopy workingCopy) {}
+    @Override
+    public void activated(final ILaunchConfigurationWorkingCopy workingCopy) {}
+
+    @Override
+    public void deactivated(final ILaunchConfigurationWorkingCopy workingCopy) {}
 
 }

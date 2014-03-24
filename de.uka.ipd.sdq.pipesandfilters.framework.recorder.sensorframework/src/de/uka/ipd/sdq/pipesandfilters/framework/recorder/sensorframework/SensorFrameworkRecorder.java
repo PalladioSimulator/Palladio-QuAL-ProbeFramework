@@ -14,7 +14,6 @@ import de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework.strateg
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework.strategies.UtilisationWriteDataStrategy;
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework.strategies.WaitingTimeWriteDataStrategy;
 import de.uka.ipd.sdq.probespec.framework.measurements.Measurement;
-import de.uka.ipd.sdq.sensorframework.SensorFrameworkDataset;
 import de.uka.ipd.sdq.sensorframework.entities.Experiment;
 import de.uka.ipd.sdq.sensorframework.entities.ExperimentRun;
 import de.uka.ipd.sdq.sensorframework.entities.dao.IDAOFactory;
@@ -30,8 +29,6 @@ public class SensorFrameworkRecorder extends Recorder implements IRawWriteStrate
 
     private SensorFrameworkRecorderConfiguration recorderConfiguration;
 
-    private IDAOFactory daoFactory;
-
     /**
      * All instances of this class uses the same IDAOFactory. Hence it is
      * sufficient when a single writer flushes the data. Several subsequent
@@ -40,10 +37,6 @@ public class SensorFrameworkRecorder extends Recorder implements IRawWriteStrate
      * has written data that has not yet been flushed; true else.
      */
     private static boolean flushed;
-
-    private Experiment experiment;
-
-    private ExperimentRun run;
 
     private AbstractWriteDataStrategy writeDataStrategy;
 
@@ -57,15 +50,16 @@ public class SensorFrameworkRecorder extends Recorder implements IRawWriteStrate
                     + " but was " + myRecorderConfiguration.getClass().getSimpleName());
         }
 
-        if (!this.recorderConfiguration.isRemoteRun()) {
-            initialiseNewSensorframework();
-        } else {
-            initialiseTempSensorframework();
+        if (this.recorderConfiguration.isRemoteRun()) {
+            throw new UnsupportedOperationException("Remote runs are not implemented yet");
         }
 
         // Create sensor
         // TODO Remove hard coded metric names "Response Time", ... Use Enum
         // instead!?
+        final IDAOFactory daoFactory = this.recorderConfiguration.getDaoFactory();
+        final Experiment experiment = this.recorderConfiguration.getExperiment();
+        final ExperimentRun run = this.recorderConfiguration.getExperimentRun();
         if (recorderConfiguration.getRecorderAcceptedMetric().getName().equals("Response Time")) {
             writeDataStrategy = new ResponseTimeWriteDataStrategy(daoFactory,
                     experiment, run);
@@ -111,54 +105,8 @@ public class SensorFrameworkRecorder extends Recorder implements IRawWriteStrate
             if(logger.isDebugEnabled()) {
                 logger.debug("Flushing SensorFramework data store");
             }
-            daoFactory.store();
+            recorderConfiguration.getDaoFactory().store();
             //do not execute daoFactory.finalizeAndClose() ! This will flush all lists for file-based lists, e.g. experiments, from memory. This should not be done on any DAO requested via the singleton as the lists are not reloaded on next access.
         }
-        run = null;
-        experiment = null;
     }
-
-    private void initialiseNewSensorframework() {
-        // Obtain DAOFactory
-        daoFactory = SensorFrameworkDataset.singleton().getDataSourceByID(
-                recorderConfiguration.getDatasourceID());
-        if (daoFactory == null) {
-            throw new DatasourceConfigurationInvalidException();
-        }
-
-        // Find an existing or create a new Experiment
-        if (daoFactory.createExperimentDAO().findByExperimentName(
-                recorderConfiguration.getExperimentName()).size() == 1) {
-            experiment = daoFactory.createExperimentDAO().findByExperimentName(
-                    recorderConfiguration.getExperimentName()).iterator().next();
-        } else {
-            experiment = daoFactory.createExperimentDAO().addExperiment(
-                    recorderConfiguration.getExperimentName());
-        }
-
-        // Find an existing or create a new ExperimentRun
-        for (final ExperimentRun r : experiment.getExperimentRuns()) {
-            if (r.getExperimentDateTime().equals(
-                    recorderConfiguration.getExperimentRunName())) {
-                run = r;
-            }
-        }
-        if (run == null) {
-            run = experiment.addExperimentRun(recorderConfiguration.getExperimentRunName());
-        }
-
-        // run = new SimuComExperimentRunDecorator(this, experiment
-        // .addExperimentRun("Run " + new Date()));
-    }
-
-    // TODO Initialization for R-OSGI
-    private void initialiseTempSensorframework() {
-        // // TODO!!!!
-        // this.daoFactory = new FileDAOFactory("C:/temp/test");
-        // experiment = daoFactory.createExperimentDAO().addExperiment(
-        // this.getConfig().getNameExperimentRun());
-        // run = new SimuComExperimentRunDecorator(this, experiment
-        // .addExperimentRun("Run " + new Date()));
-    }
-
 }

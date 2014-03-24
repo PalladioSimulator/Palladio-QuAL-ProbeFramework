@@ -21,23 +21,24 @@ import org.palladiosimulator.edp2.impl.RepositoryManager;
 import org.palladiosimulator.edp2.models.Repository.Repository;
 import org.palladiosimulator.edp2.ui.dialogs.datasource.ConfigureDatasourceDialog;
 
-import de.uka.ipd.sdq.pipesandfilters.framework.recorder.edp2.EDP2RecorderConfiguration;
+import de.uka.ipd.sdq.pipesandfilters.framework.recorder.edp2.EDP2RecorderConfigurationFactory;
 
 public class EDP2Tab extends AbstractLaunchConfigurationTab {
 
     private Text dataField;
 
     protected String selectedRepositoryID;
-    
+
     @Override
-    public void createControl(Composite parent) {
-        Composite container = new Composite(parent, SWT.NONE);
+    public void createControl(final Composite parent) {
+        final Composite container = new Composite(parent, SWT.NONE);
         container.setLayout(new GridLayout());
         setControl(container);
 
         final ModifyListener modifyListener = new ModifyListener() {
 
-            public void modifyText(ModifyEvent e) {
+            @Override
+            public void modifyText(final ModifyEvent e) {
                 EDP2Tab.this.setDirty(true);
                 EDP2Tab.this.updateLaunchConfigurationDialog();
             }
@@ -56,7 +57,7 @@ public class EDP2Tab extends AbstractLaunchConfigurationTab {
 
         dataField = new Text(dataSetGroup, SWT.BORDER | SWT.READ_ONLY);
         dataField
-                .setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        .setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         dataField.addModifyListener(modifyListener);
 
         final Button browseButton = new Button(dataSetGroup, SWT.NONE);
@@ -71,12 +72,12 @@ public class EDP2Tab extends AbstractLaunchConfigurationTab {
              * .swt.events.SelectionEvent)
              */
             @Override
-            public void widgetSelected(SelectionEvent e) {
-                ConfigureDatasourceDialog dialog = new ConfigureDatasourceDialog(
+            public void widgetSelected(final SelectionEvent e) {
+                final ConfigureDatasourceDialog dialog = new ConfigureDatasourceDialog(
                         e.display.getActiveShell(), "Select Datasource...",
                         true);
                 if (dialog.open() == Dialog.OK) {
-                    Repository repository = (Repository) dialog.getResult();
+                    final Repository repository = (Repository) dialog.getResult();
                     selectedRepositoryID = repository.getUuid();
                     dataField.setText(repository.toString());
                 }
@@ -84,55 +85,55 @@ public class EDP2Tab extends AbstractLaunchConfigurationTab {
         });
 
     }
-    
-	@Override
+
+    @Override
     public String getName() {
         return "EDP2";
     }
 
     @Override
-    public void initializeFrom(ILaunchConfiguration configuration) {
+    public void initializeFrom(final ILaunchConfiguration configuration) {
         try {
             selectedRepositoryID = configuration.getAttribute(
-                    EDP2RecorderConfiguration.REPOSITORY_ID, "");
-            Repository repository = RepositoryManager.getRepositoryFromUUID(selectedRepositoryID);
-            if(repository == null)
+                    EDP2RecorderConfigurationFactory.REPOSITORY_ID, "");
+            final Repository repository = RepositoryManager.getRepositoryFromUUID(selectedRepositoryID);
+            if(repository == null) {
                 dataField.setText("");
-            else {
+            } else {
                 dataField.setText(repository.toString());
             }
-        } catch (CoreException e) {
+        } catch (final CoreException e) {
             selectedRepositoryID = "";
             dataField.setText("");
         }
     }
 
     @Override
-    public void performApply(ILaunchConfigurationWorkingCopy configuration) {
-        configuration.setAttribute(EDP2RecorderConfiguration.REPOSITORY_ID,
+    public void performApply(final ILaunchConfigurationWorkingCopy configuration) {
+        configuration.setAttribute(EDP2RecorderConfigurationFactory.REPOSITORY_ID,
                 selectedRepositoryID);
 
     }
 
     @Override
-    public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
-        configuration.setAttribute(EDP2RecorderConfiguration.REPOSITORY_ID, -1);
+    public void setDefaults(final ILaunchConfigurationWorkingCopy configuration) {
+        configuration.setAttribute(EDP2RecorderConfigurationFactory.REPOSITORY_ID, -1);
     }
 
     @Override
-    public boolean isValid(ILaunchConfiguration launchConfig) {
-        Repository repository = RepositoryManager.getRepositoryFromUUID(selectedRepositoryID);
+    public boolean isValid(final ILaunchConfiguration launchConfig) {
+        final Repository repository = RepositoryManager.getRepositoryFromUUID(selectedRepositoryID);
         if (repository == null) {
             setErrorMessage("Data source is missing!");
             return false;
         }
         return true;
     }
-    
-    @Override
-    public void activated(ILaunchConfigurationWorkingCopy workingCopy) {}
 
     @Override
-    public void deactivated(ILaunchConfigurationWorkingCopy workingCopy) {}
+    public void activated(final ILaunchConfigurationWorkingCopy workingCopy) {}
+
+    @Override
+    public void deactivated(final ILaunchConfigurationWorkingCopy workingCopy) {}
 
 }

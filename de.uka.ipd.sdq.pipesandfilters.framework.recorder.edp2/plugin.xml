@@ -5,7 +5,7 @@
          id="de.uka.ipd.sdq.pipesandfilters.framework.recorder.edp2"
          point="de.uka.ipd.sdq.pipesandfilters.framework.recorder">
       <recorder
-            configuration="de.uka.ipd.sdq.pipesandfilters.framework.recorder.edp2.EDP2RecorderConfiguration"
+            configurationFactory="de.uka.ipd.sdq.pipesandfilters.framework.recorder.edp2.EDP2RecorderConfigurationFactory"
             launchConfigTab="de.uka.ipd.sdq.pipesandfilters.framework.recorder.edp2.launch.EDP2Tab"
             name="Experiment Data Persistency &amp; Presentation (EDP2)"
             writeStrategy="de.uka.ipd.sdq.pipesandfilters.framework.recorder.edp2.EDP2RawRecorder">
