@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework.SensorFrameworkRecorderConfiguration;
 import de.uka.ipd.sdq.sensorframework.SensorFrameworkDataset;
 import de.uka.ipd.sdq.sensorframework.dialogs.dataset.ConfigureDatasourceDialog;
 import de.uka.ipd.sdq.sensorframework.dialogs.dataset.DatasourceListLabelProvider;
@@ -95,7 +96,7 @@ public class SensorFrameworkTab extends AbstractLaunchConfigurationTab {
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		try {
 			selectedDataSourceID = configuration.getAttribute(
-					SensorFrameworkConfig.DATASOURCE_ID, -1);
+					SensorFrameworkRecorderConfiguration.DATASOURCE_ID, -1);
 			if (SensorFrameworkDataset.singleton().getDataSourceByID(
 					selectedDataSourceID) == null)
 				dataField.setText("");
@@ -113,14 +114,14 @@ public class SensorFrameworkTab extends AbstractLaunchConfigurationTab {
 
 	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
-		configuration.setAttribute(SensorFrameworkConfig.DATASOURCE_ID,
+		configuration.setAttribute(SensorFrameworkRecorderConfiguration.DATASOURCE_ID,
 				selectedDataSourceID);
 
 	}
 
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
-		configuration.setAttribute(SensorFrameworkConfig.DATASOURCE_ID, -1);
+		configuration.setAttribute(SensorFrameworkRecorderConfiguration.DATASOURCE_ID, -1);
 	}
 
 	@Override

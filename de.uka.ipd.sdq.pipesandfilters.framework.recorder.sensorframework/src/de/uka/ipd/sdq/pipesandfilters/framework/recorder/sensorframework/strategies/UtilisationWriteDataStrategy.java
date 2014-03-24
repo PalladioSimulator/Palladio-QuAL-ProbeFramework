@@ -7,7 +7,8 @@ import javax.measure.quantity.Dimensionless;
 import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
 
-import de.uka.ipd.sdq.pipesandfilters.framework.MetaDataInit;
+import de.uka.ipd.sdq.pipesandfilters.framework.recorder.launch.IRecorderConfiguration;
+import de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework.SensorFrameworkRecorderConfiguration;
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework.SensorHelper;
 import de.uka.ipd.sdq.probespec.framework.constants.MetricDescriptionConstants;
 import de.uka.ipd.sdq.probespec.framework.measurements.Measurement;
@@ -31,8 +32,9 @@ public class UtilisationWriteDataStrategy extends AbstractWriteDataStrategy {
     }
 
     @Override
-    public void initialise(final MetaDataInit metaData) {
-        final String sensorId = metaData.getMetricDescriptions().getTextualDescription();
+    public void initialise(final IRecorderConfiguration recorderConfiguration) {
+        final SensorFrameworkRecorderConfiguration sensorFrameworkRecorderConfig = (SensorFrameworkRecorderConfiguration) recorderConfiguration;
+        final String sensorId = sensorFrameworkRecorderConfig.getRecorderAcceptedMetric().getTextualDescription();
         this.idleState = SensorHelper.createOrReuseState(daoFactory, "Idle");
         this.busyState = SensorHelper.createOrReuseState(daoFactory, "Busy");
         sensor = SensorHelper.createOrReuseStateSensor(daoFactory, experiment,

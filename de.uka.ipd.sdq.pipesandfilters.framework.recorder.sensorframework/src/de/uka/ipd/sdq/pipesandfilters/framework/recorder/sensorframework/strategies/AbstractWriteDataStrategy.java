@@ -1,6 +1,7 @@
 package de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework.strategies;
 
-import de.uka.ipd.sdq.pipesandfilters.framework.MetaDataInit;
+import de.uka.ipd.sdq.pipesandfilters.framework.recorder.launch.IRecorderConfiguration;
+import de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework.SensorFrameworkRecorderConfiguration;
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework.SensorHelper;
 import de.uka.ipd.sdq.sensorframework.entities.Experiment;
 import de.uka.ipd.sdq.sensorframework.entities.ExperimentRun;
@@ -25,8 +26,9 @@ public abstract class AbstractWriteDataStrategy implements IWriteDataStrategy {
     }
 
     @Override
-    public void initialise(final MetaDataInit metaData) {
-        final String sensorId = metaData.getMetricDescriptions().getTextualDescription();
+    public void initialise(final IRecorderConfiguration recorderConfiguration) {
+        final SensorFrameworkRecorderConfiguration sensorFrameworkRecorderConfig = (SensorFrameworkRecorderConfiguration) recorderConfiguration;
+        final String sensorId = sensorFrameworkRecorderConfig.getRecorderAcceptedMetric().getTextualDescription();
         sensor = SensorHelper.createOrReuseTimeSensor(daoFactory, experiment,
                 sensorId);
     }

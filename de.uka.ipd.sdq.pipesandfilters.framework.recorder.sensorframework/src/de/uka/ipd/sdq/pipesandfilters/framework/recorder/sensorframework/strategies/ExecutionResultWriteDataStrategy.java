@@ -8,7 +8,8 @@ import javax.measure.quantity.Dimensionless;
 import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
 
-import de.uka.ipd.sdq.pipesandfilters.framework.MetaDataInit;
+import de.uka.ipd.sdq.pipesandfilters.framework.recorder.launch.IRecorderConfiguration;
+import de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework.SensorFrameworkRecorderConfiguration;
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework.SensorHelper;
 import de.uka.ipd.sdq.probespec.framework.constants.MetricDescriptionConstants;
 import de.uka.ipd.sdq.probespec.framework.measurements.Measurement;
@@ -56,9 +57,10 @@ public class ExecutionResultWriteDataStrategy extends AbstractWriteDataStrategy 
      * .MetaDataInit)
      */
     @Override
-    public void initialise(final MetaDataInit metaData) {
-        initStatesCache(metaData);
-        initSensor(metaData.getMetricDescriptions().getTextualDescription());
+    public void initialise(final IRecorderConfiguration recorderConfiguration) {
+        final SensorFrameworkRecorderConfiguration sensorFrameworkRecorderConfig = (SensorFrameworkRecorderConfiguration) recorderConfiguration;
+        initStatesCache(sensorFrameworkRecorderConfig);
+        initSensor(sensorFrameworkRecorderConfig.getRecorderAcceptedMetric().getTextualDescription());
     }
 
     /*
@@ -132,8 +134,8 @@ public class ExecutionResultWriteDataStrategy extends AbstractWriteDataStrategy 
      * @param metaData
      *            the meta data for the initialization of the strategy
      */
-    private void initStatesCache(final MetaDataInit metaData) {
-        final Map<Integer, String> resultTypes = metaData.getExecutionResultTypes();
+    private void initStatesCache(final SensorFrameworkRecorderConfiguration recorderConfiguration) {
+        final Map<Integer, String> resultTypes = recorderConfiguration.getExecutionResultTypes();
         for (final Integer key : resultTypes.keySet()) {
             final State state = SensorHelper.createOrReuseState(daoFactory,
                     resultTypes.get(key));

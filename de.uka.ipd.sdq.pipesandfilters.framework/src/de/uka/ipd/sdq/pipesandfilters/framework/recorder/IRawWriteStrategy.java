@@ -7,6 +7,6 @@ package de.uka.ipd.sdq.pipesandfilters.framework.recorder;
  * @author Baum
  * 
  */
-public interface IRawWriteStrategy extends IWriteStrategy {
+public interface IRawWriteStrategy extends IRecorder {
 
 }

@@ -6,7 +6,9 @@ import java.util.List;
 import javax.measure.Measure;
 import javax.measure.quantity.Quantity;
 
-import de.uka.ipd.sdq.pipesandfilters.framework.MetaDataInit;
+import org.palladiosimulator.edp2.models.ExperimentData.MetricSetDescription;
+
+import de.uka.ipd.sdq.pipesandfilters.framework.recorder.launch.IRecorderConfiguration;
 import de.uka.ipd.sdq.probespec.framework.measurements.Measurement;
 
 /**
@@ -44,9 +46,10 @@ public abstract class SlidingMeanRecorder extends Recorder implements IAggregati
      *            The meta data for the incoming result tuples.
      */
     @Override
-    public void initialize(final MetaDataInit metaData) {
+    public void initialize(final IRecorderConfiguration recorderConfiguration) {
+        final AbstractRecorderConfiguration abstractRecorderConfiguration = (AbstractRecorderConfiguration) recorderConfiguration;
 
-        final int aggregatedMetricIndex = metaData.getMetricDescriptions().getSubsumedMetrics().size() - 1;
+        final int aggregatedMetricIndex = ((MetricSetDescription)abstractRecorderConfiguration.getRecorderAcceptedMetric()).getSubsumedMetrics().size() - 1;
 
         // Create initializing meta data for the aggregation to initialize the
         // aggregation write strategy.

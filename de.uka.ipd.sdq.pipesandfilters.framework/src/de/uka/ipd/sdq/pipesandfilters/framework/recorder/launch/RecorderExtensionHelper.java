@@ -9,7 +9,6 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
 
-import de.uka.ipd.sdq.pipesandfilters.framework.IMetaDataInitFactory;
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.Recorder;
 
 public class RecorderExtensionHelper {
@@ -76,14 +75,6 @@ public class RecorderExtensionHelper {
             return (Recorder) instantiateExecutableExtension(recorderName, "writeStrategy");
         } catch (final CoreException e) {
             throw new RuntimeException("Could not instantiate write strategy for recorder named " + recorderName);
-        }
-    }
-
-    public static IMetaDataInitFactory instantiateMetaDataInitFactoryForRecorder(final String recorderName) {
-        try {
-            return (IMetaDataInitFactory) instantiateExecutableExtension(recorderName, "metaDataInitFactory");
-        } catch (final CoreException e) {
-            throw new RuntimeException("Could not instantiate MetaDataInit factory for recorder named " + recorderName);
         }
     }
 

@@ -3,13 +3,12 @@ package de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
-import de.uka.ipd.sdq.pipesandfilters.framework.MetaDataInit;
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.IRawWriteStrategy;
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.Recorder;
-import de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework.launch.SensorFrameworkConfig;
+import de.uka.ipd.sdq.pipesandfilters.framework.recorder.launch.IRecorderConfiguration;
+import de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework.strategies.AbstractWriteDataStrategy;
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework.strategies.DemandedTimeWriteDataStrategy;
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework.strategies.ExecutionResultWriteDataStrategy;
-import de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework.strategies.IWriteDataStrategy;
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework.strategies.OverallUtilisationWriteDataStrategy;
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework.strategies.ResponseTimeWriteDataStrategy;
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework.strategies.UtilisationWriteDataStrategy;
@@ -25,13 +24,11 @@ import de.uka.ipd.sdq.sensorframework.entities.dao.IDAOFactory;
  *
  * @author pmerkle, Sebastian Lehrig
  */
-public class SensorFrameworkWriteStrategy extends Recorder implements IRawWriteStrategy {
+public class SensorFrameworkRecorder extends Recorder implements IRawWriteStrategy {
 
-    private static Logger logger = Logger.getLogger(SensorFrameworkWriteStrategy.class.getName());
+    private static Logger logger = Logger.getLogger(SensorFrameworkRecorder.class.getName());
 
-    private SensorFrameworkMetaDataInit metaData;
-
-    private SensorFrameworkConfig sensorFrameworkConfig;
+    private SensorFrameworkRecorderConfiguration recorderConfiguration;
 
     private IDAOFactory daoFactory;
 
@@ -48,30 +45,19 @@ public class SensorFrameworkWriteStrategy extends Recorder implements IRawWriteS
 
     private ExperimentRun run;
 
-    private IWriteDataStrategy writeDataStrategy;
+    private AbstractWriteDataStrategy writeDataStrategy;
 
     @Override
-    public void initialize(final MetaDataInit metaData) {
-        if (metaData instanceof SensorFrameworkMetaDataInit) {
-            this.metaData = (SensorFrameworkMetaDataInit) metaData;
+    public void initialize(final IRecorderConfiguration myRecorderConfiguration) {
+        if (myRecorderConfiguration instanceof SensorFrameworkRecorderConfiguration) {
+            this.recorderConfiguration = (SensorFrameworkRecorderConfiguration) myRecorderConfiguration;
         } else {
             throw new IllegalArgumentException("Expected meta data of type "
-                    + SensorFrameworkMetaDataInit.class.getSimpleName()
-                    + " but was " + metaData.getClass().getSimpleName());
+                    + SensorFrameworkRecorderConfiguration.class.getSimpleName()
+                    + " but was " + myRecorderConfiguration.getClass().getSimpleName());
         }
 
-        if (this.metaData.getRecorderConfiguration() instanceof SensorFrameworkConfig) {
-            sensorFrameworkConfig = (SensorFrameworkConfig) this.metaData
-                    .getRecorderConfiguration();
-        } else {
-            throw new IllegalArgumentException("Expected meta data containing "
-                    + SensorFrameworkConfig.class.getSimpleName()
-                    + " but was "
-                    + this.metaData.getRecorderConfiguration().getClass()
-                    .getSimpleName() + ".");
-        }
-
-        if (!this.metaData.isRemoteRun()) {
+        if (!this.recorderConfiguration.isRemoteRun()) {
             initialiseNewSensorframework();
         } else {
             initialiseTempSensorframework();
@@ -80,29 +66,29 @@ public class SensorFrameworkWriteStrategy extends Recorder implements IRawWriteS
         // Create sensor
         // TODO Remove hard coded metric names "Response Time", ... Use Enum
         // instead!?
-        if (metaData.getMetricDescriptions().getName().equals("Response Time")) {
+        if (recorderConfiguration.getRecorderAcceptedMetric().getName().equals("Response Time")) {
             writeDataStrategy = new ResponseTimeWriteDataStrategy(daoFactory,
                     experiment, run);
-        } else if (metaData.getMetricDescriptions().getName().equals("Waiting Time")) {
+        } else if (recorderConfiguration.getRecorderAcceptedMetric().getName().equals("Waiting Time")) {
             writeDataStrategy = new WaitingTimeWriteDataStrategy(daoFactory,
                     experiment, run);
-        } else if (metaData.getMetricDescriptions().getName().equals("Hold Time")) {
+        } else if (recorderConfiguration.getRecorderAcceptedMetric().getName().equals("Hold Time")) {
             writeDataStrategy = new WaitingTimeWriteDataStrategy(daoFactory,
                     experiment, run);
-        } else if (metaData.getMetricDescriptions().getName().equals("Demand")) {
+        } else if (recorderConfiguration.getRecorderAcceptedMetric().getName().equals("Demand")) {
             writeDataStrategy = new DemandedTimeWriteDataStrategy(daoFactory,
                     experiment, run);
-        } else if (metaData.getMetricDescriptions().getName().equals("State")) {
+        } else if (recorderConfiguration.getRecorderAcceptedMetric().getName().equals("State")) {
             writeDataStrategy = new UtilisationWriteDataStrategy(daoFactory,
                     experiment, run);
-        } else if (metaData.getMetricDescriptions().getName().equals("Overall Utilisation")) {
+        } else if (recorderConfiguration.getRecorderAcceptedMetric().getName().equals("Overall Utilisation")) {
             writeDataStrategy = new OverallUtilisationWriteDataStrategy(
                     daoFactory, experiment, run);
-        } else if (metaData.getMetricDescriptions().getName().equals("Execution Time")) {
+        } else if (recorderConfiguration.getRecorderAcceptedMetric().getName().equals("Execution Time")) {
             writeDataStrategy = new ExecutionResultWriteDataStrategy(
                     daoFactory, experiment, run);
         }
-        writeDataStrategy.initialise(metaData);
+        writeDataStrategy.initialise(recorderConfiguration);
 
         flushed = false;
     }
@@ -135,30 +121,30 @@ public class SensorFrameworkWriteStrategy extends Recorder implements IRawWriteS
     private void initialiseNewSensorframework() {
         // Obtain DAOFactory
         daoFactory = SensorFrameworkDataset.singleton().getDataSourceByID(
-                sensorFrameworkConfig.getDatasourceID());
+                recorderConfiguration.getDatasourceID());
         if (daoFactory == null) {
             throw new DatasourceConfigurationInvalidException();
         }
 
         // Find an existing or create a new Experiment
         if (daoFactory.createExperimentDAO().findByExperimentName(
-                metaData.getExperimentName()).size() == 1) {
+                recorderConfiguration.getExperimentName()).size() == 1) {
             experiment = daoFactory.createExperimentDAO().findByExperimentName(
-                    metaData.getExperimentName()).iterator().next();
+                    recorderConfiguration.getExperimentName()).iterator().next();
         } else {
             experiment = daoFactory.createExperimentDAO().addExperiment(
-                    metaData.getExperimentName());
+                    recorderConfiguration.getExperimentName());
         }
 
         // Find an existing or create a new ExperimentRun
         for (final ExperimentRun r : experiment.getExperimentRuns()) {
             if (r.getExperimentDateTime().equals(
-                    metaData.getExperimentRunName())) {
+                    recorderConfiguration.getExperimentRunName())) {
                 run = r;
             }
         }
         if (run == null) {
-            run = experiment.addExperimentRun(metaData.getExperimentRunName());
+            run = experiment.addExperimentRun(recorderConfiguration.getExperimentRunName());
         }
 
         // run = new SimuComExperimentRunDecorator(this, experiment

@@ -17,7 +17,7 @@ import de.uka.ipd.sdq.pipesandfilters.framework.recorder.IRawWriteStrategy;
  * 
  * @author Baum, Sebastian Lehrig
  */
-public class Edp2RawWriteStrategy extends Edp2WriteStrategy implements IRawWriteStrategy {
+public class EDP2RawRecorder extends AbstractEDP2Recorder implements IRawWriteStrategy {
 
     /** Shortcut to experiment data factory. */
     private final static ExperimentDataFactory experimentDataFactory = ExperimentDataFactory.eINSTANCE;

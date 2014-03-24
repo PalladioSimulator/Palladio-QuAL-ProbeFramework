@@ -13,7 +13,7 @@ import de.uka.ipd.sdq.probespec.framework.measurements.Measurement;
  * @author Baum, Sebastian Lehrig
  * 
  */
-public abstract class Recorder implements IWriteStrategy, ICalculatorListener {
+public abstract class Recorder implements IRecorder, ICalculatorListener {
 
     /**
      * The default constructor for a recorder.
@@ -26,12 +26,12 @@ public abstract class Recorder implements IWriteStrategy, ICalculatorListener {
     }
 
     @Override
-    public void newMeasurementAvailable(final Measurement measurement) {
+    public final void newMeasurementAvailable(final Measurement measurement) {
         this.writeData(measurement);
     }
 
     @Override
-    public void preUnregister() {
+    public final void preUnregister() {
         this.flush();
     }
 }

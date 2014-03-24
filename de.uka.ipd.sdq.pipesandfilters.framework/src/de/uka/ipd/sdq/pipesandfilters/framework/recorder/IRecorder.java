@@ -1,6 +1,6 @@
 package de.uka.ipd.sdq.pipesandfilters.framework.recorder;
 
-import de.uka.ipd.sdq.pipesandfilters.framework.MetaDataInit;
+import de.uka.ipd.sdq.pipesandfilters.framework.recorder.launch.IRecorderConfiguration;
 import de.uka.ipd.sdq.probespec.framework.measurements.Measurement;
 
 /**
@@ -9,9 +9,9 @@ import de.uka.ipd.sdq.probespec.framework.measurements.Measurement;
  *
  * @author pmerkle
  * @author Baum
- * @uathor Sebastian Lehrig
+ * @author Sebastian Lehrig
  */
-public interface IWriteStrategy {
+public interface IRecorder {
 
     /**
      * This method contains meta data of the measurements to initialize the
@@ -20,7 +20,7 @@ public interface IWriteStrategy {
      * @param metaData
      *            The meta data of the measurements.
      */
-    public abstract void initialize(MetaDataInit metaData);
+    public abstract void initialize(IRecorderConfiguration recorderConfiguration);
 
     /**
      * Writes data into the storing devices.

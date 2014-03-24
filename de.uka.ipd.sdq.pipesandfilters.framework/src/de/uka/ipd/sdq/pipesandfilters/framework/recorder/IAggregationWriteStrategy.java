@@ -6,7 +6,7 @@ package de.uka.ipd.sdq.pipesandfilters.framework.recorder;
  * @author pmerkle
  * @author Baum
  */
-public interface IAggregationWriteStrategy extends IWriteStrategy {
+public interface IAggregationWriteStrategy extends IRecorder {
 
 	/**
 	 * Initializes the aggregated measurements of an aggregation.

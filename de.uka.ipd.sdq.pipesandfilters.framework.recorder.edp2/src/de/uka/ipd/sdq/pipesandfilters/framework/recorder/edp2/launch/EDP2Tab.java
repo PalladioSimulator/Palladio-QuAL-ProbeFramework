@@ -21,6 +21,8 @@ import org.palladiosimulator.edp2.impl.RepositoryManager;
 import org.palladiosimulator.edp2.models.Repository.Repository;
 import org.palladiosimulator.edp2.ui.dialogs.datasource.ConfigureDatasourceDialog;
 
+import de.uka.ipd.sdq.pipesandfilters.framework.recorder.edp2.EDP2RecorderConfiguration;
+
 public class EDP2Tab extends AbstractLaunchConfigurationTab {
 
     private Text dataField;
@@ -92,7 +94,7 @@ public class EDP2Tab extends AbstractLaunchConfigurationTab {
     public void initializeFrom(ILaunchConfiguration configuration) {
         try {
             selectedRepositoryID = configuration.getAttribute(
-                    EDP2Config.REPOSITORY_ID, "");
+                    EDP2RecorderConfiguration.REPOSITORY_ID, "");
             Repository repository = RepositoryManager.getRepositoryFromUUID(selectedRepositoryID);
             if(repository == null)
                 dataField.setText("");
@@ -107,14 +109,14 @@ public class EDP2Tab extends AbstractLaunchConfigurationTab {
 
     @Override
     public void performApply(ILaunchConfigurationWorkingCopy configuration) {
-        configuration.setAttribute(EDP2Config.REPOSITORY_ID,
+        configuration.setAttribute(EDP2RecorderConfiguration.REPOSITORY_ID,
                 selectedRepositoryID);
 
     }
 
     @Override
     public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
-        configuration.setAttribute(EDP2Config.REPOSITORY_ID, -1);
+        configuration.setAttribute(EDP2RecorderConfiguration.REPOSITORY_ID, -1);
     }
 
     @Override
