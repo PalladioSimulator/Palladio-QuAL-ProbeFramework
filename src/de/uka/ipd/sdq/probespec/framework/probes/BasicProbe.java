@@ -27,13 +27,12 @@ public abstract class BasicProbe<V,Q extends Quantity> extends Probe {
 
     @Override
     protected final Measurement doMeasure(final RequestContext measurementContext) {
-        final BasicMeasurement<V, Q> result = new BasicMeasurement<V, Q>(
+        return new BasicMeasurement<V, Q>(
                 getBasicMeasure(measurementContext),
                 this.metricDesciption,
                 this,
                 measurementContext,
                 null);
-        return result;
     }
 
     protected abstract Measure<V, Q> getBasicMeasure(RequestContext measurementContext);
