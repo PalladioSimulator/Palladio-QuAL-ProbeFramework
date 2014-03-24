@@ -2,6 +2,7 @@ package de.uka.ipd.sdq.probespec.framework.requestcontext;
 
 import de.uka.ipd.sdq.probespec.framework.measurements.MeasurementSet;
 import de.uka.ipd.sdq.probespec.framework.measurements.MeasurementSource;
+import de.uka.ipd.sdq.probespec.framework.measurements.MetricEntity;
 
 /**
  * Represents a (ProbeSet, {@link RequestContext})-pair. The ProbeSet is
@@ -16,7 +17,7 @@ import de.uka.ipd.sdq.probespec.framework.measurements.MeasurementSource;
 public final class MeasurementSourceAndRequestContext {
 
     // the ID representing the ProbeSet
-    private final MeasurementSource probe;
+    private final MeasurementSource measurementSource;
 
     private final RequestContext requestContext;
 
@@ -31,7 +32,7 @@ public final class MeasurementSourceAndRequestContext {
      */
     public MeasurementSourceAndRequestContext(final MeasurementSource measuredProbe,
             final RequestContext requestContext) {
-        this.probe = measuredProbe;
+        this.measurementSource = measuredProbe;
         this.requestContext = requestContext;
     }
 
@@ -40,8 +41,8 @@ public final class MeasurementSourceAndRequestContext {
      * 
      * @return The ID representing the ProbeSet
      */
-    public final MeasurementSource getProbe() {
-        return probe;
+    public final MetricEntity getMeasurementSource() {
+        return measurementSource;
     }
 
     /**
@@ -60,7 +61,7 @@ public final class MeasurementSourceAndRequestContext {
         result = prime * result
                 + ((requestContext == null) ? 0 : requestContext.hashCode());
         result = prime * result
-                + ((probe == null) ? 0 : probe.hashCode());
+                + ((measurementSource == null) ? 0 : measurementSource.hashCode());
         return result;
     }
 
@@ -83,11 +84,11 @@ public final class MeasurementSourceAndRequestContext {
         } else if (!requestContext.equals(other.requestContext)) {
             return false;
         }
-        if (probe == null) {
-            if (other.probe != null) {
+        if (measurementSource == null) {
+            if (other.measurementSource != null) {
                 return false;
             }
-        } else if (!probe.equals(other.probe)) {
+        } else if (!measurementSource.equals(other.measurementSource)) {
             return false;
         }
         return true;
@@ -95,7 +96,7 @@ public final class MeasurementSourceAndRequestContext {
 
     @Override
     public String toString() {
-        return probe + "-" + requestContext.toString();
+        return measurementSource + "-" + requestContext.toString();
     }
 
 }

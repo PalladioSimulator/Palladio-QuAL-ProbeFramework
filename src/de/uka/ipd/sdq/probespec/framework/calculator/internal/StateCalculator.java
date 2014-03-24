@@ -42,8 +42,8 @@ public class StateCalculator extends UnaryCalculator {
     @Override
     protected Measurement calculate(final List<Measurement> probeMeasurements) {
         final List<Measurement> result = new LinkedList<Measurement>();
-        result.add(obtainMeasurement(probeMeasurements.get(0), MetricDescriptionConstants.POINT_IN_TIME_METRIC));
-        result.add(obtainMeasurement(probeMeasurements.get(0), MetricDescriptionConstants.CPU_STATE_METRIC));
+        result.add(probeMeasurements.get(0).getMeasurementForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC));
+        result.add(probeMeasurements.get(0).getMeasurementForMetric(MetricDescriptionConstants.CPU_STATE_METRIC));
         return new MeasurementSet(result, (MetricSetDescription) this.metricDesciption, this);
     }
 }

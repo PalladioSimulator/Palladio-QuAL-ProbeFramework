@@ -12,6 +12,7 @@ import de.uka.ipd.sdq.probespec.framework.calculator.internal.HoldTimeCalculator
 import de.uka.ipd.sdq.probespec.framework.calculator.internal.ResponseTimeCalculator;
 import de.uka.ipd.sdq.probespec.framework.calculator.internal.StateCalculator;
 import de.uka.ipd.sdq.probespec.framework.calculator.internal.WaitingTimeCalculator;
+import de.uka.ipd.sdq.probespec.framework.measurements.IMeasurementSource;
 import de.uka.ipd.sdq.probespec.framework.probes.Probe;
 
 /**
@@ -107,9 +108,9 @@ public class DefaultCalculatorFactory implements ICalculatorFactory {
         }
     }
 
-    private void ensureValidProbe(final Probe probe) {
+    private void ensureValidProbe(final IMeasurementSource probe) {
         if (probe == null) {
-            throw new IllegalArgumentException("You have to provide exactly two probes for this calcultor.");
+            throw new IllegalArgumentException("You have to provide exactly one valid probes for this calcultor.");
         }
     }
 

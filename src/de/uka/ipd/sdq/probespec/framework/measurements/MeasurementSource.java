@@ -1,66 +1,57 @@
 package de.uka.ipd.sdq.probespec.framework.measurements;
 
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
-import org.palladiosimulator.edp2.models.ExperimentData.ExperimentDataPackage;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.palladiosimulator.edp2.models.ExperimentData.MetricDescription;
 
-public abstract class MeasurementSource {
+public abstract class MeasurementSource extends MetricEntity implements IMeasurementSource {
 
-    /** Metric derived by this measurement source
+    private final Set<IMeasurementSourceListener> measurementSourceListeners = new HashSet<IMeasurementSourceListener>();
+
+    public MeasurementSource(final MetricDescription metricDesciption) {
+        super(metricDesciption);
+    }
+
+    /* (non-Javadoc)
+     * @see de.uka.ipd.sdq.probespec.framework.measurements.IMeasurementSource#registerMeasurementSourceListener(de.uka.ipd.sdq.probespec.framework.measurements.IMeasurementSourceListener)
      */
-    protected final MetricDescription metricDesciption;
+    @Override
+    public void registerMeasurementSourceListener(final IMeasurementSourceListener listener) {
+        if (listener == null) {
+            throw new IllegalArgumentException("A valid listener has to be supplied");
+        }
+        measurementSourceListeners.add(listener);
+    }
+
+    /* (non-Javadoc)
+     * @see de.uka.ipd.sdq.probespec.framework.measurements.IMeasurementSource#unregisterMeasurementSourceListener(de.uka.ipd.sdq.probespec.framework.measurements.IMeasurementSourceListener)
+     */
+    @Override
+    public void unregisterMeasurementSourceListener(final IMeasurementSourceListener listener) {
+        if (!measurementSourceListeners.contains(listener)) {
+            throw new IllegalArgumentException("A registered listener has to be supplied");
+        }
+        measurementSourceListeners.remove(listener);
+    }
 
     /**
-     * @param metricDesciption
+     * @param measurement
      */
-    protected MeasurementSource(final MetricDescription metricDesciption) {
-        super();
-        if (metricDesciption == null) {
-            throw new IllegalArgumentException("Metric description has to be a valid instance.");
+    protected void notifyMeasurementSourceListener(final Measurement measurement) {
+        if (!isCompatibleMeasurement(measurement)) {
+            throw new IllegalArgumentException("Taken measurement has an incompatible metric");
         }
-
-        checkValidString(metricDesciption.getName());
-        checkValidString(metricDesciption.getTextualDescription());
-        checkValidString(metricDesciption.getUuid());
-
-        this.metricDesciption = metricDesciption;
-        this.metricDesciption.eAdapters().add(new AdapterImpl() {
-            @Override
-            public void notifyChanged(final Notification notification) {
-                if (notification.getEventType() != Notification.REMOVING_ADAPTER && notification.getEventType() != Notification.RESOLVE) {
-                    if (notification.getFeature() != ExperimentDataPackage.eINSTANCE.getDescription_Repository()) {
-                        throw new RuntimeException("Metric description altered after initializing. This is not allowed.");
-                    }
-                }
+        if (measurementSourceListeners.size() > 0) {
+            for (final IMeasurementSourceListener listener : measurementSourceListeners) {
+                listener.newMeasurementAvailable(measurement);
             }
-        });
-    }
-
-    private void checkValidString(final String string) {
-        if (string == null || string.isEmpty()) {
-            throw new IllegalArgumentException("Parameter must not be null or empty");
         }
     }
 
-    /**
-     * @return the metricDesciption
-     */
-    public final MetricDescription getMetricDesciption() {
-        return metricDesciption;
-    }
-
-    /**
-     * @param other
-     * @return
-     */
-    public final boolean isCompatibleWith(final MetricDescription other) {
-        // TODO
-        return true;
-    }
-
-    public boolean isCompatibleMeasurement(final Measurement measurement) {
-        // TODO
-        return false;
+    protected Collection<IMeasurementSourceListener> getMeasurementSourceListeners() {
+        return Collections.unmodifiableCollection(this.measurementSourceListeners);
     }
 }

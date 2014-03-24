@@ -12,6 +12,7 @@ import org.palladiosimulator.edp2.models.ExperimentData.MetricSetDescription;
 
 import de.uka.ipd.sdq.probespec.framework.measurements.Measurement;
 import de.uka.ipd.sdq.probespec.framework.measurements.MeasurementSet;
+import de.uka.ipd.sdq.probespec.framework.measurements.MeasurementSource;
 import de.uka.ipd.sdq.probespec.framework.requestcontext.RequestContext;
 
 /**
@@ -53,14 +54,14 @@ public class ProbeSet extends Probe {
     private static MetricDescription getMetricSetDescription(final List<Probe> subsumedProbes) {
         final String metricName = "MetricSet";
         final StringBuilder textualDescriptionBuilder = new StringBuilder("Subsumed metrics: ");
-        for (final Probe probe : subsumedProbes) {
+        for (final MeasurementSource probe : subsumedProbes) {
             textualDescriptionBuilder.append("<");
             textualDescriptionBuilder.append(probe.getMetricDesciption().getName());
             textualDescriptionBuilder.append("<");
         }
         final MetricSetDescription result = experimentDataFactory.createMetricSetDescription(metricName,
                 textualDescriptionBuilder.toString());
-        for (final Probe probe : subsumedProbes) {
+        for (final MeasurementSource probe : subsumedProbes) {
             result.getSubsumedMetrics().add(probe.getMetricDesciption());
         }
         return result;

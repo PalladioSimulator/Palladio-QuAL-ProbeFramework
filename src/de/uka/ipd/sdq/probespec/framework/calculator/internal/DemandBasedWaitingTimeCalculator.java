@@ -70,7 +70,7 @@ public class DemandBasedWaitingTimeCalculator extends WaitingTimeCalculator {
                 probeSetSamples.get(0).getRequestContext(),
                 null);
 
-        result.add(obtainMeasurement(probeSetSamples.get(1), MetricDescriptionConstants.POINT_IN_TIME_METRIC));
+        result.add(probeSetSamples.get(1).getMeasurementForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC));
         result.add(waitingTimeMeasurement);
 
         return new MeasurementSet(result, (MetricSetDescription) this.metricDesciption, this);
