@@ -80,10 +80,10 @@ public final class MeasurementSet extends Measurement {
     }
 
     private static RequestContext getRequestContext(final List<Measurement> subsumedMeasurements) {
-    	if (subsumedMeasurements.contains(null)) {
+        if (subsumedMeasurements.contains(null)) {
             throw new IllegalArgumentException("Measurements are not allowed to include null values as subsumed measurements");
         }
-    	
+
         final RequestContext result = subsumedMeasurements.get(0).getRequestContext();
         for (final Measurement childMeasurment : subsumedMeasurements) {
             if (childMeasurment.getRequestContext() != result) {
@@ -105,7 +105,7 @@ public final class MeasurementSet extends Measurement {
 
     @Override
     public Measurement getMeasurementForMetric(final MetricDescription wantedMetric) {
-        if (this.getMetricDesciption().equals(wantedMetric)) {
+        if (this.getMetricDesciption().getUuid().equals(wantedMetric.getUuid())) {
             return this;
         }
 
