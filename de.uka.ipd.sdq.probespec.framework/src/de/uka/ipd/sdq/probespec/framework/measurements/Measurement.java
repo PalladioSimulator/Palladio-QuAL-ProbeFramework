@@ -51,7 +51,7 @@ public abstract class Measurement extends MetricEntity {
 
     @SuppressWarnings("unchecked")
     public <V,Q extends Quantity> Measure<V,Q> getMeasureForMetric(final MetricDescription wantedMetric) {
-        if (!(wantedMetric instanceof BaseMetricDescription)) {
+        if (wantedMetric == null || !(wantedMetric instanceof BaseMetricDescription)) {
             throw new IllegalArgumentException("Only base metrics have measures attached.");
         }
         final Measurement wantedMeasurement = getMeasurementForMetric(wantedMetric);
