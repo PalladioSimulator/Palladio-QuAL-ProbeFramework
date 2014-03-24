@@ -9,6 +9,7 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
 
+import de.uka.ipd.sdq.pipesandfilters.framework.recorder.IRecorderConfigurationFactory;
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.Recorder;
 
 public class RecorderExtensionHelper {
@@ -54,16 +55,16 @@ public class RecorderExtensionHelper {
         return null;
     }
 
-    public static IRecorderConfiguration getRecorderConfigForName(
+    public static IRecorderConfigurationFactory getRecorderConfigurationFactoryForName(
             final String recorderName) throws CoreException {
         final List<IExtension> recorderExtensions = loadExtensions("de.uka.ipd.sdq.pipesandfilters.framework.recorder");
         for (final IExtension extension : recorderExtensions) {
             final IConfigurationElement e = obtainConfigurationElement("recorder",
                     extension);
             if (e != null && e.getAttribute("name").equals(recorderName)) {
-                final Object config = e.createExecutableExtension("configuration");
+                final Object config = e.createExecutableExtension("configurationFactory");
                 if (config != null) {
-                    return (IRecorderConfiguration) config;
+                    return (IRecorderConfigurationFactory) config;
                 }
             }
         }
