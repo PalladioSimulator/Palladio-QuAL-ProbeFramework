@@ -12,6 +12,10 @@ public abstract class Probe extends MeasurementSource {
         super(metricDesciption);
     }
 
+    public final Measurement takeMeasurement() {
+        return takeMeasurement(RequestContext.EMPTY_REQUEST_CONTEXT);
+    }
+
     public final Measurement takeMeasurement(final RequestContext measurementContext) {
         final Measurement newMeasurement = doMeasure(measurementContext);
         notifyMeasurementSourceListener(newMeasurement);
