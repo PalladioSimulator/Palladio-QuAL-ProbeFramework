@@ -15,6 +15,7 @@ import de.uka.ipd.sdq.probespec.framework.calculator.DefaultCalculatorFactory;
 import de.uka.ipd.sdq.probespec.framework.calculator.ICalculatorListener;
 import de.uka.ipd.sdq.probespec.framework.measurements.Measurement;
 import de.uka.ipd.sdq.probespec.framework.probes.Probe;
+import de.uka.ipd.sdq.probespec.framework.probes.TriggeredProbe;
 import de.uka.ipd.sdq.probespec.framework.probes.example.ExampleTakeCurrentTimeStrategy;
 import de.uka.ipd.sdq.probespec.framework.probes.example.SimpleSimulationContext;
 import de.uka.ipd.sdq.probespec.framework.requestcontext.RequestContext;
@@ -22,8 +23,8 @@ import de.uka.ipd.sdq.probespec.framework.requestcontext.RequestContext;
 @RunWith(JUnit4.class)
 public class CalculatorTests {
 
-    private Probe startProbe;
-    private Probe endProbe;
+    private TriggeredProbe startProbe;
+    private TriggeredProbe endProbe;
     private SimpleSimulationContext simCtx;
     private ProbeSpecContext probeSpecContext;
     protected Measurement lastMeasurement;
@@ -38,7 +39,7 @@ public class CalculatorTests {
 
     @Test
     public void testResponseTimeCalculator() {
-        final Calculator rtCalculator = this.probeSpecContext.getCalculatorFactory().buildResponseTimeCalculator("Test ResponseTime", Arrays.asList(startProbe,endProbe));
+        final Calculator rtCalculator = this.probeSpecContext.getCalculatorFactory().buildResponseTimeCalculator("Test ResponseTime", Arrays.asList((Probe)startProbe,(Probe)endProbe));
 
         rtCalculator.registerMeasurementSourceListener(new ICalculatorListener() {
 

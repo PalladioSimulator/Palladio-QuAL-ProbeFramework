@@ -1,27 +1,30 @@
 package de.uka.ipd.sdq.probespec.framework.probes.example;
 
+import java.util.Observable;
+import java.util.Observer;
+
 import javax.measure.Measure;
 import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
 
 import de.uka.ipd.sdq.probespec.framework.constants.MetricDescriptionConstants;
-import de.uka.ipd.sdq.probespec.framework.probes.BasicProbe;
-import de.uka.ipd.sdq.probespec.framework.requestcontext.RequestContext;
+import de.uka.ipd.sdq.probespec.framework.probes.BasicEventProbe;
 
-public class ExampleTakeCPUDemandStrategy extends BasicProbe<Double, Duration> {
+public class ExampleTakeCPUDemandStrategy extends BasicEventProbe<ASimpleActiveResource, Double, Duration> implements Observer {
 
-    private final ASimpleActiveResource myResource;
-    private final ISimpleDemanding demandComputer;
-
-    public ExampleTakeCPUDemandStrategy(final ASimpleActiveResource myResource, final ISimpleDemanding demandComputer) {
-        super(MetricDescriptionConstants.RESOURCE_DEMAND_METRIC);
-        this.myResource = myResource;
-        this.demandComputer = demandComputer;
+    public ExampleTakeCPUDemandStrategy(final ASimpleActiveResource myResource) {
+        super(myResource,MetricDescriptionConstants.RESOURCE_DEMAND_METRIC);
     }
 
     @Override
-    protected Measure<Double, Duration> getBasicMeasure(final RequestContext measurementContext) {
-        return Measure.valueOf(demandComputer.getDemand(myResource), SI.SECOND);
+    protected void registerListener() {
+        this.eventSource.addObserver(this);
+    }
+
+    @Override
+    public void update(final Observable eventSource, final Object event) {
+        final double demand = (Double) event;
+        this.notify(Measure.valueOf(demand, SI.SECOND));
     }
 
 }

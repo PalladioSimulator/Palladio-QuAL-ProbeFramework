@@ -16,7 +16,9 @@ import org.junit.runners.JUnit4;
 
 import de.uka.ipd.sdq.probespec.framework.constants.MetricDescriptionConstants;
 import de.uka.ipd.sdq.probespec.framework.measurements.BasicMeasurement;
+import de.uka.ipd.sdq.probespec.framework.measurements.IMeasurementSourceListener;
 import de.uka.ipd.sdq.probespec.framework.measurements.Measurement;
+import de.uka.ipd.sdq.probespec.framework.probes.example.ExampleTakeCPUDemandStrategy;
 import de.uka.ipd.sdq.probespec.framework.probes.example.ExampleTakeCPUStateStrategy;
 import de.uka.ipd.sdq.probespec.framework.probes.example.ExampleTakeCurrentTimeStrategy;
 import de.uka.ipd.sdq.probespec.framework.probes.example.SimpleCPUResource;
@@ -63,7 +65,7 @@ public class BasicProbeTests {
         final RequestContext ctxID = new RequestContext("1");
         final SimpleCPUResource cpuResource = new SimpleCPUResource();
         simCtx.addActiveResource("Test CPU", cpuResource);
-        final ExampleTakeCPUStateStrategy probe = new ExampleTakeCPUStateStrategy(cpuResource,null);
+        final ExampleTakeCPUStateStrategy probe = new ExampleTakeCPUStateStrategy(cpuResource);
 
         cpuResource.setJobs(2);
         final Measurement probeMeasurement = probe.takeMeasurement(ctxID);
@@ -80,5 +82,32 @@ public class BasicProbeTests {
         assertTrue(measure.compareTo(Measure.valueOf(2l,Unit.ONE)) == 0);
     }
 
+    Measurement lastMeasurement;
+
+    @Test
+    public void testDemandProbe() {
+        lastMeasurement = null;
+        final SimpleCPUResource cpuResource = new SimpleCPUResource();
+        simCtx.addActiveResource("Test CPU", cpuResource);
+        final ExampleTakeCPUDemandStrategy probe = new ExampleTakeCPUDemandStrategy(cpuResource);
+        probe.registerMeasurementSourceListener(new IMeasurementSourceListener() {
+
+            @Override
+            public void newMeasurementAvailable(final Measurement measurement) {
+                lastMeasurement = measurement;
+            }
+        });
+        cpuResource.setJobs(1);
+        cpuResource.demand(10);
+
+        assertTrue(lastMeasurement != null);
+        assertTrue(lastMeasurement instanceof BasicMeasurement);
+        assertTrue(lastMeasurement.getMetricDesciption() == MetricDescriptionConstants.RESOURCE_DEMAND_METRIC);
+
+        @SuppressWarnings("unchecked")
+        final BasicMeasurement<Double, Duration> result = (BasicMeasurement<Double, Duration>) lastMeasurement;
+        final Measure<Double,Duration> resultMeasure = result.getMeasureForMetric(MetricDescriptionConstants.RESOURCE_DEMAND_METRIC);
+        assertTrue(resultMeasure.compareTo(Measure.valueOf(10.0d, SI.SECOND))==0);
+    }
 
 }

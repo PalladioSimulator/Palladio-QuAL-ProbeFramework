@@ -16,12 +16,12 @@ import de.uka.ipd.sdq.probespec.framework.requestcontext.RequestContext;
  * @author snowball
  *
  */
-public abstract class BasicProbe<V,Q extends Quantity> extends Probe {
+public abstract class BasicTriggeredProbe<V,Q extends Quantity> extends TriggeredProbe {
 
     /**
      * 
      */
-    public BasicProbe(final BaseMetricDescription metric) {
+    public BasicTriggeredProbe(final BaseMetricDescription metric) {
         super(metric);
     }
 
@@ -36,5 +36,4 @@ public abstract class BasicProbe<V,Q extends Quantity> extends Probe {
     }
 
     protected abstract Measure<V, Q> getBasicMeasure(RequestContext measurementContext);
-
 }

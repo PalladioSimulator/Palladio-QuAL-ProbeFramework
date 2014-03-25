@@ -80,6 +80,9 @@ public final class MeasurementSet extends Measurement {
     }
 
     private static RequestContext getRequestContext(final List<Measurement> subsumedMeasurements) {
+        if (subsumedMeasurements == null || subsumedMeasurements.size() == 0) {
+            throw new IllegalArgumentException("Illegal measurements provided");
+        }
         if (subsumedMeasurements.contains(null)) {
             throw new IllegalArgumentException("Measurements are not allowed to include null values as subsumed measurements");
         }

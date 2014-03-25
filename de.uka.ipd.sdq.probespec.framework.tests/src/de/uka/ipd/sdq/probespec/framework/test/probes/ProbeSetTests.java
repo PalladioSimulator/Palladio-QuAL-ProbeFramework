@@ -5,6 +5,12 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 
+import javax.measure.Measure;
+import javax.measure.quantity.Dimensionless;
+import javax.measure.quantity.Duration;
+import javax.measure.unit.SI;
+import javax.measure.unit.Unit;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,10 +18,13 @@ import org.junit.runners.JUnit4;
 import org.palladiosimulator.edp2.models.ExperimentData.MetricSetDescription;
 
 import de.uka.ipd.sdq.probespec.framework.constants.MetricDescriptionConstants;
+import de.uka.ipd.sdq.probespec.framework.measurements.IMeasurementSourceListener;
 import de.uka.ipd.sdq.probespec.framework.measurements.Measurement;
 import de.uka.ipd.sdq.probespec.framework.measurements.MeasurementSet;
+import de.uka.ipd.sdq.probespec.framework.probes.EventProbeSet;
 import de.uka.ipd.sdq.probespec.framework.probes.Probe;
-import de.uka.ipd.sdq.probespec.framework.probes.ProbeSet;
+import de.uka.ipd.sdq.probespec.framework.probes.TriggeredProbeSet;
+import de.uka.ipd.sdq.probespec.framework.probes.example.ExampleTakeCPUDemandStrategy;
 import de.uka.ipd.sdq.probespec.framework.probes.example.ExampleTakeCPUStateStrategy;
 import de.uka.ipd.sdq.probespec.framework.probes.example.ExampleTakeCurrentTimeStrategy;
 import de.uka.ipd.sdq.probespec.framework.probes.example.SimpleCPUResource;
@@ -29,20 +38,20 @@ public class ProbeSetTests {
     private Probe currentTimeProbe;
     private SimpleCPUResource cpuResource;
     private Probe currentCPUStateProbe;
-    private ProbeSet probeSet;
+    private TriggeredProbeSet probeSet;
 
     @Before
     public void setUp() {
         simCtx = new SimpleSimulationContext();
         currentTimeProbe = new ExampleTakeCurrentTimeStrategy(simCtx);
         cpuResource = new SimpleCPUResource();
-        currentCPUStateProbe = new ExampleTakeCPUStateStrategy(cpuResource, null);
+        currentCPUStateProbe = new ExampleTakeCPUStateStrategy(cpuResource);
 
-        probeSet = new ProbeSet(Arrays.asList(currentTimeProbe, currentCPUStateProbe),"CPU State");
+        probeSet = new TriggeredProbeSet(Arrays.asList(currentTimeProbe, currentCPUStateProbe),"CPU State");
     }
 
     @Test
-    public void testProbeSet() {
+    public void testTriggeredProbeSet() {
         simCtx.setSimulatedTime(100.0d);
         cpuResource.setJobs(2);
         final RequestContext requestContext = new RequestContext("1");
@@ -60,5 +69,45 @@ public class ProbeSetTests {
                 MetricDescriptionConstants.POINT_IN_TIME_METRIC);
         assertEquals(measurementSet.getSubsumedMeasurements().get(1).getMetricDesciption(),
                 MetricDescriptionConstants.CPU_STATE_METRIC);
+    }
+
+    Measurement lastMeasurement;
+
+    @Test
+    public void testEventProbeSet() {
+        lastMeasurement = null;
+        simCtx.setSimulatedTime(100.0d);
+        cpuResource.setJobs(2);
+        final ExampleTakeCPUDemandStrategy probe = new ExampleTakeCPUDemandStrategy(cpuResource);
+
+        final EventProbeSet eventProbeSet = new EventProbeSet(probe, Arrays.asList(currentTimeProbe,currentCPUStateProbe), "Composed");
+        eventProbeSet.registerMeasurementSourceListener(new IMeasurementSourceListener() {
+
+            @Override
+            public void newMeasurementAvailable(final Measurement measurement) {
+                lastMeasurement = measurement;
+            }
+        });
+
+        cpuResource.demand(20.0d);
+
+        assertTrue(lastMeasurement != null);
+        assertTrue(lastMeasurement instanceof MeasurementSet);
+
+        final Measure<Double,Duration> demandResult = lastMeasurement.getMeasureForMetric(MetricDescriptionConstants.RESOURCE_DEMAND_METRIC);
+        final Measure<Double,Duration> timeResult = lastMeasurement.getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
+        final Measure<Long,Dimensionless> stateResult = lastMeasurement.getMeasureForMetric(MetricDescriptionConstants.CPU_STATE_METRIC);
+
+        assertTrue(demandResult.compareTo(Measure.valueOf(20.0d, SI.SECOND))==0);
+
+        final MeasurementSet measurementSet = (MeasurementSet) lastMeasurement;
+
+        assertEquals(measurementSet.getSubsumedMeasurements().size(), 3);
+        assertEquals(measurementSet.getSubsumedMeasurements().get(1).getMetricDesciption(),
+                MetricDescriptionConstants.POINT_IN_TIME_METRIC);
+        assertTrue(timeResult.compareTo(Measure.valueOf(100.0d, SI.SECOND))==0);
+        assertEquals(measurementSet.getSubsumedMeasurements().get(2).getMetricDesciption(),
+                MetricDescriptionConstants.CPU_STATE_METRIC);
+        assertTrue(stateResult.compareTo(Measure.valueOf(2l, Unit.ONE))==0);
     }
 }

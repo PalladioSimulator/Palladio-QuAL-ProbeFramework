@@ -11,7 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import de.uka.ipd.sdq.probespec.framework.probes.BasicProbe;
+import de.uka.ipd.sdq.probespec.framework.probes.BasicTriggeredProbe;
 import de.uka.ipd.sdq.probespec.framework.probes.example.ExampleTakeCurrentTimeStrategy;
 import de.uka.ipd.sdq.probespec.framework.probes.example.SimpleSimulationContext;
 import de.uka.ipd.sdq.probespec.framework.requestcontext.MeasurementSourceAndRequestContext;
@@ -36,9 +36,9 @@ public class ProbeSetAndRequestContextTest {
 
     @Before
     public void setUp() {
-        final BasicProbe<Double,Duration> probe1 = new ExampleTakeCurrentTimeStrategy(new SimpleSimulationContext());
-        final BasicProbe<Double,Duration> probe2 = new ExampleTakeCurrentTimeStrategy(new SimpleSimulationContext());
-        final BasicProbe<Double,Duration> probe3 = new ExampleTakeCurrentTimeStrategy(new SimpleSimulationContext());
+        final BasicTriggeredProbe<Double,Duration> probe1 = new ExampleTakeCurrentTimeStrategy(new SimpleSimulationContext());
+        final BasicTriggeredProbe<Double,Duration> probe2 = new ExampleTakeCurrentTimeStrategy(new SimpleSimulationContext());
+        final BasicTriggeredProbe<Double,Duration> probe3 = new ExampleTakeCurrentTimeStrategy(new SimpleSimulationContext());
         pssID1_1_1 = new MeasurementSourceAndRequestContext(probe1, new RequestContext("1"));
         pssID1_1_2 = new MeasurementSourceAndRequestContext(probe1, new RequestContext("1"));
         pssID1_3_1 = new MeasurementSourceAndRequestContext(probe1, new RequestContext("3"));

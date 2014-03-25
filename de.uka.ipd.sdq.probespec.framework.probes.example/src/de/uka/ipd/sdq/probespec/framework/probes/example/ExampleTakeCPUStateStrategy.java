@@ -10,7 +10,7 @@ import de.uka.ipd.sdq.probespec.framework.requestcontext.RequestContext;
 
 public class ExampleTakeCPUStateStrategy extends BasicObjectStateProbe<ASimpleActiveResource, Long, Dimensionless>{
 
-    public ExampleTakeCPUStateStrategy(final ASimpleActiveResource myCpu, final ISimpleDemanding demandComputer) {
+    public ExampleTakeCPUStateStrategy(final ASimpleActiveResource myCpu) {
         super(myCpu,MetricDescriptionConstants.CPU_STATE_METRIC);
     }
 
