@@ -17,6 +17,7 @@ import de.uka.ipd.sdq.probespec.framework.measurements.IMeasurementSourceListene
 import de.uka.ipd.sdq.probespec.framework.measurements.Measurement;
 import de.uka.ipd.sdq.probespec.framework.measurements.MeasurementSet;
 import de.uka.ipd.sdq.probespec.framework.measurements.MeasurementSource;
+import de.uka.ipd.sdq.probespec.framework.requestcontext.RequestContext;
 
 /**
  * This class is the abstract super class for all Calculator implementations.
@@ -96,4 +97,6 @@ public abstract class Calculator extends MeasurementSource implements IMeasureme
     }
 
     public abstract void detachProbes();
+
+    public abstract void releaseMemory(RequestContext requestContext);
 }

@@ -5,21 +5,18 @@ import javax.measure.quantity.Dimensionless;
 import javax.measure.unit.Unit;
 
 import de.uka.ipd.sdq.probespec.framework.constants.MetricDescriptionConstants;
-import de.uka.ipd.sdq.probespec.framework.probes.BasicProbe;
+import de.uka.ipd.sdq.probespec.framework.probes.BasicObjectStateProbe;
 import de.uka.ipd.sdq.probespec.framework.requestcontext.RequestContext;
 
-public class ExampleTakeCPUStateStrategy extends BasicProbe<Long, Dimensionless>{
-
-    private final ASimpleActiveResource myCpu;
+public class ExampleTakeCPUStateStrategy extends BasicObjectStateProbe<ASimpleActiveResource, Long, Dimensionless>{
 
     public ExampleTakeCPUStateStrategy(final ASimpleActiveResource myCpu, final ISimpleDemanding demandComputer) {
-        super(MetricDescriptionConstants.CPU_STATE_METRIC);
-        this.myCpu = myCpu;
+        super(myCpu,MetricDescriptionConstants.CPU_STATE_METRIC);
     }
 
     @Override
     protected Measure<Long, Dimensionless> getBasicMeasure(final RequestContext measurementContext) {
-        return Measure.valueOf((long)myCpu.getJobs(), Unit.ONE);
+        return Measure.valueOf((long)getStateObject().getJobs(), Unit.ONE);
     }
 
 }

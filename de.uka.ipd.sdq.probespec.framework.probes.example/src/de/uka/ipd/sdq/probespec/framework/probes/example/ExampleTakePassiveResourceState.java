@@ -5,21 +5,18 @@ import javax.measure.quantity.Dimensionless;
 import javax.measure.unit.Unit;
 
 import de.uka.ipd.sdq.probespec.framework.constants.MetricDescriptionConstants;
-import de.uka.ipd.sdq.probespec.framework.probes.BasicProbe;
+import de.uka.ipd.sdq.probespec.framework.probes.BasicObjectStateProbe;
 import de.uka.ipd.sdq.probespec.framework.requestcontext.RequestContext;
 
-public class ExampleTakePassiveResourceState extends BasicProbe<Long, Dimensionless> {
-
-    private final ASimplePassiveResource myResource;
+public class ExampleTakePassiveResourceState extends BasicObjectStateProbe<ASimplePassiveResource, Long, Dimensionless> {
 
     public ExampleTakePassiveResourceState(final ASimplePassiveResource myResource) {
-        super(MetricDescriptionConstants.PASSIVE_RESOURCE_STATE_METRIC);
-        this.myResource = myResource;
+        super(myResource, MetricDescriptionConstants.PASSIVE_RESOURCE_STATE_METRIC);
     }
 
     @Override
     protected Measure<Long, Dimensionless> getBasicMeasure(final RequestContext measurementContext) {
-        return Measure.valueOf((long)myResource.getFree(), Unit.ONE);
+        return Measure.valueOf((long)getStateObject().getFree(), Unit.ONE);
     }
 
 }

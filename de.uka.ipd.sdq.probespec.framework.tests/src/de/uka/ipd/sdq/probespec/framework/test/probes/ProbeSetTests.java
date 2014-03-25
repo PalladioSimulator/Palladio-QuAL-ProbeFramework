@@ -38,7 +38,7 @@ public class ProbeSetTests {
         cpuResource = new SimpleCPUResource();
         currentCPUStateProbe = new ExampleTakeCPUStateStrategy(cpuResource, null);
 
-        probeSet = new ProbeSet(Arrays.asList(currentTimeProbe, currentCPUStateProbe));
+        probeSet = new ProbeSet(Arrays.asList(currentTimeProbe, currentCPUStateProbe),"CPU State");
     }
 
     @Test

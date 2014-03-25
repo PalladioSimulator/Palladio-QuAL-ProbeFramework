@@ -5,7 +5,7 @@ import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
 
 import de.uka.ipd.sdq.probespec.framework.constants.MetricDescriptionConstants;
-import de.uka.ipd.sdq.probespec.framework.probes.BasicProbe;
+import de.uka.ipd.sdq.probespec.framework.probes.BasicObjectStateProbe;
 import de.uka.ipd.sdq.probespec.framework.requestcontext.RequestContext;
 
 /**
@@ -15,18 +15,15 @@ import de.uka.ipd.sdq.probespec.framework.requestcontext.RequestContext;
  * @author Philipp Merkle
  * 
  */
-public class ExampleTakeCurrentTimeStrategy extends BasicProbe<Double,Duration> {
-
-    private final SimpleSimulationContext simulationContext;
+public class ExampleTakeCurrentTimeStrategy extends BasicObjectStateProbe<SimpleSimulationContext, Double,Duration> {
 
     public ExampleTakeCurrentTimeStrategy(final SimpleSimulationContext simCtx) {
-        super(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
-        this.simulationContext = simCtx;
+        super(simCtx, MetricDescriptionConstants.POINT_IN_TIME_METRIC);
     }
 
     @Override
     protected Measure<Double,Duration> getBasicMeasure(final RequestContext measurementContext) {
-        return Measure.valueOf(simulationContext.getSimulatedTime(), SI.SECOND);
+        return Measure.valueOf(getStateObject().getSimulatedTime(), SI.SECOND);
     }
 
 }

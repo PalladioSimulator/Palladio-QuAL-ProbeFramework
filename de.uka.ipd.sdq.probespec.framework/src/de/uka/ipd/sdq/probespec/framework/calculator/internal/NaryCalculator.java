@@ -102,6 +102,14 @@ public abstract class NaryCalculator extends Calculator {
         }
     }
 
+    /* (non-Javadoc)
+     * @see de.uka.ipd.sdq.probespec.framework.calculator.Calculator#releaseMemory(de.uka.ipd.sdq.probespec.framework.requestcontext.RequestContext)
+     */
+    @Override
+    public void releaseMemory(final RequestContext requestContext) {
+        arrivedMeasurementMemory.remove(requestContext);
+    }
+
     private boolean isMeasurementFromLastProbe(final Measurement probeMeasurement) {
         return (probeMeasurement.getMeasurementSource() == probes.get(probes.size() - 1));
     }
