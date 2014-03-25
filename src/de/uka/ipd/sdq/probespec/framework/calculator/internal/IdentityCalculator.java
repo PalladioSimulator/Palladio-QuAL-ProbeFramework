@@ -11,7 +11,7 @@ import de.uka.ipd.sdq.probespec.framework.probes.Probe;
 
 public class IdentityCalculator extends UnaryCalculator {
 
-	/**
+    /**
      * Constructor. It takes a reference of the blackboard and the ID of the probe set element taken
      * from the model.
      * 
@@ -20,22 +20,22 @@ public class IdentityCalculator extends UnaryCalculator {
      * @param probeSetID
      *            ID of the probe set element from the model
      */
-	public IdentityCalculator(final ProbeSpecContext ctx, final String metricName, final String metricDescription, final Probe probe) {
-		super(ctx, probe.getMetricDesciption(), probe);
-	}
+    public IdentityCalculator(final ProbeSpecContext ctx, final Probe probe) {
+        super(ctx, probe.getMetricDesciption(), probe);
+    }
 
-	/**
+    /**
      * @see de.uka.ipd.sdq.probespec.framework.calculator.Calculator#calculate
      *      (de.uka.ipd.sdq.probespec.framework.measurements.MeasurementSet)
      */
     @Override
     protected Measurement calculate(final List<Measurement> probeMeasurements) {
-    	Measurement measurement = probeMeasurements.get(0);
-    	if(measurement instanceof MeasurementSet) {
-    		return new MeasurementSet(((MeasurementSet) measurement).getSubsumedMeasurements(), (MetricSetDescription) this.metricDesciption, this);
-    	}
-    	else {
-    		throw new IllegalStateException("MeasurementSet expected for identity calculators");
-    	}
+        final Measurement measurement = probeMeasurements.get(0);
+        if(measurement instanceof MeasurementSet) {
+            return new MeasurementSet(((MeasurementSet) measurement).getSubsumedMeasurements(), (MetricSetDescription) this.metricDesciption, this);
+        }
+        else {
+            throw new IllegalStateException("MeasurementSet expected for identity calculators");
+        }
     }
 }

@@ -28,8 +28,8 @@ public class ProbeSet extends Probe {
     /**
      * 
      */
-    public ProbeSet(final List<Probe> subsumedProbes) {
-        super(getMetricSetDescription(subsumedProbes));
+    public ProbeSet(final List<Probe> subsumedProbes, final String metricName) {
+        super(getMetricSetDescription(subsumedProbes, metricName));
 
         this.subsumedProbes.addAll(subsumedProbes);
     }
@@ -51,13 +51,12 @@ public class ProbeSet extends Probe {
         return result;
     }
 
-    private static MetricDescription getMetricSetDescription(final List<Probe> subsumedProbes) {
-        final String metricName = "MetricSet";
+    private static MetricDescription getMetricSetDescription(final List<Probe> subsumedProbes, final String metricName) {
         final StringBuilder textualDescriptionBuilder = new StringBuilder("Subsumed metrics: ");
         for (final MeasurementSource probe : subsumedProbes) {
             textualDescriptionBuilder.append("<");
             textualDescriptionBuilder.append(probe.getMetricDesciption().getName());
-            textualDescriptionBuilder.append("<");
+            textualDescriptionBuilder.append(">");
         }
         final MetricSetDescription result = experimentDataFactory.createMetricSetDescription(metricName,
                 textualDescriptionBuilder.toString());

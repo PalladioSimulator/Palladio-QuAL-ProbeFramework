@@ -71,7 +71,7 @@ public class DefaultCalculatorFactory implements ICalculatorFactory {
     @Override
     public Calculator buildStateCalculator(final String calculatorName, final Probe probe) {
         ensureValidProbe(probe);
-        return new IdentityCalculator(this.probeSpecContext, "State", "State of "+calculatorName, probe);
+        return new IdentityCalculator(this.probeSpecContext, probe);
     }
 
     /* (non-Javadoc)
@@ -80,7 +80,7 @@ public class DefaultCalculatorFactory implements ICalculatorFactory {
     @Override
     public Calculator buildOverallUtilizationCalculator(final String calculatorName, final Probe probe) {
         ensureValidProbe(probe);
-        return new IdentityCalculator(this.probeSpecContext, "Utilization", "Utilization of "+calculatorName, probe);
+        return new IdentityCalculator(this.probeSpecContext, probe);
     }
 
     /* (non-Javadoc)
@@ -89,7 +89,7 @@ public class DefaultCalculatorFactory implements ICalculatorFactory {
     @Override
     public Calculator buildDemandCalculator(final String calculatorName, final Probe probe) {
         ensureValidProbe(probe);
-        return new IdentityCalculator(this.probeSpecContext, "Demand", "Demand at "+calculatorName, probe);
+        return new IdentityCalculator(this.probeSpecContext, probe);
     }
 
     /* (non-Javadoc)
@@ -98,7 +98,7 @@ public class DefaultCalculatorFactory implements ICalculatorFactory {
     @Override
     public Calculator buildExecutionResultCalculator(final String calculatorName, final Probe probe) {
         ensureValidProbe(probe);
-        return new IdentityCalculator(this.probeSpecContext, "Execution result", "Execution result of "+calculatorName, probe);
+        return new IdentityCalculator(this.probeSpecContext, probe);
     }
 
     private void ensureTwoProbes(final List<Probe> probes) {
