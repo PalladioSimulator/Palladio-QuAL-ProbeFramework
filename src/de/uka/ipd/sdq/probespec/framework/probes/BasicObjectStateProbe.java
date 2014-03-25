@@ -4,7 +4,7 @@ import javax.measure.quantity.Quantity;
 
 import org.palladiosimulator.edp2.models.ExperimentData.BaseMetricDescription;
 
-public abstract class BasicObjectStateProbe<StateObjectType, V, Q extends Quantity> extends BasicProbe<V,Q> {
+public abstract class BasicObjectStateProbe<StateObjectType, V, Q extends Quantity> extends BasicTriggeredProbe<V,Q> {
 
     private final StateObjectType observedStateObject;
 
