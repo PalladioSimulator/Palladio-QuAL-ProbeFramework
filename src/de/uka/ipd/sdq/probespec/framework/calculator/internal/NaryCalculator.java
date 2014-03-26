@@ -41,7 +41,7 @@ public abstract class NaryCalculator extends Calculator {
         super(ctx, metricDescription);
         probes = Collections.unmodifiableList(new ArrayList<Probe>(childProbes));
         for (final IMeasurementSource probe : childProbes) {
-            probe.registerMeasurementSourceListener(this);
+            probe.addObserver(this);
         }
     }
 
@@ -98,7 +98,7 @@ public abstract class NaryCalculator extends Calculator {
     @Override
     public void detachProbes() {
         for (final IMeasurementSource probe : probes) {
-            probe.unregisterMeasurementSourceListener(this);
+            probe.removeObserver(this);
         }
     }
 

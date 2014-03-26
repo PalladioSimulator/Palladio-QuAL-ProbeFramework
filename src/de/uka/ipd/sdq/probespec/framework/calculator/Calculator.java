@@ -72,7 +72,7 @@ public abstract class Calculator extends MeasurementSource implements IMeasureme
     public void unregisterCalculatorListeners() {
         for (final IMeasurementSourceListener l : this.getMeasurementSourceListeners()) {
             ((ICalculatorListener)l).preUnregister();
-            unregisterMeasurementSourceListener(l);
+            removeObserver(l);
         }
     }
 

@@ -51,6 +51,6 @@ public class EventProbeSet extends EventProbe<EventProbe<?>> implements IMeasure
 
     @Override
     protected void registerListener() {
-        this.eventSource.registerMeasurementSourceListener(this);
+        this.eventSource.addObserver(this);
     }
 }
