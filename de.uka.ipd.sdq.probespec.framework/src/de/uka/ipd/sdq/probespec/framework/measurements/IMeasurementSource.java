@@ -1,9 +1,6 @@
 package de.uka.ipd.sdq.probespec.framework.measurements;
 
-public interface IMeasurementSource {
+import org.palladiosimulator.commons.designpatterns.IAbstractObservable;
 
-    public abstract void registerMeasurementSourceListener(IMeasurementSourceListener listener);
-
-    public abstract void unregisterMeasurementSourceListener(IMeasurementSourceListener listener);
-
+public interface IMeasurementSource extends IAbstractObservable<IMeasurementSourceListener> {
 }

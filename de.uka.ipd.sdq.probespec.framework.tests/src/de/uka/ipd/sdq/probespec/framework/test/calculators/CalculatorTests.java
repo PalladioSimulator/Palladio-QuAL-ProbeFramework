@@ -41,7 +41,7 @@ public class CalculatorTests {
     public void testResponseTimeCalculator() {
         final Calculator rtCalculator = this.probeSpecContext.getCalculatorFactory().buildResponseTimeCalculator("Test ResponseTime", Arrays.asList((Probe)startProbe,(Probe)endProbe));
 
-        rtCalculator.registerMeasurementSourceListener(new ICalculatorListener() {
+        rtCalculator.addObserver(new ICalculatorListener() {
 
             @Override
             public void newMeasurementAvailable(final Measurement measurement) {

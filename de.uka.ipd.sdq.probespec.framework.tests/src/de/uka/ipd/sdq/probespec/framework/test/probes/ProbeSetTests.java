@@ -81,7 +81,7 @@ public class ProbeSetTests {
         final ExampleTakeCPUDemandStrategy probe = new ExampleTakeCPUDemandStrategy(cpuResource);
 
         final EventProbeSet eventProbeSet = new EventProbeSet(probe, Arrays.asList(currentTimeProbe,currentCPUStateProbe), "Composed");
-        eventProbeSet.registerMeasurementSourceListener(new IMeasurementSourceListener() {
+        eventProbeSet.addObserver(new IMeasurementSourceListener() {
 
             @Override
             public void newMeasurementAvailable(final Measurement measurement) {

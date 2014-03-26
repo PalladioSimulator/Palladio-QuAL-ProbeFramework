@@ -90,7 +90,7 @@ public class BasicProbeTests {
         final SimpleCPUResource cpuResource = new SimpleCPUResource();
         simCtx.addActiveResource("Test CPU", cpuResource);
         final ExampleTakeCPUDemandStrategy probe = new ExampleTakeCPUDemandStrategy(cpuResource);
-        probe.registerMeasurementSourceListener(new IMeasurementSourceListener() {
+        probe.addObserver(new IMeasurementSourceListener() {
 
             @Override
             public void newMeasurementAvailable(final Measurement measurement) {
