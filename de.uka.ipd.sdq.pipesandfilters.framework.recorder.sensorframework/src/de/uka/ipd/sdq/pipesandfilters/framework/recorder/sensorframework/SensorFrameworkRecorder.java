@@ -78,7 +78,7 @@ public class SensorFrameworkRecorder extends Recorder implements IRawWriteStrate
         } else if (recorderConfiguration.getRecorderAcceptedMetric().getName().equals("Overall Utilisation")) {
             writeDataStrategy = new OverallUtilisationWriteDataStrategy(
                     daoFactory, experiment, run);
-        } else if (recorderConfiguration.getRecorderAcceptedMetric().getName().equals("Execution Time")) {
+        } else if (recorderConfiguration.getRecorderAcceptedMetric().getName().equals("ExecutionResult")) {
             writeDataStrategy = new ExecutionResultWriteDataStrategy(
                     daoFactory, experiment, run);
         }

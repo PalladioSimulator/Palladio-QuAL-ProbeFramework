@@ -4,6 +4,7 @@ import javax.measure.Measure;
 import javax.measure.quantity.Quantity;
 
 import org.palladiosimulator.edp2.models.ExperimentData.BaseMetricDescription;
+import org.palladiosimulator.edp2.models.ExperimentData.Identifier;
 import org.palladiosimulator.edp2.models.ExperimentData.MetricDescription;
 import org.palladiosimulator.edp2.models.ExperimentData.NumericalBaseMetricDescription;
 
@@ -60,7 +61,7 @@ public final class BasicMeasurement<V, Q extends Quantity> extends Measurement {
         final Class<?> valueDataType;
         switch (baseMetricDescription.getCaptureType()) {
         case IDENTIFIER:
-            valueDataType = String.class;
+            valueDataType = Identifier.class;
             break;
         case INTEGER_NUMBER:
             valueDataType = Long.class;
@@ -73,7 +74,7 @@ public final class BasicMeasurement<V, Q extends Quantity> extends Measurement {
             break;
         }
 
-        if (measure.getValue().getClass() != valueDataType) {
+        if (!valueDataType.isAssignableFrom(measure.getValue().getClass())) {
             throw new IllegalArgumentException("Datatype of measurement not compatible with declared base metric");
         }
 

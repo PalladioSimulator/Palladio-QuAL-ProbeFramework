@@ -1,12 +1,15 @@
 package de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework.strategies;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import javax.measure.Measure;
 import javax.measure.quantity.Dimensionless;
 import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
+
+import org.palladiosimulator.edp2.models.ExperimentData.Identifier;
+import org.palladiosimulator.edp2.models.ExperimentData.MetricSetDescription;
+import org.palladiosimulator.edp2.models.ExperimentData.TextualBaseMetricDescription;
 
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.launch.IRecorderConfiguration;
 import de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework.SensorFrameworkRecorderConfiguration;
@@ -30,7 +33,8 @@ public class ExecutionResultWriteDataStrategy extends AbstractWriteDataStrategy 
     /**
      * Stores the dynamically created set of states.
      */
-    private final HashMap<Integer, State> statesCache = new HashMap<Integer, State>();
+    private final HashMap<Identifier, State> statesCache = new HashMap<Identifier, State>();
+    private TextualBaseMetricDescription exceptionResultMetric;
 
     /**
      * Constructor for the strategy.
@@ -60,7 +64,7 @@ public class ExecutionResultWriteDataStrategy extends AbstractWriteDataStrategy 
     public void initialise(final IRecorderConfiguration recorderConfiguration) {
         final SensorFrameworkRecorderConfiguration sensorFrameworkRecorderConfig = (SensorFrameworkRecorderConfiguration) recorderConfiguration;
         initStatesCache(sensorFrameworkRecorderConfig);
-        initSensor(sensorFrameworkRecorderConfig.getRecorderAcceptedMetric().getTextualDescription());
+        initSensor(sensorFrameworkRecorderConfig.getMeasuredElementDescription());
     }
 
     /*
@@ -74,10 +78,10 @@ public class ExecutionResultWriteDataStrategy extends AbstractWriteDataStrategy 
     @Override
     public void writeData(final Measurement data) {
         final Measure<Double, Duration> measurementTimeMeasure = data.getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
-        final Measure<Integer, Dimensionless> numericStateMeasure = data.getMeasureForMetric(MetricDescriptionConstants.CPU_STATE_METRIC);
+        final Measure<Identifier, Dimensionless> numericStateMeasure = data.getMeasureForMetric(exceptionResultMetric);
         final double measurementTime = measurementTimeMeasure.doubleValue(SI.SECOND);
-        final int stateId = numericStateMeasure.intValue(Dimensionless.UNIT);
-        run.addStateMeasurement((StateSensor) sensor, statesCache.get(stateId),
+        final Identifier state = numericStateMeasure.getValue();
+        run.addStateMeasurement((StateSensor) sensor, statesCache.get(state),
                 measurementTime);
     }
 
@@ -95,21 +99,7 @@ public class ExecutionResultWriteDataStrategy extends AbstractWriteDataStrategy 
                 return state;
             }
         }
-
-        // Assume that the success state has ID = 0:
-        final State state = statesCache.get(0);
-        if (state != null) {
-            return state;
-        }
-
-        // Return an additional success state:
-        int newID = 0;
-        while(statesCache.containsKey(newID)){
-            newID++;
-        }
-        final State newState = SensorHelper.createOrReuseState(daoFactory, "Success");
-        statesCache.put(newID, newState);
-        return newState;
+        throw new RuntimeException("No success state found");
     }
 
     /**
@@ -135,11 +125,18 @@ public class ExecutionResultWriteDataStrategy extends AbstractWriteDataStrategy 
      *            the meta data for the initialization of the strategy
      */
     private void initStatesCache(final SensorFrameworkRecorderConfiguration recorderConfiguration) {
-        final Map<Integer, String> resultTypes = recorderConfiguration.getExecutionResultTypes();
-        for (final Integer key : resultTypes.keySet()) {
+        final MetricSetDescription myMetric = (MetricSetDescription) recorderConfiguration.getRecorderAcceptedMetric();
+        exceptionResultMetric = null; int i = 0;
+        while (exceptionResultMetric == null) {
+            if (myMetric.getSubsumedMetrics().get(i) instanceof TextualBaseMetricDescription) {
+                exceptionResultMetric = (TextualBaseMetricDescription) myMetric.getSubsumedMetrics().get(i);
+            }
+            i++;
+        }
+        for (final Identifier identifier : exceptionResultMetric.getIdentifiers()) {
             final State state = SensorHelper.createOrReuseState(daoFactory,
-                    resultTypes.get(key));
-            statesCache.put(key, state);
+                    identifier.getLiteral());
+            statesCache.put(identifier, state);
         }
     }
 }

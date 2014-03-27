@@ -9,17 +9,23 @@ import de.uka.ipd.sdq.pipesandfilters.framework.recorder.launch.IRecorderConfigu
 public abstract class AbstractRecorderConfiguration implements IRecorderConfiguration {
 
     public static final String RECORDER_ACCEPTED_METRIC = "recorderAcceptedMetric";
+    public static final String MEASURED_ELEMENT_DESCRIPTION = "measuredElementDescription";
 
     /**
      * This list should hold one MeasuredMetric with measurement information
      * for each tuple that is inducted to the pipe by the calculators.
      */
     private MetricDescription recorderAcceptedMetric;
+    private String measuredElementDescription;
 
+    public String getMeasuredElementDescription() {
+        return measuredElementDescription;
+    }
 
     @Override
     public void setConfiguration(final Map<String, Object> configuration) {
         recorderAcceptedMetric = getValue(configuration, RECORDER_ACCEPTED_METRIC, MetricDescription.class);
+        measuredElementDescription = getValue(configuration, MEASURED_ELEMENT_DESCRIPTION, String.class);
     }
 
     /**

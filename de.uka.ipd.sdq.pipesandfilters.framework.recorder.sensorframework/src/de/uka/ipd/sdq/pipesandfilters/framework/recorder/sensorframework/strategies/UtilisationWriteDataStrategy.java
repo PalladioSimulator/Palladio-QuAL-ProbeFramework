@@ -34,7 +34,7 @@ public class UtilisationWriteDataStrategy extends AbstractWriteDataStrategy {
     @Override
     public void initialise(final IRecorderConfiguration recorderConfiguration) {
         final SensorFrameworkRecorderConfiguration sensorFrameworkRecorderConfig = (SensorFrameworkRecorderConfiguration) recorderConfiguration;
-        final String sensorId = sensorFrameworkRecorderConfig.getRecorderAcceptedMetric().getTextualDescription();
+        final String sensorId = sensorFrameworkRecorderConfig.getMeasuredElementDescription();
         this.idleState = SensorHelper.createOrReuseState(daoFactory, "Idle");
         this.busyState = SensorHelper.createOrReuseState(daoFactory, "Busy");
         sensor = SensorHelper.createOrReuseStateSensor(daoFactory, experiment,
