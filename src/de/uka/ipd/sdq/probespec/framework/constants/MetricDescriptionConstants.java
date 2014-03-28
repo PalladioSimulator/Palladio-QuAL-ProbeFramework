@@ -1,5 +1,8 @@
 package de.uka.ipd.sdq.probespec.framework.constants;
 
+import java.util.Arrays;
+import java.util.List;
+
 import javax.measure.quantity.Dimensionless;
 import javax.measure.unit.SI;
 
@@ -8,6 +11,8 @@ import org.palladiosimulator.edp2.models.ExperimentData.CaptureType;
 import org.palladiosimulator.edp2.models.ExperimentData.DataType;
 import org.palladiosimulator.edp2.models.ExperimentData.ExperimentDataFactory;
 import org.palladiosimulator.edp2.models.ExperimentData.ExperimentDataPackage;
+import org.palladiosimulator.edp2.models.ExperimentData.MetricDescription;
+import org.palladiosimulator.edp2.models.ExperimentData.MetricSetDescription;
 import org.palladiosimulator.edp2.models.ExperimentData.Monotonic;
 import org.palladiosimulator.edp2.models.ExperimentData.PersistenceKindOptions;
 import org.palladiosimulator.edp2.models.ExperimentData.Scale;
@@ -52,8 +57,18 @@ public final class MetricDescriptionConstants {
     /** Specifies a waiting time metric, e.g., to store the waiting time at passive resource pools. */
     public final static BaseMetricDescription WAITING_TIME_METRIC = createNewTimeMetric("Waiting Time", "This measure represents the waiting time", "_nU2AICUQEd6gmLudJva2DwLehr6");
 
+    public final static MetricSetDescription CPU_STATE_OVER_TIME_METRIC = createNewMetricSetDescription(Arrays.asList((MetricDescription)POINT_IN_TIME_METRIC,(MetricDescription)CPU_STATE_METRIC),"CPU State over Time","Numer of elements in the CPU queue over time","_BoroIZMbEd6Vw8NDgVSYcgLehr6");
 
     private MetricDescriptionConstants() {
+
+    }
+
+    private static MetricSetDescription createNewMetricSetDescription(final List<MetricDescription> submetrics, final String name, final String description, final String uuid) {
+        final MetricSetDescription result = experimentDataFactory.createMetricSetDescription(name, description);
+        result.setUuid(uuid);
+        result.getSubsumedMetrics().addAll(submetrics);
+
+        return result;
     }
 
     /**

@@ -3,6 +3,7 @@ package de.uka.ipd.sdq.probespec.framework.probes;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.palladiosimulator.edp2.models.ExperimentData.MetricDescription;
 import org.palladiosimulator.edp2.models.ExperimentData.MetricSetDescription;
 
 import de.uka.ipd.sdq.probespec.framework.measurements.Measurement;
@@ -13,14 +14,18 @@ public class TriggeredProbeSet extends TriggeredProbe {
 
     private final List<Probe> subsumedProbes;
 
-    public TriggeredProbeSet(final List<Probe> subsumedProbes, final String metricName) {
-        super(ProbeSetHelper.getMetricSetDescription(subsumedProbes, metricName));
+    public TriggeredProbeSet(final List<Probe> subsumedProbes, final MetricDescription metric) {
+        super(metric);
         for (final Probe probe : subsumedProbes) {
             if (!(probe instanceof TriggeredProbe)) {
                 throw new IllegalArgumentException("In a passive probe set, all probes must be passive");
             }
         }
         this.subsumedProbes = subsumedProbes;
+    }
+
+    public TriggeredProbeSet(final List<Probe> subsumedProbes, final String metricName) {
+        this(subsumedProbes,ProbeSetHelper.getMetricSetDescription(subsumedProbes, metricName));
     }
 
     /*
