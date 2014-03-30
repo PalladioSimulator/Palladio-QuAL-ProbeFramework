@@ -1,8 +1,9 @@
 package de.uka.ipd.sdq.probespec.framework.requestcontext;
 
+import org.palladiosimulator.edp2.metricentity.MetricEntity;
+
 import de.uka.ipd.sdq.probespec.framework.measurements.MeasurementSet;
 import de.uka.ipd.sdq.probespec.framework.measurements.MeasurementSource;
-import de.uka.ipd.sdq.probespec.framework.measurements.MetricEntity;
 
 /**
  * Represents a (ProbeSet, {@link RequestContext})-pair. The ProbeSet is
