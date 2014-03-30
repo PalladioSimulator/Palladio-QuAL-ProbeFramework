@@ -3,6 +3,7 @@ package de.uka.ipd.sdq.probespec.framework.measurements;
 import javax.measure.Measure;
 import javax.measure.quantity.Quantity;
 
+import org.palladiosimulator.edp2.metricentity.MetricEntity;
 import org.palladiosimulator.edp2.models.ExperimentData.BaseMetricDescription;
 import org.palladiosimulator.edp2.models.ExperimentData.MetricDescription;
 

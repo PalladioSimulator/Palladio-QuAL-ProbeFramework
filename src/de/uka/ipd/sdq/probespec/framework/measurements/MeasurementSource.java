@@ -3,6 +3,7 @@ package de.uka.ipd.sdq.probespec.framework.measurements;
 import java.util.Collection;
 
 import org.palladiosimulator.commons.designpatterns.AbstractObservable;
+import org.palladiosimulator.edp2.metricentity.MetricEntity;
 import org.palladiosimulator.edp2.models.ExperimentData.MetricDescription;
 
 public abstract class MeasurementSource extends MetricEntity implements IMeasurementSource {
@@ -29,6 +30,13 @@ public abstract class MeasurementSource extends MetricEntity implements IMeasure
 
     public MeasurementSource(final MetricDescription metricDesciption) {
         super(metricDesciption);
+    }
+
+    public boolean isCompatibleMeasurement(final Measurement measurement) {
+        if (!isCompatibleWith(measurement.getMetricDesciption())) {
+            return false;
+        }
+        return true;
     }
 
     /**
