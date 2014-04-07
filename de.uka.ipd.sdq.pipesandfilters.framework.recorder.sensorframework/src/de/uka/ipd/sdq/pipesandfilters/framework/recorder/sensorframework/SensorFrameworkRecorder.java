@@ -1,5 +1,7 @@
 package de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework;
 
+import static de.uka.ipd.sdq.probespec.framework.constants.MetricDescriptionConstants.CPU_STATE_OVER_TIME_METRIC;
+
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
@@ -17,7 +19,7 @@ import de.uka.ipd.sdq.probespec.framework.measurements.Measurement;
 import de.uka.ipd.sdq.sensorframework.entities.Experiment;
 import de.uka.ipd.sdq.sensorframework.entities.ExperimentRun;
 import de.uka.ipd.sdq.sensorframework.entities.dao.IDAOFactory;
-
+	
 /**
  * Recorder for the SensorFramework.
  *
@@ -60,27 +62,30 @@ public class SensorFrameworkRecorder extends Recorder implements IRawWriteStrate
         final IDAOFactory daoFactory = this.recorderConfiguration.getDaoFactory();
         final Experiment experiment = this.recorderConfiguration.getExperiment();
         final ExperimentRun run = this.recorderConfiguration.getExperimentRun();
-        if (recorderConfiguration.getRecorderAcceptedMetric().getName().equals("Response Time")) {
+        final String recorderAcceptedMetric = recorderConfiguration.getRecorderAcceptedMetric().getName(); 
+        if (recorderAcceptedMetric.equals("Response Time")) {
             writeDataStrategy = new ResponseTimeWriteDataStrategy(daoFactory,
                     experiment, run);
-        } else if (recorderConfiguration.getRecorderAcceptedMetric().getName().equals("Waiting Time")) {
+        } else if (recorderAcceptedMetric.equals("Waiting Time")) {
             writeDataStrategy = new WaitingTimeWriteDataStrategy(daoFactory,
                     experiment, run);
-        } else if (recorderConfiguration.getRecorderAcceptedMetric().getName().equals("Hold Time")) {
+        } else if (recorderAcceptedMetric.equals("Hold Time")) {
             writeDataStrategy = new WaitingTimeWriteDataStrategy(daoFactory,
                     experiment, run);
-        } else if (recorderConfiguration.getRecorderAcceptedMetric().getName().equals("Demand")) {
+        } else if (recorderAcceptedMetric.equals("Demand")) {
             writeDataStrategy = new DemandedTimeWriteDataStrategy(daoFactory,
                     experiment, run);
-        } else if (recorderConfiguration.getRecorderAcceptedMetric().getName().equals("State")) {
+        } else if (recorderAcceptedMetric.equals("State") || recorderAcceptedMetric.equals(CPU_STATE_OVER_TIME_METRIC.getName()) ) {
             writeDataStrategy = new UtilisationWriteDataStrategy(daoFactory,
                     experiment, run);
-        } else if (recorderConfiguration.getRecorderAcceptedMetric().getName().equals("Overall Utilisation")) {
+        } else if (recorderAcceptedMetric.equals("Overall Utilisation")) {
             writeDataStrategy = new OverallUtilisationWriteDataStrategy(
                     daoFactory, experiment, run);
-        } else if (recorderConfiguration.getRecorderAcceptedMetric().getName().equals("ExecutionResult")) {
+        } else if (recorderAcceptedMetric.equals("ExecutionResult")) {
             writeDataStrategy = new ExecutionResultWriteDataStrategy(
                     daoFactory, experiment, run);
+        } else {
+        	throw new RuntimeException("Unsupported metric (\""+recorderAcceptedMetric+"\") requested to SensorFramework recorder");
         }
         writeDataStrategy.initialise(recorderConfiguration);
 
