@@ -6,10 +6,18 @@ import org.palladiosimulator.commons.designpatterns.AbstractObservable;
 import org.palladiosimulator.edp2.metricentity.MetricEntity;
 import org.palladiosimulator.edp2.models.ExperimentData.MetricDescription;
 
+/**
+ * 
+ * @author Sebastian Lehrig, Steffen Becker
+ */
 public abstract class MeasurementSource extends MetricEntity implements IMeasurementSource {
 
     private final AbstractObservable<IMeasurementSourceListener> observableDelegate = new AbstractObservable<IMeasurementSourceListener>() {};
 
+    public MeasurementSource(final MetricDescription metricDesciption) {
+        super(metricDesciption);
+    }
+    
     /**
      * @param observer
      * @see org.palladiosimulator.commons.designpatterns.IAbstractObservable#addObserver(java.lang.Object)
@@ -28,10 +36,7 @@ public abstract class MeasurementSource extends MetricEntity implements IMeasure
         observableDelegate.removeObserver(observer);
     }
 
-    public MeasurementSource(final MetricDescription metricDesciption) {
-        super(metricDesciption);
-    }
-
+    
     public boolean isCompatibleMeasurement(final Measurement measurement) {
         if (!isCompatibleWith(measurement.getMetricDesciption())) {
             return false;
