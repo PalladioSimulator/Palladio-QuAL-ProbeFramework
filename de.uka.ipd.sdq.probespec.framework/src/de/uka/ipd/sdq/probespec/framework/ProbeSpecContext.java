@@ -1,9 +1,12 @@
 package de.uka.ipd.sdq.probespec.framework;
 
-import de.uka.ipd.sdq.probespec.framework.calculator.Calculator;
 import de.uka.ipd.sdq.probespec.framework.calculator.ICalculatorFactory;
 import de.uka.ipd.sdq.probespec.framework.calculator.RegisterCalculatorFactoryDecorator;
 
+/**
+ * 
+ * @author Steffen Becker, Sebastian Lehrig
+ */
 public class ProbeSpecContext {
 
     private final RegisterCalculatorFactoryDecorator calculatorFactory;
@@ -17,16 +20,12 @@ public class ProbeSpecContext {
         this.calculatorFactory.setProbeSpecContext(this);
     }
 
-    public void finish() {
-        this.calculatorFactory.finish();
-    }
-
     public ICalculatorFactory getCalculatorFactory() {
         return calculatorFactory;
     }
     
-    public Calculator getCalculatorByName(String calculatorName) {
-        return this.calculatorFactory.getCalculatorByName(calculatorName);
+    public void finish() {
+        this.calculatorFactory.finish();
     }
 
 }
