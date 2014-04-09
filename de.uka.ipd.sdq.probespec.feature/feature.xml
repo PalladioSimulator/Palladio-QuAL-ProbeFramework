@@ -234,7 +234,7 @@ litigation.
       <import plugin="org.eclipse.swt" version="3.5.1" match="greaterOrEqual"/>
       <import plugin="org.apache.log4j" version="1.2.13" match="greaterOrEqual"/>
       <import plugin="de.uka.ipd.sdq.sensorframework" version="1.1.0" match="greaterOrEqual"/>
-      <import plugin="de.uka.ipd.sdq.pipesandfilters.framework" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.recorderspec" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="de.uka.ipd.sdq.sensorframework.dialogs" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.jface" version="3.5.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.runtime" version="3.5.0" match="greaterOrEqual"/>
@@ -245,14 +245,14 @@ litigation.
    </requires>
 
    <plugin
-         id="de.uka.ipd.sdq.pipesandfilters.framework"
+         id="org.palladiosimulator.recorderspec"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="de.uka.ipd.sdq.pipesandfilters.framework.recorder.sensorframework"
+         id="org.palladiosimulator.recorderspec.recorder.sensorframework"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -280,7 +280,7 @@ litigation.
          unpack="false"/>
 
    <plugin
-         id="de.uka.ipd.sdq.pipesandfilters.framework.recorder.edp2"
+         id="org.palladiosimulator.recorderspec.recorder.edp2"
          download-size="0"
          install-size="0"
          version="0.0.0"
