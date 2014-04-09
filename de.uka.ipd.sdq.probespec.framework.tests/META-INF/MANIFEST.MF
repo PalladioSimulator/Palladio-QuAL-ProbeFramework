@@ -11,7 +11,7 @@ Require-Bundle: org.eclipse.core.runtime,
  de.uka.ipd.sdq.probespec.framework.probes.example;bundle-version="2.0.0",
  org.palladiosimulator.recorderspec;bundle-version="2.0.1",
  org.apache.log4j;bundle-version="1.2.13",
- org.palladiosimulator.recorderspec.recorder.edp2;bundle-version="2.0.1"
+ org.palladiosimulator.recorderspec.edp2;bundle-version="2.0.1"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: org.palladiosimulator.recorderspec.recorder.edp2
+Import-Package: org.palladiosimulator.recorderspec.edp2
