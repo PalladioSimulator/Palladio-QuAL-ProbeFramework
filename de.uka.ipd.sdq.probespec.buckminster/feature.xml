@@ -2,7 +2,8 @@
 <feature
       id="de.uka.ipd.sdq.probespec.buckminster"
       label="Palladio ProbeSpecification"
-      version="2.0.0.qualifier">
+      version="2.0.0.qualifier"
+      provider-name="palladiosimulator.org">
 
    <url>
       <discovery label="Palladio Commons" url="http://sdqweb.ipd.kit.edu/eclipse/commons/releases/1.4.0"/>
