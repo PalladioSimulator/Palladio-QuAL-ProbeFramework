@@ -245,20 +245,6 @@ litigation.
    </requires>
 
    <plugin
-         id="org.palladiosimulator.recorderspec"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.palladiosimulator.recorderspec.recorder.sensorframework"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="de.uka.ipd.sdq.probespec.framework"
          download-size="0"
          install-size="0"
@@ -274,13 +260,6 @@ litigation.
 
    <plugin
          id="org.jscience"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.palladiosimulator.recorderspec.recorder.edp2"
          download-size="0"
          install-size="0"
          version="0.0.0"
