@@ -16,13 +16,6 @@
          version="0.0.0"/>
 
    <plugin
-         id="org.palladiosimulator.probespec.tests"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.palladiosimulator.probespec.framework.tests"
          download-size="0"
          install-size="0"
