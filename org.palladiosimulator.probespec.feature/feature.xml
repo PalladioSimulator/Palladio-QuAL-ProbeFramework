@@ -3,9 +3,9 @@
       id="org.palladiosimulator.probespec.feature"
       label="ProbeSpecification Feature"
       version="2.0.0.qualifier"
-      provider-name="sdq.ipd.kit.edu">
+      provider-name="palladiosimulator.org">
 
-   <description url="http://sdq.ipd.kit.edu/">
+   <description url="http://palladiosimulator.org/">
       Allows the specification of measuring points by decorating EMF
 models. The measuring at specified points is supported by the
 ProbeSpecification framework.
