@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="de.uka.ipd.sdq.probespec.feature"
+      id="org.palladiosimulator.probespec.feature"
       label="ProbeSpecification Feature"
       version="2.0.0.qualifier"
       provider-name="sdq.ipd.kit.edu">
@@ -235,20 +235,20 @@ litigation.
       <import plugin="org.palladiosimulator.edp2"/>
       <import plugin="org.eclipse.emf.common"/>
       <import plugin="org.palladiosimulator.commons" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="de.uka.ipd.sdq.probespec.framework" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.probespec.framework" version="2.0.0" match="greaterOrEqual"/>
       <import plugin="org.palladiosimulator.edp2" version="2.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.uml2.common.edit"/>
    </requires>
 
    <plugin
-         id="de.uka.ipd.sdq.probespec.framework"
+         id="org.palladiosimulator.probespec.framework"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="de.uka.ipd.sdq.probespec.framework.probes.example"
+         id="org.palladiosimulator.probespec.framework.probes.example"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -262,21 +262,21 @@ litigation.
          unpack="false"/>
 
    <plugin
-         id="de.uka.ipd.sdq.probespec"
+         id="org.palladiosimulator.probespec"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="de.uka.ipd.sdq.probespec.edit"
+         id="org.palladiosimulator.probespec.edit"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="de.uka.ipd.sdq.probespec.editor"
+         id="org.palladiosimulator.probespec.editor"
          download-size="0"
          install-size="0"
          version="0.0.0"

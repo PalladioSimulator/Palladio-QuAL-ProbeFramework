@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="de.uka.ipd.sdq.probespec.buckminster"
+      id="org.palladiosimulator.probespec.buckminster"
       label="Palladio ProbeSpecification"
       version="2.0.0.qualifier"
       provider-name="palladiosimulator.org">
@@ -12,18 +12,18 @@
    </url>
 
    <includes
-         id="de.uka.ipd.sdq.probespec.feature"
+         id="org.palladiosimulator.probespec.feature"
          version="0.0.0"/>
 
    <plugin
-         id="de.uka.ipd.sdq.probespec.tests"
+         id="org.palladiosimulator.probespec.tests"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="de.uka.ipd.sdq.probespec.framework.tests"
+         id="org.palladiosimulator.probespec.framework.tests"
          download-size="0"
          install-size="0"
          version="0.0.0"

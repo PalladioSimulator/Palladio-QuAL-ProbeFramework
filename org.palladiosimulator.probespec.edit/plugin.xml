@@ -13,7 +13,7 @@
    <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
       <factory
             uri="http://sdq.ipd.uka.de/ProbeSpec/0.1"
-            class="de.uka.ipd.sdq.probespec.provider.probespecItemProviderAdapterFactory"
+            class="org.palladiosimulator.probespec.provider.probespecItemProviderAdapterFactory"
             supportedTypes=
               "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
                org.eclipse.emf.edit.provider.IStructuredItemContentProvider

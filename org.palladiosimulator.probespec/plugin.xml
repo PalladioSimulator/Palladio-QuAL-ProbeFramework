@@ -13,7 +13,7 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <package
             uri="http://sdq.ipd.uka.de/ProbeSpec/0.1"
-            class="de.uka.ipd.sdq.probespec.probespecPackage"
+            class="org.palladiosimulator.probespec.probespecPackage"
             genModel="model/ProbeSpecification.genmodel"/>
    </extension>
 
@@ -21,7 +21,7 @@
       <!-- @generated ProbeSpecification -->
       <parser
             type="probespec"
-            class="de.uka.ipd.sdq.probespec.util.probespecResourceFactoryImpl"/>
+            class="org.palladiosimulator.probespec.util.probespecResourceFactoryImpl"/>
    </extension>
 
 </plugin>
