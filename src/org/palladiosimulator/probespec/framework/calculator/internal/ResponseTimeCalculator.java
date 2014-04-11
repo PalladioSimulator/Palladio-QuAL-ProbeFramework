@@ -1,6 +1,6 @@
 package org.palladiosimulator.probespec.framework.calculator.internal;
 
-import static org.palladiosimulator.probespec.framework.constants.MetricDescriptionConstants.RESPONSE_TIME_METRIC;
+import static org.palladiosimulator.metricspec.MetricDescriptionConstants.RESPONSE_TIME_METRIC;
 
 import java.util.Arrays;
 import java.util.List;

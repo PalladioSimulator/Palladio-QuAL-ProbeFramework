@@ -1,6 +1,6 @@
 package org.palladiosimulator.probespec.framework.calculator.internal;
 
-import static org.palladiosimulator.probespec.framework.constants.MetricDescriptionConstants.POINT_IN_TIME_METRIC;
+import static org.palladiosimulator.metricspec.MetricDescriptionConstants.POINT_IN_TIME_METRIC;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,11 +11,11 @@ import javax.measure.unit.SI;
 
 import org.palladiosimulator.edp2.models.ExperimentData.MetricDescription;
 import org.palladiosimulator.edp2.models.ExperimentData.MetricSetDescription;
+import org.palladiosimulator.measurementspec.BasicMeasurement;
+import org.palladiosimulator.measurementspec.Measurement;
+import org.palladiosimulator.measurementspec.MeasurementSet;
 import org.palladiosimulator.probespec.framework.ProbeSpecContext;
 import org.palladiosimulator.probespec.framework.exceptions.CalculatorException;
-import org.palladiosimulator.probespec.framework.measurements.BasicMeasurement;
-import org.palladiosimulator.probespec.framework.measurements.Measurement;
-import org.palladiosimulator.probespec.framework.measurements.MeasurementSet;
 import org.palladiosimulator.probespec.framework.probes.Probe;
 /**
  * Calculates a time span. It expects two ProbeSets each containing at least a
@@ -33,7 +33,7 @@ public abstract class TimeSpanCalculator extends NaryCalculator {
     /**
      * @see
      * org.palladiosimulator.probespec.framework.calculator.Calculator#calculate
-     * (org.palladiosimulator.probespec.framework.measurements.MeasurementSet)
+     * (org.palladiosimulator.measurementspec.MeasurementSet)
      */
     @Override
     protected Measurement calculate(final List<Measurement> probeMeasurements) throws CalculatorException {

@@ -8,13 +8,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.palladiosimulator.edp2.models.ExperimentData.MetricDescription;
+import org.palladiosimulator.measurementspec.IMeasurementSource;
+import org.palladiosimulator.measurementspec.Measurement;
+import org.palladiosimulator.measurementspec.MeasurementSet;
 import org.palladiosimulator.probespec.framework.ProbeSpecContext;
 import org.palladiosimulator.probespec.framework.calculator.Calculator;
-import org.palladiosimulator.probespec.framework.measurements.IMeasurementSource;
-import org.palladiosimulator.probespec.framework.measurements.Measurement;
-import org.palladiosimulator.probespec.framework.measurements.MeasurementSet;
 import org.palladiosimulator.probespec.framework.probes.Probe;
-import org.palladiosimulator.probespec.framework.requestcontext.RequestContext;
+import org.palladiosimulator.measurementspec.requestcontext.RequestContext;
 
 /**
  * This abstract class represents a binary calculator. A binary calculator expects two probe sets,
@@ -72,7 +72,7 @@ public abstract class NaryCalculator extends Calculator {
      *            the last ProbeSetSample which was added to the SampleBlackboard and so triggered
      *            this Calculator.
      * @see org.palladiosimulator.probespec.framework.calculator.Calculator#execute
-     *      (org.palladiosimulator.probespec.framework.measurements.MeasurementSet)
+     *      (org.palladiosimulator.measurementspec.MeasurementSet)
      */
     @Override
     public void newMeasurementAvailable(final Measurement probeMeasurement) {
@@ -102,7 +102,7 @@ public abstract class NaryCalculator extends Calculator {
     }
 
     /* (non-Javadoc)
-     * @see org.palladiosimulator.probespec.framework.calculator.Calculator#releaseMemory(org.palladiosimulator.probespec.framework.requestcontext.RequestContext)
+     * @see org.palladiosimulator.probespec.framework.calculator.Calculator#releaseMemory(org.palladiosimulator.measurementspec.requestcontext.RequestContext)
      */
     @Override
     public void releaseMemory(final RequestContext requestContext) {

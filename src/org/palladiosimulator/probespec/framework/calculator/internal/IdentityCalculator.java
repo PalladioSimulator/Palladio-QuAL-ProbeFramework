@@ -3,9 +3,9 @@ package org.palladiosimulator.probespec.framework.calculator.internal;
 import java.util.List;
 
 import org.palladiosimulator.edp2.models.ExperimentData.MetricSetDescription;
+import org.palladiosimulator.measurementspec.Measurement;
+import org.palladiosimulator.measurementspec.MeasurementSet;
 import org.palladiosimulator.probespec.framework.ProbeSpecContext;
-import org.palladiosimulator.probespec.framework.measurements.Measurement;
-import org.palladiosimulator.probespec.framework.measurements.MeasurementSet;
 import org.palladiosimulator.probespec.framework.probes.Probe;
 
 public class IdentityCalculator extends UnaryCalculator {
@@ -25,7 +25,7 @@ public class IdentityCalculator extends UnaryCalculator {
 
     /**
      * @see org.palladiosimulator.probespec.framework.calculator.Calculator#calculate
-     *      (org.palladiosimulator.probespec.framework.measurements.MeasurementSet)
+     *      (org.palladiosimulator.measurementspec.MeasurementSet)
      */
     @Override
     protected Measurement calculate(final List<Measurement> probeMeasurements) {

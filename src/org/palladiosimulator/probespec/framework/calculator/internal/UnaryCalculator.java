@@ -3,8 +3,8 @@ package org.palladiosimulator.probespec.framework.calculator.internal;
 import java.util.Arrays;
 
 import org.palladiosimulator.edp2.models.ExperimentData.MetricDescription;
+import org.palladiosimulator.measurementspec.MeasurementSet;
 import org.palladiosimulator.probespec.framework.ProbeSpecContext;
-import org.palladiosimulator.probespec.framework.measurements.MeasurementSet;
 import org.palladiosimulator.probespec.framework.probes.Probe;
 
 /**
