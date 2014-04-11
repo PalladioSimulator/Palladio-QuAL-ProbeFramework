@@ -4,9 +4,9 @@ import javax.measure.Measure;
 import javax.measure.quantity.Quantity;
 
 import org.palladiosimulator.edp2.models.ExperimentData.BaseMetricDescription;
-import org.palladiosimulator.probespec.framework.measurements.BasicMeasurement;
-import org.palladiosimulator.probespec.framework.measurements.Measurement;
-import org.palladiosimulator.probespec.framework.requestcontext.RequestContext;
+import org.palladiosimulator.measurementspec.BasicMeasurement;
+import org.palladiosimulator.measurementspec.Measurement;
+import org.palladiosimulator.measurementspec.requestcontext.RequestContext;
 
 public abstract class BasicEventProbe<EventSourceType, V, Q extends Quantity> extends EventProbe<EventSourceType> {
 

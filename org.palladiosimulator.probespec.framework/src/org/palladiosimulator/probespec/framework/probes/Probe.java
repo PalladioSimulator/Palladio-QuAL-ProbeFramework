@@ -1,7 +1,7 @@
 package org.palladiosimulator.probespec.framework.probes;
 
 import org.palladiosimulator.edp2.models.ExperimentData.MetricDescription;
-import org.palladiosimulator.probespec.framework.measurements.MeasurementSource;
+import org.palladiosimulator.measurementspec.MeasurementSource;
 
 public abstract class Probe extends MeasurementSource {
 

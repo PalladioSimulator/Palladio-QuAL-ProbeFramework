@@ -8,16 +8,16 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.palladiosimulator.measurementspec.Measurement;
 import org.palladiosimulator.probespec.framework.ProbeSpecContext;
 import org.palladiosimulator.probespec.framework.calculator.Calculator;
 import org.palladiosimulator.probespec.framework.calculator.DefaultCalculatorFactory;
 import org.palladiosimulator.probespec.framework.calculator.ICalculatorListener;
-import org.palladiosimulator.probespec.framework.measurements.Measurement;
 import org.palladiosimulator.probespec.framework.probes.Probe;
 import org.palladiosimulator.probespec.framework.probes.TriggeredProbe;
 import org.palladiosimulator.probespec.framework.probes.example.ExampleTakeCurrentTimeStrategy;
 import org.palladiosimulator.probespec.framework.probes.example.SimpleSimulationContext;
-import org.palladiosimulator.probespec.framework.requestcontext.RequestContext;
+import org.palladiosimulator.measurementspec.requestcontext.RequestContext;
 
 @RunWith(JUnit4.class)
 public class CalculatorTests {

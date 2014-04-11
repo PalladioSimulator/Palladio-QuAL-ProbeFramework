@@ -1,6 +1,6 @@
 package org.palladiosimulator.probespec.framework.calculator;
 
-import org.palladiosimulator.probespec.framework.measurements.IMeasurementSourceListener;
+import org.palladiosimulator.measurementspec.IMeasurementSourceListener;
 
 
 /**

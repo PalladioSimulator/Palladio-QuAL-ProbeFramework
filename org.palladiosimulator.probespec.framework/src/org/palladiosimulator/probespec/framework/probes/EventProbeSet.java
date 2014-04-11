@@ -6,10 +6,10 @@ import java.util.List;
 import javax.measure.quantity.Quantity;
 
 import org.palladiosimulator.edp2.models.ExperimentData.MetricSetDescription;
-import org.palladiosimulator.probespec.framework.measurements.IMeasurementSourceListener;
-import org.palladiosimulator.probespec.framework.measurements.Measurement;
-import org.palladiosimulator.probespec.framework.measurements.MeasurementSet;
-import org.palladiosimulator.probespec.framework.requestcontext.RequestContext;
+import org.palladiosimulator.measurementspec.IMeasurementSourceListener;
+import org.palladiosimulator.measurementspec.Measurement;
+import org.palladiosimulator.measurementspec.MeasurementSet;
+import org.palladiosimulator.measurementspec.requestcontext.RequestContext;
 
 public class EventProbeSet extends EventProbe<EventProbe<?>> implements IMeasurementSourceListener {
 

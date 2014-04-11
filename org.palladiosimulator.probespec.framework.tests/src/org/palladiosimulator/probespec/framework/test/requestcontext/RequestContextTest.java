@@ -1,6 +1,6 @@
 package org.palladiosimulator.probespec.framework.test.requestcontext;
 
-import org.palladiosimulator.probespec.framework.requestcontext.RequestContext;
+import org.palladiosimulator.measurementspec.requestcontext.RequestContext;
 
 import junit.framework.TestCase;
 

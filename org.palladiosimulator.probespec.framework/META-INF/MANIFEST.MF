@@ -9,14 +9,13 @@ Require-Bundle: org.eclipse.core.runtime,
  org.apache.log4j;bundle-version="1.2.13",
  org.palladiosimulator.edp2;visibility:=reexport,
  org.eclipse.emf.common,
- org.palladiosimulator.commons;bundle-version="1.0.0";visibility:=reexport
+ org.palladiosimulator.commons;bundle-version="1.0.0";visibility:=reexport,
+ org.palladiosimulator.metricspec;bundle-version="1.0.0",
+ org.palladiosimulator.measurementspec;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.palladiosimulator.probespec.framework,
  org.palladiosimulator.probespec.framework.calculator,
- org.palladiosimulator.probespec.framework.constants,
  org.palladiosimulator.probespec.framework.exceptions,
- org.palladiosimulator.probespec.framework.measurements,
- org.palladiosimulator.probespec.framework.probes,
- org.palladiosimulator.probespec.framework.requestcontext
+ org.palladiosimulator.probespec.framework.probes
 Bundle-Vendor: palladiosimulator.org

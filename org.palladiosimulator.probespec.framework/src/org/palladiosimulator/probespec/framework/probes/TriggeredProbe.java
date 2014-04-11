@@ -1,8 +1,8 @@
 package org.palladiosimulator.probespec.framework.probes;
 
 import org.palladiosimulator.edp2.models.ExperimentData.MetricDescription;
-import org.palladiosimulator.probespec.framework.measurements.Measurement;
-import org.palladiosimulator.probespec.framework.requestcontext.RequestContext;
+import org.palladiosimulator.measurementspec.Measurement;
+import org.palladiosimulator.measurementspec.requestcontext.RequestContext;
 
 public abstract class TriggeredProbe extends Probe {
 

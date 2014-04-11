@@ -13,16 +13,16 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.palladiosimulator.probespec.framework.constants.MetricDescriptionConstants;
-import org.palladiosimulator.probespec.framework.measurements.BasicMeasurement;
-import org.palladiosimulator.probespec.framework.measurements.IMeasurementSourceListener;
-import org.palladiosimulator.probespec.framework.measurements.Measurement;
+import org.palladiosimulator.measurementspec.BasicMeasurement;
+import org.palladiosimulator.measurementspec.IMeasurementSourceListener;
+import org.palladiosimulator.measurementspec.Measurement;
+import org.palladiosimulator.metricspec.MetricDescriptionConstants;
 import org.palladiosimulator.probespec.framework.probes.example.ExampleTakeCPUDemandStrategy;
 import org.palladiosimulator.probespec.framework.probes.example.ExampleTakeCPUStateStrategy;
 import org.palladiosimulator.probespec.framework.probes.example.ExampleTakeCurrentTimeStrategy;
 import org.palladiosimulator.probespec.framework.probes.example.SimpleCPUResource;
 import org.palladiosimulator.probespec.framework.probes.example.SimpleSimulationContext;
-import org.palladiosimulator.probespec.framework.requestcontext.RequestContext;
+import org.palladiosimulator.measurementspec.requestcontext.RequestContext;
 
 @RunWith(JUnit4.class)
 public class BasicProbeTests {

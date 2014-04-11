@@ -13,8 +13,8 @@ import org.junit.runners.JUnit4;
 import org.palladiosimulator.probespec.framework.probes.BasicTriggeredProbe;
 import org.palladiosimulator.probespec.framework.probes.example.ExampleTakeCurrentTimeStrategy;
 import org.palladiosimulator.probespec.framework.probes.example.SimpleSimulationContext;
-import org.palladiosimulator.probespec.framework.requestcontext.MeasurementSourceAndRequestContext;
-import org.palladiosimulator.probespec.framework.requestcontext.RequestContext;
+import org.palladiosimulator.measurementspec.requestcontext.MeasurementSourceAndRequestContext;
+import org.palladiosimulator.measurementspec.requestcontext.RequestContext;
 
 /**
  * 

@@ -8,7 +8,7 @@ import java.util.List;
 import org.palladiosimulator.edp2.models.ExperimentData.ExperimentDataFactory;
 import org.palladiosimulator.edp2.models.ExperimentData.MetricDescription;
 import org.palladiosimulator.edp2.models.ExperimentData.MetricSetDescription;
-import org.palladiosimulator.probespec.framework.measurements.MeasurementSource;
+import org.palladiosimulator.measurementspec.MeasurementSource;
 
 /**
  * @author snowball

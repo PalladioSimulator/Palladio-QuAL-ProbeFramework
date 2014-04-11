@@ -5,13 +5,13 @@ package org.palladiosimulator.probespec.framework.calculator;
 
 import java.util.List;
 
+import org.palladiosimulator.measurementspec.IMeasurementSource;
 import org.palladiosimulator.probespec.framework.ProbeSpecContext;
 import org.palladiosimulator.probespec.framework.calculator.internal.DemandBasedWaitingTimeCalculator;
 import org.palladiosimulator.probespec.framework.calculator.internal.HoldTimeCalculator;
 import org.palladiosimulator.probespec.framework.calculator.internal.IdentityCalculator;
 import org.palladiosimulator.probespec.framework.calculator.internal.ResponseTimeCalculator;
 import org.palladiosimulator.probespec.framework.calculator.internal.WaitingTimeCalculator;
-import org.palladiosimulator.probespec.framework.measurements.IMeasurementSource;
 import org.palladiosimulator.probespec.framework.probes.Probe;
 
 /**

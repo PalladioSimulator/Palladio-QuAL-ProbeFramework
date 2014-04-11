@@ -8,11 +8,11 @@ import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
 
 import org.palladiosimulator.edp2.models.ExperimentData.MetricSetDescription;
+import org.palladiosimulator.measurementspec.BasicMeasurement;
+import org.palladiosimulator.measurementspec.Measurement;
+import org.palladiosimulator.measurementspec.MeasurementSet;
+import org.palladiosimulator.metricspec.MetricDescriptionConstants;
 import org.palladiosimulator.probespec.framework.ProbeSpecContext;
-import org.palladiosimulator.probespec.framework.constants.MetricDescriptionConstants;
-import org.palladiosimulator.probespec.framework.measurements.BasicMeasurement;
-import org.palladiosimulator.probespec.framework.measurements.Measurement;
-import org.palladiosimulator.probespec.framework.measurements.MeasurementSet;
 import org.palladiosimulator.probespec.framework.probes.Probe;
 
 /**
@@ -40,7 +40,7 @@ public class DemandBasedWaitingTimeCalculator extends WaitingTimeCalculator {
     /**
      * @see
      * org.palladiosimulator.probespec.framework.calculator.Calculator#calculate
-     * (org.palladiosimulator.probespec.framework.measurements.MeasurementSet)
+     * (org.palladiosimulator.measurementspec.MeasurementSet)
      */
     @Override
     protected Measurement calculate(final List<Measurement> probeSetSamples) {
