@@ -25,4 +25,6 @@ public interface ICalculatorFactory {
 
     public abstract void setProbeSpecContext(ProbeSpecContext probeSpecContext);
 
+    public abstract Calculator buildIdentityCalculator(String calculatorName, Probe probe);
+
 }

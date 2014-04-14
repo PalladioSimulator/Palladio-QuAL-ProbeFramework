@@ -128,6 +128,14 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
         }
         return register(decoratedFactory.buildExecutionResultCalculator(calculatorName, probe), calculatorName);
     }
+    
+    @Override
+    public Calculator buildIdentityCalculator(String calculatorName, Probe probe) {
+        if(calculators.containsKey(calculatorName)) {
+            return calculators.get(calculatorName);
+        }
+        return register(decoratedFactory.buildExecutionResultCalculator(calculatorName, probe), calculatorName);
+    }
 
     /**
      * @param probeSpecContext
