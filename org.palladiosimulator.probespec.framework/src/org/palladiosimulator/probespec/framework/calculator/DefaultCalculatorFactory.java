@@ -100,6 +100,12 @@ public class DefaultCalculatorFactory implements ICalculatorFactory {
         ensureValidProbe(probe);
         return new IdentityCalculator(this.probeSpecContext, probe);
     }
+    
+    @Override
+    public Calculator buildIdentityCalculator(String calculatorName, Probe probe) {
+        ensureValidProbe(probe);
+        return new IdentityCalculator(this.probeSpecContext, probe);
+    }
 
     private void ensureTwoProbes(final List<Probe> probes) {
         if (probes == null || probes.size() != 2 || probes.get(0) == null || probes.get(1) == null) {
