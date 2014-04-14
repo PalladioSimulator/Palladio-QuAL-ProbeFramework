@@ -52,4 +52,8 @@ public class EventProbeSet extends EventProbe<EventProbe<?>> implements IMeasure
     protected void registerListener() {
         this.eventSource.addObserver(this);
     }
+
+	@Override
+	public void preUnregister() {
+	}
 }

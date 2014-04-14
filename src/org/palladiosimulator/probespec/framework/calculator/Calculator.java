@@ -14,9 +14,9 @@ import org.palladiosimulator.measurementspec.IMeasurementSourceListener;
 import org.palladiosimulator.measurementspec.Measurement;
 import org.palladiosimulator.measurementspec.MeasurementSet;
 import org.palladiosimulator.measurementspec.MeasurementSource;
+import org.palladiosimulator.measurementspec.requestcontext.RequestContext;
 import org.palladiosimulator.probespec.framework.ProbeSpecContext;
 import org.palladiosimulator.probespec.framework.exceptions.CalculatorException;
-import org.palladiosimulator.measurementspec.requestcontext.RequestContext;
 
 /**
  * This class is the abstract super class for all Calculator implementations.
@@ -68,9 +68,10 @@ public abstract class Calculator extends MeasurementSource implements IMeasureme
         return probeSpecContext;
     }
 
-    public void unregisterCalculatorListeners() {
+    @Override
+	public void preUnregister() {
         for (final IMeasurementSourceListener l : this.getMeasurementSourceListeners()) {
-            ((ICalculatorListener)l).preUnregister();
+            l.preUnregister();
             removeObserver(l);
         }
     }
