@@ -16,13 +16,13 @@ import org.junit.runners.JUnit4;
 import org.palladiosimulator.measurementspec.BasicMeasurement;
 import org.palladiosimulator.measurementspec.IMeasurementSourceListener;
 import org.palladiosimulator.measurementspec.Measurement;
+import org.palladiosimulator.measurementspec.requestcontext.RequestContext;
 import org.palladiosimulator.metricspec.MetricDescriptionConstants;
 import org.palladiosimulator.probespec.framework.probes.example.ExampleTakeCPUDemandStrategy;
 import org.palladiosimulator.probespec.framework.probes.example.ExampleTakeCPUStateStrategy;
 import org.palladiosimulator.probespec.framework.probes.example.ExampleTakeCurrentTimeStrategy;
 import org.palladiosimulator.probespec.framework.probes.example.SimpleCPUResource;
 import org.palladiosimulator.probespec.framework.probes.example.SimpleSimulationContext;
-import org.palladiosimulator.measurementspec.requestcontext.RequestContext;
 
 @RunWith(JUnit4.class)
 public class BasicProbeTests {
@@ -95,6 +95,10 @@ public class BasicProbeTests {
             public void newMeasurementAvailable(final Measurement measurement) {
                 lastMeasurement = measurement;
             }
+
+			@Override
+			public void preUnregister() {
+			}
         });
         cpuResource.setJobs(1);
         cpuResource.demand(10);

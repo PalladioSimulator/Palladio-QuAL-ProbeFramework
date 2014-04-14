@@ -19,6 +19,7 @@ import org.palladiosimulator.edp2.models.ExperimentData.MetricSetDescription;
 import org.palladiosimulator.measurementspec.IMeasurementSourceListener;
 import org.palladiosimulator.measurementspec.Measurement;
 import org.palladiosimulator.measurementspec.MeasurementSet;
+import org.palladiosimulator.measurementspec.requestcontext.RequestContext;
 import org.palladiosimulator.metricspec.MetricDescriptionConstants;
 import org.palladiosimulator.probespec.framework.probes.EventProbeSet;
 import org.palladiosimulator.probespec.framework.probes.Probe;
@@ -28,7 +29,6 @@ import org.palladiosimulator.probespec.framework.probes.example.ExampleTakeCPUSt
 import org.palladiosimulator.probespec.framework.probes.example.ExampleTakeCurrentTimeStrategy;
 import org.palladiosimulator.probespec.framework.probes.example.SimpleCPUResource;
 import org.palladiosimulator.probespec.framework.probes.example.SimpleSimulationContext;
-import org.palladiosimulator.measurementspec.requestcontext.RequestContext;
 
 @RunWith(JUnit4.class)
 public class ProbeSetTests {
@@ -86,6 +86,10 @@ public class ProbeSetTests {
             public void newMeasurementAvailable(final Measurement measurement) {
                 lastMeasurement = measurement;
             }
+
+			@Override
+			public void preUnregister() {
+			}
         });
 
         cpuResource.demand(20.0d);
