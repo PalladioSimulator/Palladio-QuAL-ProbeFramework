@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rm:rmap xmlns:bc="http://www.eclipse.org/buckminster/Common-1.0" xmlns:rm="http://www.eclipse.org/buckminster/RMap-1.0">
-  <rm:locator searchPathRef="localresources" failOnError="false"/>
   <rm:locator searchPathRef="probespec" failOnError="false"/>
-  <rm:locator searchPathRef="thirdparty" failOnError="false"/>
   <rm:locator pattern="^de\.uka\.ipd\.sdq\..*" searchPathRef="palladio-commons" failOnError="false"/>
+  <rm:locator pattern="^org\.jscience\..*" searchPathRef="palladio-commons" failOnError="false"/>
   <rm:locator pattern="^org\.palladiosimulator\..*" searchPathRef="palladio-commons" failOnError="false"/>
   <rm:locator pattern="^edu\.kit\..*" searchPathRef="palladio-commons" failOnError="false"/>
   <rm:locator pattern="^de\.uka\.ipd\.sdq\..*" searchPathRef="sensorframework" failOnError="false"/>
@@ -12,24 +11,9 @@
   <rm:locator pattern="^org\.palladiosimulator\.measurementspec.*" searchPathRef="measurementspec" failOnError="false"/>
   <rm:locator searchPathRef="eclipse-release" failOnError="false"/>
   <rm:locator searchPathRef="orbit" failOnError="false"/>
-  <rm:searchPath name="localresources">
-    <rm:provider componentTypes="osgi.bundle,eclipse.feature,buckminster" readerType="local">
-      <rm:uri format="file:///{0}/{1}/">
-        <bc:propertyRef key="workspace.root"/>
-        <bc:propertyRef key="buckminster.component"/>
-      </rm:uri>
-    </rm:provider>
-  </rm:searchPath>
   <rm:searchPath name="probespec">
     <rm:provider componentTypes="eclipse.feature,osgi.bundle" readerType="svn">
       <rm:uri format="https://anonymous:anonymous@svnserver.informatik.kit.edu/i43/svn/code/ProbeSpecification/trunk/{0}">
-        <bc:propertyRef key="buckminster.component"/>
-      </rm:uri>
-    </rm:provider>
-  </rm:searchPath>
-  <rm:searchPath name="thirdparty">
-    <rm:provider componentTypes="eclipse.feature,osgi.bundle" readerType="svn">
-      <rm:uri format="https://anonymous:anonymous@svnserver.informatik.kit.edu/i43/svn/code/ThirdPartyWrapper/trunk/{0}">
         <bc:propertyRef key="buckminster.component"/>
       </rm:uri>
     </rm:provider>
