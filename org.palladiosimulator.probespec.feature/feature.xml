@@ -219,6 +219,7 @@ litigation.
       <discovery label="EDP2 Update Site" url="http://sdqweb.ipd.kit.edu/eclipse/edp2/nightly/"/>
       <discovery label="Metric Specification Framework Update Site" url="http://sdqweb.ipd.kit.edu/eclipse/metricspec/nightly/"/>
       <discovery label="Measurement Specification Framework Update Site" url="http://sdqweb.ipd.kit.edu/eclipse/measurementspec/nightly/"/>
+      <discovery label="Third Party Wrapper Update Site" url="http://sdqweb.ipd.kit.edu/eclipse/thirdpartywrapper/nightly/"/>
    </url>
 
    <requires>
