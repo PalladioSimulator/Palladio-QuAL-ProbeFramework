@@ -225,23 +225,12 @@ litigation.
       <import plugin="org.eclipse.core.runtime"/>
       <import plugin="org.jscience" version="4.1.3" match="greaterOrEqual"/>
       <import plugin="org.apache.log4j" version="1.2.13" match="greaterOrEqual"/>
-      <import plugin="org.palladiosimulator.edp2"/>
+      <import plugin="org.palladiosimulator.edp2" version="2.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.emf.common"/>
       <import plugin="org.palladiosimulator.commons" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="org.palladiosimulator.probespec.framework" version="2.0.0" match="greaterOrEqual"/>
-      <import plugin="org.palladiosimulator.edp2" version="2.0.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.emf.ecore"/>
-      <import plugin="org.eclipse.emf.ecore.xmi"/>
-      <import plugin="de.uka.ipd.sdq.identifier"/>
-      <import plugin="org.eclipse.emf.edit"/>
-      <import plugin="org.eclipse.emf.ecore.edit"/>
-      <import plugin="de.uka.ipd.sdq.identifier.edit" version="2.0.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.uml2.common.edit"/>
-      <import plugin="org.eclipse.core.resources"/>
-      <import plugin="org.eclipse.emf.edit.ui"/>
-      <import plugin="org.eclipse.ui.ide"/>
       <import plugin="org.palladiosimulator.metricspec" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.palladiosimulator.measurementspec" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.probespec.framework" version="2.0.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
@@ -260,27 +249,6 @@ litigation.
 
    <plugin
          id="org.jscience"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.palladiosimulator.probespec"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.palladiosimulator.probespec.edit"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.palladiosimulator.probespec.editor"
          download-size="0"
          install-size="0"
          version="0.0.0"
