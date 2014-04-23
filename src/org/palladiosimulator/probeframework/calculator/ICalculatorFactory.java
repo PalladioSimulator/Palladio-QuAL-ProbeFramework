@@ -1,9 +1,9 @@
-package org.palladiosimulator.probespec.framework.calculator;
+package org.palladiosimulator.probeframework.calculator;
 
 import java.util.List;
 
-import org.palladiosimulator.probespec.framework.ProbeSpecContext;
-import org.palladiosimulator.probespec.framework.probes.Probe;
+import org.palladiosimulator.probeframework.ProbeFrameworkContext;
+import org.palladiosimulator.probeframework.probes.Probe;
 
 public interface ICalculatorFactory {
 
@@ -23,7 +23,7 @@ public interface ICalculatorFactory {
 
     public abstract Calculator buildExecutionResultCalculator(String calculatorName, Probe probe);
 
-    public abstract void setProbeSpecContext(ProbeSpecContext probeSpecContext);
+    public abstract void setProbeFrameworkContext(ProbeFrameworkContext probeFrameworkContext);
 
     public abstract Calculator buildIdentityCalculator(String calculatorName, Probe probe);
 

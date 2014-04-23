@@ -1,4 +1,4 @@
-package org.palladiosimulator.probespec.framework.calculator.internal;
+package org.palladiosimulator.probeframework.calculator.internal;
 
 import static org.palladiosimulator.metricspec.MetricDescriptionConstants.POINT_IN_TIME_METRIC;
 
@@ -14,9 +14,9 @@ import org.palladiosimulator.edp2.models.ExperimentData.MetricSetDescription;
 import org.palladiosimulator.measurementspec.BasicMeasurement;
 import org.palladiosimulator.measurementspec.Measurement;
 import org.palladiosimulator.measurementspec.MeasurementSet;
-import org.palladiosimulator.probespec.framework.ProbeSpecContext;
-import org.palladiosimulator.probespec.framework.exceptions.CalculatorException;
-import org.palladiosimulator.probespec.framework.probes.Probe;
+import org.palladiosimulator.probeframework.ProbeFrameworkContext;
+import org.palladiosimulator.probeframework.exceptions.CalculatorException;
+import org.palladiosimulator.probeframework.probes.Probe;
 /**
  * Calculates a time span. It expects two ProbeSets each containing at least a
  * {@link ProbeType#CURRENT_TIME} probe.
@@ -26,13 +26,13 @@ import org.palladiosimulator.probespec.framework.probes.Probe;
  */
 public abstract class TimeSpanCalculator extends NaryCalculator {
 
-    public TimeSpanCalculator(final ProbeSpecContext ctx, final MetricDescription metricDescriptions, final List<Probe> probes) {
+    public TimeSpanCalculator(final ProbeFrameworkContext ctx, final MetricDescription metricDescriptions, final List<Probe> probes) {
         super(ctx, metricDescriptions, probes);
     }
 
     /**
      * @see
-     * org.palladiosimulator.probespec.framework.calculator.Calculator#calculate
+     * org.palladiosimulator.probeframework.calculator.Calculator#calculate
      * (org.palladiosimulator.measurementspec.MeasurementSet)
      */
     @Override

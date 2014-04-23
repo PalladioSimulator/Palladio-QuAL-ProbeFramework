@@ -1,11 +1,11 @@
-package org.palladiosimulator.probespec.framework.calculator.internal;
+package org.palladiosimulator.probeframework.calculator.internal;
 
 import java.util.Arrays;
 
 import org.palladiosimulator.edp2.models.ExperimentData.MetricDescription;
 import org.palladiosimulator.measurementspec.MeasurementSet;
-import org.palladiosimulator.probespec.framework.ProbeSpecContext;
-import org.palladiosimulator.probespec.framework.probes.Probe;
+import org.palladiosimulator.probeframework.ProbeFrameworkContext;
+import org.palladiosimulator.probeframework.probes.Probe;
 
 /**
  * <p>This abstract class represents a unary calculator. A unary calculator
@@ -19,7 +19,7 @@ import org.palladiosimulator.probespec.framework.probes.Probe;
  */
 public abstract class UnaryCalculator extends NaryCalculator {
 
-    protected UnaryCalculator(final ProbeSpecContext ctx, final MetricDescription metricDescription, final Probe childProbe) {
+    protected UnaryCalculator(final ProbeFrameworkContext ctx, final MetricDescription metricDescription, final Probe childProbe) {
         super(ctx, metricDescription, Arrays.asList(childProbe));
     }
 

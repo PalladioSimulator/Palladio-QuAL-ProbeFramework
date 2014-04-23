@@ -1,13 +1,13 @@
-package org.palladiosimulator.probespec.framework.calculator.internal;
+package org.palladiosimulator.probeframework.calculator.internal;
 
 import static org.palladiosimulator.metricspec.MetricDescriptionConstants.RESPONSE_TIME_METRIC;
 
 import java.util.Arrays;
 import java.util.List;
 
-import org.palladiosimulator.probespec.framework.ProbeSpecContext;
-import org.palladiosimulator.probespec.framework.calculator.Calculator;
-import org.palladiosimulator.probespec.framework.probes.Probe;
+import org.palladiosimulator.probeframework.ProbeFrameworkContext;
+import org.palladiosimulator.probeframework.calculator.Calculator;
+import org.palladiosimulator.probeframework.probes.Probe;
 
 /**
  * Calculates a time span representing the response time. It expects two
@@ -23,13 +23,13 @@ public class ResponseTimeCalculator extends TimeSpanCalculator {
      * Default Constructor.
      * 
      * @param ctx
-     *            the {@link ProbeSpecContext}
+     *            the {@link ProbeFrameworkContext}
      * @param startProbeSetID
      *            ID of the start probe set element from the model
      * @param endProbeSetID
      *            ID of the end probe set element from the model
      */
-    public ResponseTimeCalculator(final ProbeSpecContext ctx, final String metricName, final String metricDescription, final List<Probe> probes) {
+    public ResponseTimeCalculator(final ProbeFrameworkContext ctx, final String metricName, final String metricDescription, final List<Probe> probes) {
         super(ctx, Calculator.createMetricSetDescription(metricName, metricDescription, Arrays.asList(RESPONSE_TIME_METRIC)), probes);
     }
 }

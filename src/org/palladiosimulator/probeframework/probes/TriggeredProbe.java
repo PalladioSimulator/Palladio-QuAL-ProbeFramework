@@ -1,4 +1,4 @@
-package org.palladiosimulator.probespec.framework.probes;
+package org.palladiosimulator.probeframework.probes;
 
 import org.palladiosimulator.edp2.models.ExperimentData.MetricDescription;
 import org.palladiosimulator.measurementspec.Measurement;

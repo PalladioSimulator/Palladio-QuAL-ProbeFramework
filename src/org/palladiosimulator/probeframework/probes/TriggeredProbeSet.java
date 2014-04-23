@@ -1,4 +1,4 @@
-package org.palladiosimulator.probespec.framework.probes;
+package org.palladiosimulator.probeframework.probes;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -30,7 +30,7 @@ public class TriggeredProbeSet extends TriggeredProbe {
     /*
      * (non-Javadoc)
      * 
-     * @see org.palladiosimulator.probespec.framework.probes.Probe#takeMeasuremnt()
+     * @see org.palladiosimulator.probeframework.probes.Probe#takeMeasuremnt()
      */
     @Override
     protected MeasurementSet doMeasure(final RequestContext measurementContext) {

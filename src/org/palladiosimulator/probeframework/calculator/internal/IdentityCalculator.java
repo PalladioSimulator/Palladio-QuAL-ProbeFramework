@@ -1,12 +1,12 @@
-package org.palladiosimulator.probespec.framework.calculator.internal;
+package org.palladiosimulator.probeframework.calculator.internal;
 
 import java.util.List;
 
 import org.palladiosimulator.edp2.models.ExperimentData.MetricSetDescription;
 import org.palladiosimulator.measurementspec.Measurement;
 import org.palladiosimulator.measurementspec.MeasurementSet;
-import org.palladiosimulator.probespec.framework.ProbeSpecContext;
-import org.palladiosimulator.probespec.framework.probes.Probe;
+import org.palladiosimulator.probeframework.ProbeFrameworkContext;
+import org.palladiosimulator.probeframework.probes.Probe;
 
 public class IdentityCalculator extends UnaryCalculator {
 
@@ -15,16 +15,16 @@ public class IdentityCalculator extends UnaryCalculator {
      * from the model.
      * 
      * @param ctx
-     *            the {@link ProbeSpecContext}
+     *            the {@link ProbeFrameworkContext}
      * @param probeSetID
      *            ID of the probe set element from the model
      */
-    public IdentityCalculator(final ProbeSpecContext ctx, final Probe probe) {
+    public IdentityCalculator(final ProbeFrameworkContext ctx, final Probe probe) {
         super(ctx, probe.getMetricDesciption(), probe);
     }
 
     /**
-     * @see org.palladiosimulator.probespec.framework.calculator.Calculator#calculate
+     * @see org.palladiosimulator.probeframework.calculator.Calculator#calculate
      *      (org.palladiosimulator.measurementspec.MeasurementSet)
      */
     @Override

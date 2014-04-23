@@ -1,4 +1,4 @@
-package org.palladiosimulator.probespec.framework.calculator;
+package org.palladiosimulator.probeframework.calculator;
 
 import static org.palladiosimulator.metricspec.MetricDescriptionConstants.POINT_IN_TIME_METRIC;
 
@@ -15,8 +15,8 @@ import org.palladiosimulator.measurementspec.Measurement;
 import org.palladiosimulator.measurementspec.MeasurementSet;
 import org.palladiosimulator.measurementspec.MeasurementSource;
 import org.palladiosimulator.measurementspec.requestcontext.RequestContext;
-import org.palladiosimulator.probespec.framework.ProbeSpecContext;
-import org.palladiosimulator.probespec.framework.exceptions.CalculatorException;
+import org.palladiosimulator.probeframework.ProbeFrameworkContext;
+import org.palladiosimulator.probeframework.exceptions.CalculatorException;
 
 /**
  * This class is the abstract super class for all Calculator implementations.
@@ -45,11 +45,11 @@ public abstract class Calculator extends MeasurementSource implements IMeasureme
     /** Shortcut to experiment data factory. */
     private final static ExperimentDataFactory experimentDataFactory = ExperimentDataFactory.eINSTANCE;
 
-    private final ProbeSpecContext probeSpecContext;
+    private final ProbeFrameworkContext probeFrameworkContext;
 
-    protected Calculator(final ProbeSpecContext ctx, final MetricDescription computedMetric) {
+    protected Calculator(final ProbeFrameworkContext ctx, final MetricDescription computedMetric) {
         super(computedMetric);
-        this.probeSpecContext = ctx;
+        this.probeFrameworkContext = ctx;
     }
 
     @Override
@@ -64,8 +64,8 @@ public abstract class Calculator extends MeasurementSource implements IMeasureme
      */
     abstract protected Measurement calculate(List<Measurement> probeMeasurements) throws CalculatorException;
 
-    protected ProbeSpecContext getProbeSpecContext() {
-        return probeSpecContext;
+    protected ProbeFrameworkContext getProbeFrameworkContext() {
+        return probeFrameworkContext;
     }
 
     @Override

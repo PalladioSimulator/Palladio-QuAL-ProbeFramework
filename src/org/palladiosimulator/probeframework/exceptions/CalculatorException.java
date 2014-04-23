@@ -1,4 +1,4 @@
-package org.palladiosimulator.probespec.framework.exceptions;
+package org.palladiosimulator.probeframework.exceptions;
 
 /**
  * This Exception arises if something during the execution of the Calculator

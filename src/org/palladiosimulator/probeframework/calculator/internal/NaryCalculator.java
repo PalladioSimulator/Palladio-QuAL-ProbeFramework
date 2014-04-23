@@ -1,4 +1,4 @@
-package org.palladiosimulator.probespec.framework.calculator.internal;
+package org.palladiosimulator.probeframework.calculator.internal;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,9 +11,9 @@ import org.palladiosimulator.edp2.models.ExperimentData.MetricDescription;
 import org.palladiosimulator.measurementspec.IMeasurementSource;
 import org.palladiosimulator.measurementspec.Measurement;
 import org.palladiosimulator.measurementspec.MeasurementSet;
-import org.palladiosimulator.probespec.framework.ProbeSpecContext;
-import org.palladiosimulator.probespec.framework.calculator.Calculator;
-import org.palladiosimulator.probespec.framework.probes.Probe;
+import org.palladiosimulator.probeframework.ProbeFrameworkContext;
+import org.palladiosimulator.probeframework.calculator.Calculator;
+import org.palladiosimulator.probeframework.probes.Probe;
 import org.palladiosimulator.measurementspec.requestcontext.RequestContext;
 
 /**
@@ -35,7 +35,7 @@ public abstract class NaryCalculator extends Calculator {
     protected final List<Probe> probes;
     private final Map<RequestContext, List<Measurement>> arrivedMeasurementMemory = new HashMap<RequestContext, List<Measurement>>();
 
-    public NaryCalculator(final ProbeSpecContext ctx, final MetricDescription metricDescription,
+    public NaryCalculator(final ProbeFrameworkContext ctx, final MetricDescription metricDescription,
             final List<Probe> childProbes) {
         super(ctx, metricDescription);
         probes = Collections.unmodifiableList(new ArrayList<Probe>(childProbes));
@@ -71,7 +71,7 @@ public abstract class NaryCalculator extends Calculator {
      * @param probeSetSample
      *            the last ProbeSetSample which was added to the SampleBlackboard and so triggered
      *            this Calculator.
-     * @see org.palladiosimulator.probespec.framework.calculator.Calculator#execute
+     * @see org.palladiosimulator.probeframework.calculator.Calculator#execute
      *      (org.palladiosimulator.measurementspec.MeasurementSet)
      */
     @Override
@@ -92,7 +92,7 @@ public abstract class NaryCalculator extends Calculator {
     }
 
     /* (non-Javadoc)
-     * @see org.palladiosimulator.probespec.framework.calculator.Calculator#detachProbes()
+     * @see org.palladiosimulator.probeframework.calculator.Calculator#detachProbes()
      */
     @Override
     public void detachProbes() {
@@ -102,7 +102,7 @@ public abstract class NaryCalculator extends Calculator {
     }
 
     /* (non-Javadoc)
-     * @see org.palladiosimulator.probespec.framework.calculator.Calculator#releaseMemory(org.palladiosimulator.measurementspec.requestcontext.RequestContext)
+     * @see org.palladiosimulator.probeframework.calculator.Calculator#releaseMemory(org.palladiosimulator.measurementspec.requestcontext.RequestContext)
      */
     @Override
     public void releaseMemory(final RequestContext requestContext) {

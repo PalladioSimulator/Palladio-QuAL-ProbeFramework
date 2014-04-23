@@ -1,4 +1,4 @@
-package org.palladiosimulator.probespec.framework.probes;
+package org.palladiosimulator.probeframework.probes;
 
 import javax.measure.quantity.Quantity;
 

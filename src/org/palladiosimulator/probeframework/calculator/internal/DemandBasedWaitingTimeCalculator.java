@@ -1,4 +1,4 @@
-package org.palladiosimulator.probespec.framework.calculator.internal;
+package org.palladiosimulator.probeframework.calculator.internal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +12,8 @@ import org.palladiosimulator.measurementspec.BasicMeasurement;
 import org.palladiosimulator.measurementspec.Measurement;
 import org.palladiosimulator.measurementspec.MeasurementSet;
 import org.palladiosimulator.metricspec.MetricDescriptionConstants;
-import org.palladiosimulator.probespec.framework.ProbeSpecContext;
-import org.palladiosimulator.probespec.framework.probes.Probe;
+import org.palladiosimulator.probeframework.ProbeFrameworkContext;
+import org.palladiosimulator.probeframework.probes.Probe;
 
 /**
  * Calculates the waiting time for resources in environments where the stop of
@@ -33,13 +33,13 @@ import org.palladiosimulator.probespec.framework.probes.Probe;
  */
 public class DemandBasedWaitingTimeCalculator extends WaitingTimeCalculator {
 
-    public DemandBasedWaitingTimeCalculator(final ProbeSpecContext ctx, final String metricName, final String metricDescription, final List<Probe> probes) {
+    public DemandBasedWaitingTimeCalculator(final ProbeFrameworkContext ctx, final String metricName, final String metricDescription, final List<Probe> probes) {
         super(ctx, metricName, metricDescription, probes);
     }
 
     /**
      * @see
-     * org.palladiosimulator.probespec.framework.calculator.Calculator#calculate
+     * org.palladiosimulator.probeframework.calculator.Calculator#calculate
      * (org.palladiosimulator.measurementspec.MeasurementSet)
      */
     @Override
