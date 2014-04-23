@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.palladiosimulator.probespec.feature"
-      label="ProbeSpecification Feature"
+      id="org.palladiosimulator.probeframework.feature"
+      label="ProbeFramework Feature"
       version="2.0.0.qualifier"
       provider-name="palladiosimulator.org">
 
    <description url="http://palladiosimulator.org/">
       Allows the specification of measuring points by decorating EMF
 models. The measuring at specified points is supported by the
-ProbeSpecification framework.
+ProbeFramework framework.
    </description>
 
    <copyright>
@@ -234,18 +234,18 @@ litigation.
       <import plugin="org.palladiosimulator.commons" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.palladiosimulator.metricspec" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.palladiosimulator.measurementspec" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="org.palladiosimulator.probespec.framework" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.probeframework" version="2.0.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
-         id="org.palladiosimulator.probespec.framework"
+         id="org.palladiosimulator.probeframework"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.palladiosimulator.probespec.framework.probes.example"
+         id="org.palladiosimulator.probeframework.probes.example"
          download-size="0"
          install-size="0"
          version="0.0.0"

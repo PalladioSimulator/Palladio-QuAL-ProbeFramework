@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.palladiosimulator.probespec.buckminster"
-      label="Palladio ProbeSpecification"
+      id="org.palladiosimulator.probeframework.buckminster"
+      label="Palladio ProbeFramework"
       version="1.0.0.qualifier"
       provider-name="palladiosimulator.org">
 
    <includes
-         id="org.palladiosimulator.probespec.feature"
+         id="org.palladiosimulator.probeframework.feature"
          version="0.0.0"/>
 
    <plugin
-         id="org.palladiosimulator.probespec.framework.tests"
+         id="org.palladiosimulator.probeframework.tests"
          download-size="0"
          install-size="0"
          version="0.0.0"
