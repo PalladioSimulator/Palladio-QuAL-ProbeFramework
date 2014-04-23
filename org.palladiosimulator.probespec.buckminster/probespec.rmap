@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rm:rmap xmlns:bc="http://www.eclipse.org/buckminster/Common-1.0" xmlns:rm="http://www.eclipse.org/buckminster/RMap-1.0">
   <rm:locator searchPathRef="probespec" failOnError="false"/>
-  <rm:locator pattern="^de\.uka\.ipd\.sdq\..*" searchPathRef="palladio-commons" failOnError="false"/>
-  <rm:locator pattern="^org\.jscience.*" searchPathRef="thirdparty" failOnError="false"/>
+  <rm:locator pattern="^de\.uka\.ipd\.sdq\..*" searchPathRef="palladio-commons" failOnError="false"/>  
   <rm:locator pattern="^org\.palladiosimulator\..*" searchPathRef="palladio-commons" failOnError="false"/>
   <rm:locator pattern="^edu\.kit\..*" searchPathRef="palladio-commons" failOnError="false"/>
+  <rm:locator pattern="^org\.jscience.*" searchPathRef="thirdparty" failOnError="false"/>
   <rm:locator pattern="^de\.uka\.ipd\.sdq\..*" searchPathRef="sensorframework" failOnError="false"/>
   <rm:locator pattern="^org\.palladiosimulator\.edp2.*" searchPathRef="edp2" failOnError="false"/>
   <rm:locator pattern="^org\.palladiosimulator\.metricspec.*" searchPathRef="metricspec" failOnError="false"/>
