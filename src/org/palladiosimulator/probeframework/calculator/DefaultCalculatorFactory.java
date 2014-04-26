@@ -5,7 +5,6 @@ package org.palladiosimulator.probeframework.calculator;
 
 import java.util.List;
 
-import org.palladiosimulator.measurementspec.IMeasurementSource;
 import org.palladiosimulator.probeframework.ProbeFrameworkContext;
 import org.palladiosimulator.probeframework.calculator.internal.DemandBasedWaitingTimeCalculator;
 import org.palladiosimulator.probeframework.calculator.internal.HoldTimeCalculator;
@@ -100,9 +99,9 @@ public class DefaultCalculatorFactory implements ICalculatorFactory {
         ensureValidProbe(probe);
         return new IdentityCalculator(this.probeFrameworkContext, probe);
     }
-    
+
     @Override
-    public Calculator buildIdentityCalculator(String calculatorName, Probe probe) {
+    public Calculator buildIdentityCalculator(final String calculatorName, final Probe probe) {
         ensureValidProbe(probe);
         return new IdentityCalculator(this.probeFrameworkContext, probe);
     }
@@ -113,7 +112,7 @@ public class DefaultCalculatorFactory implements ICalculatorFactory {
         }
     }
 
-    private void ensureValidProbe(final IMeasurementSource probe) {
+    private void ensureValidProbe(final Probe probe) {
         if (probe == null) {
             throw new IllegalArgumentException("You have to provide exactly one valid probes for this calcultor.");
         }

@@ -2,8 +2,8 @@ package org.palladiosimulator.probeframework.calculator.internal;
 
 import java.util.Arrays;
 
-import org.palladiosimulator.edp2.models.ExperimentData.MetricDescription;
-import org.palladiosimulator.measurementspec.MeasurementSet;
+import org.palladiosimulator.measurementspec.MeasurementTupple;
+import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.probeframework.ProbeFrameworkContext;
 import org.palladiosimulator.probeframework.probes.Probe;
 
@@ -13,7 +13,7 @@ import org.palladiosimulator.probeframework.probes.Probe;
  * 
  * <p>As soon as a sample arrives that originates from this probe set, the
  * unary calculator does its calculation by invoking the template method
- * {@link #calculate(MeasurementSet, MeasurementSet)}.</p>
+ * {@link #calculate(MeasurementTupple, MeasurementTupple)}.</p>
  * 
  * @author Sebastian Lehrig, Steffen Becker
  */

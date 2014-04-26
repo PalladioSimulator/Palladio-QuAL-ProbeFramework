@@ -3,11 +3,12 @@ package org.palladiosimulator.probeframework.probes;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.palladiosimulator.edp2.models.ExperimentData.MetricDescription;
-import org.palladiosimulator.edp2.models.ExperimentData.MetricSetDescription;
 import org.palladiosimulator.measurementspec.Measurement;
-import org.palladiosimulator.measurementspec.MeasurementSet;
-import org.palladiosimulator.measurementspec.requestcontext.RequestContext;
+import org.palladiosimulator.measurementspec.MeasurementTupple;
+import org.palladiosimulator.metricspec.MetricDescription;
+import org.palladiosimulator.metricspec.MetricSetDescription;
+import org.palladiosimulator.probeframework.measurement.ProbeMeasurement;
+import org.palladiosimulator.probeframework.measurement.RequestContext;
 
 public class TriggeredProbeSet extends TriggeredProbe {
 
@@ -33,15 +34,15 @@ public class TriggeredProbeSet extends TriggeredProbe {
      * @see org.palladiosimulator.probeframework.probes.Probe#takeMeasuremnt()
      */
     @Override
-    protected MeasurementSet doMeasure(final RequestContext measurementContext) {
+    protected ProbeMeasurement doMeasure(final RequestContext measurementContext) {
         final List<Measurement> childMeasurements = new LinkedList<Measurement>();
 
         for (final Probe childProbe : subsumedProbes) {
-            childMeasurements.add(((TriggeredProbe)childProbe).doMeasure(measurementContext));
+            childMeasurements.add(((TriggeredProbe)childProbe).doMeasure(measurementContext).getMeasurement());
         }
 
-        final MeasurementSet result = new MeasurementSet(childMeasurements, (MetricSetDescription) getMetricDesciption(), this);
-        return result;
+        final MeasurementTupple result = new MeasurementTupple(childMeasurements, (MetricSetDescription) getMetricDesciption());
+        return new ProbeMeasurement(result, this, measurementContext, null);
     }
 
 }

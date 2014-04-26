@@ -1,6 +1,6 @@
 package org.palladiosimulator.probeframework.probes;
 
-import org.palladiosimulator.edp2.models.ExperimentData.MetricDescription;
+import org.palladiosimulator.metricspec.MetricDescription;
 
 public abstract class EventProbe<EventSourceType> extends Probe {
 

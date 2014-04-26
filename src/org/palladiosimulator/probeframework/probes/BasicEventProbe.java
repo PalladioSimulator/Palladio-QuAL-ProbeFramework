@@ -3,10 +3,11 @@ package org.palladiosimulator.probeframework.probes;
 import javax.measure.Measure;
 import javax.measure.quantity.Quantity;
 
-import org.palladiosimulator.edp2.models.ExperimentData.BaseMetricDescription;
 import org.palladiosimulator.measurementspec.BasicMeasurement;
 import org.palladiosimulator.measurementspec.Measurement;
-import org.palladiosimulator.measurementspec.requestcontext.RequestContext;
+import org.palladiosimulator.metricspec.BaseMetricDescription;
+import org.palladiosimulator.probeframework.measurement.ProbeMeasurement;
+import org.palladiosimulator.probeframework.measurement.RequestContext;
 
 public abstract class BasicEventProbe<EventSourceType, V, Q extends Quantity> extends EventProbe<EventSourceType> {
 
@@ -16,9 +17,10 @@ public abstract class BasicEventProbe<EventSourceType, V, Q extends Quantity> ex
     }
 
     protected void notify(final Measure<V,Q> eventMeasure) {
-        final Measurement newMeasurement = new BasicMeasurement<V, Q>(
+        final Measurement basicMeasurement = new BasicMeasurement<V, Q>(
                 eventMeasure,
-                this.metricDesciption,
+                this.metricDesciption);
+        final ProbeMeasurement newMeasurement = new ProbeMeasurement(basicMeasurement,
                 this,
                 RequestContext.EMPTY_REQUEST_CONTEXT,
                 null);

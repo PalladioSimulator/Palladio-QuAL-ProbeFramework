@@ -2,10 +2,11 @@ package org.palladiosimulator.probeframework.calculator.internal;
 
 import java.util.List;
 
-import org.palladiosimulator.edp2.models.ExperimentData.MetricSetDescription;
 import org.palladiosimulator.measurementspec.Measurement;
-import org.palladiosimulator.measurementspec.MeasurementSet;
+import org.palladiosimulator.measurementspec.MeasurementTupple;
+import org.palladiosimulator.metricspec.MetricSetDescription;
 import org.palladiosimulator.probeframework.ProbeFrameworkContext;
+import org.palladiosimulator.probeframework.measurement.ProbeMeasurement;
 import org.palladiosimulator.probeframework.probes.Probe;
 
 public class IdentityCalculator extends UnaryCalculator {
@@ -25,16 +26,16 @@ public class IdentityCalculator extends UnaryCalculator {
 
     /**
      * @see org.palladiosimulator.probeframework.calculator.Calculator#calculate
-     *      (org.palladiosimulator.measurementspec.MeasurementSet)
+     *      (org.palladiosimulator.measurementspec.MeasurementTupple)
      */
     @Override
-    protected Measurement calculate(final List<Measurement> probeMeasurements) {
-        final Measurement measurement = probeMeasurements.get(0);
-        if(measurement instanceof MeasurementSet) {
-            return new MeasurementSet(((MeasurementSet) measurement).getSubsumedMeasurements(), (MetricSetDescription) this.metricDesciption, this);
+    protected Measurement calculate(final List<ProbeMeasurement> probeMeasurements) {
+        final Measurement measurement = probeMeasurements.get(0).getMeasurement();
+        if(measurement instanceof MeasurementTupple) {
+            return new MeasurementTupple(((MeasurementTupple) measurement).getSubsumedMeasurements(), (MetricSetDescription) this.metricDesciption);
         }
         else {
-            throw new IllegalStateException("MeasurementSet expected for identity calculators");
+            throw new IllegalStateException("MeasurementTupple expected for identity calculators");
         }
     }
 }

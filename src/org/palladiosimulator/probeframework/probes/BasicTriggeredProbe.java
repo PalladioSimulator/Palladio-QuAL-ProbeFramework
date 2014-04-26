@@ -6,10 +6,11 @@ package org.palladiosimulator.probeframework.probes;
 import javax.measure.Measure;
 import javax.measure.quantity.Quantity;
 
-import org.palladiosimulator.edp2.models.ExperimentData.BaseMetricDescription;
 import org.palladiosimulator.measurementspec.BasicMeasurement;
 import org.palladiosimulator.measurementspec.Measurement;
-import org.palladiosimulator.measurementspec.requestcontext.RequestContext;
+import org.palladiosimulator.metricspec.BaseMetricDescription;
+import org.palladiosimulator.probeframework.measurement.ProbeMeasurement;
+import org.palladiosimulator.probeframework.measurement.RequestContext;
 
 /**
  * @author snowball
@@ -25,10 +26,11 @@ public abstract class BasicTriggeredProbe<V,Q extends Quantity> extends Triggere
     }
 
     @Override
-    protected final Measurement doMeasure(final RequestContext measurementContext) {
-        return new BasicMeasurement<V, Q>(
+    protected final ProbeMeasurement doMeasure(final RequestContext measurementContext) {
+        final Measurement resultMeasurement = new BasicMeasurement<V, Q>(
                 getBasicMeasure(measurementContext),
-                this.metricDesciption,
+                this.metricDesciption);
+        return new ProbeMeasurement(resultMeasurement,
                 this,
                 measurementContext,
                 null);

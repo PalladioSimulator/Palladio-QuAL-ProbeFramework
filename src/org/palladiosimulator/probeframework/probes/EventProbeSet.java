@@ -5,13 +5,14 @@ import java.util.List;
 
 import javax.measure.quantity.Quantity;
 
-import org.palladiosimulator.edp2.models.ExperimentData.MetricSetDescription;
-import org.palladiosimulator.measurementspec.IMeasurementSourceListener;
 import org.palladiosimulator.measurementspec.Measurement;
-import org.palladiosimulator.measurementspec.MeasurementSet;
-import org.palladiosimulator.measurementspec.requestcontext.RequestContext;
+import org.palladiosimulator.measurementspec.MeasurementTupple;
+import org.palladiosimulator.metricspec.MetricSetDescription;
+import org.palladiosimulator.probeframework.measurement.ProbeMeasurement;
+import org.palladiosimulator.probeframework.measurement.RequestContext;
+import org.palladiosimulator.probeframework.probes.listener.IProbeListener;
 
-public class EventProbeSet extends EventProbe<EventProbe<?>> implements IMeasurementSourceListener {
+public class EventProbeSet extends EventProbe<EventProbe<?>> implements IProbeListener {
 
     private final List<Probe> subsumedProbes;
     private final EventProbe<?> eventProbe;
@@ -28,16 +29,16 @@ public class EventProbeSet extends EventProbe<EventProbe<?>> implements IMeasure
     }
 
     @Override
-    public void newMeasurementAvailable(final Measurement measurement) {
+    public void newProbeMeasurementAvailable(final ProbeMeasurement measurement) {
         final List<Measurement> measurements = new LinkedList<Measurement>();
 
-        measurements.add(measurement);
+        measurements.add(measurement.getMeasurement());
         for (final Probe childProbe : subsumedProbes) {
-            measurements.add(((TriggeredProbe)childProbe).doMeasure(RequestContext.EMPTY_REQUEST_CONTEXT));
+            measurements.add(((TriggeredProbe)childProbe).doMeasure(RequestContext.EMPTY_REQUEST_CONTEXT).getMeasurement());
         }
 
-        final MeasurementSet result = new MeasurementSet(measurements, (MetricSetDescription) getMetricDesciption(), this);
-        notifyMeasurementSourceListener(result);
+        final MeasurementTupple result = new MeasurementTupple(measurements, (MetricSetDescription) getMetricDesciption());
+        notifyMeasurementSourceListener(new ProbeMeasurement(result, this, RequestContext.EMPTY_REQUEST_CONTEXT, null));
     }
 
     private static List<Probe> getAllProbesList(final Probe firstProbe, final List<Probe> tail) {
@@ -53,7 +54,4 @@ public class EventProbeSet extends EventProbe<EventProbe<?>> implements IMeasure
         this.eventSource.addObserver(this);
     }
 
-	@Override
-	public void preUnregister() {
-	}
 }

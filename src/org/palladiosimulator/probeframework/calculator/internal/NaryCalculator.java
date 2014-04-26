@@ -7,14 +7,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.palladiosimulator.edp2.models.ExperimentData.MetricDescription;
-import org.palladiosimulator.measurementspec.IMeasurementSource;
-import org.palladiosimulator.measurementspec.Measurement;
-import org.palladiosimulator.measurementspec.MeasurementSet;
+import org.palladiosimulator.measurementspec.MeasurementTupple;
+import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.probeframework.ProbeFrameworkContext;
 import org.palladiosimulator.probeframework.calculator.Calculator;
+import org.palladiosimulator.probeframework.measurement.ProbeMeasurement;
+import org.palladiosimulator.probeframework.measurement.RequestContext;
 import org.palladiosimulator.probeframework.probes.Probe;
-import org.palladiosimulator.measurementspec.requestcontext.RequestContext;
 
 /**
  * This abstract class represents a binary calculator. A binary calculator expects two probe sets,
@@ -23,7 +22,7 @@ import org.palladiosimulator.measurementspec.requestcontext.RequestContext;
  * <p>
  * As soon as a sample arrives that originates from the end probe set, the binary calculator does
  * its calculation by invoking the template method
- * {@link #calculate(MeasurementSet, MeasurementSet)}. When a sample originating from the start
+ * {@link #calculate(MeasurementTupple, MeasurementTupple)}. When a sample originating from the start
  * probe set arrives, the calculator does nothing.
  * 
  * @author Philipp Merkle, Sebastian Lehrig, Steffen Becker
@@ -33,13 +32,13 @@ import org.palladiosimulator.measurementspec.requestcontext.RequestContext;
 public abstract class NaryCalculator extends Calculator {
 
     protected final List<Probe> probes;
-    private final Map<RequestContext, List<Measurement>> arrivedMeasurementMemory = new HashMap<RequestContext, List<Measurement>>();
+    private final Map<RequestContext, List<ProbeMeasurement>> arrivedMeasurementMemory = new HashMap<RequestContext, List<ProbeMeasurement>>();
 
     public NaryCalculator(final ProbeFrameworkContext ctx, final MetricDescription metricDescription,
             final List<Probe> childProbes) {
         super(ctx, metricDescription);
         probes = Collections.unmodifiableList(new ArrayList<Probe>(childProbes));
-        for (final IMeasurementSource probe : childProbes) {
+        for (final Probe probe : childProbes) {
             probe.addObserver(this);
         }
     }
@@ -50,7 +49,7 @@ public abstract class NaryCalculator extends Calculator {
      * a new ProbeSetSample arrives at the blackboard (Observer Pattern). If
      * <code>probeSetSample</code> is an end probe set sample, the method tries to get the
      * corresponding start ProbeSetSample and invokes the
-     * {@link #calculate(MeasurementSet, MeasurementSet)} method. If <code>probeSetSample</code> is
+     * {@link #calculate(MeasurementTupple, MeasurementTupple)} method. If <code>probeSetSample</code> is
      * an start ProbeSetSample, this method will do nothing.
      * </p>
      * 
@@ -72,22 +71,22 @@ public abstract class NaryCalculator extends Calculator {
      *            the last ProbeSetSample which was added to the SampleBlackboard and so triggered
      *            this Calculator.
      * @see org.palladiosimulator.probeframework.calculator.Calculator#execute
-     *      (org.palladiosimulator.measurementspec.MeasurementSet)
+     *      (org.palladiosimulator.measurementspec.MeasurementTupple)
      */
     @Override
-    public void newMeasurementAvailable(final Measurement probeMeasurement) {
+    public void newProbeMeasurementAvailable(final ProbeMeasurement probeMeasurement) {
         if (isMeasurementFromFirstProbe(probeMeasurement)) {
-            if (arrivedMeasurementMemory.containsKey(probeMeasurement.getRequestContext())) {
+            if (arrivedMeasurementMemory.containsKey(probeMeasurement.getSourceAndContext().getRequestContext())) {
                 throw new IllegalStateException(
                         "First measurement to the same context arrived while previous series of the same context did not complete.");
             }
-            arrivedMeasurementMemory.put(probeMeasurement.getRequestContext(), new LinkedList<Measurement>());
+            arrivedMeasurementMemory.put(probeMeasurement.getSourceAndContext().getRequestContext(), new LinkedList<ProbeMeasurement>());
         }
-        final List<Measurement> measurementMemory = arrivedMeasurementMemory.get(probeMeasurement.getRequestContext());
+        final List<ProbeMeasurement> measurementMemory = arrivedMeasurementMemory.get(probeMeasurement.getSourceAndContext().getRequestContext());
         measurementMemory.add(probeMeasurement);
         if (isMeasurementFromLastProbe(probeMeasurement)) {
             fireCalculated(measurementMemory);
-            arrivedMeasurementMemory.remove(probeMeasurement.getRequestContext());
+            arrivedMeasurementMemory.remove(probeMeasurement.getSourceAndContext().getRequestContext());
         }
     }
 
@@ -96,7 +95,7 @@ public abstract class NaryCalculator extends Calculator {
      */
     @Override
     public void detachProbes() {
-        for (final IMeasurementSource probe : probes) {
+        for (final Probe probe : probes) {
             probe.removeObserver(this);
         }
     }
@@ -109,11 +108,11 @@ public abstract class NaryCalculator extends Calculator {
         arrivedMeasurementMemory.remove(requestContext);
     }
 
-    private boolean isMeasurementFromLastProbe(final Measurement probeMeasurement) {
-        return (probeMeasurement.getMeasurementSource() == probes.get(probes.size() - 1));
+    private boolean isMeasurementFromLastProbe(final ProbeMeasurement probeMeasurement) {
+        return (probeMeasurement.getSourceAndContext().getMeasurementSource() == probes.get(probes.size() - 1));
     }
 
-    private boolean isMeasurementFromFirstProbe(final Measurement probeMeasurement) {
-        return (probeMeasurement.getMeasurementSource() == probes.get(0));
+    private boolean isMeasurementFromFirstProbe(final ProbeMeasurement probeMeasurement) {
+        return (probeMeasurement.getSourceAndContext().getMeasurementSource() == probes.get(0));
     }
 }

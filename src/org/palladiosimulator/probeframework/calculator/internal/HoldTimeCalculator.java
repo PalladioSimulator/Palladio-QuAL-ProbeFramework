@@ -1,6 +1,6 @@
 package org.palladiosimulator.probeframework.calculator.internal;
 
-import static org.palladiosimulator.metricspec.MetricDescriptionConstants.HOLD_TIME_METRIC;
+import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.HOLD_TIME_METRIC;
 
 import java.util.Arrays;
 import java.util.List;
