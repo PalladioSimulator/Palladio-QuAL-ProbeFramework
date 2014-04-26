@@ -14,15 +14,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.palladiosimulator.measurementspec.BasicMeasurement;
-import org.palladiosimulator.measurementspec.IMeasurementSourceListener;
-import org.palladiosimulator.measurementspec.Measurement;
-import org.palladiosimulator.measurementspec.requestcontext.RequestContext;
-import org.palladiosimulator.metricspec.MetricDescriptionConstants;
+import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
+import org.palladiosimulator.probeframework.measurement.ProbeMeasurement;
+import org.palladiosimulator.probeframework.measurement.RequestContext;
 import org.palladiosimulator.probeframework.probes.example.ExampleTakeCPUDemandStrategy;
 import org.palladiosimulator.probeframework.probes.example.ExampleTakeCPUStateStrategy;
 import org.palladiosimulator.probeframework.probes.example.ExampleTakeCurrentTimeStrategy;
 import org.palladiosimulator.probeframework.probes.example.SimpleCPUResource;
 import org.palladiosimulator.probeframework.probes.example.SimpleSimulationContext;
+import org.palladiosimulator.probeframework.probes.listener.IProbeListener;
 
 @RunWith(JUnit4.class)
 public class BasicProbeTests {
@@ -45,13 +45,13 @@ public class BasicProbeTests {
         final RequestContext ctxID = new RequestContext("1");
         simCtx.setSimulatedTime(100d);
 
-        final Measurement probeMeasurement = probe.takeMeasurement(ctxID);
-        assertTrue(probeMeasurement.getMeasurementSource() == probe);
-        assertTrue(probeMeasurement.getMetricDesciption() == MetricDescriptionConstants.POINT_IN_TIME_METRIC);
-        assertTrue(probeMeasurement.getRequestContext() == ctxID);
+        final ProbeMeasurement probeMeasurement = probe.takeMeasurement(ctxID);
+        assertTrue(probeMeasurement.getSourceAndContext().getMeasurementSource() == probe);
+        assertTrue(probeMeasurement.getMeasurement().getMetricDesciption() == MetricDescriptionConstants.POINT_IN_TIME_METRIC);
+        assertTrue(probeMeasurement.getSourceAndContext().getRequestContext() == ctxID);
 
-        assertTrue(probeMeasurement instanceof BasicMeasurement<?,?>);
-        final BasicMeasurement<Double, Duration> basicMeasurement = (BasicMeasurement<Double, Duration>) probeMeasurement;
+        assertTrue(probeMeasurement.getMeasurement() instanceof BasicMeasurement<?,?>);
+        final BasicMeasurement<Double, Duration> basicMeasurement = (BasicMeasurement<Double, Duration>) probeMeasurement.getMeasurement();
         final Measure<Double,Duration> measure = basicMeasurement.getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
 
         assertTrue(measure.getUnit().isCompatible(SI.SECOND));
@@ -67,21 +67,21 @@ public class BasicProbeTests {
         final ExampleTakeCPUStateStrategy probe = new ExampleTakeCPUStateStrategy(cpuResource);
 
         cpuResource.setJobs(2);
-        final Measurement probeMeasurement = probe.takeMeasurement(ctxID);
+        final ProbeMeasurement probeMeasurement = probe.takeMeasurement(ctxID);
 
-        assertTrue(probeMeasurement.getMeasurementSource() == probe);
-        assertTrue(probeMeasurement.getMetricDesciption() == MetricDescriptionConstants.CPU_STATE_METRIC);
-        assertTrue(probeMeasurement.getRequestContext() == ctxID);
+        assertTrue(probeMeasurement.getSourceAndContext().getMeasurementSource() == probe);
+        assertTrue(probeMeasurement.getMeasurement().getMetricDesciption() == MetricDescriptionConstants.CPU_STATE_METRIC);
+        assertTrue(probeMeasurement.getSourceAndContext().getRequestContext() == ctxID);
 
-        assertTrue(probeMeasurement instanceof BasicMeasurement<?,?>);
-        final BasicMeasurement<Double, Dimensionless> basicMeasurement = (BasicMeasurement<Double, Dimensionless>) probeMeasurement;
+        assertTrue(probeMeasurement.getMeasurement() instanceof BasicMeasurement<?,?>);
+        final BasicMeasurement<Double, Dimensionless> basicMeasurement = (BasicMeasurement<Double, Dimensionless>) probeMeasurement.getMeasurement();
 
         final Measure<Double,Dimensionless> measure = basicMeasurement.getMeasureForMetric(MetricDescriptionConstants.CPU_STATE_METRIC);
         assertTrue(measure.getUnit().isCompatible(Unit.ONE));
         assertTrue(measure.compareTo(Measure.valueOf(2l,Unit.ONE)) == 0);
     }
 
-    Measurement lastMeasurement;
+    ProbeMeasurement lastMeasurement;
 
     @Test
     public void testDemandProbe() {
@@ -89,26 +89,23 @@ public class BasicProbeTests {
         final SimpleCPUResource cpuResource = new SimpleCPUResource();
         simCtx.addActiveResource("Test CPU", cpuResource);
         final ExampleTakeCPUDemandStrategy probe = new ExampleTakeCPUDemandStrategy(cpuResource);
-        probe.addObserver(new IMeasurementSourceListener() {
+        probe.addObserver(new IProbeListener() {
 
             @Override
-            public void newMeasurementAvailable(final Measurement measurement) {
+            public void newProbeMeasurementAvailable(final ProbeMeasurement measurement) {
                 lastMeasurement = measurement;
             }
 
-			@Override
-			public void preUnregister() {
-			}
         });
         cpuResource.setJobs(1);
         cpuResource.demand(10);
 
         assertTrue(lastMeasurement != null);
-        assertTrue(lastMeasurement instanceof BasicMeasurement);
-        assertTrue(lastMeasurement.getMetricDesciption() == MetricDescriptionConstants.RESOURCE_DEMAND_METRIC);
+        assertTrue(lastMeasurement.getMeasurement() instanceof BasicMeasurement);
+        assertTrue(lastMeasurement.getMeasurement().getMetricDesciption() == MetricDescriptionConstants.RESOURCE_DEMAND_METRIC);
 
         @SuppressWarnings("unchecked")
-        final BasicMeasurement<Double, Duration> result = (BasicMeasurement<Double, Duration>) lastMeasurement;
+        final BasicMeasurement<Double, Duration> result = (BasicMeasurement<Double, Duration>) lastMeasurement.getMeasurement();
         final Measure<Double,Duration> resultMeasure = result.getMeasureForMetric(MetricDescriptionConstants.RESOURCE_DEMAND_METRIC);
         assertTrue(resultMeasure.compareTo(Measure.valueOf(10.0d, SI.SECOND))==0);
     }

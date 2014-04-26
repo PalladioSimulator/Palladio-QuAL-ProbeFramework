@@ -7,12 +7,13 @@ import javax.measure.Measure;
 import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
 
-import org.palladiosimulator.edp2.models.ExperimentData.MetricSetDescription;
 import org.palladiosimulator.measurementspec.BasicMeasurement;
 import org.palladiosimulator.measurementspec.Measurement;
-import org.palladiosimulator.measurementspec.MeasurementSet;
-import org.palladiosimulator.metricspec.MetricDescriptionConstants;
+import org.palladiosimulator.measurementspec.MeasurementTupple;
+import org.palladiosimulator.metricspec.MetricSetDescription;
+import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.probeframework.ProbeFrameworkContext;
+import org.palladiosimulator.probeframework.measurement.ProbeMeasurement;
 import org.palladiosimulator.probeframework.probes.Probe;
 
 /**
@@ -40,14 +41,14 @@ public class DemandBasedWaitingTimeCalculator extends WaitingTimeCalculator {
     /**
      * @see
      * org.palladiosimulator.probeframework.calculator.Calculator#calculate
-     * (org.palladiosimulator.measurementspec.MeasurementSet)
+     * (org.palladiosimulator.measurementspec.MeasurementTupple)
      */
     @Override
-    protected Measurement calculate(final List<Measurement> probeSetSamples) {
+    protected Measurement calculate(final List<ProbeMeasurement> probeSetSamples) {
         // raw measures
-        final Measure<Double, Duration> startTimeMeasure = probeSetSamples.get(0).getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
-        final Measure<Double, Duration> demandMeasure = probeSetSamples.get(0).getMeasureForMetric(MetricDescriptionConstants.RESOURCE_DEMAND_METRIC);
-        final Measure<Double, Duration> endTimeMeasure = probeSetSamples.get(1).getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
+        final Measure<Double, Duration> startTimeMeasure = probeSetSamples.get(0).getMeasurement().getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
+        final Measure<Double, Duration> demandMeasure = probeSetSamples.get(0).getMeasurement().getMeasureForMetric(MetricDescriptionConstants.RESOURCE_DEMAND_METRIC);
+        final Measure<Double, Duration> endTimeMeasure = probeSetSamples.get(1).getMeasurement().getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
 
         // time span
         final double timeSpan = endTimeMeasure.doubleValue(SI.SECOND)-startTimeMeasure.doubleValue(SI.SECOND);
@@ -64,15 +65,12 @@ public class DemandBasedWaitingTimeCalculator extends WaitingTimeCalculator {
         final List<Measurement> result = new ArrayList<Measurement>(2);
         final BasicMeasurement<Double,Duration> waitingTimeMeasurement = new BasicMeasurement<Double,Duration>(
                 waitingTimeMeasure,
-                MetricDescriptionConstants.WAITING_TIME_METRIC,
-                this,
-                probeSetSamples.get(0).getRequestContext(),
-                null);
+                MetricDescriptionConstants.WAITING_TIME_METRIC);
 
-        result.add(probeSetSamples.get(1).getMeasurementForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC));
+        result.add(probeSetSamples.get(1).getMeasurement().getMeasurementForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC));
         result.add(waitingTimeMeasurement);
 
-        return new MeasurementSet(result, (MetricSetDescription) this.metricDesciption, this);
+        return new MeasurementTupple(result, (MetricSetDescription) this.metricDesciption);
     }
 
 }

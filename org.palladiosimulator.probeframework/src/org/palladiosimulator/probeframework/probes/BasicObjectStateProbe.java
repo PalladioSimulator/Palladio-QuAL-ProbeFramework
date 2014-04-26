@@ -2,7 +2,7 @@ package org.palladiosimulator.probeframework.probes;
 
 import javax.measure.quantity.Quantity;
 
-import org.palladiosimulator.edp2.models.ExperimentData.BaseMetricDescription;
+import org.palladiosimulator.metricspec.BaseMetricDescription;
 
 public abstract class BasicObjectStateProbe<StateObjectType, V, Q extends Quantity> extends BasicTriggeredProbe<V,Q> {
 

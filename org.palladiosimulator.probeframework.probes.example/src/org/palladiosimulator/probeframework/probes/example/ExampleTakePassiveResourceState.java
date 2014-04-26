@@ -4,9 +4,9 @@ import javax.measure.Measure;
 import javax.measure.quantity.Dimensionless;
 import javax.measure.unit.Unit;
 
-import org.palladiosimulator.metricspec.MetricDescriptionConstants;
+import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
+import org.palladiosimulator.probeframework.measurement.RequestContext;
 import org.palladiosimulator.probeframework.probes.BasicObjectStateProbe;
-import org.palladiosimulator.measurementspec.requestcontext.RequestContext;
 
 public class ExampleTakePassiveResourceState extends BasicObjectStateProbe<ASimplePassiveResource, Long, Dimensionless> {
 

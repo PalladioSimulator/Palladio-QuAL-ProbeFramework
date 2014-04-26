@@ -1,8 +1,8 @@
 package org.palladiosimulator.probeframework.probes;
 
-import org.palladiosimulator.edp2.models.ExperimentData.MetricDescription;
-import org.palladiosimulator.measurementspec.Measurement;
-import org.palladiosimulator.measurementspec.requestcontext.RequestContext;
+import org.palladiosimulator.metricspec.MetricDescription;
+import org.palladiosimulator.probeframework.measurement.ProbeMeasurement;
+import org.palladiosimulator.probeframework.measurement.RequestContext;
 
 public abstract class TriggeredProbe extends Probe {
 
@@ -10,15 +10,15 @@ public abstract class TriggeredProbe extends Probe {
         super(metricDesciption);
     }
 
-    public Measurement takeMeasurement() {
+    public ProbeMeasurement takeMeasurement() {
         return takeMeasurement(RequestContext.EMPTY_REQUEST_CONTEXT);
     }
 
-    public Measurement takeMeasurement(final RequestContext measurementContext) {
-        final Measurement newMeasurement = doMeasure(measurementContext);
+    public ProbeMeasurement takeMeasurement(final RequestContext measurementContext) {
+        final ProbeMeasurement newMeasurement = doMeasure(measurementContext);
         notifyMeasurementSourceListener(newMeasurement);
         return newMeasurement;
     }
 
-    protected abstract Measurement doMeasure(RequestContext measurementContext);
+    protected abstract ProbeMeasurement doMeasure(RequestContext measurementContext);
 }

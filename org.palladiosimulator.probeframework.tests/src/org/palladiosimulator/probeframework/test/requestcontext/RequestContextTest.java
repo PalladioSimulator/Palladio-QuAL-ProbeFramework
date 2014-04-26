@@ -1,8 +1,8 @@
 package org.palladiosimulator.probeframework.test.requestcontext;
 
-import org.palladiosimulator.measurementspec.requestcontext.RequestContext;
-
 import junit.framework.TestCase;
+
+import org.palladiosimulator.probeframework.measurement.RequestContext;
 
 public class RequestContextTest extends TestCase {
 

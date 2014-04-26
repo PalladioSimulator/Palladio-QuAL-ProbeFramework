@@ -8,12 +8,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.palladiosimulator.measurementspec.IMeasurementSourceListener;
 import org.palladiosimulator.measurementspec.Measurement;
-import org.palladiosimulator.measurementspec.requestcontext.RequestContext;
+import org.palladiosimulator.measurementspec.listener.IMeasurementSourceListener;
 import org.palladiosimulator.probeframework.ProbeFrameworkContext;
 import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.probeframework.calculator.DefaultCalculatorFactory;
+import org.palladiosimulator.probeframework.measurement.RequestContext;
 import org.palladiosimulator.probeframework.probes.Probe;
 import org.palladiosimulator.probeframework.probes.TriggeredProbe;
 import org.palladiosimulator.probeframework.probes.example.ExampleTakeCurrentTimeStrategy;
@@ -63,7 +63,6 @@ public class CalculatorTests {
         endProbe.takeMeasurement(requestContext);
 
         assertTrue(lastMeasurement != null);
-        assertTrue(lastMeasurement.getMeasurementSource() == rtCalculator);
         assertTrue(lastMeasurement.getMetricDesciption() == rtCalculator.getMetricDesciption());
     }
 }
