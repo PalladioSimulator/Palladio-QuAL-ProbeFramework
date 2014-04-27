@@ -32,7 +32,7 @@ public class IdentityCalculator extends UnaryCalculator {
     protected Measurement calculate(final List<ProbeMeasurement> probeMeasurements) {
         final Measurement measurement = probeMeasurements.get(0).getMeasurement();
         if(measurement instanceof MeasurementTupple) {
-            return new MeasurementTupple(((MeasurementTupple) measurement).getSubsumedMeasurements(), (MetricSetDescription) this.metricDesciption);
+            return new MeasurementTupple(((MeasurementTupple) measurement).getSubsumedMeasurements(), (MetricSetDescription) this.getMetricDesciption());
         }
         else {
             throw new IllegalStateException("MeasurementTupple expected for identity calculators");

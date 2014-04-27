@@ -29,7 +29,7 @@ public abstract class BasicTriggeredProbe<V,Q extends Quantity> extends Triggere
     protected final ProbeMeasurement doMeasure(final RequestContext measurementContext) {
         final Measurement resultMeasurement = new BasicMeasurement<V, Q>(
                 getBasicMeasure(measurementContext),
-                this.metricDesciption);
+                this.getMetricDesciption());
         return new ProbeMeasurement(resultMeasurement,
                 this,
                 measurementContext,

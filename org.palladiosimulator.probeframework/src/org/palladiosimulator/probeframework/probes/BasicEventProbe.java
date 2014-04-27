@@ -19,7 +19,7 @@ public abstract class BasicEventProbe<EventSourceType, V, Q extends Quantity> ex
     protected void notify(final Measure<V,Q> eventMeasure) {
         final Measurement basicMeasurement = new BasicMeasurement<V, Q>(
                 eventMeasure,
-                this.metricDesciption);
+                this.getMetricDesciption());
         final ProbeMeasurement newMeasurement = new ProbeMeasurement(basicMeasurement,
                 this,
                 RequestContext.EMPTY_REQUEST_CONTEXT,

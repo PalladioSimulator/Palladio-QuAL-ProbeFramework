@@ -49,9 +49,9 @@ public abstract class TimeSpanCalculator extends NaryCalculator {
         result.add(startTimeMeasurement);
         final BasicMeasurement<Double,Duration> timeSpanMeasurement = new BasicMeasurement<Double,Duration>(
                 timeSpanMeasure,
-                ((MetricSetDescription)this.metricDesciption).getSubsumedMetrics().get(1));
+                ((MetricSetDescription)this.getMetricDesciption()).getSubsumedMetrics().get(1));
         result.add(timeSpanMeasurement);
 
-        return new MeasurementTupple(result, (MetricSetDescription)this.metricDesciption);
+        return new MeasurementTupple(result, (MetricSetDescription)this.getMetricDesciption());
     }
 }
