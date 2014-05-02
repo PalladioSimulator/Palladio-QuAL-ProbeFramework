@@ -15,16 +15,14 @@ import org.palladiosimulator.probeframework.probes.listener.IProbeListener;
 public class EventProbeSet extends EventProbe<EventProbe<?>> implements IProbeListener {
 
     private final List<Probe> subsumedProbes;
-    private final EventProbe<?> eventProbe;
 
     public <EventSourceType, V, Q extends Quantity> EventProbeSet(final EventProbe<?> eventProbe, final List<Probe> subsumedProbes, final String metricName) {
-        super(eventProbe,ProbeSetHelper.getMetricSetDescription(getAllProbesList(eventProbe, subsumedProbes), metricName));
+        super(eventProbe, ProbeSetHelper.getMetricSetDescription(getAllProbesList(eventProbe, subsumedProbes), metricName));
         for (final Probe probe : subsumedProbes) {
             if (!(probe instanceof TriggeredProbe)) {
                 throw new IllegalArgumentException("Other probes besides the event probe have to be triggered");
             }
         }
-        this.eventProbe = eventProbe;
         this.subsumedProbes = subsumedProbes;
     }
 
