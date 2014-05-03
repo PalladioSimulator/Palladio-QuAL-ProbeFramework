@@ -4,6 +4,6 @@ import org.palladiosimulator.probeframework.measurement.ProbeMeasurement;
 
 public interface IProbeListener {
 
-    public void newProbeMeasurementAvailable(ProbeMeasurement newMeasurement);
+    public void newProbeMeasurementAvailable(final ProbeMeasurement probeMeasurement);
 
 }

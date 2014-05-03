@@ -10,11 +10,12 @@ import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.probeframework.probes.Probe;
 
 /**
- * Calculates a time span representing the waiting time.
+ * Calculates a time span representing the waiting time as defined by the
+ * WAITING_TIME_METRIC. It expects a probe giving the start of waiting and a probe
+ * giving the end of waiting, e.g., at a passive resource pool.
  * 
- * @author Faber, Philipp Merkle, Sebastian Lehrig, Steffen Becker
- * @see UnaryCalculator
- * @see Calculator
+ * @author Sebastian Lehrig, Steffen Becker
+ * @see TimeSpanCalculator
  */
 public class WaitingTimeCalculator extends TimeSpanCalculator {
 
