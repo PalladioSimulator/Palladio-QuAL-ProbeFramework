@@ -45,10 +45,7 @@ public abstract class Calculator extends MeasurementSource implements IProbeList
         super(computedMetric);
         this.probeFrameworkContext = ctx;
     }
-
-    @Override
-    abstract public void newProbeMeasurementAvailable(final ProbeMeasurement measurement);
-
+    
     /**
      * Calculates measurements based on a given probe sample of a single, unary probe.
      * 
