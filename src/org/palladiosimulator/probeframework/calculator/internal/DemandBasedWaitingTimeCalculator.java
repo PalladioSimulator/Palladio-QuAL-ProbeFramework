@@ -33,23 +33,41 @@ import org.palladiosimulator.probeframework.probes.Probe;
  */
 public class DemandBasedWaitingTimeCalculator extends WaitingTimeCalculator {
 
-    public DemandBasedWaitingTimeCalculator(final ProbeFrameworkContext ctx, final String metricName,
+    /**
+     * Default constructor.
+     * 
+     * @param context
+     *            ProbeFrameworkContext as needed by the superclass.
+     * @param metricName
+     *            Metric name as needed by the superclass.
+     * @param metricDescription
+     *            Textual metric description as needed by the superclass.
+     * @param probes
+     *            Probes as needed by the superclass.
+     */
+    public DemandBasedWaitingTimeCalculator(final ProbeFrameworkContext context, final String metricName,
             final String metricDescription, final List<Probe> probes) {
-        super(ctx, metricName, metricDescription, probes);
+        super(context, metricName, metricDescription, probes);
     }
 
     /**
+     * Overrides the inherited calculate method because the latter assumed that the stop of the
+     * waiting period can directly be obtained. The calculation functions as described in the header
+     * of this class.
+     * 
+     * @param probeMeasurements
+     *            The probe measurements used for the calculation.
+     * @return The calculated waiting time measurement.
      * @see org.palladiosimulator.probeframework.calculator.Calculator#calculate
-     *      (org.palladiosimulator.measurementspec.MeasurementTupple)
      */
     @Override
-    protected Measurement calculate(final List<ProbeMeasurement> probeSetSamples) {
+    protected Measurement calculate(final List<ProbeMeasurement> probeMeasurements) {
         // raw measures
-        final Measure<Double, Duration> startTimeMeasure = probeSetSamples.get(0).getMeasurement()
+        final Measure<Double, Duration> startTimeMeasure = probeMeasurements.get(0).getMeasurement()
                 .getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
-        final Measure<Double, Duration> demandMeasure = probeSetSamples.get(0).getMeasurement()
+        final Measure<Double, Duration> demandMeasure = probeMeasurements.get(0).getMeasurement()
                 .getMeasureForMetric(MetricDescriptionConstants.RESOURCE_DEMAND_METRIC);
-        final Measure<Double, Duration> endTimeMeasure = probeSetSamples.get(1).getMeasurement()
+        final Measure<Double, Duration> endTimeMeasure = probeMeasurements.get(1).getMeasurement()
                 .getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
 
         // time span
@@ -68,7 +86,7 @@ public class DemandBasedWaitingTimeCalculator extends WaitingTimeCalculator {
         final BasicMeasurement<Double, Duration> waitingTimeMeasurement = new BasicMeasurement<Double, Duration>(
                 waitingTimeMeasure, MetricDescriptionConstants.WAITING_TIME_METRIC);
 
-        result.add(probeSetSamples.get(1).getMeasurement()
+        result.add(probeMeasurements.get(1).getMeasurement()
                 .getMeasurementForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC));
         result.add(waitingTimeMeasurement);
 
