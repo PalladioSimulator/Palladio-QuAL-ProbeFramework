@@ -5,8 +5,7 @@ import org.palladiosimulator.metricspec.metricentity.MetricEntity;
 import org.palladiosimulator.probeframework.probes.Probe;
 
 /**
- * Represents a (ProbeSet, {@link RequestContext})-pair. The ProbeSet is
- * identified by its ID.
+ * Represents a (ProbeSet, {@link RequestContext})-pair. The ProbeSet is identified by its ID.
  * <p>
  * It is used to uniquely identify {@link MeasurementTupple}.
  * 
@@ -22,17 +21,14 @@ public final class ProbeAndRequestContext {
     private final RequestContext requestContext;
 
     /**
-     * Default constructor. Constructs a pair consisting of a ProbeSet and a
-     * {@link RequestContext}.
+     * Default constructor. Constructs a pair consisting of a ProbeSet and a {@link RequestContext}.
      * 
      * @param probeSetId
      *            the ID representing the ProbeSet
      * @param requestContext
      *            the RequestContext
      */
-    public ProbeAndRequestContext(
-            final Probe measuredProbe,
-            final RequestContext requestContext) {
+    public ProbeAndRequestContext(final Probe measuredProbe, final RequestContext requestContext) {
         this.measurementSource = measuredProbe;
         this.requestContext = requestContext;
     }
@@ -59,10 +55,8 @@ public final class ProbeAndRequestContext {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result
-                + ((requestContext == null) ? 0 : requestContext.hashCode());
-        result = prime * result
-                + ((measurementSource == null) ? 0 : measurementSource.hashCode());
+        result = prime * result + ((requestContext == null) ? 0 : requestContext.hashCode());
+        result = prime * result + ((measurementSource == null) ? 0 : measurementSource.hashCode());
         return result;
     }
 

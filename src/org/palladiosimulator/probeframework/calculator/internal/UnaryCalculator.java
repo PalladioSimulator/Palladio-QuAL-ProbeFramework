@@ -9,13 +9,13 @@ import org.palladiosimulator.probeframework.probes.Probe;
 
 /**
  * <p>
- * This abstract class represents a unary calculator. Unary calculators expect
- * exactly one probe, thus, restricting n-ary calculators to n=1.
+ * This abstract class represents a unary calculator. Unary calculators expect exactly one probe,
+ * thus, restricting n-ary calculators to n=1.
  * </p>
  * 
  * <p>
- * As soon as a sample arrives that originates from this probe set, the unary
- * calculator does its calculation by invoking the template method
+ * As soon as a sample arrives that originates from this probe set, the unary calculator does its
+ * calculation by invoking the template method
  * {@link #calculate(MeasurementTupple, MeasurementTupple)}.
  * </p>
  * 
@@ -23,9 +23,9 @@ import org.palladiosimulator.probeframework.probes.Probe;
  */
 public abstract class UnaryCalculator extends NaryCalculator {
 
-	protected UnaryCalculator(final ProbeFrameworkContext ctx,
-			final MetricDescription metricDescription, final Probe childProbe) {
-		super(ctx, metricDescription, Arrays.asList(childProbe));
-	}
+    protected UnaryCalculator(final ProbeFrameworkContext ctx, final MetricDescription metricDescription,
+            final Probe childProbe) {
+        super(ctx, metricDescription, Arrays.asList(childProbe));
+    }
 
 }

@@ -14,9 +14,9 @@ import org.palladiosimulator.probeframework.measurement.RequestContext;
 
 /**
  * @author snowball
- *
+ * 
  */
-public abstract class BasicTriggeredProbe<V,Q extends Quantity> extends TriggeredProbe {
+public abstract class BasicTriggeredProbe<V, Q extends Quantity> extends TriggeredProbe {
 
     /**
      * 
@@ -27,13 +27,9 @@ public abstract class BasicTriggeredProbe<V,Q extends Quantity> extends Triggere
 
     @Override
     protected final ProbeMeasurement doMeasure(final RequestContext measurementContext) {
-        final Measurement resultMeasurement = new BasicMeasurement<V, Q>(
-                getBasicMeasure(measurementContext),
+        final Measurement resultMeasurement = new BasicMeasurement<V, Q>(getBasicMeasure(measurementContext),
                 this.getMetricDesciption());
-        return new ProbeMeasurement(resultMeasurement,
-                this,
-                measurementContext,
-                null);
+        return new ProbeMeasurement(resultMeasurement, this, measurementContext, null);
     }
 
     protected abstract Measure<V, Q> getBasicMeasure(RequestContext measurementContext);
