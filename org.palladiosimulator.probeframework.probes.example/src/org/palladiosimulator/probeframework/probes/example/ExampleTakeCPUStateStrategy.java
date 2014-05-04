@@ -8,15 +8,15 @@ import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.probeframework.measurement.RequestContext;
 import org.palladiosimulator.probeframework.probes.BasicObjectStateProbe;
 
-public class ExampleTakeCPUStateStrategy extends BasicObjectStateProbe<ASimpleActiveResource, Long, Dimensionless>{
+public class ExampleTakeCPUStateStrategy extends BasicObjectStateProbe<ASimpleActiveResource, Long, Dimensionless> {
 
     public ExampleTakeCPUStateStrategy(final ASimpleActiveResource myCpu) {
-        super(myCpu,MetricDescriptionConstants.CPU_STATE_METRIC);
+        super(myCpu, MetricDescriptionConstants.CPU_STATE_METRIC);
     }
 
     @Override
     protected Measure<Long, Dimensionless> getBasicMeasure(final RequestContext measurementContext) {
-        return Measure.valueOf((long)getStateObject().getJobs(), Unit.ONE);
+        return Measure.valueOf((long) getStateObject().getJobs(), Unit.ONE);
     }
 
 }

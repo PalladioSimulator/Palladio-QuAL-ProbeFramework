@@ -25,7 +25,7 @@ public class TriggeredProbeSet extends TriggeredProbe {
     }
 
     public TriggeredProbeSet(final List<Probe> subsumedProbes, final String metricName) {
-        this(subsumedProbes,ProbeSetHelper.getMetricSetDescription(subsumedProbes, metricName));
+        this(subsumedProbes, ProbeSetHelper.getMetricSetDescription(subsumedProbes, metricName));
     }
 
     /*
@@ -38,10 +38,11 @@ public class TriggeredProbeSet extends TriggeredProbe {
         final List<Measurement> childMeasurements = new LinkedList<Measurement>();
 
         for (final Probe childProbe : subsumedProbes) {
-            childMeasurements.add(((TriggeredProbe)childProbe).doMeasure(measurementContext).getMeasurement());
+            childMeasurements.add(((TriggeredProbe) childProbe).doMeasure(measurementContext).getMeasurement());
         }
 
-        final MeasurementTupple result = new MeasurementTupple(childMeasurements, (MetricSetDescription) getMetricDesciption());
+        final MeasurementTupple result = new MeasurementTupple(childMeasurements,
+                (MetricSetDescription) getMetricDesciption());
         return new ProbeMeasurement(result, this, measurementContext, null);
     }
 

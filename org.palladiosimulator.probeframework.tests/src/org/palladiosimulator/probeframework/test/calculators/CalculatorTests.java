@@ -38,7 +38,8 @@ public class CalculatorTests {
 
     @Test
     public void testResponseTimeCalculator() {
-        final Calculator rtCalculator = this.probeFrameworkContext.getCalculatorFactory().buildResponseTimeCalculator("Test ResponseTime", Arrays.asList((Probe)startProbe,(Probe)endProbe));
+        final Calculator rtCalculator = this.probeFrameworkContext.getCalculatorFactory().buildResponseTimeCalculator(
+                "Test ResponseTime", Arrays.asList((Probe) startProbe, (Probe) endProbe));
 
         rtCalculator.addObserver(new IMeasurementSourceListener() {
 

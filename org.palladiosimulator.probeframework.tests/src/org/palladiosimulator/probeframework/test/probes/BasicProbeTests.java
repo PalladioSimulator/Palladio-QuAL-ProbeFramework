@@ -50,12 +50,14 @@ public class BasicProbeTests {
         assertTrue(probeMeasurement.getMeasurement().getMetricDesciption() == MetricDescriptionConstants.POINT_IN_TIME_METRIC);
         assertTrue(probeMeasurement.getSourceAndContext().getRequestContext() == ctxID);
 
-        assertTrue(probeMeasurement.getMeasurement() instanceof BasicMeasurement<?,?>);
-        final BasicMeasurement<Double, Duration> basicMeasurement = (BasicMeasurement<Double, Duration>) probeMeasurement.getMeasurement();
-        final Measure<Double,Duration> measure = basicMeasurement.getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
+        assertTrue(probeMeasurement.getMeasurement() instanceof BasicMeasurement<?, ?>);
+        final BasicMeasurement<Double, Duration> basicMeasurement = (BasicMeasurement<Double, Duration>) probeMeasurement
+                .getMeasurement();
+        final Measure<Double, Duration> measure = basicMeasurement
+                .getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
 
         assertTrue(measure.getUnit().isCompatible(SI.SECOND));
-        assertTrue(measure.compareTo(Measure.valueOf(100d,SI.SECOND)) == 0);
+        assertTrue(measure.compareTo(Measure.valueOf(100d, SI.SECOND)) == 0);
     }
 
     @SuppressWarnings("unchecked")
@@ -73,12 +75,14 @@ public class BasicProbeTests {
         assertTrue(probeMeasurement.getMeasurement().getMetricDesciption() == MetricDescriptionConstants.CPU_STATE_METRIC);
         assertTrue(probeMeasurement.getSourceAndContext().getRequestContext() == ctxID);
 
-        assertTrue(probeMeasurement.getMeasurement() instanceof BasicMeasurement<?,?>);
-        final BasicMeasurement<Double, Dimensionless> basicMeasurement = (BasicMeasurement<Double, Dimensionless>) probeMeasurement.getMeasurement();
+        assertTrue(probeMeasurement.getMeasurement() instanceof BasicMeasurement<?, ?>);
+        final BasicMeasurement<Double, Dimensionless> basicMeasurement = (BasicMeasurement<Double, Dimensionless>) probeMeasurement
+                .getMeasurement();
 
-        final Measure<Double,Dimensionless> measure = basicMeasurement.getMeasureForMetric(MetricDescriptionConstants.CPU_STATE_METRIC);
+        final Measure<Double, Dimensionless> measure = basicMeasurement
+                .getMeasureForMetric(MetricDescriptionConstants.CPU_STATE_METRIC);
         assertTrue(measure.getUnit().isCompatible(Unit.ONE));
-        assertTrue(measure.compareTo(Measure.valueOf(2l,Unit.ONE)) == 0);
+        assertTrue(measure.compareTo(Measure.valueOf(2l, Unit.ONE)) == 0);
     }
 
     ProbeMeasurement lastMeasurement;
@@ -105,9 +109,11 @@ public class BasicProbeTests {
         assertTrue(lastMeasurement.getMeasurement().getMetricDesciption() == MetricDescriptionConstants.RESOURCE_DEMAND_METRIC);
 
         @SuppressWarnings("unchecked")
-        final BasicMeasurement<Double, Duration> result = (BasicMeasurement<Double, Duration>) lastMeasurement.getMeasurement();
-        final Measure<Double,Duration> resultMeasure = result.getMeasureForMetric(MetricDescriptionConstants.RESOURCE_DEMAND_METRIC);
-        assertTrue(resultMeasure.compareTo(Measure.valueOf(10.0d, SI.SECOND))==0);
+        final BasicMeasurement<Double, Duration> result = (BasicMeasurement<Double, Duration>) lastMeasurement
+                .getMeasurement();
+        final Measure<Double, Duration> resultMeasure = result
+                .getMeasureForMetric(MetricDescriptionConstants.RESOURCE_DEMAND_METRIC);
+        assertTrue(resultMeasure.compareTo(Measure.valueOf(10.0d, SI.SECOND)) == 0);
     }
 
 }

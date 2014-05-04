@@ -12,10 +12,8 @@ public class ProbeMeasurement {
      * @param measurement
      * @param sourceAndContext
      */
-    public ProbeMeasurement(final Measurement measurement,
-            final Probe measuredProbe,
-            final RequestContext requestContext,
-            final String measuredEntity) {
+    public ProbeMeasurement(final Measurement measurement, final Probe measuredProbe,
+            final RequestContext requestContext, final String measuredEntity) {
         super();
         this.measurement = measurement;
         this.sourceAndContext = new ProbeAndRequestContext(measuredProbe, requestContext);

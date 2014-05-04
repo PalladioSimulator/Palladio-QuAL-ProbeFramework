@@ -21,11 +21,12 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
      * @param calculatorName
      * @param probes
      * @return
-     * @see org.palladiosimulator.probeframework.calculator.ICalculatorFactory#buildResponseTimeCalculator(java.lang.String, java.util.List)
+     * @see org.palladiosimulator.probeframework.calculator.ICalculatorFactory#buildResponseTimeCalculator(java.lang.String,
+     *      java.util.List)
      */
     @Override
     public Calculator buildResponseTimeCalculator(final String calculatorName, final List<Probe> probes) {
-        if(calculators.containsKey(calculatorName)) {
+        if (calculators.containsKey(calculatorName)) {
             return calculators.get(calculatorName);
         }
         return register(decoratedFactory.buildResponseTimeCalculator(calculatorName, probes), calculatorName);
@@ -35,11 +36,12 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
      * @param calculatorName
      * @param probes
      * @return
-     * @see org.palladiosimulator.probeframework.calculator.ICalculatorFactory#buildDemandBasedWaitingTimeCalculator(java.lang.String, java.util.List)
+     * @see org.palladiosimulator.probeframework.calculator.ICalculatorFactory#buildDemandBasedWaitingTimeCalculator(java.lang.String,
+     *      java.util.List)
      */
     @Override
     public Calculator buildDemandBasedWaitingTimeCalculator(final String calculatorName, final List<Probe> probes) {
-        if(calculators.containsKey(calculatorName)) {
+        if (calculators.containsKey(calculatorName)) {
             return calculators.get(calculatorName);
         }
         return register(decoratedFactory.buildDemandBasedWaitingTimeCalculator(calculatorName, probes), calculatorName);
@@ -49,11 +51,12 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
      * @param calculatorName
      * @param probes
      * @return
-     * @see org.palladiosimulator.probeframework.calculator.ICalculatorFactory#buildWaitingTimeCalculator(java.lang.String, java.util.List)
+     * @see org.palladiosimulator.probeframework.calculator.ICalculatorFactory#buildWaitingTimeCalculator(java.lang.String,
+     *      java.util.List)
      */
     @Override
     public Calculator buildWaitingTimeCalculator(final String calculatorName, final List<Probe> probes) {
-        if(calculators.containsKey(calculatorName)) {
+        if (calculators.containsKey(calculatorName)) {
             return calculators.get(calculatorName);
         }
         return register(decoratedFactory.buildWaitingTimeCalculator(calculatorName, probes), calculatorName);
@@ -63,11 +66,12 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
      * @param calculatorName
      * @param probes
      * @return
-     * @see org.palladiosimulator.probeframework.calculator.ICalculatorFactory#buildHoldTimeCalculator(java.lang.String, java.util.List)
+     * @see org.palladiosimulator.probeframework.calculator.ICalculatorFactory#buildHoldTimeCalculator(java.lang.String,
+     *      java.util.List)
      */
     @Override
     public Calculator buildHoldTimeCalculator(final String calculatorName, final List<Probe> probes) {
-        if(calculators.containsKey(calculatorName)) {
+        if (calculators.containsKey(calculatorName)) {
             return calculators.get(calculatorName);
         }
         return register(decoratedFactory.buildHoldTimeCalculator(calculatorName, probes), calculatorName);
@@ -77,11 +81,12 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
      * @param calculatorName
      * @param probe
      * @return
-     * @see org.palladiosimulator.probeframework.calculator.ICalculatorFactory#buildStateCalculator(java.lang.String, org.palladiosimulator.probeframework.probes.Probe)
+     * @see org.palladiosimulator.probeframework.calculator.ICalculatorFactory#buildStateCalculator(java.lang.String,
+     *      org.palladiosimulator.probeframework.probes.Probe)
      */
     @Override
     public Calculator buildStateCalculator(final String calculatorName, final Probe probe) {
-        if(calculators.containsKey(calculatorName)) {
+        if (calculators.containsKey(calculatorName)) {
             return calculators.get(calculatorName);
         }
         return register(decoratedFactory.buildStateCalculator(calculatorName, probe), calculatorName);
@@ -91,11 +96,12 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
      * @param calculatorName
      * @param probe
      * @return
-     * @see org.palladiosimulator.probeframework.calculator.ICalculatorFactory#buildOverallUtilizationCalculator(java.lang.String, org.palladiosimulator.probeframework.probes.Probe)
+     * @see org.palladiosimulator.probeframework.calculator.ICalculatorFactory#buildOverallUtilizationCalculator(java.lang.String,
+     *      org.palladiosimulator.probeframework.probes.Probe)
      */
     @Override
     public Calculator buildOverallUtilizationCalculator(final String calculatorName, final Probe probe) {
-        if(calculators.containsKey(calculatorName)) {
+        if (calculators.containsKey(calculatorName)) {
             return calculators.get(calculatorName);
         }
         return register(decoratedFactory.buildOverallUtilizationCalculator(calculatorName, probe), calculatorName);
@@ -105,11 +111,12 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
      * @param calculatorName
      * @param probe
      * @return
-     * @see org.palladiosimulator.probeframework.calculator.ICalculatorFactory#buildDemandCalculator(java.lang.String, org.palladiosimulator.probeframework.probes.Probe)
+     * @see org.palladiosimulator.probeframework.calculator.ICalculatorFactory#buildDemandCalculator(java.lang.String,
+     *      org.palladiosimulator.probeframework.probes.Probe)
      */
     @Override
     public Calculator buildDemandCalculator(final String calculatorName, final Probe probe) {
-        if(calculators.containsKey(calculatorName)) {
+        if (calculators.containsKey(calculatorName)) {
             return calculators.get(calculatorName);
         }
         return register(decoratedFactory.buildDemandCalculator(calculatorName, probe), calculatorName);
@@ -119,19 +126,20 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
      * @param calculatorName
      * @param probe
      * @return
-     * @see org.palladiosimulator.probeframework.calculator.ICalculatorFactory#buildExecutionResultCalculator(java.lang.String, org.palladiosimulator.probeframework.probes.Probe)
+     * @see org.palladiosimulator.probeframework.calculator.ICalculatorFactory#buildExecutionResultCalculator(java.lang.String,
+     *      org.palladiosimulator.probeframework.probes.Probe)
      */
     @Override
     public Calculator buildExecutionResultCalculator(final String calculatorName, final Probe probe) {
-        if(calculators.containsKey(calculatorName)) {
+        if (calculators.containsKey(calculatorName)) {
             return calculators.get(calculatorName);
         }
         return register(decoratedFactory.buildExecutionResultCalculator(calculatorName, probe), calculatorName);
     }
-    
+
     @Override
     public Calculator buildIdentityCalculator(String calculatorName, Probe probe) {
-        if(calculators.containsKey(calculatorName)) {
+        if (calculators.containsKey(calculatorName)) {
             return calculators.get(calculatorName);
         }
         return register(decoratedFactory.buildExecutionResultCalculator(calculatorName, probe), calculatorName);
@@ -157,7 +165,7 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
 
     public Calculator getCalculatorByName(final String calculatorName) {
         // If calculator already exists, return it
-        if(calculators.containsKey(calculatorName)) {
+        if (calculators.containsKey(calculatorName)) {
             return calculators.get(calculatorName);
         }
         throw new IllegalArgumentException("Calculator not found.");

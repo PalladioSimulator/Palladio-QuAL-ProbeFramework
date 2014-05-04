@@ -46,7 +46,7 @@ public class ProbeSetTests {
         cpuResource = new SimpleCPUResource();
         currentCPUStateProbe = new ExampleTakeCPUStateStrategy(cpuResource);
 
-        probeSet = new TriggeredProbeSet(Arrays.asList(currentTimeProbe, currentCPUStateProbe),"CPU State");
+        probeSet = new TriggeredProbeSet(Arrays.asList(currentTimeProbe, currentCPUStateProbe), "CPU State");
     }
 
     @Test
@@ -79,7 +79,8 @@ public class ProbeSetTests {
         cpuResource.setJobs(2);
         final ExampleTakeCPUDemandStrategy probe = new ExampleTakeCPUDemandStrategy(cpuResource);
 
-        final EventProbeSet eventProbeSet = new EventProbeSet(probe, Arrays.asList(currentTimeProbe,currentCPUStateProbe), "Composed");
+        final EventProbeSet eventProbeSet = new EventProbeSet(probe, Arrays.asList(currentTimeProbe,
+                currentCPUStateProbe), "Composed");
         eventProbeSet.addObserver(new IProbeListener() {
 
             @Override
@@ -94,20 +95,23 @@ public class ProbeSetTests {
         assertTrue(lastMeasurement != null);
         assertTrue(lastMeasurement.getMeasurement() instanceof MeasurementTupple);
 
-        final Measure<Double,Duration> demandResult = lastMeasurement.getMeasurement().getMeasureForMetric(MetricDescriptionConstants.RESOURCE_DEMAND_METRIC);
-        final Measure<Double,Duration> timeResult = lastMeasurement.getMeasurement().getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
-        final Measure<Long,Dimensionless> stateResult = lastMeasurement.getMeasurement().getMeasureForMetric(MetricDescriptionConstants.CPU_STATE_METRIC);
+        final Measure<Double, Duration> demandResult = lastMeasurement.getMeasurement().getMeasureForMetric(
+                MetricDescriptionConstants.RESOURCE_DEMAND_METRIC);
+        final Measure<Double, Duration> timeResult = lastMeasurement.getMeasurement().getMeasureForMetric(
+                MetricDescriptionConstants.POINT_IN_TIME_METRIC);
+        final Measure<Long, Dimensionless> stateResult = lastMeasurement.getMeasurement().getMeasureForMetric(
+                MetricDescriptionConstants.CPU_STATE_METRIC);
 
-        assertTrue(demandResult.compareTo(Measure.valueOf(20.0d, SI.SECOND))==0);
+        assertTrue(demandResult.compareTo(Measure.valueOf(20.0d, SI.SECOND)) == 0);
 
         final MeasurementTupple measurementSet = (MeasurementTupple) lastMeasurement.getMeasurement();
 
         assertEquals(measurementSet.getSubsumedMeasurements().size(), 3);
         assertEquals(measurementSet.getSubsumedMeasurements().get(1).getMetricDesciption(),
                 MetricDescriptionConstants.POINT_IN_TIME_METRIC);
-        assertTrue(timeResult.compareTo(Measure.valueOf(100.0d, SI.SECOND))==0);
+        assertTrue(timeResult.compareTo(Measure.valueOf(100.0d, SI.SECOND)) == 0);
         assertEquals(measurementSet.getSubsumedMeasurements().get(2).getMetricDesciption(),
                 MetricDescriptionConstants.CPU_STATE_METRIC);
-        assertTrue(stateResult.compareTo(Measure.valueOf(2l, Unit.ONE))==0);
+        assertTrue(stateResult.compareTo(Measure.valueOf(2l, Unit.ONE)) == 0);
     }
 }

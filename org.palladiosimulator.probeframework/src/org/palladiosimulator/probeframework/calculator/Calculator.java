@@ -20,14 +20,13 @@ import org.palladiosimulator.probeframework.measurement.RequestContext;
 import org.palladiosimulator.probeframework.probes.listener.IProbeListener;
 
 /**
- * This class is the abstract super class for all Calculator implementations.
- * All specific Calculators have to inherit from this class.
+ * This class is the abstract super class for all Calculator implementations. All specific
+ * Calculators have to inherit from this class.
  * <p>
- * Calculators observe the {@link ISampleBlackboard} for probe set samples
- * (Observer Pattern). As soon as a new probe set sample is published at the
- * blackboard, the {@link #execute(MeasurementTupple)} method is invoked. The
- * calculator have to decide, whether the probe set sample is of interest for
- * the calculation.
+ * Calculators observe the {@link ISampleBlackboard} for probe set samples (Observer Pattern). As
+ * soon as a new probe set sample is published at the blackboard, the
+ * {@link #execute(MeasurementTupple)} method is invoked. The calculator have to decide, whether the
+ * probe set sample is of interest for the calculation.
  * 
  * TODO Add "remove methods" for listeners
  * 
@@ -45,12 +44,14 @@ public abstract class Calculator extends MeasurementSource implements IProbeList
         super(computedMetric);
         this.probeFrameworkContext = ctx;
     }
-    
+
     /**
      * Calculates measurements based on a given probe sample of a single, unary probe.
      * 
-     * @param sample Sample conforming to the probeSetID of this calculator.
-     * @return List of measures that conforms to the static declaration of the metrics of this class of calculators.
+     * @param sample
+     *            Sample conforming to the probeSetID of this calculator.
+     * @return List of measures that conforms to the static declaration of the metrics of this class
+     *         of calculators.
      * @throws CalculatorException
      */
     abstract protected Measurement calculate(List<ProbeMeasurement> measurementMemory) throws CalculatorException;
@@ -76,14 +77,11 @@ public abstract class Calculator extends MeasurementSource implements IProbeList
         }
     }
 
-    protected static MetricDescription createMetricSetDescription(final String metricName, final String metricDescription, final List<BaseMetricDescription> metricDescriptions) {
-        final MetricSetDescription result = MetricSetDescriptionBuilder.
-                newMetricSetDescriptionBuilder().
-                name(metricName).
-                textualDescription(metricDescription).
-                subsumedMetrics(POINT_IN_TIME_METRIC).
-                subsumedMetrics(metricDescriptions).
-                build();
+    protected static MetricDescription createMetricSetDescription(final String metricName,
+            final String metricDescription, final List<BaseMetricDescription> metricDescriptions) {
+        final MetricSetDescription result = MetricSetDescriptionBuilder.newMetricSetDescriptionBuilder()
+                .name(metricName).textualDescription(metricDescription).subsumedMetrics(POINT_IN_TIME_METRIC)
+                .subsumedMetrics(metricDescriptions).build();
 
         return result;
     }

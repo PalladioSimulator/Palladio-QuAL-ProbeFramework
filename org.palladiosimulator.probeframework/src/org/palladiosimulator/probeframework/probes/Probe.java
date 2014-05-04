@@ -9,7 +9,8 @@ import org.palladiosimulator.probeframework.probes.listener.IProbeListener;
 
 public abstract class Probe extends MetricEntity implements IAbstractObservable<IProbeListener> {
 
-    private final AbstractObservable<IProbeListener> observableDelegate = new AbstractObservable<IProbeListener>() {};
+    private final AbstractObservable<IProbeListener> observableDelegate = new AbstractObservable<IProbeListener>() {
+    };
 
     protected Probe(final MetricDescription metricDesciption) {
         super(metricDesciption);

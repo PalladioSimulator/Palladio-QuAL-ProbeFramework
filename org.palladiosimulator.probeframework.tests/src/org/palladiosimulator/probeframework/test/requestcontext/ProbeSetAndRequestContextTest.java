@@ -35,9 +35,12 @@ public class ProbeSetAndRequestContextTest {
 
     @Before
     public void setUp() {
-        final BasicTriggeredProbe<Double,Duration> probe1 = new ExampleTakeCurrentTimeStrategy(new SimpleSimulationContext());
-        final BasicTriggeredProbe<Double,Duration> probe2 = new ExampleTakeCurrentTimeStrategy(new SimpleSimulationContext());
-        final BasicTriggeredProbe<Double,Duration> probe3 = new ExampleTakeCurrentTimeStrategy(new SimpleSimulationContext());
+        final BasicTriggeredProbe<Double, Duration> probe1 = new ExampleTakeCurrentTimeStrategy(
+                new SimpleSimulationContext());
+        final BasicTriggeredProbe<Double, Duration> probe2 = new ExampleTakeCurrentTimeStrategy(
+                new SimpleSimulationContext());
+        final BasicTriggeredProbe<Double, Duration> probe3 = new ExampleTakeCurrentTimeStrategy(
+                new SimpleSimulationContext());
         pssID1_1_1 = new ProbeAndRequestContext(probe1, new RequestContext("1"));
         pssID1_1_2 = new ProbeAndRequestContext(probe1, new RequestContext("1"));
         pssID1_3_1 = new ProbeAndRequestContext(probe1, new RequestContext("3"));
@@ -51,8 +54,8 @@ public class ProbeSetAndRequestContextTest {
 
     @Test
     public void testSame() {
-        assertEquals(pssID1_1_1,pssID1_1_1);
-        assertEquals(pssID1_1_1,pssID1_1_2);
+        assertEquals(pssID1_1_1, pssID1_1_1);
+        assertEquals(pssID1_1_1, pssID1_1_2);
     }
 
     @Test

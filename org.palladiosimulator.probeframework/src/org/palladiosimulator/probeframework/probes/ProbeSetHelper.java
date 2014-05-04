@@ -22,11 +22,8 @@ public final class ProbeSetHelper {
             textualDescriptionBuilder.append(probe.getMetricDesciption().getName());
             textualDescriptionBuilder.append(">");
         }
-        final MetricSetDescription result = MetricSetDescriptionBuilder.
-                newMetricSetDescriptionBuilder().
-                name(metricName).
-                textualDescription(textualDescriptionBuilder.toString()).
-                build();
+        final MetricSetDescription result = MetricSetDescriptionBuilder.newMetricSetDescriptionBuilder()
+                .name(metricName).textualDescription(textualDescriptionBuilder.toString()).build();
         for (final Probe probe : subsumedProbes) {
             result.getSubsumedMetrics().add(probe.getMetricDesciption());
         }

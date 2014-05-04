@@ -23,7 +23,7 @@ public class ProbeFrameworkContext {
     public ICalculatorFactory getCalculatorFactory() {
         return calculatorFactory;
     }
-    
+
     public void finish() {
         this.calculatorFactory.finish();
     }

@@ -16,7 +16,7 @@ public class ExampleTakePassiveResourceState extends BasicObjectStateProbe<ASimp
 
     @Override
     protected Measure<Long, Dimensionless> getBasicMeasure(final RequestContext measurementContext) {
-        return Measure.valueOf((long)getStateObject().getFree(), Unit.ONE);
+        return Measure.valueOf((long) getStateObject().getFree(), Unit.ONE);
     }
 
 }

@@ -9,20 +9,20 @@ import org.palladiosimulator.probeframework.measurement.RequestContext;
 import org.palladiosimulator.probeframework.probes.BasicObjectStateProbe;
 
 /**
- * ProbeStrategy which is able to measure the current simulated time. The
- * simulated time's unit is assumed to be {@link SI#SECOND}.
+ * ProbeStrategy which is able to measure the current simulated time. The simulated time's unit is
+ * assumed to be {@link SI#SECOND}.
  * 
  * @author Philipp Merkle
  * 
  */
-public class ExampleTakeCurrentTimeStrategy extends BasicObjectStateProbe<SimpleSimulationContext, Double,Duration> {
+public class ExampleTakeCurrentTimeStrategy extends BasicObjectStateProbe<SimpleSimulationContext, Double, Duration> {
 
     public ExampleTakeCurrentTimeStrategy(final SimpleSimulationContext simCtx) {
         super(simCtx, MetricDescriptionConstants.POINT_IN_TIME_METRIC);
     }
 
     @Override
-    protected Measure<Double,Duration> getBasicMeasure(final RequestContext measurementContext) {
+    protected Measure<Double, Duration> getBasicMeasure(final RequestContext measurementContext) {
         return Measure.valueOf(getStateObject().getSimulatedTime(), SI.SECOND);
     }
 

@@ -10,10 +10,11 @@ import javax.measure.unit.SI;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.probeframework.probes.BasicEventProbe;
 
-public class ExampleTakeCPUDemandStrategy extends BasicEventProbe<ASimpleActiveResource, Double, Duration> implements Observer {
+public class ExampleTakeCPUDemandStrategy extends BasicEventProbe<ASimpleActiveResource, Double, Duration> implements
+        Observer {
 
     public ExampleTakeCPUDemandStrategy(final ASimpleActiveResource myResource) {
-        super(myResource,MetricDescriptionConstants.RESOURCE_DEMAND_METRIC);
+        super(myResource, MetricDescriptionConstants.RESOURCE_DEMAND_METRIC);
     }
 
     @Override
