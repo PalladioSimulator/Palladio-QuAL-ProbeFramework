@@ -21,18 +21,19 @@ public class HoldTimeCalculator extends TimeSpanCalculator {
     /**
      * Default Constructor.
      * 
-     * @param ctx
-     *            the {@link ProbeFrameworkContext}
-     * @param startHoldProbeSetID
-     *            references the ProbeSet which represents the starting point for the hold time
-     *            measurement
-     * @param stopHoldProbeSetID
-     *            references the ProbeSet which represents the final point for the hold time
-     *            measurement
+     * @param context
+     *            ProbeFrameworkContext as needed by the superclass.
+     * @param metricName
+     *            Name of the metric to be calculated. Dynamically created as it depends on the
+     *            referred resource.
+     * @param metricDescription
+     *            Textual description of the metric.
+     * @param probes
+     *            The two probes for starting point of hold time and final point of hold time.
      */
-    public HoldTimeCalculator(final ProbeFrameworkContext ctx, final String metricName, final String metricDescription,
-            final List<Probe> probes) {
-        super(ctx, Calculator
-                .createMetricSetDescription(metricName, metricDescription, Arrays.asList(HOLD_TIME_METRIC)), probes);
+    public HoldTimeCalculator(final ProbeFrameworkContext context, final String metricName,
+            final String metricDescription, final List<Probe> probes) {
+        super(context, Calculator.createMetricSetDescription(metricName, metricDescription,
+                Arrays.asList(HOLD_TIME_METRIC)), probes);
     }
 }

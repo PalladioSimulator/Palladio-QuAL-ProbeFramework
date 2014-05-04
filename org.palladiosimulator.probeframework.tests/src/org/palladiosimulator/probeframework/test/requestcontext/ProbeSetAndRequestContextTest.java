@@ -18,18 +18,20 @@ import org.palladiosimulator.probeframework.probes.example.SimpleSimulationConte
 
 /**
  * 
- * @author Faber
- * 
+ * @author Faber, Sebastian Lehrig
  */
 @RunWith(JUnit4.class)
 public class ProbeSetAndRequestContextTest {
 
-    private ProbeAndRequestContext pssID1_1_1;
-    private ProbeAndRequestContext pssID1_1_2;
-    private ProbeAndRequestContext pssID2_3_1;
-    private ProbeAndRequestContext pssID1_3_1;
-    private ProbeAndRequestContext pssID3_1_1;
+    private ProbeAndRequestContext pssProbe1Context1A;
+    private ProbeAndRequestContext pssProbe1Context1B;
+    private ProbeAndRequestContext pssProbe1Context3;
+    private ProbeAndRequestContext pssProbe2Context3;
+    private ProbeAndRequestContext pssProbe3Context1;
 
+    /**
+     * Default constructor (empty).
+     */
     public ProbeSetAndRequestContextTest() {
     }
 
@@ -41,11 +43,11 @@ public class ProbeSetAndRequestContextTest {
                 new SimpleSimulationContext());
         final BasicTriggeredProbe<Double, Duration> probe3 = new ExampleTakeCurrentTimeStrategy(
                 new SimpleSimulationContext());
-        pssID1_1_1 = new ProbeAndRequestContext(probe1, new RequestContext("1"));
-        pssID1_1_2 = new ProbeAndRequestContext(probe1, new RequestContext("1"));
-        pssID1_3_1 = new ProbeAndRequestContext(probe1, new RequestContext("3"));
-        pssID3_1_1 = new ProbeAndRequestContext(probe3, new RequestContext("1"));
-        pssID2_3_1 = new ProbeAndRequestContext(probe2, new RequestContext("3"));
+        pssProbe1Context1A = new ProbeAndRequestContext(probe1, new RequestContext("1"));
+        pssProbe1Context1B = new ProbeAndRequestContext(probe1, new RequestContext("1"));
+        pssProbe1Context3 = new ProbeAndRequestContext(probe1, new RequestContext("3"));
+        pssProbe3Context1 = new ProbeAndRequestContext(probe3, new RequestContext("1"));
+        pssProbe2Context3 = new ProbeAndRequestContext(probe2, new RequestContext("3"));
     }
 
     @After
@@ -54,20 +56,20 @@ public class ProbeSetAndRequestContextTest {
 
     @Test
     public void testSame() {
-        assertEquals(pssID1_1_1, pssID1_1_1);
-        assertEquals(pssID1_1_1, pssID1_1_2);
+        assertEquals(pssProbe1Context1A, pssProbe1Context1A);
+        assertEquals(pssProbe1Context1A, pssProbe1Context1B);
     }
 
     @Test
     public void testDifferentTrue() {
-        assertFalse(pssID1_1_1.equals(pssID3_1_1));
+        assertFalse(pssProbe1Context1A.equals(pssProbe3Context1));
     }
 
     @Test
     public void testDifferentFalse() {
-        assertFalse(pssID1_1_1.equals(pssID2_3_1));
-        assertFalse(pssID1_1_1.equals(pssID1_3_1));
-        assertFalse(pssID1_1_1.equals(pssID3_1_1));
+        assertFalse(pssProbe1Context1A.equals(pssProbe2Context3));
+        assertFalse(pssProbe1Context1A.equals(pssProbe1Context3));
+        assertFalse(pssProbe1Context1A.equals(pssProbe3Context1));
     }
 
 }

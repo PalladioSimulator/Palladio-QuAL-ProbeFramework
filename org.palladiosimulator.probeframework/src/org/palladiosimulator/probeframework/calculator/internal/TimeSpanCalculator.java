@@ -15,7 +15,6 @@ import org.palladiosimulator.measurementspec.MeasurementTupple;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.metricspec.MetricSetDescription;
 import org.palladiosimulator.probeframework.ProbeFrameworkContext;
-import org.palladiosimulator.probeframework.exceptions.CalculatorException;
 import org.palladiosimulator.probeframework.measurement.ProbeMeasurement;
 import org.palladiosimulator.probeframework.probes.Probe;
 
@@ -25,21 +24,34 @@ import org.palladiosimulator.probeframework.probes.Probe;
  * point in time from the first point in time.
  * 
  * @author Sebastian Lehrig, Steffen Becker
- * 
  */
 public abstract class TimeSpanCalculator extends NaryCalculator {
 
-    public TimeSpanCalculator(final ProbeFrameworkContext ctx, final MetricDescription metricDescriptions,
+    /**
+     * Default constructor.
+     * 
+     * @param context
+     *            ProbeFrameworkContext as needed by the superclass.
+     * @param metricDescription
+     *            MetricDescription as needed by the superclass.
+     * @param probes
+     *            Probes as needed by the superclass.
+     */
+    protected TimeSpanCalculator(final ProbeFrameworkContext context, final MetricDescription metricDescription,
             final List<Probe> probes) {
-        super(ctx, metricDescriptions, probes);
+        super(context, metricDescription, probes);
     }
 
     /**
+     * Calculates a time span based on subtracting two points in time.
+     * 
+     * @param probeMeasurements
+     *            List containing the two points in time probes measurements.
+     * @return The newly calculated measurement.
      * @see org.palladiosimulator.probeframework.calculator.Calculator#calculate
-     *      (org.palladiosimulator.measurementspec.MeasurementTupple)
      */
     @Override
-    protected Measurement calculate(final List<ProbeMeasurement> probeMeasurements) throws CalculatorException {
+    protected Measurement calculate(final List<ProbeMeasurement> probeMeasurements) {
         final List<Measurement> result = new ArrayList<Measurement>(2);
 
         final Measure<Double, Duration> startTimeMeasure = probeMeasurements.get(0).getMeasurement()

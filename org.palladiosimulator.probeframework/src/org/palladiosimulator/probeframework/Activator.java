@@ -5,6 +5,8 @@ import org.osgi.framework.BundleContext;
 
 /**
  * The activator class controls the plug-in life cycle
+ * 
+ * TODO check whether wheather/why this class is needed. [Lehrig]
  */
 public class Activator extends Plugin {
 

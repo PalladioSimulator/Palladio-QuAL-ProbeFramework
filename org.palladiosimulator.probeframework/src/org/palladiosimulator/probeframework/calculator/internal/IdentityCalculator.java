@@ -6,6 +6,7 @@ import org.palladiosimulator.measurementspec.Measurement;
 import org.palladiosimulator.measurementspec.MeasurementTupple;
 import org.palladiosimulator.metricspec.MetricSetDescription;
 import org.palladiosimulator.probeframework.ProbeFrameworkContext;
+import org.palladiosimulator.probeframework.exceptions.CalculatorException;
 import org.palladiosimulator.probeframework.measurement.ProbeMeasurement;
 import org.palladiosimulator.probeframework.probes.Probe;
 
@@ -21,27 +22,34 @@ public class IdentityCalculator extends UnaryCalculator {
     /**
      * Default constructor. Directly passes all elements to the unary calculator constructor.
      * 
-     * @param ctx
-     *            the {@link ProbeFrameworkContext}
+     * @param context
+     *            ProbeFrameworkContext as needed by the superclass.
      * @param probe
-     *            the referred probe
+     *            The observed probe.
      */
-    public IdentityCalculator(final ProbeFrameworkContext ctx, final Probe probe) {
-        super(ctx, probe.getMetricDesciption(), probe);
+    public IdentityCalculator(final ProbeFrameworkContext context, final Probe probe) {
+        super(context, probe.getMetricDesciption(), probe);
     }
 
     /**
+     * This calculation directly lets a single probe measurement pass through.
+     * 
+     * @param probeMeasurements
+     *            The list of probe measurements is expected to contain a single measurement of type
+     *            MeasurementTupple.
+     * @return The probe measurement value wrapped in a measurement.
+     * @throws CalculatorException
+     *             In case the first list element is not a MeasurementTupple.
      * @see org.palladiosimulator.probeframework.calculator.Calculator#calculate
-     *      (org.palladiosimulator.measurementspec.MeasurementTupple)
      */
     @Override
-    protected Measurement calculate(final List<ProbeMeasurement> probeMeasurements) {
+    protected Measurement calculate(final List<ProbeMeasurement> probeMeasurements) throws CalculatorException {
         final Measurement measurement = probeMeasurements.get(0).getMeasurement();
         if (measurement instanceof MeasurementTupple) {
             return new MeasurementTupple(((MeasurementTupple) measurement).getSubsumedMeasurements(),
                     (MetricSetDescription) this.getMetricDesciption());
         } else {
-            throw new IllegalStateException("MeasurementTupple expected for identity calculators");
+            throw new CalculatorException("MeasurementTupple expected for identity calculators");
         }
     }
 }

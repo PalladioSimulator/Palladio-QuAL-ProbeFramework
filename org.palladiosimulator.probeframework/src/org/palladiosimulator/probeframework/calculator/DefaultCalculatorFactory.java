@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.palladiosimulator.probeframework.calculator;
 
 import java.util.List;
@@ -14,16 +11,14 @@ import org.palladiosimulator.probeframework.calculator.internal.WaitingTimeCalcu
 import org.palladiosimulator.probeframework.probes.Probe;
 
 /**
- * @author snowball
  * 
+ * 
+ * @author Steffen Becker, Sebastian Lehrig
  */
 public class DefaultCalculatorFactory implements ICalculatorFactory {
 
     private ProbeFrameworkContext probeFrameworkContext;
 
-    /**
-     * 
-     */
     public DefaultCalculatorFactory() {
         super();
     }

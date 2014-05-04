@@ -22,18 +22,19 @@ public class WaitingTimeCalculator extends TimeSpanCalculator {
     /**
      * Default Constructor.
      * 
-     * @param ctx
-     *            the {@link ProbeFrameworkContext}
-     * @param startWaitingProbeSetID
-     *            references the ProbeSet which represents the starting point for the waiting time
-     *            measurement
-     * @param stopWaitingProbeSetID
-     *            references the ProbeSet which represents the final point for the waiting time
-     *            measurement
+     * @param context
+     *            ProbeFrameworkContext as needed by the superclass.
+     * @param metricName
+     *            Name of the metric to be calculated. Dynamically created as it depends on the
+     *            referred resource.
+     * @param metricDescription
+     *            Textual description of the metric.
+     * @param probes
+     *            The two probes for starting point of waiting time and final point of waiting time.
      */
-    public WaitingTimeCalculator(final ProbeFrameworkContext ctx, final String metricName,
+    public WaitingTimeCalculator(final ProbeFrameworkContext context, final String metricName,
             final String metricDescription, final List<Probe> probes) {
-        super(ctx, Calculator.createMetricSetDescription(metricName, metricDescription,
+        super(context, Calculator.createMetricSetDescription(metricName, metricDescription,
                 Arrays.asList(WAITING_TIME_METRIC)), probes);
     }
 }
