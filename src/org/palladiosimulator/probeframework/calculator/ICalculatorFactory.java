@@ -15,7 +15,13 @@ import org.palladiosimulator.probeframework.probes.Probe;
  */
 public interface ICalculatorFactory {
 
-    public abstract void setProbeFrameworkContext(ProbeFrameworkContext probeFrameworkContext);
+    /**
+     * Setter method for the ProbeFrameworkContext. Calculators are constructed using this context.
+     * 
+     * @param probeFrameworkContext
+     *            The ProbeFrameworkContext object to be used for constructing calculators.
+     */
+    public abstract void setProbeFrameworkContext(final ProbeFrameworkContext probeFrameworkContext);
 
     /**
      * Creates a response time calculator object based on the given name and the given probes.
@@ -27,7 +33,7 @@ public interface ICalculatorFactory {
      *            operation call.
      * @return A new response time calculator object.
      */
-    public abstract Calculator buildResponseTimeCalculator(String calculatorName, List<Probe> probes);
+    public abstract Calculator buildResponseTimeCalculator(final String calculatorName, final List<Probe> probes);
 
     /**
      * Creates a demand-based waiting time calculator object based on the given name and the given
@@ -40,7 +46,7 @@ public interface ICalculatorFactory {
      *            event, and (3) the demanded time at the resource.
      * @return A new demand-based waiting time calculator object.
      */
-    public abstract Calculator buildDemandBasedWaitingTimeCalculator(String calculatorName, List<Probe> probes);
+    public abstract Calculator buildDemandBasedWaitingTimeCalculator(final String calculatorName, final List<Probe> probes);
 
     /**
      * Creates a waiting time calculator object based on the given name and the given probes.
@@ -52,7 +58,7 @@ public interface ICalculatorFactory {
      *            waiting time.
      * @return A new waiting time calculator object.
      */
-    public abstract Calculator buildWaitingTimeCalculator(String calculatorName, List<Probe> probes);
+    public abstract Calculator buildWaitingTimeCalculator(final String calculatorName, final List<Probe> probes);
 
     /**
      * Creates a hold time calculator object based on the given name and the given probes.
@@ -63,7 +69,7 @@ public interface ICalculatorFactory {
      *            List of two probes for starting point of hold time and final point of hold time.
      * @return A new hold time time calculator object.
      */
-    public abstract Calculator buildHoldTimeCalculator(String calculatorName, List<Probe> probes);
+    public abstract Calculator buildHoldTimeCalculator(final String calculatorName, final List<Probe> probes);
 
     /**
      * Creates a state calculator object based on the given name and the given probe.
@@ -74,7 +80,7 @@ public interface ICalculatorFactory {
      *            A single probe providing the resource state of interest.
      * @return A new state calculator object.
      */
-    public abstract Calculator buildStateCalculator(String calculatorName, Probe probe);
+    public abstract Calculator buildStateCalculator(final String calculatorName, final Probe probe);
 
     /**
      * Creates an overall utilization calculator object based on the given name and the given probe.
@@ -85,7 +91,7 @@ public interface ICalculatorFactory {
      *            A single probe providing the resource state of interest.
      * @return A new overall utilization calculator object.
      */
-    public abstract Calculator buildOverallUtilizationCalculator(String calculatorName, Probe probe);
+    public abstract Calculator buildOverallUtilizationCalculator(final String calculatorName, final Probe probe);
 
     /**
      * Creates a demand calculator object based on the given name and the given probe.
@@ -96,7 +102,7 @@ public interface ICalculatorFactory {
      *            A single probe providing the resource demand.
      * @return A new demand calculator object.
      */
-    public abstract Calculator buildDemandCalculator(String calculatorName, Probe probe);
+    public abstract Calculator buildDemandCalculator(final String calculatorName, final Probe probe);
 
     /**
      * Creates an execution result calculator object based on the given name and the given probe.
@@ -107,7 +113,7 @@ public interface ICalculatorFactory {
      *            A single probe providing the execution results.
      * @return A new execution result calculator object.
      */
-    public abstract Calculator buildExecutionResultCalculator(String calculatorName, Probe probe);
+    public abstract Calculator buildExecutionResultCalculator(final String calculatorName, final Probe probe);
 
     /**
      * Creates an identity calculator object based on the given name and the given probe.
@@ -119,6 +125,6 @@ public interface ICalculatorFactory {
      *            A single probe directly providing the result of interest.
      * @return A new identity calculator object.
      */
-    public abstract Calculator buildIdentityCalculator(String calculatorName, Probe probe);
+    public abstract Calculator buildIdentityCalculator(final String calculatorName, final Probe probe);
 
 }
