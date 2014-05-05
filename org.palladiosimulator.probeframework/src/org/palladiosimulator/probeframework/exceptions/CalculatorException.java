@@ -1,7 +1,7 @@
 package org.palladiosimulator.probeframework.exceptions;
 
 /**
- * This Exception arises if something during the execution of the Calculator went wrong.
+ * This Exception arises if something during the execution of a calculator went wrong.
  * 
  * @author Faber, Sebastian Lehrig
  */
