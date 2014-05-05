@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.palladiosimulator.probeframework.probes;
 
 import java.util.List;
@@ -10,8 +7,7 @@ import org.palladiosimulator.metricspec.MetricSetDescription;
 import org.palladiosimulator.metricspec.util.builder.MetricSetDescriptionBuilder;
 
 /**
- * @author snowball
- * 
+ * @author Steffen Becker, Sebastian Lehrig
  */
 public final class ProbeSetHelper {
 
