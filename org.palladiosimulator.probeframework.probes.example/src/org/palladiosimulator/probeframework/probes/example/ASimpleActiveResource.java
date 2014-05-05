@@ -7,8 +7,7 @@ import java.util.Observable;
  * <p>
  * The state of a concrete example active resource can be manually controlled.
  * 
- * @author pmerkle
- * 
+ * @author pmerkle, Sebastian Lehrig
  */
 public abstract class ASimpleActiveResource extends Observable {
 
@@ -34,6 +33,12 @@ public abstract class ASimpleActiveResource extends Observable {
         this.jobs = jobs;
     }
 
+    /**
+     * Puts demand on the active resource.
+     * 
+     * @param demand
+     *            Demand to the resource.
+     */
     public void demand(final double demand) {
         this.setChanged();
         this.notifyObservers(demand);

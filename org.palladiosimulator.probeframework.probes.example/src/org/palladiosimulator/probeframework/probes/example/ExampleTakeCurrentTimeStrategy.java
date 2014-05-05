@@ -9,18 +9,33 @@ import org.palladiosimulator.probeframework.measurement.RequestContext;
 import org.palladiosimulator.probeframework.probes.BasicObjectStateProbe;
 
 /**
- * ProbeStrategy which is able to measure the current simulated time. The simulated time's unit is
- * assumed to be {@link SI#SECOND}.
+ * Measures a point in time metric (in {@link SI#SECOND}) by taking the current simulation time of a
+ * simulation (observed state object). This class uses <code>SimpleSimulationContext</code> as an
+ * example simulation state object.
  * 
- * @author Philipp Merkle
- * 
+ * @author Steffen Becker, Sebastian Lehrig
  */
 public class ExampleTakeCurrentTimeStrategy extends BasicObjectStateProbe<SimpleSimulationContext, Double, Duration> {
 
-    public ExampleTakeCurrentTimeStrategy(final SimpleSimulationContext simCtx) {
-        super(simCtx, MetricDescriptionConstants.POINT_IN_TIME_METRIC);
+    /**
+     * Default constructor.
+     * 
+     * @param simulationContext
+     *            The observer object is a simulation state object, thus, allowing to request its
+     *            current simulation time.
+     */
+    public ExampleTakeCurrentTimeStrategy(final SimpleSimulationContext simulationContext) {
+        super(simulationContext, MetricDescriptionConstants.POINT_IN_TIME_METRIC);
     }
 
+    /**
+     * Measures the current simulation time as requested from the simulation context (observed state
+     * object).
+     * 
+     * @param measurementContext
+     *            The measurement context for this probe.
+     * @return The new measure.
+     */
     @Override
     protected Measure<Double, Duration> getBasicMeasure(final RequestContext measurementContext) {
         return Measure.valueOf(getStateObject().getSimulatedTime(), SI.SECOND);
