@@ -7,173 +7,185 @@ import java.util.Map;
 import org.palladiosimulator.probeframework.ProbeFrameworkContext;
 import org.palladiosimulator.probeframework.probes.Probe;
 
+/**
+ * Decorates an existing ICalculatorFactory by a register for its calculators. In case a calculator
+ * is registered in this register, this factory directly returns the calculator from it. Otherwise,
+ * a new calculator is instantiated, put into the register, and returned.
+ * 
+ * Furthermore, this class provides convenience methods for cleaning up calculators (detach their
+ * probes and cleaning the register; c.f., <code>finish</code> method) as well as requesting a
+ * calculator by its name (c.f., <code>getCalculatorByName</code> method).
+ * 
+ * @see ICalculatorFactory
+ * 
+ * @author Steffen Becker, Sebastian Lehrig
+ */
 public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
 
+    /** Factory to be decorated by a register. */
     private final ICalculatorFactory decoratedFactory;
-    private final Map<String, Calculator> calculators = new HashMap<String, Calculator>();
 
-    public RegisterCalculatorFactoryDecorator(final ICalculatorFactory calcFactory) {
+    /** Register for calculators. */
+    private final Map<String, Calculator> calculatorRegister = new HashMap<String, Calculator>();
+
+    /**
+     * Default constructor. Decorates given factory by a register.
+     * 
+     * @param decoratedFactory
+     *            The calculator factory to be decorated.
+     */
+    public RegisterCalculatorFactoryDecorator(final ICalculatorFactory decoratedFactory) {
         super();
-        this.decoratedFactory = calcFactory;
+        this.decoratedFactory = decoratedFactory;
     }
 
     /**
-     * @param calculatorName
-     * @param probes
-     * @return
-     * @see org.palladiosimulator.probeframework.calculator.ICalculatorFactory#buildResponseTimeCalculator(java.lang.String,
-     *      java.util.List)
+     * Cleans up all registered calculators by detaching all probes, informing each calculator about
+     * being unregistered, and cleaning the register.
      */
-    @Override
-    public Calculator buildResponseTimeCalculator(final String calculatorName, final List<Probe> probes) {
-        if (calculators.containsKey(calculatorName)) {
-            return calculators.get(calculatorName);
+    public void finish() {
+        for (final Calculator calculator : this.calculatorRegister.values()) {
+            calculator.detachProbes();
+            calculator.preUnregister();
         }
-        return register(decoratedFactory.buildResponseTimeCalculator(calculatorName, probes), calculatorName);
+        // clear calculatorRegister
+        calculatorRegister.clear();
     }
 
     /**
+     * Returns the requested calculator from the register based on the given calculator name. If not
+     * present in the register, an <code>IllegalArgumentException</code> is thrown.
+     * 
      * @param calculatorName
-     * @param probes
-     * @return
-     * @see org.palladiosimulator.probeframework.calculator.ICalculatorFactory#buildDemandBasedWaitingTimeCalculator(java.lang.String,
-     *      java.util.List)
+     *            The name of the requested calculator.
+     * @return The requested calculator.
      */
-    @Override
-    public Calculator buildDemandBasedWaitingTimeCalculator(final String calculatorName, final List<Probe> probes) {
-        if (calculators.containsKey(calculatorName)) {
-            return calculators.get(calculatorName);
+    public Calculator getCalculatorByName(final String calculatorName) {
+        // If calculator already exists, return it
+        if (calculatorRegister.containsKey(calculatorName)) {
+            return calculatorRegister.get(calculatorName);
         }
-        return register(decoratedFactory.buildDemandBasedWaitingTimeCalculator(calculatorName, probes), calculatorName);
+        throw new IllegalArgumentException("Calculator not found.");
     }
 
     /**
+     * Registers the given calculator in the register using the given name as an access key.
+     * 
+     * @param calculator
+     *            The calculator to be registered.
      * @param calculatorName
-     * @param probes
-     * @return
-     * @see org.palladiosimulator.probeframework.calculator.ICalculatorFactory#buildWaitingTimeCalculator(java.lang.String,
-     *      java.util.List)
+     *            The name of the calculator to be used as access key.
+     * @return The unmodified calculator (allows for fluent API).
      */
-    @Override
-    public Calculator buildWaitingTimeCalculator(final String calculatorName, final List<Probe> probes) {
-        if (calculators.containsKey(calculatorName)) {
-            return calculators.get(calculatorName);
-        }
-        return register(decoratedFactory.buildWaitingTimeCalculator(calculatorName, probes), calculatorName);
+    private Calculator register(final Calculator calculator, final String calculatorName) {
+        calculatorRegister.put(calculatorName, calculator);
+        return calculator;
     }
 
     /**
-     * @param calculatorName
-     * @param probes
-     * @return
-     * @see org.palladiosimulator.probeframework.calculator.ICalculatorFactory#buildHoldTimeCalculator(java.lang.String,
-     *      java.util.List)
-     */
-    @Override
-    public Calculator buildHoldTimeCalculator(final String calculatorName, final List<Probe> probes) {
-        if (calculators.containsKey(calculatorName)) {
-            return calculators.get(calculatorName);
-        }
-        return register(decoratedFactory.buildHoldTimeCalculator(calculatorName, probes), calculatorName);
-    }
-
-    /**
-     * @param calculatorName
-     * @param probe
-     * @return
-     * @see org.palladiosimulator.probeframework.calculator.ICalculatorFactory#buildStateCalculator(java.lang.String,
-     *      org.palladiosimulator.probeframework.probes.Probe)
-     */
-    @Override
-    public Calculator buildStateCalculator(final String calculatorName, final Probe probe) {
-        if (calculators.containsKey(calculatorName)) {
-            return calculators.get(calculatorName);
-        }
-        return register(decoratedFactory.buildStateCalculator(calculatorName, probe), calculatorName);
-    }
-
-    /**
-     * @param calculatorName
-     * @param probe
-     * @return
-     * @see org.palladiosimulator.probeframework.calculator.ICalculatorFactory#buildOverallUtilizationCalculator(java.lang.String,
-     *      org.palladiosimulator.probeframework.probes.Probe)
-     */
-    @Override
-    public Calculator buildOverallUtilizationCalculator(final String calculatorName, final Probe probe) {
-        if (calculators.containsKey(calculatorName)) {
-            return calculators.get(calculatorName);
-        }
-        return register(decoratedFactory.buildOverallUtilizationCalculator(calculatorName, probe), calculatorName);
-    }
-
-    /**
-     * @param calculatorName
-     * @param probe
-     * @return
-     * @see org.palladiosimulator.probeframework.calculator.ICalculatorFactory#buildDemandCalculator(java.lang.String,
-     *      org.palladiosimulator.probeframework.probes.Probe)
-     */
-    @Override
-    public Calculator buildDemandCalculator(final String calculatorName, final Probe probe) {
-        if (calculators.containsKey(calculatorName)) {
-            return calculators.get(calculatorName);
-        }
-        return register(decoratedFactory.buildDemandCalculator(calculatorName, probe), calculatorName);
-    }
-
-    /**
-     * @param calculatorName
-     * @param probe
-     * @return
-     * @see org.palladiosimulator.probeframework.calculator.ICalculatorFactory#buildExecutionResultCalculator(java.lang.String,
-     *      org.palladiosimulator.probeframework.probes.Probe)
-     */
-    @Override
-    public Calculator buildExecutionResultCalculator(final String calculatorName, final Probe probe) {
-        if (calculators.containsKey(calculatorName)) {
-            return calculators.get(calculatorName);
-        }
-        return register(decoratedFactory.buildExecutionResultCalculator(calculatorName, probe), calculatorName);
-    }
-
-    @Override
-    public Calculator buildIdentityCalculator(String calculatorName, Probe probe) {
-        if (calculators.containsKey(calculatorName)) {
-            return calculators.get(calculatorName);
-        }
-        return register(decoratedFactory.buildExecutionResultCalculator(calculatorName, probe), calculatorName);
-    }
-
-    /**
-     * @param probeFrameworkContext
-     * @see org.palladiosimulator.probeframework.calculator.ICalculatorFactory#setProbeFrameworkContext(org.palladiosimulator.probeframework.ProbeFrameworkContext)
+     * {@inheritDoc}
      */
     @Override
     public void setProbeFrameworkContext(final ProbeFrameworkContext probeFrameworkContext) {
         decoratedFactory.setProbeFrameworkContext(probeFrameworkContext);
     }
 
-    public void finish() {
-        for (final Calculator calculator : this.calculators.values()) {
-            calculator.detachProbes();
-            calculator.preUnregister();
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Calculator buildResponseTimeCalculator(final String calculatorName, final List<Probe> probes) {
+        if (calculatorRegister.containsKey(calculatorName)) {
+            return calculatorRegister.get(calculatorName);
         }
-        // clear calculators
-        calculators.clear();
+        return register(decoratedFactory.buildResponseTimeCalculator(calculatorName, probes), calculatorName);
     }
 
-    public Calculator getCalculatorByName(final String calculatorName) {
-        // If calculator already exists, return it
-        if (calculators.containsKey(calculatorName)) {
-            return calculators.get(calculatorName);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Calculator buildDemandBasedWaitingTimeCalculator(final String calculatorName, final List<Probe> probes) {
+        if (calculatorRegister.containsKey(calculatorName)) {
+            return calculatorRegister.get(calculatorName);
         }
-        throw new IllegalArgumentException("Calculator not found.");
+        return register(decoratedFactory.buildDemandBasedWaitingTimeCalculator(calculatorName, probes), calculatorName);
     }
 
-    private Calculator register(final Calculator calculator, final String calculatorName) {
-        calculators.put(calculatorName, calculator);
-        return calculator;
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Calculator buildWaitingTimeCalculator(final String calculatorName, final List<Probe> probes) {
+        if (calculatorRegister.containsKey(calculatorName)) {
+            return calculatorRegister.get(calculatorName);
+        }
+        return register(decoratedFactory.buildWaitingTimeCalculator(calculatorName, probes), calculatorName);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Calculator buildHoldTimeCalculator(final String calculatorName, final List<Probe> probes) {
+        if (calculatorRegister.containsKey(calculatorName)) {
+            return calculatorRegister.get(calculatorName);
+        }
+        return register(decoratedFactory.buildHoldTimeCalculator(calculatorName, probes), calculatorName);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Calculator buildStateCalculator(final String calculatorName, final Probe probe) {
+        if (calculatorRegister.containsKey(calculatorName)) {
+            return calculatorRegister.get(calculatorName);
+        }
+        return register(decoratedFactory.buildStateCalculator(calculatorName, probe), calculatorName);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Calculator buildOverallUtilizationCalculator(final String calculatorName, final Probe probe) {
+        if (calculatorRegister.containsKey(calculatorName)) {
+            return calculatorRegister.get(calculatorName);
+        }
+        return register(decoratedFactory.buildOverallUtilizationCalculator(calculatorName, probe), calculatorName);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Calculator buildDemandCalculator(final String calculatorName, final Probe probe) {
+        if (calculatorRegister.containsKey(calculatorName)) {
+            return calculatorRegister.get(calculatorName);
+        }
+        return register(decoratedFactory.buildDemandCalculator(calculatorName, probe), calculatorName);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Calculator buildExecutionResultCalculator(final String calculatorName, final Probe probe) {
+        if (calculatorRegister.containsKey(calculatorName)) {
+            return calculatorRegister.get(calculatorName);
+        }
+        return register(decoratedFactory.buildExecutionResultCalculator(calculatorName, probe), calculatorName);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Calculator buildIdentityCalculator(String calculatorName, Probe probe) {
+        if (calculatorRegister.containsKey(calculatorName)) {
+            return calculatorRegister.get(calculatorName);
+        }
+        return register(decoratedFactory.buildExecutionResultCalculator(calculatorName, probe), calculatorName);
+    }
 }

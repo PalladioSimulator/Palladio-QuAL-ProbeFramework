@@ -6,14 +6,16 @@ import org.osgi.framework.BundleContext;
 /**
  * The activator class controls the plug-in life cycle
  * 
- * TODO check whether wheather/why this class is needed. [Lehrig]
+ * TODO check whether whether this class is needed. [Lehrig]
+ * 
+ * @author Sebastian Lehrig
  */
 public class Activator extends Plugin {
 
-    // The plug-in ID
+    /** The plug-in ID */
     public static final String PLUGIN_ID = "org.palladiosimulator.probeframework";
 
-    // The shared instance
+    /** The shared instance */
     private static Activator plugin;
 
     /**
