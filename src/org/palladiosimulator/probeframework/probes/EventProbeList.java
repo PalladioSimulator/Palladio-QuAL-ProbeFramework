@@ -6,29 +6,26 @@ import java.util.List;
 import javax.measure.quantity.Quantity;
 
 import org.palladiosimulator.measurementspec.Measurement;
-import org.palladiosimulator.measurementspec.MeasurementTupple;
+import org.palladiosimulator.measurementspec.MeasurementTuple;
 import org.palladiosimulator.metricspec.MetricSetDescription;
 import org.palladiosimulator.probeframework.measurement.ProbeMeasurement;
 import org.palladiosimulator.probeframework.measurement.RequestContext;
 import org.palladiosimulator.probeframework.probes.listener.IProbeListener;
 
 /**
- * Event probe sets group a set of subsumed, triggered probes that are triggered as soon as an
- * additional, dedicated event probe emits an event. Event probe sets can register themselves to
+ * Event probe lists group a list of subsumed, triggered probes that are triggered as soon as an
+ * additional, dedicated event probe emits an event. Event probe lists can register themselves to
  * this event probe because this class implements the <code>IProbeListener</code> interface. Once a
  * new measurement arrives (via the call-back method <code>newProbeMeasurementAvailable</code>),
- * event probe sets create a measurement tuple by creating a list with the new measurement plus the
+ * event probe lists create a measurement tuple by creating a list with the new measurement plus the
  * measurements from subsumed probes. These measurements are received by invoking
  * <code>doMeasure</code> on each subsumed probe (that is possible since only triggered probes are
  * subsumed). Finally, registered listeners (e.g., calculators) are informed about the newly
  * available measurement tuple.
  * 
- * TODO Why does this class refer to a "set" even though we heavily depend on a list implementation?
- * [Lehrig]
- * 
  * @author Steffen Becker, Sebastian Lehrig
  */
-public class EventProbeSet extends EventProbe<EventProbe<?>> implements IProbeListener {
+public class EventProbeList extends EventProbe<EventProbe<?>> implements IProbeListener {
 
     /** List of subsumed probes. */
     private final List<Probe> subsumedProbes;
@@ -53,9 +50,9 @@ public class EventProbeSet extends EventProbe<EventProbe<?>> implements IProbeLi
      * @throws IllegalArgumentException
      *             If a subsumed probe is not a triggered probe.
      */
-    public <EventSourceType, V, Q extends Quantity> EventProbeSet(final EventProbe<?> eventProbe,
+    public <EventSourceType, V, Q extends Quantity> EventProbeList(final EventProbe<?> eventProbe,
             final List<Probe> subsumedProbes, final String metricName) {
-        super(eventProbe, ProbeSetHelper.getMetricSetDescription(getAllProbesList(eventProbe, subsumedProbes),
+        super(eventProbe, ProbeListHelper.getMetricSetDescription(getAllProbesList(eventProbe, subsumedProbes),
                 metricName));
         for (final Probe probe : subsumedProbes) {
             if (!(probe instanceof TriggeredProbe)) {
@@ -100,7 +97,7 @@ public class EventProbeSet extends EventProbe<EventProbe<?>> implements IProbeLi
                     .getMeasurement());
         }
 
-        final MeasurementTupple result = new MeasurementTupple(measurements,
+        final MeasurementTuple result = new MeasurementTuple(measurements,
                 (MetricSetDescription) getMetricDesciption());
         notifyMeasurementSourceListener(new ProbeMeasurement(result, this, RequestContext.EMPTY_REQUEST_CONTEXT, null));
     }

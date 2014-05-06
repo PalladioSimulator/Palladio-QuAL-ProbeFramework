@@ -11,7 +11,7 @@ import javax.measure.unit.SI;
 
 import org.palladiosimulator.measurementspec.BasicMeasurement;
 import org.palladiosimulator.measurementspec.Measurement;
-import org.palladiosimulator.measurementspec.MeasurementTupple;
+import org.palladiosimulator.measurementspec.MeasurementTuple;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.metricspec.MetricSetDescription;
 import org.palladiosimulator.probeframework.ProbeFrameworkContext;
@@ -68,6 +68,6 @@ public abstract class TimeSpanCalculator extends NaryCalculator {
                 timeSpanMeasure, ((MetricSetDescription) this.getMetricDesciption()).getSubsumedMetrics().get(1));
         result.add(timeSpanMeasurement);
 
-        return new MeasurementTupple(result, (MetricSetDescription) this.getMetricDesciption());
+        return new MeasurementTuple(result, (MetricSetDescription) this.getMetricDesciption());
     }
 }
