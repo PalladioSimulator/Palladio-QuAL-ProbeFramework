@@ -15,6 +15,7 @@ import org.palladiosimulator.measurementspec.MeasurementTuple;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.metricspec.MetricSetDescription;
 import org.palladiosimulator.probeframework.ProbeFrameworkContext;
+import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.probeframework.measurement.ProbeMeasurement;
 import org.palladiosimulator.probeframework.probes.Probe;
 
@@ -25,7 +26,7 @@ import org.palladiosimulator.probeframework.probes.Probe;
  * 
  * @author Sebastian Lehrig, Steffen Becker
  */
-public abstract class TimeSpanCalculator extends NaryCalculator {
+public abstract class TimeSpanCalculator extends Calculator {
 
     /**
      * Default constructor.

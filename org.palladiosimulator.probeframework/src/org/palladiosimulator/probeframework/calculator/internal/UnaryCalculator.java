@@ -4,17 +4,18 @@ import java.util.Arrays;
 
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.probeframework.ProbeFrameworkContext;
+import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.probeframework.probes.Probe;
 
 /**
  * <p>
  * This abstract class represents a unary calculator. Unary calculators expect exactly one probe,
- * thus, restricting n-ary calculators to n=1.
+ * thus, restricting calculators to only one probe.
  * </p>
  * 
  * @author Sebastian Lehrig, Steffen Becker
  */
-public abstract class UnaryCalculator extends NaryCalculator {
+public abstract class UnaryCalculator extends Calculator {
 
     /**
      * Default constructor. Restricts number of observed probes to exactly one.
