@@ -7,15 +7,15 @@ import org.palladiosimulator.metricspec.MetricSetDescription;
 import org.palladiosimulator.metricspec.util.builder.MetricSetDescriptionBuilder;
 
 /**
- * Utility class for coping with sets of probes. Currently, only provides a static method to
- * dynamically create a metric description for a set of probes.
+ * Utility class for coping with lists of probes. Currently, only provides a static method to
+ * dynamically create a metric description for a list of probes.
  * 
  * @author Steffen Becker, Sebastian Lehrig
  */
-public final class ProbeSetHelper {
+public final class ProbeListHelper {
 
     /**
-     * Helper method to dynamically create a metric description for a given set of probes. This
+     * Helper method to dynamically create a metric description for a given list of probes. This
      * description particularly uses the given metric name.
      * 
      * @param subsumedProbes

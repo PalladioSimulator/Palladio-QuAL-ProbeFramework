@@ -3,7 +3,7 @@ package org.palladiosimulator.probeframework.calculator.internal;
 import java.util.List;
 
 import org.palladiosimulator.measurementspec.Measurement;
-import org.palladiosimulator.measurementspec.MeasurementTupple;
+import org.palladiosimulator.measurementspec.MeasurementTuple;
 import org.palladiosimulator.metricspec.MetricSetDescription;
 import org.palladiosimulator.probeframework.ProbeFrameworkContext;
 import org.palladiosimulator.probeframework.exceptions.CalculatorException;
@@ -36,20 +36,20 @@ public class IdentityCalculator extends UnaryCalculator {
      * 
      * @param probeMeasurements
      *            The list of probe measurements is expected to contain a single measurement of type
-     *            MeasurementTupple.
+     *            MeasurementTuple.
      * @return The probe measurement value wrapped in a measurement.
      * @throws CalculatorException
-     *             In case the first list element is not a MeasurementTupple.
+     *             In case the first list element is not a MeasurementTuple.
      * @see org.palladiosimulator.probeframework.calculator.Calculator#calculate
      */
     @Override
     protected Measurement calculate(final List<ProbeMeasurement> probeMeasurements) throws CalculatorException {
         final Measurement measurement = probeMeasurements.get(0).getMeasurement();
-        if (measurement instanceof MeasurementTupple) {
-            return new MeasurementTupple(((MeasurementTupple) measurement).getSubsumedMeasurements(),
+        if (measurement instanceof MeasurementTuple) {
+            return new MeasurementTuple(((MeasurementTuple) measurement).getSubsumedMeasurements(),
                     (MetricSetDescription) this.getMetricDesciption());
         } else {
-            throw new CalculatorException("MeasurementTupple expected for identity calculators");
+            throw new CalculatorException("MeasurementTuple expected for identity calculators");
         }
     }
 }

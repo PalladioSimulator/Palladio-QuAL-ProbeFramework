@@ -9,7 +9,7 @@ import javax.measure.unit.SI;
 
 import org.palladiosimulator.measurementspec.BasicMeasurement;
 import org.palladiosimulator.measurementspec.Measurement;
-import org.palladiosimulator.measurementspec.MeasurementTupple;
+import org.palladiosimulator.measurementspec.MeasurementTuple;
 import org.palladiosimulator.metricspec.MetricSetDescription;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.probeframework.ProbeFrameworkContext;
@@ -90,7 +90,7 @@ public class DemandBasedWaitingTimeCalculator extends WaitingTimeCalculator {
                 .getMeasurementForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC));
         result.add(waitingTimeMeasurement);
 
-        return new MeasurementTupple(result, (MetricSetDescription) this.getMetricDesciption());
+        return new MeasurementTuple(result, (MetricSetDescription) this.getMetricDesciption());
     }
 
 }

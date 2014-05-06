@@ -15,14 +15,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.palladiosimulator.measurementspec.MeasurementTupple;
+import org.palladiosimulator.measurementspec.MeasurementTuple;
 import org.palladiosimulator.metricspec.MetricSetDescription;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.probeframework.measurement.ProbeMeasurement;
 import org.palladiosimulator.probeframework.measurement.RequestContext;
-import org.palladiosimulator.probeframework.probes.EventProbeSet;
+import org.palladiosimulator.probeframework.probes.EventProbeList;
 import org.palladiosimulator.probeframework.probes.Probe;
-import org.palladiosimulator.probeframework.probes.TriggeredProbeSet;
+import org.palladiosimulator.probeframework.probes.TriggeredProbeList;
 import org.palladiosimulator.probeframework.probes.example.ExampleTakeCPUDemandProbe;
 import org.palladiosimulator.probeframework.probes.example.ExampleTakeCPUStateProbe;
 import org.palladiosimulator.probeframework.probes.example.ExampleTakeCurrentTimeProbe;
@@ -31,13 +31,13 @@ import org.palladiosimulator.probeframework.probes.example.SimpleSimulationConte
 import org.palladiosimulator.probeframework.probes.listener.IProbeListener;
 
 @RunWith(JUnit4.class)
-public class ProbeSetTests {
+public class ProbeListTests {
 
     private SimpleSimulationContext simCtx;
     private Probe currentTimeProbe;
     private SimpleCPUResource cpuResource;
     private Probe currentCPUStateProbe;
-    private TriggeredProbeSet probeSet;
+    private TriggeredProbeList probeList;
 
     @Before
     public void setUp() {
@@ -46,42 +46,42 @@ public class ProbeSetTests {
         cpuResource = new SimpleCPUResource();
         currentCPUStateProbe = new ExampleTakeCPUStateProbe(cpuResource);
 
-        probeSet = new TriggeredProbeSet(Arrays.asList(currentTimeProbe, currentCPUStateProbe), "CPU State");
+        probeList = new TriggeredProbeList(Arrays.asList(currentTimeProbe, currentCPUStateProbe), "CPU State");
     }
 
     @Test
-    public void testTriggeredProbeSet() {
+    public void testTriggeredProbeList() {
         simCtx.setSimulatedTime(100.0d);
         cpuResource.setJobs(2);
         final RequestContext requestContext = new RequestContext("1");
 
-        final ProbeMeasurement probeMeasure = probeSet.takeMeasurement(requestContext);
+        final ProbeMeasurement probeMeasure = probeList.takeMeasurement(requestContext);
 
         assertTrue(probeMeasure != null);
-        assertTrue(probeMeasure.getMeasurement() instanceof MeasurementTupple);
+        assertTrue(probeMeasure.getMeasurement() instanceof MeasurementTuple);
         assertTrue(probeMeasure.getMeasurement().getMetricDesciption() instanceof MetricSetDescription);
 
-        final MeasurementTupple measurementSet = (MeasurementTupple) probeMeasure.getMeasurement();
+        final MeasurementTuple measurementTuple = (MeasurementTuple) probeMeasure.getMeasurement();
 
-        assertEquals(measurementSet.getSubsumedMeasurements().size(), 2);
-        assertEquals(measurementSet.getSubsumedMeasurements().get(0).getMetricDesciption(),
+        assertEquals(measurementTuple.getSubsumedMeasurements().size(), 2);
+        assertEquals(measurementTuple.getSubsumedMeasurements().get(0).getMetricDesciption(),
                 MetricDescriptionConstants.POINT_IN_TIME_METRIC);
-        assertEquals(measurementSet.getSubsumedMeasurements().get(1).getMetricDesciption(),
+        assertEquals(measurementTuple.getSubsumedMeasurements().get(1).getMetricDesciption(),
                 MetricDescriptionConstants.CPU_STATE_METRIC);
     }
 
     ProbeMeasurement lastMeasurement;
 
     @Test
-    public void testEventProbeSet() {
+    public void testEventProbeList() {
         lastMeasurement = null;
         simCtx.setSimulatedTime(100.0d);
         cpuResource.setJobs(2);
         final ExampleTakeCPUDemandProbe probe = new ExampleTakeCPUDemandProbe(cpuResource);
 
-        final EventProbeSet eventProbeSet = new EventProbeSet(probe, Arrays.asList(currentTimeProbe,
+        final EventProbeList eventProbeList = new EventProbeList(probe, Arrays.asList(currentTimeProbe,
                 currentCPUStateProbe), "Composed");
-        eventProbeSet.addObserver(new IProbeListener() {
+        eventProbeList.addObserver(new IProbeListener() {
 
             @Override
             public void newProbeMeasurementAvailable(final ProbeMeasurement measurement) {
@@ -93,7 +93,7 @@ public class ProbeSetTests {
         cpuResource.demand(20.0d);
 
         assertTrue(lastMeasurement != null);
-        assertTrue(lastMeasurement.getMeasurement() instanceof MeasurementTupple);
+        assertTrue(lastMeasurement.getMeasurement() instanceof MeasurementTuple);
 
         final Measure<Double, Duration> demandResult = lastMeasurement.getMeasurement().getMeasureForMetric(
                 MetricDescriptionConstants.RESOURCE_DEMAND_METRIC);
@@ -104,13 +104,13 @@ public class ProbeSetTests {
 
         assertTrue(demandResult.compareTo(Measure.valueOf(20.0d, SI.SECOND)) == 0);
 
-        final MeasurementTupple measurementSet = (MeasurementTupple) lastMeasurement.getMeasurement();
+        final MeasurementTuple measurementTuple = (MeasurementTuple) lastMeasurement.getMeasurement();
 
-        assertEquals(measurementSet.getSubsumedMeasurements().size(), 3);
-        assertEquals(measurementSet.getSubsumedMeasurements().get(1).getMetricDesciption(),
+        assertEquals(measurementTuple.getSubsumedMeasurements().size(), 3);
+        assertEquals(measurementTuple.getSubsumedMeasurements().get(1).getMetricDesciption(),
                 MetricDescriptionConstants.POINT_IN_TIME_METRIC);
         assertTrue(timeResult.compareTo(Measure.valueOf(100.0d, SI.SECOND)) == 0);
-        assertEquals(measurementSet.getSubsumedMeasurements().get(2).getMetricDesciption(),
+        assertEquals(measurementTuple.getSubsumedMeasurements().get(2).getMetricDesciption(),
                 MetricDescriptionConstants.CPU_STATE_METRIC);
         assertTrue(stateResult.compareTo(Measure.valueOf(2l, Unit.ONE)) == 0);
     }
