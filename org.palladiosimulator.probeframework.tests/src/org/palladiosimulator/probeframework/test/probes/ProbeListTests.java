@@ -58,6 +58,9 @@ public class ProbeListTests {
      */
     private TriggeredProbeList probeList;
 
+    /** Stores the last received measurement for the <code>testEventProbeList</code> test case. */
+    private ProbeMeasurement lastMeasurement;
+
     /**
      * Initializes all member variables (simulation context, CPU resource, probes).
      */
@@ -97,9 +100,6 @@ public class ProbeListTests {
         assertEquals(measurementTuple.getSubsumedMeasurements().get(1).getMetricDesciption(),
                 MetricDescriptionConstants.CPU_STATE_METRIC);
     }
-
-    /** Stores the last received measurement for the <code>testEventProbeList</code> test case. */
-    private ProbeMeasurement lastMeasurement;
 
     /**
      * Test case for an {@link EventProbeList} that takes the demand emitted from an active resource

@@ -38,6 +38,9 @@ public class BasicProbeTests {
     /** The simulation context used to access simulation state such as simulation time. */
     private SimpleSimulationContext simContext;
 
+    /** Stores the last received measurement for the <code>testDemandProbe</code> test case. */
+    private ProbeMeasurement lastMeasurement;
+    
     /**
      * Initializes the simulation context.
      */
@@ -105,9 +108,6 @@ public class BasicProbeTests {
         assertTrue(measure.getUnit().isCompatible(Unit.ONE));
         assertTrue(measure.compareTo(Measure.valueOf(2L, Unit.ONE)) == 0);
     }
-
-    /** Stores the last received measurement for the <code>testDemandProbe</code> test case. */
-    private ProbeMeasurement lastMeasurement;
 
     /**
      * Test case for the {@link ExampleTakeCPUDemandProbe} that takes the demand emitted from an
