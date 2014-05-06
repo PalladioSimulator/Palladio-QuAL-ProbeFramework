@@ -15,7 +15,7 @@ import org.palladiosimulator.probeframework.probes.BasicObjectStateProbe;
  * 
  * @author Steffen Becker, Sebastian Lehrig
  */
-public class ExampleTakePassiveResourceState extends BasicObjectStateProbe<ASimplePassiveResource, Long, Dimensionless> {
+public class ExampleTakePassiveResourceStateProbe extends BasicObjectStateProbe<ASimplePassiveResource, Long, Dimensionless> {
 
     /**
      * Default constructor.
@@ -24,7 +24,7 @@ public class ExampleTakePassiveResourceState extends BasicObjectStateProbe<ASimp
      *            The observer object is a passive resource, thus, allowing to request its free
      *            resources.
      */
-    public ExampleTakePassiveResourceState(final ASimplePassiveResource passiveResource) {
+    public ExampleTakePassiveResourceStateProbe(final ASimplePassiveResource passiveResource) {
         super(passiveResource, MetricDescriptionConstants.PASSIVE_RESOURCE_STATE_METRIC);
     }
 

@@ -13,7 +13,7 @@ import org.junit.runners.JUnit4;
 import org.palladiosimulator.probeframework.measurement.ProbeAndRequestContext;
 import org.palladiosimulator.probeframework.measurement.RequestContext;
 import org.palladiosimulator.probeframework.probes.BasicTriggeredProbe;
-import org.palladiosimulator.probeframework.probes.example.ExampleTakeCurrentTimeStrategy;
+import org.palladiosimulator.probeframework.probes.example.ExampleTakeCurrentTimeProbe;
 import org.palladiosimulator.probeframework.probes.example.SimpleSimulationContext;
 
 /**
@@ -37,11 +37,11 @@ public class ProbeSetAndRequestContextTest {
 
     @Before
     public void setUp() {
-        final BasicTriggeredProbe<Double, Duration> probe1 = new ExampleTakeCurrentTimeStrategy(
+        final BasicTriggeredProbe<Double, Duration> probe1 = new ExampleTakeCurrentTimeProbe(
                 new SimpleSimulationContext());
-        final BasicTriggeredProbe<Double, Duration> probe2 = new ExampleTakeCurrentTimeStrategy(
+        final BasicTriggeredProbe<Double, Duration> probe2 = new ExampleTakeCurrentTimeProbe(
                 new SimpleSimulationContext());
-        final BasicTriggeredProbe<Double, Duration> probe3 = new ExampleTakeCurrentTimeStrategy(
+        final BasicTriggeredProbe<Double, Duration> probe3 = new ExampleTakeCurrentTimeProbe(
                 new SimpleSimulationContext());
         pssProbe1Context1A = new ProbeAndRequestContext(probe1, new RequestContext("1"));
         pssProbe1Context1B = new ProbeAndRequestContext(probe1, new RequestContext("1"));

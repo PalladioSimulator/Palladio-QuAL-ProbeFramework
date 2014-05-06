@@ -15,7 +15,7 @@ import org.palladiosimulator.probeframework.probes.BasicObjectStateProbe;
  * 
  * @author Steffen Becker, Sebastian Lehrig
  */
-public class ExampleTakeCPUStateStrategy extends BasicObjectStateProbe<ASimpleActiveResource, Long, Dimensionless> {
+public class ExampleTakeCPUStateProbe extends BasicObjectStateProbe<ASimpleActiveResource, Long, Dimensionless> {
 
     /**
      * Default constructor.
@@ -23,7 +23,7 @@ public class ExampleTakeCPUStateStrategy extends BasicObjectStateProbe<ASimpleAc
      * @param myCpu
      *            The observer object is a CPU, thus, allowing to request its current jobs.
      */
-    public ExampleTakeCPUStateStrategy(final ASimpleActiveResource myCpu) {
+    public ExampleTakeCPUStateProbe(final ASimpleActiveResource myCpu) {
         super(myCpu, MetricDescriptionConstants.CPU_STATE_METRIC);
     }
 

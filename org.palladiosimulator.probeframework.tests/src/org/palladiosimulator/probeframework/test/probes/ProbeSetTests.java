@@ -23,9 +23,9 @@ import org.palladiosimulator.probeframework.measurement.RequestContext;
 import org.palladiosimulator.probeframework.probes.EventProbeSet;
 import org.palladiosimulator.probeframework.probes.Probe;
 import org.palladiosimulator.probeframework.probes.TriggeredProbeSet;
-import org.palladiosimulator.probeframework.probes.example.ExampleTakeCPUDemandStrategy;
-import org.palladiosimulator.probeframework.probes.example.ExampleTakeCPUStateStrategy;
-import org.palladiosimulator.probeframework.probes.example.ExampleTakeCurrentTimeStrategy;
+import org.palladiosimulator.probeframework.probes.example.ExampleTakeCPUDemandProbe;
+import org.palladiosimulator.probeframework.probes.example.ExampleTakeCPUStateProbe;
+import org.palladiosimulator.probeframework.probes.example.ExampleTakeCurrentTimeProbe;
 import org.palladiosimulator.probeframework.probes.example.SimpleCPUResource;
 import org.palladiosimulator.probeframework.probes.example.SimpleSimulationContext;
 import org.palladiosimulator.probeframework.probes.listener.IProbeListener;
@@ -42,9 +42,9 @@ public class ProbeSetTests {
     @Before
     public void setUp() {
         simCtx = new SimpleSimulationContext();
-        currentTimeProbe = new ExampleTakeCurrentTimeStrategy(simCtx);
+        currentTimeProbe = new ExampleTakeCurrentTimeProbe(simCtx);
         cpuResource = new SimpleCPUResource();
-        currentCPUStateProbe = new ExampleTakeCPUStateStrategy(cpuResource);
+        currentCPUStateProbe = new ExampleTakeCPUStateProbe(cpuResource);
 
         probeSet = new TriggeredProbeSet(Arrays.asList(currentTimeProbe, currentCPUStateProbe), "CPU State");
     }
@@ -77,7 +77,7 @@ public class ProbeSetTests {
         lastMeasurement = null;
         simCtx.setSimulatedTime(100.0d);
         cpuResource.setJobs(2);
-        final ExampleTakeCPUDemandStrategy probe = new ExampleTakeCPUDemandStrategy(cpuResource);
+        final ExampleTakeCPUDemandProbe probe = new ExampleTakeCPUDemandProbe(cpuResource);
 
         final EventProbeSet eventProbeSet = new EventProbeSet(probe, Arrays.asList(currentTimeProbe,
                 currentCPUStateProbe), "Composed");

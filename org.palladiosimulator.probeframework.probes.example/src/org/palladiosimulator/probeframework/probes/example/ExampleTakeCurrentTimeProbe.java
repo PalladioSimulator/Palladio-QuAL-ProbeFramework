@@ -15,7 +15,7 @@ import org.palladiosimulator.probeframework.probes.BasicObjectStateProbe;
  * 
  * @author Steffen Becker, Sebastian Lehrig
  */
-public class ExampleTakeCurrentTimeStrategy extends BasicObjectStateProbe<SimpleSimulationContext, Double, Duration> {
+public class ExampleTakeCurrentTimeProbe extends BasicObjectStateProbe<SimpleSimulationContext, Double, Duration> {
 
     /**
      * Default constructor.
@@ -24,7 +24,7 @@ public class ExampleTakeCurrentTimeStrategy extends BasicObjectStateProbe<Simple
      *            The observer object is a simulation state object, thus, allowing to request its
      *            current simulation time.
      */
-    public ExampleTakeCurrentTimeStrategy(final SimpleSimulationContext simulationContext) {
+    public ExampleTakeCurrentTimeProbe(final SimpleSimulationContext simulationContext) {
         super(simulationContext, MetricDescriptionConstants.POINT_IN_TIME_METRIC);
     }
 

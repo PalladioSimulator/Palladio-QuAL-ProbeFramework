@@ -16,7 +16,7 @@ import org.palladiosimulator.probeframework.calculator.DefaultCalculatorFactory;
 import org.palladiosimulator.probeframework.measurement.RequestContext;
 import org.palladiosimulator.probeframework.probes.Probe;
 import org.palladiosimulator.probeframework.probes.TriggeredProbe;
-import org.palladiosimulator.probeframework.probes.example.ExampleTakeCurrentTimeStrategy;
+import org.palladiosimulator.probeframework.probes.example.ExampleTakeCurrentTimeProbe;
 import org.palladiosimulator.probeframework.probes.example.SimpleSimulationContext;
 
 @RunWith(JUnit4.class)
@@ -32,8 +32,8 @@ public class CalculatorTests {
     public void setUp() {
         probeFrameworkContext = new ProbeFrameworkContext(new DefaultCalculatorFactory());
         simCtx = new SimpleSimulationContext();
-        startProbe = new ExampleTakeCurrentTimeStrategy(simCtx);
-        endProbe = new ExampleTakeCurrentTimeStrategy(simCtx);
+        startProbe = new ExampleTakeCurrentTimeProbe(simCtx);
+        endProbe = new ExampleTakeCurrentTimeProbe(simCtx);
     }
 
     @Test

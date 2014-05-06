@@ -17,7 +17,7 @@ import org.palladiosimulator.probeframework.probes.BasicEventProbe;
  * 
  * @author Steffen Becker, Sebastian Lehrig
  */
-public class ExampleTakeCPUDemandStrategy extends BasicEventProbe<ASimpleActiveResource, Double, Duration> implements
+public class ExampleTakeCPUDemandProbe extends BasicEventProbe<ASimpleActiveResource, Double, Duration> implements
         Observer {
 
     /**
@@ -27,7 +27,7 @@ public class ExampleTakeCPUDemandStrategy extends BasicEventProbe<ASimpleActiveR
      *            The event source is an active resource (e.g., a CPU), thus, able to emit demand
      *            events.
      */
-    public ExampleTakeCPUDemandStrategy(final ASimpleActiveResource activeResource) {
+    public ExampleTakeCPUDemandProbe(final ASimpleActiveResource activeResource) {
         super(activeResource, MetricDescriptionConstants.RESOURCE_DEMAND_METRIC);
     }
 
