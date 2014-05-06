@@ -8,7 +8,6 @@ import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
 import javax.measure.unit.Unit;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,7 +35,7 @@ import org.palladiosimulator.probeframework.probes.listener.IProbeListener;
 @RunWith(JUnit4.class)
 public class BasicProbeTests {
 
-    /** The simulation context used to access simulation state such as simulation time */
+    /** The simulation context used to access simulation state such as simulation time. */
     private SimpleSimulationContext simContext;
 
     /**
@@ -45,15 +44,6 @@ public class BasicProbeTests {
     @Before
     public void setUp() {
         simContext = new SimpleSimulationContext();
-    }
-
-    /**
-     * Nothing to do.
-     * 
-     * {@inheritDoc}
-     */
-    @After
-    public void tearDown() throws Exception {
     }
 
     /**

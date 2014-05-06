@@ -30,28 +30,56 @@ import org.palladiosimulator.probeframework.probes.example.SimpleCPUResource;
 import org.palladiosimulator.probeframework.probes.example.SimpleSimulationContext;
 import org.palladiosimulator.probeframework.probes.listener.IProbeListener;
 
+/**
+ * JUnit tests for probe lists (for both types, triggered probe lists and event probe lists) of the
+ * Probe Framework. The tests use the simple example simulator, CPU, and probes from the
+ * <code>org.palladiosimulator.probeframework.probes.example</code> package.
+ * 
+ * @author Sebastian Lehrig, Steffen Becker
+ */
 @RunWith(JUnit4.class)
 public class ProbeListTests {
 
-    private SimpleSimulationContext simCtx;
-    private Probe currentTimeProbe;
+    /** The simulation context used to access simulation state such as simulation time. */
+    private SimpleSimulationContext simContext;
+
+    /** An simple example CPU active resource. */
     private SimpleCPUResource cpuResource;
+
+    /** A probe taking the current time of a simulation. */
+    private Probe currentTimeProbe;
+
+    /** A probe taking the current CPU state of a simulation (number of jobs in this test). */
     private Probe currentCPUStateProbe;
+
+    /**
+     * A list of triggered probes, used to store the CPU state as (currentTimeProbe,
+     * currentCPUStateProbe)-tuples.
+     */
     private TriggeredProbeList probeList;
 
+    /**
+     * Initializes all member variables (simulation context, CPU resource, probes).
+     */
     @Before
     public void setUp() {
-        simCtx = new SimpleSimulationContext();
-        currentTimeProbe = new ExampleTakeCurrentTimeProbe(simCtx);
+        simContext = new SimpleSimulationContext();
         cpuResource = new SimpleCPUResource();
-        currentCPUStateProbe = new ExampleTakeCPUStateProbe(cpuResource);
 
+        currentTimeProbe = new ExampleTakeCurrentTimeProbe(simContext);
+        currentCPUStateProbe = new ExampleTakeCPUStateProbe(cpuResource);
         probeList = new TriggeredProbeList(Arrays.asList(currentTimeProbe, currentCPUStateProbe), "CPU State");
     }
 
+    /**
+     * Test case for the {@link TriggeredProbeList} that takes (currentTimeProbe,
+     * currentCPUStateProbe)-tuples (i.e., it includes a point in time metric measured in seconds
+     * and a dimensionless CPU state metric). The test lets a simulation with 2 jobs run for 100
+     * seconds and then triggers the probe list.
+     */
     @Test
     public void testTriggeredProbeList() {
-        simCtx.setSimulatedTime(100.0d);
+        simContext.setSimulatedTime(100.0d);
         cpuResource.setJobs(2);
         final RequestContext requestContext = new RequestContext("1");
 
@@ -70,12 +98,23 @@ public class ProbeListTests {
                 MetricDescriptionConstants.CPU_STATE_METRIC);
     }
 
-    ProbeMeasurement lastMeasurement;
+    /** Stores the last received measurement for the <code>testEventProbeList</code> test case. */
+    private ProbeMeasurement lastMeasurement;
 
+    /**
+     * Test case for an {@link EventProbeList} that takes the demand emitted from an active resource
+     * (event source), which is in this case a CPU (i.e., it measures a resource demand metric). It
+     * also adds the result from triggering a (currentTimeProbe, currentCPUStateProbe)-tuple its
+     * measurement result.
+     * 
+     * The test lets a simulation with 2 jobs run for 100 seconds and demands 20 seconds of CPU. The
+     * event probe list is registered to react on this demand event and stores the received probe
+     * measurement in the <code>lastMeasurement</code> member variable.
+     */
     @Test
     public void testEventProbeList() {
         lastMeasurement = null;
-        simCtx.setSimulatedTime(100.0d);
+        simContext.setSimulatedTime(100.0d);
         cpuResource.setJobs(2);
         final ExampleTakeCPUDemandProbe probe = new ExampleTakeCPUDemandProbe(cpuResource);
 
@@ -112,6 +151,6 @@ public class ProbeListTests {
         assertTrue(timeResult.compareTo(Measure.valueOf(100.0d, SI.SECOND)) == 0);
         assertEquals(measurementTuple.getSubsumedMeasurements().get(2).getMetricDesciption(),
                 MetricDescriptionConstants.CPU_STATE_METRIC);
-        assertTrue(stateResult.compareTo(Measure.valueOf(2l, Unit.ONE)) == 0);
+        assertTrue(stateResult.compareTo(Measure.valueOf(2L, Unit.ONE)) == 0);
     }
 }
