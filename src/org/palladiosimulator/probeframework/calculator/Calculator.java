@@ -2,7 +2,12 @@ package org.palladiosimulator.probeframework.calculator;
 
 import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.POINT_IN_TIME_METRIC;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.palladiosimulator.measurementspec.Measurement;
@@ -16,16 +21,36 @@ import org.palladiosimulator.probeframework.ProbeFrameworkContext;
 import org.palladiosimulator.probeframework.exceptions.CalculatorException;
 import org.palladiosimulator.probeframework.measurement.ProbeMeasurement;
 import org.palladiosimulator.probeframework.measurement.RequestContext;
+import org.palladiosimulator.probeframework.probes.Probe;
 import org.palladiosimulator.probeframework.probes.listener.IProbeListener;
 
 /**
+ * <p>
  * This class is the abstract super class for all calculator implementations. All specific
  * calculators have to inherit from this class.
+ * </p>
  * 
+ * <p>
  * Because calculators have to observe probes, they implement the IProbeListener interface. They
  * also inherit from MeasurementSource, thus, making them to observable objects on their own. For
  * instance, they can provide newly calculated measurements to recorders (recorders implement the
  * IMeasurementSourceListener interface).
+ * </p>
+ * 
+ * <p>
+ * Furthermore, calculators expects a list of probes to be measured before it can do its
+ * calculation. For example, for response time calculation, two probe measurements are needed (one
+ * for start time and one for end time of an operation call). For this measurement series,
+ * calculators maintain a memory to store measurements of the observed probes. As soon as the last
+ * sample arrives, the calculators start their calculation by invoking the template method {@link
+ * #calculate(List<ProbeMeasurement> measurementMemory)}.
+ * </p>
+ * 
+ * <p>
+ * When a sample originating from the first probe arrives (after a measurement series has started
+ * and before it ended with the last probe), an exception is thrown because the first series of
+ * measurements has to be finished first.
+ * </p>
  * 
  * @author Sebastian Lehrig, Steffen Becker
  */
@@ -37,18 +62,34 @@ public abstract class Calculator extends MeasurementSource implements IProbeList
     /** Probe Framework context to be remembered by this calculator */
     private final ProbeFrameworkContext probeFrameworkContext;
 
+    /** List of n probes **/
+    protected final List<Probe> probes;
+
+    /** Maintained memory of probe measurements */
+    private final Map<RequestContext, List<ProbeMeasurement>> arrivedMeasurementMemory;
+
     /**
-     * Default constructor.
+     * Default constructor. Creates the observed list of n probes and initializes the measurement
+     * memory.
      * 
      * @param context
      *            Probe Framework context to be remembered by this calculator (can be returned on
      *            request).
      * @param computedMetric
      *            Metric calculated by this calculator.
+     * @param childProbes
+     *            List of probes.
      */
-    protected Calculator(final ProbeFrameworkContext context, final MetricDescription computedMetric) {
+    protected Calculator(final ProbeFrameworkContext context, final MetricDescription computedMetric,
+            final List<Probe> childProbes) {
         super(computedMetric);
         this.probeFrameworkContext = context;
+        this.arrivedMeasurementMemory = new HashMap<RequestContext, List<ProbeMeasurement>>();
+
+        this.probes = Collections.unmodifiableList(new ArrayList<Probe>(childProbes));
+        for (final Probe probe : childProbes) {
+            probe.addObserver(this);
+        }
     }
 
     /**
@@ -66,17 +107,22 @@ public abstract class Calculator extends MeasurementSource implements IProbeList
     /**
      * Allows to detach any registered probes for cleaning up, e.g., after a simulation.
      * 
-     * TODO Isn't that method only useful for NAry calculators, thus, shout be moved down? [Lehrig]
      */
-    protected abstract void detachProbes();
+    public void detachProbes() {
+        for (final Probe probe : probes) {
+            probe.removeObserver(this);
+        }
+    }
 
     /**
-     * Cleans the memory of this calculator for the given request context.
+     * Removes the given request context from the measurement memory.
      * 
      * @param requestContext
-     *            Execution context of a request.
+     *            Request context to be removed.
      */
-    public abstract void releaseMemory(RequestContext requestContext);
+    public void releaseMemory(final RequestContext requestContext) {
+        arrivedMeasurementMemory.remove(requestContext);
+    }
 
     /**
      * Getter for the Probe Framework Context member variable.
@@ -136,5 +182,55 @@ public abstract class Calculator extends MeasurementSource implements IProbeList
                 .subsumedMetrics(metricDescriptions).build();
 
         return result;
+    }
+
+    /**
+     * Call-back method to be informed about new probe measurements.
+     * 
+     * @param probeMeasurement
+     *            The last ProbeMeasurement that was received from an observed probe.
+     * @see org.palladiosimulator.probeframework.probes.listener.IProbeListener#newProbeMeasurementAvailable
+     */
+    @Override
+    public void newProbeMeasurementAvailable(final ProbeMeasurement probeMeasurement) {
+        if (isMeasurementFromFirstProbe(probeMeasurement)) {
+            if (arrivedMeasurementMemory.containsKey(probeMeasurement.getProbeAndContext().getRequestContext())) {
+                throw new IllegalStateException("First measurement to the same context arrived while"
+                        + "previous series of the same context did not complete.");
+            }
+            arrivedMeasurementMemory.put(probeMeasurement.getProbeAndContext().getRequestContext(),
+                    new LinkedList<ProbeMeasurement>());
+        }
+        final List<ProbeMeasurement> measurementMemory = arrivedMeasurementMemory.get(probeMeasurement
+                .getProbeAndContext().getRequestContext());
+        measurementMemory.add(probeMeasurement);
+        if (isMeasurementFromLastProbe(probeMeasurement)) {
+            fireCalculated(measurementMemory);
+            arrivedMeasurementMemory.remove(probeMeasurement.getProbeAndContext().getRequestContext());
+        }
+    }
+
+    /**
+     * Checks whether the given measurement comes from the last probe.
+     * 
+     * @param probeMeasurement
+     *            The measurement to be investigated.
+     * @return <code>true</code> if the measurement comes from the last probe, <code>false</code>
+     *         otherwise.
+     */
+    private boolean isMeasurementFromLastProbe(final ProbeMeasurement probeMeasurement) {
+        return (probeMeasurement.getProbeAndContext().getProbe() == probes.get(probes.size() - 1));
+    }
+
+    /**
+     * Checks whether the given measurement comes from the first probe.
+     * 
+     * @param probeMeasurement
+     *            The measurement to be investigated.
+     * @return <code>true</code> if the measurement comes from the first probe, <code>false</code>
+     *         otherwise.
+     */
+    private boolean isMeasurementFromFirstProbe(final ProbeMeasurement probeMeasurement) {
+        return (probeMeasurement.getProbeAndContext().getProbe() == probes.get(0));
     }
 }
