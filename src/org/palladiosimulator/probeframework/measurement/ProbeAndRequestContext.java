@@ -1,65 +1,67 @@
 package org.palladiosimulator.probeframework.measurement;
 
-import org.palladiosimulator.measurementspec.MeasurementTupple;
-import org.palladiosimulator.metricspec.metricentity.MetricEntity;
 import org.palladiosimulator.probeframework.probes.Probe;
 
 /**
- * Represents a (ProbeSet, {@link RequestContext})-pair. The ProbeSet is identified by its ID.
- * <p>
- * It is used to uniquely identify {@link MeasurementTupple}.
+ * Data class representing a (Probe, {@link RequestContext})-pair. The combination of probe and
+ * request context uniquely identifies data objects.
  * 
- * @author Faber
- * @author Philipp Merkle
- * 
+ * @author Steffen Becker, Sebastian Lehrig
  */
 public final class ProbeAndRequestContext {
 
-    // the ID representing the ProbeSet
-    private final Probe measurementSource;
+    /** The measured probe. */
+    private final Probe probe;
 
+    /** The request context. */
     private final RequestContext requestContext;
 
     /**
-     * Default constructor. Constructs a pair consisting of a ProbeSet and a {@link RequestContext}.
+     * Default constructor. Constructs a pair consisting of a probe and a {@link RequestContext}.
      * 
-     * @param probeSetId
-     *            the ID representing the ProbeSet
+     * @param probe
+     *            The measured probe.
      * @param requestContext
-     *            the RequestContext
+     *            The RequestContext.
      */
-    public ProbeAndRequestContext(final Probe measuredProbe, final RequestContext requestContext) {
-        this.measurementSource = measuredProbe;
+    public ProbeAndRequestContext(final Probe probe, final RequestContext requestContext) {
+        this.probe = probe;
         this.requestContext = requestContext;
     }
 
     /**
-     * Returns the ID of the ProbeSet component.
+     * Returns the probe.
      * 
-     * @return The ID representing the ProbeSet
+     * @return The probe.
      */
-    public final MetricEntity getMeasurementSource() {
-        return measurementSource;
+    public final Probe getProbe() {
+        return probe;
     }
 
     /**
-     * Returns the {@link RequestContext} component.
+     * Returns the {@link RequestContext}.
      * 
-     * @return the context
+     * @return The context.
      */
     public final RequestContext getRequestContext() {
         return requestContext;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((requestContext == null) ? 0 : requestContext.hashCode());
-        result = prime * result + ((measurementSource == null) ? 0 : measurementSource.hashCode());
+        result = prime * result + ((probe == null) ? 0 : probe.hashCode());
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(final Object obj) {
         if (this == obj) {
@@ -79,19 +81,22 @@ public final class ProbeAndRequestContext {
         } else if (!requestContext.equals(other.requestContext)) {
             return false;
         }
-        if (measurementSource == null) {
-            if (other.measurementSource != null) {
+        if (probe == null) {
+            if (other.probe != null) {
                 return false;
             }
-        } else if (!measurementSource.equals(other.measurementSource)) {
+        } else if (!probe.equals(other.probe)) {
             return false;
         }
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
-        return measurementSource + "-" + requestContext.toString();
+        return probe + "-" + requestContext.toString();
     }
 
 }
