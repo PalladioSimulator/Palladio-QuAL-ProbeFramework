@@ -17,38 +17,29 @@ import java.util.List;
  * {@link #RequestContext(String, RequestContext)}. In this way the execution of forks can be
  * represented.
  * 
- * @author Faber
- * @author Philipp Merkle
- * 
+ * @author Faber, Philipp Merkle, Sebastian Lehrig
  */
 public class RequestContext {
 
+    /** Empty request context. */
     public static final RequestContext EMPTY_REQUEST_CONTEXT = new RequestContext("");
 
-    // unique identifier of the request context
+    /** Unique identifier of the request context. */
     private String requestContextId;
 
-    private RequestContext parentContext;
+    /** The parent context. */
+    private final RequestContext parentContext;
 
+    /** List of child contexts. */
     private List<RequestContext> childContexts;
 
     /**
-     * Default Constructor.
+     * Default constructor. Used when there is a parent context.
      * 
      * @param requestContextId
-     *            the unique identifier of the request context
-     */
-    public RequestContext(String requestContextId) {
-        this(requestContextId, null);
-    }
-
-    /**
-     * Constructor to be used when there is a parent context.
-     * 
-     * @param requestContextId
-     *            the unique identifier of the request context
+     *            The unique identifier of the request context.
      * @param parentContext
-     *            the parent context of the context which is to be constructed
+     *            The parent context of the context which is to be constructed.
      */
     public RequestContext(String requestContextId, RequestContext parentContext) {
         this.requestContextId = requestContextId;
@@ -64,6 +55,16 @@ public class RequestContext {
     }
 
     /**
+     * Convenience Constructor. Used when there is no parent context.
+     * 
+     * @param requestContextId
+     *            the unique identifier of the request context
+     */
+    public RequestContext(String requestContextId) {
+        this(requestContextId, null);
+    }
+
+    /**
      * Returns the unique identifier of the request context represented by this object.
      * 
      * @return the request context identifier
@@ -72,17 +73,33 @@ public class RequestContext {
         return requestContextId;
     }
 
+    /**
+     * Getter for the parent context.
+     * 
+     * @return The parent context.
+     */
     public RequestContext getParentContext() {
         return parentContext;
     }
 
-    private void addChildContext(RequestContext context) {
+    /**
+     * Adds a child context to the list of contexts.
+     * 
+     * @param childContext
+     *            The child context.
+     */
+    private void addChildContext(RequestContext childContext) {
         if (childContexts == null) {
             childContexts = new ArrayList<RequestContext>();
         }
-        childContexts.add(context);
+        childContexts.add(childContext);
     }
 
+    /**
+     * Getter for the list of child contexts.
+     * 
+     * @return The list of child contexts.
+     */
     public List<RequestContext> getChildContexts() {
         if (childContexts == null) {
             return null;
@@ -90,6 +107,35 @@ public class RequestContext {
         return Collections.unmodifiableList(childContexts);
     }
 
+    /**
+     * Appends the specified addition to the request context id and returns a new
+     * {@link RequestContext} containing the extended request context id. The parent context will be
+     * retained.
+     * 
+     * @param addition
+     *            The String to append.
+     * @return The modified request context.
+     */
+    public RequestContext append(String addition) {
+        return new RequestContext(getRequestContextId() + addition, getParentContext());
+    }
+
+    /**
+     * Returns the root of the request context hierarchy (i.e., the top-most parent).
+     * 
+     * @return The root request context.
+     */
+    public RequestContext rootContext() {
+        RequestContext context = this;
+        while (context.getParentContext() != null) {
+            context = context.getParentContext();
+        }
+        return context;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -99,6 +145,9 @@ public class RequestContext {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -129,26 +178,8 @@ public class RequestContext {
     }
 
     /**
-     * Appends the specified addition to the request context id and returns a new
-     * {@link RequestContext} containing the extended request context id. The parent context will be
-     * retained.
-     * 
-     * @param addition
-     *            the String to append
-     * @return
+     * {@inheritDoc}
      */
-    public RequestContext append(String addition) {
-        return new RequestContext(getRequestContextId() + addition, getParentContext());
-    }
-
-    public RequestContext rootContext() {
-        RequestContext context = this;
-        while (context.getParentContext() != null) {
-            context = context.getParentContext();
-        }
-        return context;
-    }
-
     @Override
     public String toString() {
         return parentContext != null ? parentContext.toString() + " called " + "<" + requestContextId + ">" : "<"
