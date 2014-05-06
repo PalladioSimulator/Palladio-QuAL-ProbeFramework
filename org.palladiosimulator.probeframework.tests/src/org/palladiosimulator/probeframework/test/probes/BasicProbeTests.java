@@ -46,9 +46,9 @@ public class BasicProbeTests {
         simCtx.setSimulatedTime(100d);
 
         final ProbeMeasurement probeMeasurement = probe.takeMeasurement(ctxID);
-        assertTrue(probeMeasurement.getSourceAndContext().getMeasurementSource() == probe);
+        assertTrue(probeMeasurement.getProbeAndContext().getProbe() == probe);
         assertTrue(probeMeasurement.getMeasurement().getMetricDesciption() == MetricDescriptionConstants.POINT_IN_TIME_METRIC);
-        assertTrue(probeMeasurement.getSourceAndContext().getRequestContext() == ctxID);
+        assertTrue(probeMeasurement.getProbeAndContext().getRequestContext() == ctxID);
 
         assertTrue(probeMeasurement.getMeasurement() instanceof BasicMeasurement<?, ?>);
         final BasicMeasurement<Double, Duration> basicMeasurement = (BasicMeasurement<Double, Duration>) probeMeasurement
@@ -71,9 +71,9 @@ public class BasicProbeTests {
         cpuResource.setJobs(2);
         final ProbeMeasurement probeMeasurement = probe.takeMeasurement(ctxID);
 
-        assertTrue(probeMeasurement.getSourceAndContext().getMeasurementSource() == probe);
+        assertTrue(probeMeasurement.getProbeAndContext().getProbe() == probe);
         assertTrue(probeMeasurement.getMeasurement().getMetricDesciption() == MetricDescriptionConstants.CPU_STATE_METRIC);
-        assertTrue(probeMeasurement.getSourceAndContext().getRequestContext() == ctxID);
+        assertTrue(probeMeasurement.getProbeAndContext().getRequestContext() == ctxID);
 
         assertTrue(probeMeasurement.getMeasurement() instanceof BasicMeasurement<?, ?>);
         final BasicMeasurement<Double, Dimensionless> basicMeasurement = (BasicMeasurement<Double, Dimensionless>) probeMeasurement

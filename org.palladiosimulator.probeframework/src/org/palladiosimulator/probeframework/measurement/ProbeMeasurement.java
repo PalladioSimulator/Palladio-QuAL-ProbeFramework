@@ -5,18 +5,18 @@ import org.palladiosimulator.probeframework.probes.Probe;
 
 public class ProbeMeasurement {
     private final Measurement measurement;
-    private final ProbeAndRequestContext sourceAndContext;
+    private final ProbeAndRequestContext probeAndContext;
     private final String measuredEntity;
 
     /**
      * @param measurement
-     * @param sourceAndContext
+     * @param probeAndContext
      */
-    public ProbeMeasurement(final Measurement measurement, final Probe measuredProbe,
+    public ProbeMeasurement(final Measurement measurement, final Probe probe,
             final RequestContext requestContext, final String measuredEntity) {
         super();
         this.measurement = measurement;
-        this.sourceAndContext = new ProbeAndRequestContext(measuredProbe, requestContext);
+        this.probeAndContext = new ProbeAndRequestContext(probe, requestContext);
         this.measuredEntity = measuredEntity;
     }
 
@@ -28,10 +28,10 @@ public class ProbeMeasurement {
     }
 
     /**
-     * @return the sourceAndContext
+     * @return the probeAndContext
      */
-    public final ProbeAndRequestContext getSourceAndContext() {
-        return sourceAndContext;
+    public final ProbeAndRequestContext getProbeAndContext() {
+        return probeAndContext;
     }
 
     /**

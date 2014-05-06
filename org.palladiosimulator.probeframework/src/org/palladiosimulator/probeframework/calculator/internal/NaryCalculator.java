@@ -74,19 +74,19 @@ public abstract class NaryCalculator extends Calculator {
     @Override
     public void newProbeMeasurementAvailable(final ProbeMeasurement probeMeasurement) {
         if (isMeasurementFromFirstProbe(probeMeasurement)) {
-            if (arrivedMeasurementMemory.containsKey(probeMeasurement.getSourceAndContext().getRequestContext())) {
+            if (arrivedMeasurementMemory.containsKey(probeMeasurement.getProbeAndContext().getRequestContext())) {
                 throw new IllegalStateException("First measurement to the same context arrived while"
                         + "previous series of the same context did not complete.");
             }
-            arrivedMeasurementMemory.put(probeMeasurement.getSourceAndContext().getRequestContext(),
+            arrivedMeasurementMemory.put(probeMeasurement.getProbeAndContext().getRequestContext(),
                     new LinkedList<ProbeMeasurement>());
         }
         final List<ProbeMeasurement> measurementMemory = arrivedMeasurementMemory.get(probeMeasurement
-                .getSourceAndContext().getRequestContext());
+                .getProbeAndContext().getRequestContext());
         measurementMemory.add(probeMeasurement);
         if (isMeasurementFromLastProbe(probeMeasurement)) {
             fireCalculated(measurementMemory);
-            arrivedMeasurementMemory.remove(probeMeasurement.getSourceAndContext().getRequestContext());
+            arrivedMeasurementMemory.remove(probeMeasurement.getProbeAndContext().getRequestContext());
         }
     }
 
@@ -122,7 +122,7 @@ public abstract class NaryCalculator extends Calculator {
      *         otherwise.
      */
     private boolean isMeasurementFromLastProbe(final ProbeMeasurement probeMeasurement) {
-        return (probeMeasurement.getSourceAndContext().getMeasurementSource() == probes.get(probes.size() - 1));
+        return (probeMeasurement.getProbeAndContext().getProbe() == probes.get(probes.size() - 1));
     }
 
     /**
@@ -134,6 +134,6 @@ public abstract class NaryCalculator extends Calculator {
      *         otherwise.
      */
     private boolean isMeasurementFromFirstProbe(final ProbeMeasurement probeMeasurement) {
-        return (probeMeasurement.getSourceAndContext().getMeasurementSource() == probes.get(0));
+        return (probeMeasurement.getProbeAndContext().getProbe() == probes.get(0));
     }
 }
