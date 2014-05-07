@@ -58,14 +58,14 @@ public abstract class Calculator extends MeasurementSource implements IProbeList
     /** Logger of this class */
     private static final Logger LOGGER = Logger.getLogger(Calculator.class);
 
-    /** List of n probes **/
+    /** List of probes **/
     protected final List<Probe> probes;
 
     /** Maintained memory of probe measurements */
     private final Map<RequestContext, List<ProbeMeasurement>> arrivedMeasurementMemory;
 
     /**
-     * Default constructor. Creates the observed list of n probes and initializes the measurement
+     * Default constructor. Creates the observed list of probes and initializes the measurement
      * memory.
      * 
      * @param computedMetric
