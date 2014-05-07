@@ -5,7 +5,6 @@ import static org.palladiosimulator.metricspec.constants.MetricDescriptionConsta
 import java.util.Arrays;
 import java.util.List;
 
-import org.palladiosimulator.probeframework.ProbeFrameworkContext;
 import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.probeframework.probes.Probe;
 
@@ -21,8 +20,6 @@ public class ResponseTimeCalculator extends TimeSpanCalculator {
     /**
      * Default Constructor.
      * 
-     * @param context
-     *            ProbeFrameworkContext as needed by the superclass.
      * @param metricName
      *            Name of the metric to be calculated. Dynamically created as it depends on the
      *            referred operation call.
@@ -32,9 +29,9 @@ public class ResponseTimeCalculator extends TimeSpanCalculator {
      *            The two probes for starting point of the operation call and final point of the
      *            operation call.
      */
-    public ResponseTimeCalculator(final ProbeFrameworkContext context, final String metricName,
+    public ResponseTimeCalculator(final String metricName,
             final String metricDescription, final List<Probe> probes) {
-        super(context, Calculator.createMetricSetDescription(metricName, metricDescription,
+        super(Calculator.createMetricSetDescription(metricName, metricDescription,
                 Arrays.asList(RESPONSE_TIME_METRIC)), probes);
     }
 }

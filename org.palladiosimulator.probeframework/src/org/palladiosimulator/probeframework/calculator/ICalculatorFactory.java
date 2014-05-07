@@ -2,7 +2,6 @@ package org.palladiosimulator.probeframework.calculator;
 
 import java.util.List;
 
-import org.palladiosimulator.probeframework.ProbeFrameworkContext;
 import org.palladiosimulator.probeframework.probes.Probe;
 
 /**
@@ -14,15 +13,6 @@ import org.palladiosimulator.probeframework.probes.Probe;
  * @author Steffen Becker, Sebastian Lehrig
  */
 public interface ICalculatorFactory {
-
-    /**
-     * Setter method for the ProbeFrameworkContext. Calculators are constructed using this context.
-     * 
-     * @param probeFrameworkContext
-     *            The ProbeFrameworkContext object to be used for constructing calculators.
-     */
-    public abstract void setProbeFrameworkContext(final ProbeFrameworkContext probeFrameworkContext);
-
     /**
      * Creates a response time calculator object based on the given name and the given probes.
      * 

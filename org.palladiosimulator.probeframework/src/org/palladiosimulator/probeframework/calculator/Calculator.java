@@ -17,7 +17,6 @@ import org.palladiosimulator.metricspec.BaseMetricDescription;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.metricspec.MetricSetDescription;
 import org.palladiosimulator.metricspec.util.builder.MetricSetDescriptionBuilder;
-import org.palladiosimulator.probeframework.ProbeFrameworkContext;
 import org.palladiosimulator.probeframework.exceptions.CalculatorException;
 import org.palladiosimulator.probeframework.measurement.ProbeMeasurement;
 import org.palladiosimulator.probeframework.measurement.RequestContext;
@@ -59,9 +58,6 @@ public abstract class Calculator extends MeasurementSource implements IProbeList
     /** Logger of this class */
     private static final Logger LOGGER = Logger.getLogger(Calculator.class);
 
-    /** Probe Framework context to be remembered by this calculator */
-    private final ProbeFrameworkContext probeFrameworkContext;
-
     /** List of n probes **/
     protected final List<Probe> probes;
 
@@ -72,18 +68,14 @@ public abstract class Calculator extends MeasurementSource implements IProbeList
      * Default constructor. Creates the observed list of n probes and initializes the measurement
      * memory.
      * 
-     * @param context
-     *            Probe Framework context to be remembered by this calculator (can be returned on
-     *            request).
      * @param computedMetric
      *            Metric calculated by this calculator.
      * @param childProbes
      *            List of probes.
      */
-    protected Calculator(final ProbeFrameworkContext context, final MetricDescription computedMetric,
+    protected Calculator(final MetricDescription computedMetric,
             final List<Probe> childProbes) {
         super(computedMetric);
-        this.probeFrameworkContext = context;
         this.arrivedMeasurementMemory = new HashMap<RequestContext, List<ProbeMeasurement>>();
 
         this.probes = Collections.unmodifiableList(new ArrayList<Probe>(childProbes));
@@ -102,45 +94,27 @@ public abstract class Calculator extends MeasurementSource implements IProbeList
      * @throws CalculatorException
      *             In case something during the execution of the calculator went wrong.
      */
-    protected abstract Measurement calculate(List<ProbeMeasurement> probeMeasurements) throws CalculatorException;
-
-    /**
-     * Allows to detach any registered probes for cleaning up, e.g., after a simulation.
-     * 
-     */
-    public void detachProbes() {
-        for (final Probe probe : probes) {
-            probe.removeObserver(this);
-        }
-    }
-
-    /**
-     * Removes the given request context from the measurement memory.
-     * 
-     * @param requestContext
-     *            Request context to be removed.
-     */
-    public void releaseMemory(final RequestContext requestContext) {
-        arrivedMeasurementMemory.remove(requestContext);
-    }
-
-    /**
-     * Getter for the Probe Framework Context member variable.
-     * 
-     * @return The Probe Framework Context.
-     */
-    protected ProbeFrameworkContext getProbeFrameworkContext() {
-        return probeFrameworkContext;
-    }
+    protected abstract Measurement calculate(List<ProbeMeasurement> probeMeasurements) throws CalculatorException;    
 
     /**
      * This method informs calculators before they are unregistered from probes. This information
      * gives them the change to also inform and remover their own observers.
      */
     public void preUnregister() {
+        detachProbes();
+        
         for (final IMeasurementSourceListener l : this.getMeasurementSourceListeners()) {
             l.preUnregister();
             removeObserver(l);
+        }
+    }
+    
+    /**
+     * Allows to detach any registered probes for cleaning up, e.g., after a simulation.
+     */
+    private void detachProbes() {
+        for (final Probe probe : probes) {
+            probe.removeObserver(this);
         }
     }
 

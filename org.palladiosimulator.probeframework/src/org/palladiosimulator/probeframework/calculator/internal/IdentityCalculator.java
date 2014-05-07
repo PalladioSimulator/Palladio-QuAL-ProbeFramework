@@ -5,7 +5,6 @@ import java.util.List;
 import org.palladiosimulator.measurementspec.Measurement;
 import org.palladiosimulator.measurementspec.MeasurementTuple;
 import org.palladiosimulator.metricspec.MetricSetDescription;
-import org.palladiosimulator.probeframework.ProbeFrameworkContext;
 import org.palladiosimulator.probeframework.exceptions.CalculatorException;
 import org.palladiosimulator.probeframework.measurement.ProbeMeasurement;
 import org.palladiosimulator.probeframework.probes.Probe;
@@ -22,13 +21,11 @@ public class IdentityCalculator extends UnaryCalculator {
     /**
      * Default constructor. Directly passes all elements to the unary calculator constructor.
      * 
-     * @param context
-     *            ProbeFrameworkContext as needed by the superclass.
      * @param probe
      *            The observed probe.
      */
-    public IdentityCalculator(final ProbeFrameworkContext context, final Probe probe) {
-        super(context, probe.getMetricDesciption(), probe);
+    public IdentityCalculator(final Probe probe) {
+        super(probe.getMetricDesciption(), probe);
     }
 
     /**
