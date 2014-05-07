@@ -39,8 +39,8 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
     }
 
     /**
-     * Cleans up all registered calculators by detaching all probes, informing each calculator about
-     * being unregistered, and cleaning the register.
+     * Cleans up all registered calculators informing each calculator about
+     * being unregistered and subsequently cleaning the register.
      */
     public void finish() {
         for (final Calculator calculator : this.calculatorRegister.values()) {

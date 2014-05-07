@@ -37,12 +37,12 @@ import org.palladiosimulator.probeframework.probes.listener.IProbeListener;
  * </p>
  * 
  * <p>
- * Furthermore, calculators expects a list of probes to be measured before it can do its
- * calculation. For example, for response time calculation, two probe measurements are needed (one
- * for start time and one for end time of an operation call). For this measurement series,
- * calculators maintain a memory to store measurements of the observed probes. As soon as the last
- * sample arrives, the calculators start their calculation by invoking the template method {@link
- * #calculate(List<ProbeMeasurement> measurementMemory)}.
+ * Furthermore, calculators expects a list of probes to be measured before they can do their
+ * calculation. For example, a response time calculator needs a measurement series of two probe
+ * measurements (one for start time and one for end time of an operation call). For this measurement
+ * series, calculators maintain a memory to store measurements of the observed probes. As soon as
+ * the last sample arrives, calculators start their calculation by invoking the template method
+ * {@link #calculate(List<ProbeMeasurement> measurementMemory)}.
  * </p>
  * 
  * <p>
@@ -73,8 +73,7 @@ public abstract class Calculator extends MeasurementSource implements IProbeList
      * @param childProbes
      *            List of probes.
      */
-    protected Calculator(final MetricDescription computedMetric,
-            final List<Probe> childProbes) {
+    protected Calculator(final MetricDescription computedMetric, final List<Probe> childProbes) {
         super(computedMetric);
         this.arrivedMeasurementMemory = new HashMap<RequestContext, List<ProbeMeasurement>>();
 
@@ -94,68 +93,22 @@ public abstract class Calculator extends MeasurementSource implements IProbeList
      * @throws CalculatorException
      *             In case something during the execution of the calculator went wrong.
      */
-    protected abstract Measurement calculate(List<ProbeMeasurement> probeMeasurements) throws CalculatorException;    
+    protected abstract Measurement calculate(List<ProbeMeasurement> probeMeasurements) throws CalculatorException;
 
     /**
-     * This method informs calculators before they are unregistered from probes. This information
-     * gives them the change to also inform and remover their own observers.
+     * This method informs calculators before they are unregistered in the calculator factory. This
+     * information gives them the chance to remove themselves from observed probes as well as to
+     * inform and remove their own observers about being unregistered.
      */
     public void preUnregister() {
-        detachProbes();
-        
+        for (final Probe probe : probes) {
+            probe.removeObserver(this);
+        }
+
         for (final IMeasurementSourceListener l : this.getMeasurementSourceListeners()) {
             l.preUnregister();
             removeObserver(l);
         }
-    }
-    
-    /**
-     * Allows to detach any registered probes for cleaning up, e.g., after a simulation.
-     */
-    private void detachProbes() {
-        for (final Probe probe : probes) {
-            probe.removeObserver(this);
-        }
-    }
-
-    /**
-     * Triggers the calculation of a measurement based on a given set of probe measurements. Also
-     * informs all registered observers about this new measurement.
-     * 
-     * @param probeMeasurements
-     *            Probe measurements conforming to the registered probes of this calculator.
-     */
-    protected void fireCalculated(final List<ProbeMeasurement> probeMeasurements) {
-        try {
-            final Measurement calculatedMeasures = calculate(probeMeasurements);
-            notifyMeasurementSourceListener(calculatedMeasures);
-        } catch (final CalculatorException e) {
-            LOGGER.error(e);
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * Helper method to dynamically create the metric provided by this calculator. This method is
-     * useful whenever metrics cannot statically be determined. For example, a metric
-     * "Response Time of Operation A" is model-depended (Operation A occurs in this model).
-     * Therefore, such a metric has to be created dynamically.
-     * 
-     * @param metricName
-     *            Name of the new metric set description.
-     * @param metricDescription
-     *            Textual description of the new metric.
-     * @param metricDescriptions
-     *            Subsumed metrics.
-     * @return New, dynamically created metric.
-     */
-    protected static MetricDescription createMetricSetDescription(final String metricName,
-            final String metricDescription, final List<BaseMetricDescription> metricDescriptions) {
-        final MetricSetDescription result = MetricSetDescriptionBuilder.newMetricSetDescriptionBuilder()
-                .name(metricName).textualDescription(metricDescription).subsumedMetrics(POINT_IN_TIME_METRIC)
-                .subsumedMetrics(metricDescriptions).build();
-
-        return result;
     }
 
     /**
@@ -185,6 +138,23 @@ public abstract class Calculator extends MeasurementSource implements IProbeList
     }
 
     /**
+     * Triggers the calculation of a measurement based on a given set of probe measurements. Also
+     * informs all registered observers about this new measurement.
+     * 
+     * @param probeMeasurements
+     *            Probe measurements conforming to the registered probes of this calculator.
+     */
+    private void fireCalculated(final List<ProbeMeasurement> probeMeasurements) {
+        try {
+            final Measurement calculatedMeasures = calculate(probeMeasurements);
+            notifyMeasurementSourceListener(calculatedMeasures);
+        } catch (final CalculatorException e) {
+            LOGGER.error(e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * Checks whether the given measurement comes from the last probe.
      * 
      * @param probeMeasurement
@@ -206,5 +176,31 @@ public abstract class Calculator extends MeasurementSource implements IProbeList
      */
     private boolean isMeasurementFromFirstProbe(final ProbeMeasurement probeMeasurement) {
         return (probeMeasurement.getProbeAndContext().getProbe() == probes.get(0));
+    }
+
+    /**
+     * Helper method to dynamically create the metric provided by this calculator. This method is
+     * useful whenever metrics cannot statically be determined. For example, a metric
+     * "Response Time of Operation A" is model-depended (Operation A occurs in this model).
+     * Therefore, such a metric has to be created dynamically.
+     * 
+     * TODO Dynamic creation will be obsolete as soon as we make use of measures, i.e., (references
+     * object, metric)-tuples. Implement that. [Lehrig]
+     * 
+     * @param metricName
+     *            Name of the new metric set description.
+     * @param metricDescription
+     *            Textual description of the new metric.
+     * @param metricDescriptions
+     *            Subsumed metrics.
+     * @return New, dynamically created metric.
+     */
+    protected static MetricDescription createMetricSetDescription(final String metricName,
+            final String metricDescription, final List<BaseMetricDescription> metricDescriptions) {
+        final MetricSetDescription result = MetricSetDescriptionBuilder.newMetricSetDescriptionBuilder()
+                .name(metricName).textualDescription(metricDescription).subsumedMetrics(POINT_IN_TIME_METRIC)
+                .subsumedMetrics(metricDescriptions).build();
+
+        return result;
     }
 }

@@ -10,6 +10,9 @@ import org.palladiosimulator.metricspec.util.builder.MetricSetDescriptionBuilder
  * Utility class for coping with lists of probes. Currently, only provides a static method to
  * dynamically create a metric description for a list of probes.
  * 
+ * TODO Dynamic creation will be obsolete as soon as we make use of measures, i.e., (references
+     * object, metric)-tuples. Implement that. [Lehrig]
+     * 
  * @author Steffen Becker, Sebastian Lehrig
  */
 public final class ProbeListHelper {
