@@ -2,7 +2,6 @@ package org.palladiosimulator.probeframework.calculator;
 
 import java.util.List;
 
-import org.palladiosimulator.probeframework.ProbeFrameworkContext;
 import org.palladiosimulator.probeframework.calculator.internal.DemandBasedWaitingTimeCalculator;
 import org.palladiosimulator.probeframework.calculator.internal.HoldTimeCalculator;
 import org.palladiosimulator.probeframework.calculator.internal.IdentityCalculator;
@@ -20,9 +19,6 @@ import org.palladiosimulator.probeframework.probes.Probe;
  * @author Steffen Becker, Sebastian Lehrig
  */
 public class DefaultCalculatorFactory implements ICalculatorFactory {
-
-    /** ProbeSpecContext needed for creating calculators. */
-    private ProbeFrameworkContext probeFrameworkContext;
 
     /**
      * Default constructor. Nothing special.
@@ -56,14 +52,6 @@ public class DefaultCalculatorFactory implements ICalculatorFactory {
             throw new IllegalArgumentException("You have to provide exactly one valid probes for this calcultor.");
         }
     }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setProbeFrameworkContext(final ProbeFrameworkContext probeFrameworkContext) {
-        this.probeFrameworkContext = probeFrameworkContext;
-    }
 
     /**
      * {@inheritDoc}
@@ -71,7 +59,7 @@ public class DefaultCalculatorFactory implements ICalculatorFactory {
     @Override
     public Calculator buildResponseTimeCalculator(final String calculatorName, final List<Probe> probes) {
         ensureTwoProbes(probes);
-        return new ResponseTimeCalculator(this.probeFrameworkContext, "Response Time", "Response Time of "
+        return new ResponseTimeCalculator("Response Time", "Response Time of "
                 + calculatorName, probes);
     }
 
@@ -81,7 +69,7 @@ public class DefaultCalculatorFactory implements ICalculatorFactory {
     @Override
     public Calculator buildDemandBasedWaitingTimeCalculator(final String calculatorName, final List<Probe> probes) {
         ensureTwoProbes(probes);
-        return new DemandBasedWaitingTimeCalculator(this.probeFrameworkContext, "Waiting time", "Waiting time at "
+        return new DemandBasedWaitingTimeCalculator("Waiting time", "Waiting time at "
                 + calculatorName, probes);
     }
 
@@ -91,7 +79,7 @@ public class DefaultCalculatorFactory implements ICalculatorFactory {
     @Override
     public Calculator buildWaitingTimeCalculator(final String calculatorName, final List<Probe> probes) {
         ensureTwoProbes(probes);
-        return new WaitingTimeCalculator(this.probeFrameworkContext, "Waiting time", "Waiting time at "
+        return new WaitingTimeCalculator("Waiting time", "Waiting time at "
                 + calculatorName, probes);
     }
 
@@ -101,7 +89,7 @@ public class DefaultCalculatorFactory implements ICalculatorFactory {
     @Override
     public Calculator buildHoldTimeCalculator(final String calculatorName, final List<Probe> probes) {
         ensureTwoProbes(probes);
-        return new HoldTimeCalculator(this.probeFrameworkContext, "Hold Time", "Hold time at " + calculatorName, probes);
+        return new HoldTimeCalculator("Hold Time", "Hold time at " + calculatorName, probes);
     }
 
     /**
@@ -110,7 +98,7 @@ public class DefaultCalculatorFactory implements ICalculatorFactory {
     @Override
     public Calculator buildStateCalculator(final String calculatorName, final Probe probe) {
         ensureValidProbe(probe);
-        return new IdentityCalculator(this.probeFrameworkContext, probe);
+        return new IdentityCalculator(probe);
     }
 
     /**
@@ -119,7 +107,7 @@ public class DefaultCalculatorFactory implements ICalculatorFactory {
     @Override
     public Calculator buildOverallUtilizationCalculator(final String calculatorName, final Probe probe) {
         ensureValidProbe(probe);
-        return new IdentityCalculator(this.probeFrameworkContext, probe);
+        return new IdentityCalculator(probe);
     }
 
     /**
@@ -128,7 +116,7 @@ public class DefaultCalculatorFactory implements ICalculatorFactory {
     @Override
     public Calculator buildDemandCalculator(final String calculatorName, final Probe probe) {
         ensureValidProbe(probe);
-        return new IdentityCalculator(this.probeFrameworkContext, probe);
+        return new IdentityCalculator(probe);
     }
 
     /**
@@ -137,7 +125,7 @@ public class DefaultCalculatorFactory implements ICalculatorFactory {
     @Override
     public Calculator buildExecutionResultCalculator(final String calculatorName, final Probe probe) {
         ensureValidProbe(probe);
-        return new IdentityCalculator(this.probeFrameworkContext, probe);
+        return new IdentityCalculator(probe);
     }
 
     /**
@@ -146,6 +134,6 @@ public class DefaultCalculatorFactory implements ICalculatorFactory {
     @Override
     public Calculator buildIdentityCalculator(final String calculatorName, final Probe probe) {
         ensureValidProbe(probe);
-        return new IdentityCalculator(this.probeFrameworkContext, probe);
+        return new IdentityCalculator(probe);
     }    
 }

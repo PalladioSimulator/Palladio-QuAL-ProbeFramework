@@ -12,7 +12,6 @@ import org.palladiosimulator.measurementspec.Measurement;
 import org.palladiosimulator.measurementspec.MeasurementTuple;
 import org.palladiosimulator.metricspec.MetricSetDescription;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
-import org.palladiosimulator.probeframework.ProbeFrameworkContext;
 import org.palladiosimulator.probeframework.measurement.ProbeMeasurement;
 import org.palladiosimulator.probeframework.probes.Probe;
 
@@ -36,8 +35,6 @@ public class DemandBasedWaitingTimeCalculator extends WaitingTimeCalculator {
     /**
      * Default constructor.
      * 
-     * @param context
-     *            ProbeFrameworkContext as needed by the superclass.
      * @param metricName
      *            Metric name as needed by the superclass.
      * @param metricDescription
@@ -45,9 +42,9 @@ public class DemandBasedWaitingTimeCalculator extends WaitingTimeCalculator {
      * @param probes
      *            Probes as needed by the superclass.
      */
-    public DemandBasedWaitingTimeCalculator(final ProbeFrameworkContext context, final String metricName,
+    public DemandBasedWaitingTimeCalculator(final String metricName,
             final String metricDescription, final List<Probe> probes) {
-        super(context, metricName, metricDescription, probes);
+        super(metricName, metricDescription, probes);
     }
 
     /**

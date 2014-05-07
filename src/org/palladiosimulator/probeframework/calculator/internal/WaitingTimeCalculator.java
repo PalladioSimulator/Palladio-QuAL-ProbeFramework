@@ -5,7 +5,6 @@ import static org.palladiosimulator.metricspec.constants.MetricDescriptionConsta
 import java.util.Arrays;
 import java.util.List;
 
-import org.palladiosimulator.probeframework.ProbeFrameworkContext;
 import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.probeframework.probes.Probe;
 
@@ -22,8 +21,6 @@ public class WaitingTimeCalculator extends TimeSpanCalculator {
     /**
      * Default Constructor.
      * 
-     * @param context
-     *            ProbeFrameworkContext as needed by the superclass.
      * @param metricName
      *            Name of the metric to be calculated. Dynamically created as it depends on the
      *            referred resource.
@@ -32,9 +29,9 @@ public class WaitingTimeCalculator extends TimeSpanCalculator {
      * @param probes
      *            The two probes for starting point of waiting time and final point of waiting time.
      */
-    public WaitingTimeCalculator(final ProbeFrameworkContext context, final String metricName,
+    public WaitingTimeCalculator(final String metricName,
             final String metricDescription, final List<Probe> probes) {
-        super(context, Calculator.createMetricSetDescription(metricName, metricDescription,
+        super(Calculator.createMetricSetDescription(metricName, metricDescription,
                 Arrays.asList(WAITING_TIME_METRIC)), probes);
     }
 }

@@ -14,7 +14,6 @@ import org.palladiosimulator.measurementspec.Measurement;
 import org.palladiosimulator.measurementspec.MeasurementTuple;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.metricspec.MetricSetDescription;
-import org.palladiosimulator.probeframework.ProbeFrameworkContext;
 import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.probeframework.measurement.ProbeMeasurement;
 import org.palladiosimulator.probeframework.probes.Probe;
@@ -31,16 +30,14 @@ public abstract class TimeSpanCalculator extends Calculator {
     /**
      * Default constructor.
      * 
-     * @param context
-     *            ProbeFrameworkContext as needed by the superclass.
      * @param metricDescription
      *            MetricDescription as needed by the superclass.
      * @param probes
      *            Probes as needed by the superclass.
      */
-    protected TimeSpanCalculator(final ProbeFrameworkContext context, final MetricDescription metricDescription,
+    protected TimeSpanCalculator(final MetricDescription metricDescription,
             final List<Probe> probes) {
-        super(context, metricDescription, probes);
+        super(metricDescription, probes);
     }
 
     /**

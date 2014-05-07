@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.palladiosimulator.probeframework.ProbeFrameworkContext;
 import org.palladiosimulator.probeframework.probes.Probe;
 
 /**
@@ -45,7 +44,6 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
      */
     public void finish() {
         for (final Calculator calculator : this.calculatorRegister.values()) {
-            calculator.detachProbes();
             calculator.preUnregister();
         }
         // clear calculatorRegister
@@ -80,14 +78,6 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
     private Calculator register(final Calculator calculator, final String calculatorName) {
         calculatorRegister.put(calculatorName, calculator);
         return calculator;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setProbeFrameworkContext(final ProbeFrameworkContext probeFrameworkContext) {
-        decoratedFactory.setProbeFrameworkContext(probeFrameworkContext);
     }
 
     /**

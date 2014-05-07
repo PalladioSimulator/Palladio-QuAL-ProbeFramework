@@ -5,7 +5,6 @@ import static org.palladiosimulator.metricspec.constants.MetricDescriptionConsta
 import java.util.Arrays;
 import java.util.List;
 
-import org.palladiosimulator.probeframework.ProbeFrameworkContext;
 import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.probeframework.probes.Probe;
 
@@ -21,8 +20,6 @@ public class HoldTimeCalculator extends TimeSpanCalculator {
     /**
      * Default Constructor.
      * 
-     * @param context
-     *            ProbeFrameworkContext as needed by the superclass.
      * @param metricName
      *            Name of the metric to be calculated. Dynamically created as it depends on the
      *            referred resource.
@@ -31,9 +28,9 @@ public class HoldTimeCalculator extends TimeSpanCalculator {
      * @param probes
      *            The two probes for starting point of hold time and final point of hold time.
      */
-    public HoldTimeCalculator(final ProbeFrameworkContext context, final String metricName,
+    public HoldTimeCalculator(final String metricName,
             final String metricDescription, final List<Probe> probes) {
-        super(context, Calculator.createMetricSetDescription(metricName, metricDescription,
+        super(Calculator.createMetricSetDescription(metricName, metricDescription,
                 Arrays.asList(HOLD_TIME_METRIC)), probes);
     }
 }

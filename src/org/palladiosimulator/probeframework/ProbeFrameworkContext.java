@@ -32,7 +32,6 @@ public class ProbeFrameworkContext {
             throw new IllegalArgumentException("A valid calculator factory is required.");
         }
         this.calculatorFactory = new RegisterCalculatorFactoryDecorator(calculatorFactory);
-        this.calculatorFactory.setProbeFrameworkContext(this);
     }
 
     /**
