@@ -19,9 +19,9 @@ import org.palladiosimulator.probeframework.measurement.ProbeMeasurement;
 import org.palladiosimulator.probeframework.probes.Probe;
 
 /**
- * Time span calculators calculates a time span. These calculators expect two probes, each providing
+ * Time span calculators calculate a time span. These calculators expect two probes, each providing
  * a POINT_IN_TIME_METRIC. Subsequently, they calculate the time span by subtracting the second
- * point in time from the first point in time.
+ * point in time with the first point in time.
  * 
  * @author Sebastian Lehrig, Steffen Becker
  */

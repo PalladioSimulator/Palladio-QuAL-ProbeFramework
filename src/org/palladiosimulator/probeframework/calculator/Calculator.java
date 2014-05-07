@@ -37,7 +37,7 @@ import org.palladiosimulator.probeframework.probes.listener.IProbeListener;
  * </p>
  * 
  * <p>
- * Furthermore, calculators expects a list of probes to be measured before they can do their
+ * Furthermore, calculators expect a list of probes to be measured before they can do their
  * calculation. For example, a response time calculator needs a measurement series of two probe
  * measurements (one for start time and one for end time of an operation call). For this measurement
  * series, calculators maintain a memory to store measurements of the observed probes. As soon as
