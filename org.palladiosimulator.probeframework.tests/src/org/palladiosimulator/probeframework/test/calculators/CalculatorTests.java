@@ -23,7 +23,7 @@ import org.palladiosimulator.probeframework.probes.example.SimpleSimulationConte
  * JUnit tests for calculators of the Probe Framework. The tests use the simple example simulator
  * and probes from the <code>org.palladiosimulator.probeframework.probes.example</code> package.
  * 
- * TODO Add more tests besides the response time calculator. 
+ * TODO Add more tests besides the response time calculator.
  * 
  * @author Sebastian Lehrig, Steffen Becker
  */
@@ -64,10 +64,10 @@ public class CalculatorTests {
     }
 
     /**
-     * Test case for the {@link ResponseTimeCalculator} that calculates the response time of an
-     * operation call in seconds (i.e., it measures a response time metric). As soon as a new
-     * response time measurement is available, an observer registered at the calculator stores it in
-     * the <code>lastMeasurement</code> member variable.
+     * Test case for a calculator that calculates the response time of an operation call in seconds
+     * (i.e., it measures a response time metric). As soon as a new response time measurement is
+     * available, an observer registered at the calculator stores it in the
+     * <code>lastMeasurement</code> member variable.
      * 
      * The test lets the simulation start at 0 seconds, take the start probe measurement, run for
      * 100 seconds, and take the end probe measurement. The end probe measurement particularly

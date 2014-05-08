@@ -7,10 +7,6 @@
  * 
  * TODO Fix inconsistency: plural for probe, singular for calculator packages. [Lehrig]
  * 
- * @see org.palladiosimulator.perflab.docs
- * @see org.palladiosimulator.probeframework.probes
- * @see org.palladiosimulator.probeframework.calculator
- * 
  * @author Sebastian Lehrig
  */
 package org.palladiosimulator.probeframework;
