@@ -4,7 +4,7 @@
  * internal package. Accessing it without using the factory class is discouraged.
  * 
  * Note that the main super class of all calculators is the abstract class
- * {@link Calculator}.
+ * {@link org.palladiosimulator.probeframework.calculator.Calculator}.
  * 
  * @author Sebastian Lehrig, Steffen Becker
  */

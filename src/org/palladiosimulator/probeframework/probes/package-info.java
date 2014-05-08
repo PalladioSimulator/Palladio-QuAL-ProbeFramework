@@ -11,7 +11,7 @@
  * 
  * The superclass of all probes is the <code>Probe</code> class.
  * 
- * @see Probe
+ * @see org.palladiosimulator.probeframework.probes.Probe
  * 
  * @author Sebastian Lehrig
  */

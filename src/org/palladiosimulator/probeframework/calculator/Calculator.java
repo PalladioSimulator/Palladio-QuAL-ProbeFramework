@@ -42,7 +42,7 @@ import org.palladiosimulator.probeframework.probes.listener.IProbeListener;
  * measurements (one for start time and one for end time of an operation call). For this measurement
  * series, calculators maintain a memory to store measurements of the observed probes. As soon as
  * the last sample arrives, calculators start their calculation by invoking the template method
- * {@link #calculate(List<ProbeMeasurement> measurementMemory)}.
+ * {@link Calculator#calculate(List)}.
  * </p>
  * 
  * <p>
