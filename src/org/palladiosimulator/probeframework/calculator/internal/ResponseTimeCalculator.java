@@ -11,6 +11,7 @@ import org.palladiosimulator.probeframework.probes.Probe;
 /**
  * Calculates a time span representing the response time as defined by the RESPONSE_TIME_METRIC. It
  * expects a probe giving the start and a probe giving the end point in time of an operation call.
+ * The final result is a (start point in time, response time)-tuple.
  * 
  * @author Sebastian Lehrig, Steffen Becker
  * @see TimeSpanCalculator
@@ -19,6 +20,8 @@ public class ResponseTimeCalculator extends TimeSpanCalculator {
 
     /**
      * Default Constructor.
+     * 
+     * TODO Get rid of dynamic metric creation (see other, similar to-dos) [Lehrig]
      * 
      * @param metricName
      *            Name of the metric to be calculated. Dynamically created as it depends on the

@@ -184,8 +184,8 @@ public abstract class Calculator extends MeasurementSource implements IProbeList
      * "Response Time of Operation A" is model-depended (Operation A occurs in this model).
      * Therefore, such a metric has to be created dynamically.
      * 
-     * TODO Dynamic creation will be obsolete as soon as we make use of measures, i.e., (references
-     * object, metric)-tuples. Implement that. [Lehrig]
+     * TODO Dynamic creation will be obsolete as soon as we make use of measures, i.e., (measuring
+     * point, metric)-tuples. Implement that. [Lehrig]
      * 
      * @param metricName
      *            Name of the new metric set description.

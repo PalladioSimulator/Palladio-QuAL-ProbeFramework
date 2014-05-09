@@ -25,7 +25,9 @@ import org.palladiosimulator.probeframework.probes.Probe;
  * period stop)</li>
  * <li><code>demand</code> - the demanded time</li>
  * </ul>
- * The waiting time results from calculating <code>(stop - start) - demand </code>.
+ * The waiting time results from calculating <code>(stop - start) - demand </code>. The final result
+ * is still a (start point in time, waiting time)-tuple, i.e., a measurement typed with a metric
+ * set.
  * 
  * @author pmerkle, Sebastian Lehrig, Steffen Becker
  * 
@@ -42,8 +44,8 @@ public class DemandBasedWaitingTimeCalculator extends WaitingTimeCalculator {
      * @param probes
      *            Probes as needed by the superclass.
      */
-    public DemandBasedWaitingTimeCalculator(final String metricName,
-            final String metricDescription, final List<Probe> probes) {
+    public DemandBasedWaitingTimeCalculator(final String metricName, final String metricDescription,
+            final List<Probe> probes) {
         super(metricName, metricDescription, probes);
     }
 

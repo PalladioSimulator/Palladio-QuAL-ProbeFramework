@@ -11,7 +11,9 @@ import org.palladiosimulator.probeframework.probes.Probe;
 /**
  * Calculates a time span representing the hold time as defined by the HOLD_TIME_METRIC. It expects
  * a probe giving the start of holding and a probe giving the end of holding, e.g., in a passive
- * resource pool.
+ * resource pool. The final result is a (start point in time, hold time)-tuple.
+ * 
+ * TODO Rename to holding time (would be more consistent with the waiting time calculator)? [Lehrig] 
  * 
  * @author Sebastian Lehrig, Steffen Becker
  */

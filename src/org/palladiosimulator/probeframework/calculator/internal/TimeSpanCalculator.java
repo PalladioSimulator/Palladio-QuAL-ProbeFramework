@@ -20,8 +20,9 @@ import org.palladiosimulator.probeframework.probes.Probe;
 
 /**
  * Time span calculators calculate a time span. These calculators expect two probes, each providing
- * a POINT_IN_TIME_METRIC. Subsequently, they calculate the time span by subtracting the second
- * point in time with the first point in time.
+ * at least a POINT_IN_TIME_METRIC measurement. Subsequently, they calculate the time span by
+ * subtracting the point in time of the first probe from the point in time of the second probe. The
+ * final result is a (start point in time, time span)-tuple.
  * 
  * @author Sebastian Lehrig, Steffen Becker
  */
@@ -35,8 +36,7 @@ public abstract class TimeSpanCalculator extends Calculator {
      * @param probes
      *            Probes as needed by the superclass.
      */
-    protected TimeSpanCalculator(final MetricDescription metricDescription,
-            final List<Probe> probes) {
+    protected TimeSpanCalculator(final MetricDescription metricDescription, final List<Probe> probes) {
         super(metricDescription, probes);
     }
 
