@@ -6,10 +6,11 @@ import org.palladiosimulator.probeframework.measurement.RequestContext;
 
 /**
  * Triggered probes measure as soon as their <code>takeMeasurement</code> method is invoked (with
- * optional context parameter of type <code>RequestContext</code>, e.g., a probed thread. This
- * invocation triggers the template method <code>doMeasure</code> (with an optionally empty
- * context). After <code>doMeasure</code> provided a new measurement, <code>takeMeasurement</code>
- * further informs all registered observers about the newly available measurement.
+ * optional context parameter of type <code>RequestContext</code>, e.g., the thread that triggered
+ * the probe. This invocation triggers the template method <code>doMeasure</code> (with an
+ * optionally empty context). After <code>doMeasure</code> computed a new measurement,
+ * <code>takeMeasurement</code> further informs all registered observers about the newly available
+ * measurement.
  * 
  * The method <code>doMeasure</code> itself has to be provided by classes inheriting from the this
  * class.

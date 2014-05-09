@@ -11,7 +11,7 @@ import org.palladiosimulator.probeframework.probes.Probe;
 /**
  * Calculates a time span representing the waiting time as defined by the WAITING_TIME_METRIC. It
  * expects a probe giving the start of waiting and a probe giving the end of waiting, e.g., at a
- * passive resource pool.
+ * passive resource pool. The final result is a (start point in time, waiting time)-tuple.
  * 
  * @author Sebastian Lehrig, Steffen Becker
  * @see TimeSpanCalculator

@@ -7,8 +7,8 @@ import org.palladiosimulator.probeframework.probes.Probe;
 /**
  * Factory interface to create calculator objects. This interface covers all calculators that are
  * allowed to be instantiated from within the internal package
- * <code>org.palladiosimulator.probeframework.calculator.internal</code> (access without
- * implementing the factory interface is discouraged).
+ * <code>org.palladiosimulator.probeframework.calculator.internal</code> (access without using the
+ * factory class is impossible in OSGI because classes of internal packages are not exported).
  * 
  * @author Steffen Becker, Sebastian Lehrig
  */
@@ -36,7 +36,8 @@ public interface ICalculatorFactory {
      *            event, and (3) the demanded time at the resource.
      * @return A new demand-based waiting time calculator object.
      */
-    public abstract Calculator buildDemandBasedWaitingTimeCalculator(final String calculatorName, final List<Probe> probes);
+    public abstract Calculator buildDemandBasedWaitingTimeCalculator(final String calculatorName,
+            final List<Probe> probes);
 
     /**
      * Creates a waiting time calculator object based on the given name and the given probes.
