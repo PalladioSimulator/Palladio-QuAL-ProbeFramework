@@ -1,7 +1,5 @@
 package org.palladiosimulator.probeframework.calculator;
 
-import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.POINT_IN_TIME_METRIC;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -10,13 +8,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.palladiosimulator.measurementspec.Measurement;
-import org.palladiosimulator.measurementspec.listener.IMeasurementSourceListener;
-import org.palladiosimulator.measurementspec.listener.MeasurementSource;
-import org.palladiosimulator.metricspec.BaseMetricDescription;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
+import org.palladiosimulator.measurementframework.Measurement;
+import org.palladiosimulator.measurementframework.listener.IMeasurementSourceListener;
+import org.palladiosimulator.measurementframework.listener.MeasurementSource;
 import org.palladiosimulator.metricspec.MetricDescription;
-import org.palladiosimulator.metricspec.MetricSetDescription;
-import org.palladiosimulator.metricspec.util.builder.MetricSetDescriptionBuilder;
 import org.palladiosimulator.probeframework.exceptions.CalculatorException;
 import org.palladiosimulator.probeframework.measurement.ProbeMeasurement;
 import org.palladiosimulator.probeframework.measurement.RequestContext;
@@ -64,17 +61,61 @@ public abstract class Calculator extends MeasurementSource implements IProbeList
     /** Maintained memory of probe measurements */
     private final Map<RequestContext, List<ProbeMeasurement>> arrivedMeasurementMemory;
 
+    /** Measuring point of this measurement source, e.g., a CPU or an Operation. */
+    private final MeasuringPoint measuringPoint;
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((this.getMetricDesciption() == null) ? 0 : this.getMetricDesciption().getId().hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Calculator other = (Calculator) obj;
+        if (this.getMetricDesciption() == null) {
+            if (other.getMetricDesciption() != null) {
+                return false;
+            }
+        } else if (!this.isCompatibleWith(other.getMetricDesciption())) {
+            return false;
+        }
+        if (measuringPoint == null) {
+            if (other.measuringPoint != null) {
+                return false;
+            }
+        } else if (!EcoreUtil.equals(measuringPoint, other.measuringPoint)) {
+            return false;
+        }
+        return true;
+    }
+
     /**
      * Default constructor. Creates the observed list of probes and initializes the measurement
      * memory.
      * 
      * @param computedMetric
      *            Metric calculated by this calculator.
+     * @param measuringPoint
+     *            The measuring point serving as the source of measurements.
      * @param childProbes
      *            List of probes.
      */
-    protected Calculator(final MetricDescription computedMetric, final List<Probe> childProbes) {
+    protected Calculator(final MetricDescription computedMetric, final MeasuringPoint measuringPoint,
+            final List<Probe> childProbes) {
         super(computedMetric);
+        this.measuringPoint = measuringPoint;
         this.arrivedMeasurementMemory = new HashMap<RequestContext, List<ProbeMeasurement>>();
 
         this.probes = Collections.unmodifiableList(new ArrayList<Probe>(childProbes));
@@ -88,12 +129,21 @@ public abstract class Calculator extends MeasurementSource implements IProbeList
      * 
      * @param probeMeasurements
      *            Probe measurements conforming to the registered probes of this calculator.
-     * @return Measurement that conforms to the static declaration of the metric of this class of
+     * @return AbstractMeasureProvider that conforms to the static declaration of the metric of this class of
      *         calculators.
      * @throws CalculatorException
      *             In case something during the execution of the calculator went wrong.
      */
     protected abstract Measurement calculate(List<ProbeMeasurement> probeMeasurements) throws CalculatorException;
+
+    /**
+     * Returns the measuring point serving as the source of measurements.
+     * 
+     * @return The measuring point.
+     */
+    public MeasuringPoint getMeasuringPoint() {
+        return measuringPoint;
+    }
 
     /**
      * This method informs calculators before they are unregistered in the calculator factory. This
@@ -176,31 +226,5 @@ public abstract class Calculator extends MeasurementSource implements IProbeList
      */
     private boolean isMeasurementFromFirstProbe(final ProbeMeasurement probeMeasurement) {
         return (probeMeasurement.getProbeAndContext().getProbe() == probes.get(0));
-    }
-
-    /**
-     * Helper method to dynamically create the metric provided by this calculator. This method is
-     * useful whenever metrics cannot statically be determined. For example, a metric
-     * "Response Time of Operation A" is model-depended (Operation A occurs in this model).
-     * Therefore, such a metric has to be created dynamically.
-     * 
-     * TODO Dynamic creation will be obsolete as soon as we make use of measures, i.e., (measuring
-     * point, metric)-tuples. Implement that. [Lehrig]
-     * 
-     * @param metricName
-     *            Name of the new metric set description.
-     * @param metricDescription
-     *            Textual description of the new metric.
-     * @param metricDescriptions
-     *            Subsumed metrics.
-     * @return New, dynamically created metric.
-     */
-    protected static MetricDescription createMetricSetDescription(final String metricName,
-            final String metricDescription, final List<BaseMetricDescription> metricDescriptions) {
-        final MetricSetDescription result = MetricSetDescriptionBuilder.newMetricSetDescriptionBuilder()
-                .name(metricName).textualDescription(metricDescription).subsumedMetrics(POINT_IN_TIME_METRIC)
-                .subsumedMetrics(metricDescriptions).build();
-
-        return result;
     }
 }

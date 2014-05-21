@@ -3,10 +3,9 @@ package org.palladiosimulator.probeframework.probes;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.palladiosimulator.measurementspec.Measurement;
-import org.palladiosimulator.measurementspec.MeasurementTuple;
-import org.palladiosimulator.metricspec.MetricDescription;
-import org.palladiosimulator.metricspec.MetricSetDescription;
+import org.palladiosimulator.measurementframework.Measurement;
+import org.palladiosimulator.measurementframework.TupleMeasurement;
+import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.probeframework.measurement.ProbeMeasurement;
 import org.palladiosimulator.probeframework.measurement.RequestContext;
 
@@ -27,13 +26,11 @@ public class TriggeredProbeList extends TriggeredProbe {
      * 
      * @param subsumedProbes
      *            The list of subsumed probes.
-     * @param metricDesciption
-     *            A metric description as needed by the superclass.
      * @throws IllegalArgumentException
      *             If a subsumed probe is not a triggered probe.
      */
-    public TriggeredProbeList(final List<Probe> subsumedProbes, final MetricDescription metricDesciption) {
-        super(metricDesciption);
+    public TriggeredProbeList(final List<Probe> subsumedProbes) {
+        super();
         for (final Probe probe : subsumedProbes) {
             if (!(probe instanceof TriggeredProbe)) {
                 throw new IllegalArgumentException("In a triggered probe list, all probes must be triggered probes");
@@ -43,21 +40,9 @@ public class TriggeredProbeList extends TriggeredProbe {
     }
 
     /**
-     * Convenience constructor creating a default metric description based on a given name.
-     * 
-     * @see #TriggeredProbeList(List, MetricDescription)
-     * 
-     * @param subsumedProbes
-     *            The list of subsumed probes.
-     * @param metricName
-     *            Metric name used for a new metric description.
-     */
-    public TriggeredProbeList(final List<Probe> subsumedProbes, final String metricName) {
-        this(subsumedProbes, ProbeListHelper.getMetricSetDescription(subsumedProbes, metricName));
-    }
-
-    /**
      * {@inheritDoc}
+     * 
+     * FIXME Use is MetricDescriptionConstants.RESPONSE_TIME_METRIC_TUPLE is wrong
      */
     @Override
     protected ProbeMeasurement doMeasure(final RequestContext measurementContext) {
@@ -67,9 +52,9 @@ public class TriggeredProbeList extends TriggeredProbe {
             childMeasurements.add(((TriggeredProbe) childProbe).doMeasure(measurementContext).getMeasurement());
         }
 
-        final MeasurementTuple result = new MeasurementTuple(childMeasurements,
-                (MetricSetDescription) getMetricDesciption());
-        return new ProbeMeasurement(result, this, measurementContext, null);
+        final Measurement measurementTuple = new TupleMeasurement(childMeasurements,
+                MetricDescriptionConstants.RESPONSE_TIME_METRIC_TUPLE);
+        return new ProbeMeasurement(measurementTuple, this, measurementContext, null);
     }
 
 }

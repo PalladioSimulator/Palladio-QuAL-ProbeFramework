@@ -7,9 +7,10 @@ import javax.measure.Measure;
 import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
 
-import org.palladiosimulator.measurementspec.BasicMeasurement;
-import org.palladiosimulator.measurementspec.Measurement;
-import org.palladiosimulator.measurementspec.MeasurementTuple;
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
+import org.palladiosimulator.measurementframework.BasicMeasurement;
+import org.palladiosimulator.measurementframework.Measurement;
+import org.palladiosimulator.measurementframework.TupleMeasurement;
 import org.palladiosimulator.metricspec.MetricSetDescription;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.probeframework.measurement.ProbeMeasurement;
@@ -37,16 +38,13 @@ public class DemandBasedWaitingTimeCalculator extends WaitingTimeCalculator {
     /**
      * Default constructor.
      * 
-     * @param metricName
-     *            Metric name as needed by the superclass.
-     * @param metricDescription
-     *            Textual metric description as needed by the superclass.
+     * @param measuringPoint
+     *            MeasuringPoint as needed by the superclass.
      * @param probes
      *            Probes as needed by the superclass.
      */
-    public DemandBasedWaitingTimeCalculator(final String metricName, final String metricDescription,
-            final List<Probe> probes) {
-        super(metricName, metricDescription, probes);
+    public DemandBasedWaitingTimeCalculator(final MeasuringPoint measuringPoint, final List<Probe> probes) {
+        super(measuringPoint, probes);
     }
 
     /**
@@ -89,7 +87,7 @@ public class DemandBasedWaitingTimeCalculator extends WaitingTimeCalculator {
                 .getMeasurementForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC));
         result.add(waitingTimeMeasurement);
 
-        return new MeasurementTuple(result, (MetricSetDescription) this.getMetricDesciption());
+        return new TupleMeasurement(result, (MetricSetDescription) this.getMetricDesciption());
     }
 
 }

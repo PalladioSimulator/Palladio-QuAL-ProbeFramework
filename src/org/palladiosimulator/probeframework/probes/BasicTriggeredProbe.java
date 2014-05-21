@@ -3,9 +3,11 @@ package org.palladiosimulator.probeframework.probes;
 import javax.measure.Measure;
 import javax.measure.quantity.Quantity;
 
-import org.palladiosimulator.measurementspec.BasicMeasurement;
-import org.palladiosimulator.measurementspec.Measurement;
+import org.palladiosimulator.measurementframework.BasicMeasurement;
 import org.palladiosimulator.metricspec.BaseMetricDescription;
+import org.palladiosimulator.metricspec.MetricDescription;
+import org.palladiosimulator.metricspec.metricentity.IMetricEntity;
+import org.palladiosimulator.metricspec.metricentity.MetricEntity;
 import org.palladiosimulator.probeframework.measurement.ProbeMeasurement;
 import org.palladiosimulator.probeframework.measurement.RequestContext;
 
@@ -28,17 +30,21 @@ import org.palladiosimulator.probeframework.measurement.RequestContext;
  * @param <Q>
  *            The quantity type of the basic measure.
  */
-public abstract class BasicTriggeredProbe<V, Q extends Quantity> extends TriggeredProbe {
+public abstract class BasicTriggeredProbe<V, Q extends Quantity> extends TriggeredProbe implements IMetricEntity {
 
+    /** Delegate object for implementing IMetricEntity. */
+    private final IMetricEntity metricEntityDelegate; 
+    
     /**
      * Default constructor. Restricts general metric descriptions to BaseMetricDescriptions (central
      * characteristic of this type of triggered probe).
      * 
-     * @param metricDesciption
+     * @param metricDescription
      *            A BaseMetricDescription as needed by the superclass.
      */
-    public BasicTriggeredProbe(final BaseMetricDescription metricDesciption) {
-        super(metricDesciption);
+    public BasicTriggeredProbe(final BaseMetricDescription metricDescription) {
+        super();
+        this.metricEntityDelegate = new MetricEntity(metricDescription);
     }
 
     /**
@@ -46,8 +52,8 @@ public abstract class BasicTriggeredProbe<V, Q extends Quantity> extends Trigger
      */
     @Override
     protected final ProbeMeasurement doMeasure(final RequestContext measurementContext) {
-        final Measurement resultMeasurement = new BasicMeasurement<V, Q>(getBasicMeasure(measurementContext),
-                this.getMetricDesciption());
+        final BasicMeasurement<V, Q> resultMeasurement = new BasicMeasurement<V, Q>(
+                getBasicMeasure(measurementContext), (BaseMetricDescription) this.getMetricDesciption());
         return new ProbeMeasurement(resultMeasurement, this, measurementContext, null);
     }
 
@@ -59,4 +65,31 @@ public abstract class BasicTriggeredProbe<V, Q extends Quantity> extends Trigger
      * @return The taken measure.
      */
     protected abstract Measure<V, Q> getBasicMeasure(RequestContext measurementContext);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void notifyMeasurementSourceListener(final ProbeMeasurement newMeasurement) {
+        if (!isCompatibleWith(newMeasurement.getMeasurement().getMetricDesciption())) {
+            throw new IllegalArgumentException("Taken measurement has an incompatible metric");
+        }
+        super.notifyMeasurementSourceListener(newMeasurement);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MetricDescription getMetricDesciption() {
+        return this.metricEntityDelegate.getMetricDesciption();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isCompatibleWith(MetricDescription other) {
+        return this.metricEntityDelegate.isCompatibleWith(other);
+    }
 }

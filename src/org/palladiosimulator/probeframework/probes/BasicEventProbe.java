@@ -3,9 +3,11 @@ package org.palladiosimulator.probeframework.probes;
 import javax.measure.Measure;
 import javax.measure.quantity.Quantity;
 
-import org.palladiosimulator.measurementspec.BasicMeasurement;
-import org.palladiosimulator.measurementspec.Measurement;
+import org.palladiosimulator.measurementframework.BasicMeasurement;
 import org.palladiosimulator.metricspec.BaseMetricDescription;
+import org.palladiosimulator.metricspec.MetricDescription;
+import org.palladiosimulator.metricspec.metricentity.IMetricEntity;
+import org.palladiosimulator.metricspec.metricentity.MetricEntity;
 import org.palladiosimulator.probeframework.measurement.ProbeMeasurement;
 import org.palladiosimulator.probeframework.measurement.RequestContext;
 
@@ -31,7 +33,11 @@ import org.palladiosimulator.probeframework.measurement.RequestContext;
  * @param <Q>
  *            The quantity type of the basic measure (as needed by the superclass).
  */
-public abstract class BasicEventProbe<EventSourceType, V, Q extends Quantity> extends EventProbe<EventSourceType> {
+public abstract class BasicEventProbe<EventSourceType, V, Q extends Quantity> extends EventProbe<EventSourceType>
+        implements IMetricEntity {
+
+    /** Delegate object for implementing IMetricEntity. */
+    private final IMetricEntity metricEntityDelegate;
 
     /**
      * Default constructor.
@@ -42,7 +48,8 @@ public abstract class BasicEventProbe<EventSourceType, V, Q extends Quantity> ex
      *            The metric description as needed by the superclass.
      */
     public BasicEventProbe(final EventSourceType eventSource, final BaseMetricDescription metricDescription) {
-        super(eventSource, metricDescription);
+        super(eventSource);
+        this.metricEntityDelegate = new MetricEntity(metricDescription);
     }
 
     /**
@@ -54,9 +61,37 @@ public abstract class BasicEventProbe<EventSourceType, V, Q extends Quantity> ex
      *            The measurement received from the event.
      */
     protected void notify(final Measure<V, Q> eventMeasure) {
-        final Measurement basicMeasurement = new BasicMeasurement<V, Q>(eventMeasure, this.getMetricDesciption());
+        final BasicMeasurement<V, Q> basicMeasurement = new BasicMeasurement<V, Q>(eventMeasure,
+                (BaseMetricDescription) this.getMetricDesciption());
         final ProbeMeasurement newMeasurement = new ProbeMeasurement(basicMeasurement, this,
                 RequestContext.EMPTY_REQUEST_CONTEXT, null);
         this.notifyMeasurementSourceListener(newMeasurement);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void notifyMeasurementSourceListener(final ProbeMeasurement newMeasurement) {
+        if (!isCompatibleWith(newMeasurement.getMeasurement().getMetricDesciption())) {
+            throw new IllegalArgumentException("Taken measurement has an incompatible metric");
+        }
+        super.notifyMeasurementSourceListener(newMeasurement);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MetricDescription getMetricDesciption() {
+        return this.metricEntityDelegate.getMetricDesciption();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isCompatibleWith(MetricDescription other) {
+        return this.metricEntityDelegate.isCompatibleWith(other);
     }
 }

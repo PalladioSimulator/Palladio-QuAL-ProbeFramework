@@ -2,8 +2,9 @@ package org.palladiosimulator.probeframework.calculator;
 
 import java.util.List;
 
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.probeframework.calculator.internal.DemandBasedWaitingTimeCalculator;
-import org.palladiosimulator.probeframework.calculator.internal.HoldTimeCalculator;
+import org.palladiosimulator.probeframework.calculator.internal.HoldingTimeCalculator;
 import org.palladiosimulator.probeframework.calculator.internal.IdentityCalculator;
 import org.palladiosimulator.probeframework.calculator.internal.ResponseTimeCalculator;
 import org.palladiosimulator.probeframework.calculator.internal.WaitingTimeCalculator;
@@ -31,6 +32,8 @@ public class DefaultCalculatorFactory implements ICalculatorFactory {
      * Ensures that the given list of probes contains exactly two probes. Otherwise, it throws an
      * IllegalArgumentException.
      * 
+     * TODO Unite with other method (ensureValidProbe)
+     * 
      * @param probes
      *            The list of probes
      */
@@ -57,83 +60,81 @@ public class DefaultCalculatorFactory implements ICalculatorFactory {
      * {@inheritDoc}
      */
     @Override
-    public Calculator buildResponseTimeCalculator(final String calculatorName, final List<Probe> probes) {
+    public Calculator buildResponseTimeCalculator(final MeasuringPoint measuringPoint, final List<Probe> probes) {
         ensureTwoProbes(probes);
-        return new ResponseTimeCalculator("Response Time", "Response Time of "
-                + calculatorName, probes);
+        return new ResponseTimeCalculator(measuringPoint, probes);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Calculator buildDemandBasedWaitingTimeCalculator(final String calculatorName, final List<Probe> probes) {
+    public Calculator buildDemandBasedWaitingTimeCalculator(final MeasuringPoint measuringPoint,
+            final List<Probe> probes) {
         ensureTwoProbes(probes);
-        return new DemandBasedWaitingTimeCalculator("Waiting time", "Waiting time at "
-                + calculatorName, probes);
+        return new DemandBasedWaitingTimeCalculator(measuringPoint, probes);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Calculator buildWaitingTimeCalculator(final String calculatorName, final List<Probe> probes) {
+    public Calculator buildWaitingTimeCalculator(final MeasuringPoint measuringPoint, final List<Probe> probes) {
         ensureTwoProbes(probes);
-        return new WaitingTimeCalculator("Waiting time", "Waiting time at "
-                + calculatorName, probes);
+        return new WaitingTimeCalculator(measuringPoint, probes);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Calculator buildHoldTimeCalculator(final String calculatorName, final List<Probe> probes) {
+    public Calculator buildHoldingTimeCalculator(final MeasuringPoint measuringPoint, final List<Probe> probes) {
         ensureTwoProbes(probes);
-        return new HoldTimeCalculator("Hold Time", "Hold time at " + calculatorName, probes);
+        return new HoldingTimeCalculator(measuringPoint, probes);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Calculator buildStateCalculator(final String calculatorName, final Probe probe) {
+    public Calculator buildStateCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
         ensureValidProbe(probe);
-        return new IdentityCalculator(probe);
+        return new IdentityCalculator(measuringPoint, probe);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Calculator buildOverallUtilizationCalculator(final String calculatorName, final Probe probe) {
+    public Calculator buildOverallUtilizationCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
         ensureValidProbe(probe);
-        return new IdentityCalculator(probe);
+        return new IdentityCalculator(measuringPoint, probe);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Calculator buildDemandCalculator(final String calculatorName, final Probe probe) {
+    public Calculator buildDemandCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
         ensureValidProbe(probe);
-        return new IdentityCalculator(probe);
+        return new IdentityCalculator(measuringPoint, probe);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Calculator buildExecutionResultCalculator(final String calculatorName, final Probe probe) {
+    public Calculator buildExecutionResultCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
         ensureValidProbe(probe);
-        return new IdentityCalculator(probe);
+        return new IdentityCalculator(measuringPoint, probe);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Calculator buildIdentityCalculator(final String calculatorName, final Probe probe) {
+    public Calculator buildIdentityCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
         ensureValidProbe(probe);
-        return new IdentityCalculator(probe);
-    }    
+        return new IdentityCalculator(measuringPoint, probe);
+    }
 }

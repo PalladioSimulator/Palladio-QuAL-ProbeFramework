@@ -2,8 +2,6 @@ package org.palladiosimulator.probeframework.probes;
 
 import org.palladiosimulator.commons.designpatterns.AbstractObservable;
 import org.palladiosimulator.commons.designpatterns.IAbstractObservable;
-import org.palladiosimulator.metricspec.MetricDescription;
-import org.palladiosimulator.metricspec.metricentity.MetricEntity;
 import org.palladiosimulator.probeframework.measurement.ProbeMeasurement;
 import org.palladiosimulator.probeframework.probes.listener.IProbeListener;
 
@@ -21,19 +19,16 @@ import org.palladiosimulator.probeframework.probes.listener.IProbeListener;
  * 
  * @author Steffen Becker, Sebastian Lehrig
  */
-public abstract class Probe extends MetricEntity implements IAbstractObservable<IProbeListener> {
+public abstract class Probe implements IAbstractObservable<IProbeListener> {
 
     /** Delegator object used for implementing IAbstractObservable (c.f., "Delegator pattern") */
     private final AbstractObservable<IProbeListener> observableDelegate;
 
     /**
-     * Default constructor. Creates a probe, typed by the given metric description.
-     * 
-     * @param metricDesciption
-     *            The metric description as needed by the superclass.
+     * Default constructor.
      */
-    protected Probe(final MetricDescription metricDesciption) {
-        super(metricDesciption);
+    protected Probe() {
+        super();
         this.observableDelegate = new AbstractObservable<IProbeListener>() {
         };
     }
@@ -47,9 +42,6 @@ public abstract class Probe extends MetricEntity implements IAbstractObservable<
      *             If the new measurement does not conform to the metric of this probe.
      */
     protected void notifyMeasurementSourceListener(final ProbeMeasurement newMeasurement) {
-        if (!isCompatibleWith(newMeasurement.getMeasurement().getMetricDesciption())) {
-            throw new IllegalArgumentException("Taken measurement has an incompatible metric");
-        }
         observableDelegate.getEventDispatcher().newProbeMeasurementAvailable(newMeasurement);
     }
 

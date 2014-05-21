@@ -9,7 +9,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.common,
  org.palladiosimulator.commons;bundle-version="1.0.0";visibility:=reexport,
  org.palladiosimulator.metricspec;bundle-version="1.0.0",
- org.palladiosimulator.measurementspec;bundle-version="1.0.0"
+ org.palladiosimulator.measurementframework;bundle-version="1.0.0",
+ org.palladiosimulator.edp2
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.palladiosimulator.probeframework,

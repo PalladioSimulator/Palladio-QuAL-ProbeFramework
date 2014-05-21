@@ -1,17 +1,16 @@
 package org.palladiosimulator.probeframework.calculator.internal;
 
-import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.RESPONSE_TIME_METRIC;
+import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.RESPONSE_TIME_METRIC_TUPLE;
 
-import java.util.Arrays;
 import java.util.List;
 
-import org.palladiosimulator.probeframework.calculator.Calculator;
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.probeframework.probes.Probe;
 
 /**
- * Calculates a time span representing the response time as defined by the RESPONSE_TIME_METRIC. It
- * expects a probe giving the start and a probe giving the end point in time of an operation call.
- * The final result is a (start point in time, response time)-tuple.
+ * Calculates a time span representing the response time as defined by the
+ * RESPONSE_TIME_METRIC_TUPLE. It expects a probe giving the start and a probe giving the end point
+ * in time of an operation call. The final result is a (start point in time, response time)-tuple.
  * 
  * @author Sebastian Lehrig, Steffen Becker
  * @see TimeSpanCalculator
@@ -21,20 +20,13 @@ public class ResponseTimeCalculator extends TimeSpanCalculator {
     /**
      * Default Constructor.
      * 
-     * TODO Get rid of dynamic metric creation (see other, similar to-dos) [Lehrig]
-     * 
-     * @param metricName
-     *            Name of the metric to be calculated. Dynamically created as it depends on the
-     *            referred operation call.
-     * @param metricDescription
-     *            Textual description of the metric.
+     * @param measuringPoint
+     *            MeasuringPoint as needed by the superclass.
      * @param probes
      *            The two probes for starting point of the operation call and final point of the
      *            operation call.
      */
-    public ResponseTimeCalculator(final String metricName,
-            final String metricDescription, final List<Probe> probes) {
-        super(Calculator.createMetricSetDescription(metricName, metricDescription,
-                Arrays.asList(RESPONSE_TIME_METRIC)), probes);
+    public ResponseTimeCalculator(final MeasuringPoint measuringPoint, final List<Probe> probes) {
+        super(RESPONSE_TIME_METRIC_TUPLE, measuringPoint, probes);
     }
 }
