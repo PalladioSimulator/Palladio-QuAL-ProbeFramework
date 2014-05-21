@@ -2,6 +2,7 @@ package org.palladiosimulator.probeframework.calculator.internal;
 
 import java.util.Arrays;
 
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.probeframework.probes.Probe;
@@ -21,12 +22,14 @@ public abstract class UnaryCalculator extends Calculator {
      * 
      * @param metricDescription
      *            MetricDescriptions as needed by the superclass.
+     * @param measuringPoint
+     *            MeasuringPoint as needed by the superclass.
      * @param childProbe
      *            The observed probe.
      */
-    protected UnaryCalculator(final MetricDescription metricDescription,
+    protected UnaryCalculator(final MetricDescription metricDescription, final MeasuringPoint measuringPoint,
             final Probe childProbe) {
-        super(metricDescription, Arrays.asList(childProbe));
+        super(metricDescription, measuringPoint, Arrays.asList(childProbe));
     }
 
 }

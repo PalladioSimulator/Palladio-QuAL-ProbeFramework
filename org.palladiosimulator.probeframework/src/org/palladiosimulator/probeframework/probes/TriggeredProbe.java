@@ -1,6 +1,5 @@
 package org.palladiosimulator.probeframework.probes;
 
-import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.probeframework.measurement.ProbeMeasurement;
 import org.palladiosimulator.probeframework.measurement.RequestContext;
 
@@ -21,12 +20,9 @@ public abstract class TriggeredProbe extends Probe {
 
     /**
      * Default constructor.
-     * 
-     * @param metricDesciption
-     *            The metric description as needed by the superclass.
      */
-    protected TriggeredProbe(final MetricDescription metricDesciption) {
-        super(metricDesciption);
+    protected TriggeredProbe() {
+        super();
     }
 
     /**

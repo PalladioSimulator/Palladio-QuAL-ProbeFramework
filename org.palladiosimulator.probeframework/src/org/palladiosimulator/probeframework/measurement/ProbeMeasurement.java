@@ -1,12 +1,17 @@
 package org.palladiosimulator.probeframework.measurement;
 
-import org.palladiosimulator.measurementspec.Measurement;
+import org.palladiosimulator.measurementframework.BasicMeasurement;
+import org.palladiosimulator.measurementframework.Measurement;
 import org.palladiosimulator.probeframework.probes.Probe;
 
 /**
- * Data class representing a ({@link Measurement}, ProbeAndRequestContext, String)-tuple, where the
- * String element refers to a measured entity. Therefore, concrete data objects can store a
+ * Data class representing a ({@link BasicMeasurement}, ProbeAndRequestContext, String)-tuple, where
+ * the String element refers to a measured entity. Therefore, concrete data objects can store a
  * measurement coming from a given ProbeAndRequestContext that probes the given measured entity.
+ * 
+ * TODO Update JavaDoc
+ * 
+ * TODO Use MeasuringPoint instead of String
  * 
  * @author Steffen Becker, Sebastian Lehrig
  */
@@ -33,8 +38,8 @@ public class ProbeMeasurement {
      * @param measuredEntity
      *            A String representing the probed entity.
      */
-    public ProbeMeasurement(final Measurement measurement, final Probe probe, final RequestContext requestContext,
-            final String measuredEntity) {
+    public ProbeMeasurement(final Measurement measurement, final Probe probe,
+            final RequestContext requestContext, final String measuredEntity) {
         super();
         this.measurement = measurement;
         this.probeAndContext = new ProbeAndRequestContext(probe, requestContext);
@@ -47,7 +52,7 @@ public class ProbeMeasurement {
      * @return The measurement.
      */
     public final Measurement getMeasurement() {
-        return measurement;
+        return this.measurement;
     }
 
     /**
@@ -56,7 +61,7 @@ public class ProbeMeasurement {
      * @return The probeAndContext.
      */
     public final ProbeAndRequestContext getProbeAndContext() {
-        return probeAndContext;
+        return this.probeAndContext;
     }
 
     /**
@@ -65,7 +70,7 @@ public class ProbeMeasurement {
      * @return The measuredEntity.
      */
     public final String getMeasuredEntity() {
-        return measuredEntity;
+        return this.measuredEntity;
     }
 
 }

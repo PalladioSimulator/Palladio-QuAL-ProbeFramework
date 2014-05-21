@@ -8,11 +8,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.palladiosimulator.measurementspec.Measurement;
-import org.palladiosimulator.measurementspec.listener.IMeasurementSourceListener;
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringpointFactory;
+import org.palladiosimulator.edp2.models.measuringpoint.StringMeasuringPoint;
+import org.palladiosimulator.measurementframework.Measurement;
+import org.palladiosimulator.measurementframework.listener.IMeasurementSourceListener;
 import org.palladiosimulator.probeframework.ProbeFrameworkContext;
 import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.probeframework.calculator.DefaultCalculatorFactory;
+import org.palladiosimulator.probeframework.calculator.RegisterCalculatorFactoryDecorator;
 import org.palladiosimulator.probeframework.measurement.RequestContext;
 import org.palladiosimulator.probeframework.probes.Probe;
 import org.palladiosimulator.probeframework.probes.TriggeredProbe;
@@ -51,13 +54,17 @@ public class CalculatorTests {
      */
     private Measurement lastMeasurement;
 
+    /** Default EMF factory for measuring points. */
+    private final MeasuringpointFactory measuringpointFactory = MeasuringpointFactory.eINSTANCE;
+
     /**
      * Initializes the member variables for simulation context, probe framework context, and probes.
      */
     @Before
     public void setUp() {
         simContext = new SimpleSimulationContext();
-        probeFrameworkContext = new ProbeFrameworkContext(new DefaultCalculatorFactory());
+        probeFrameworkContext = new ProbeFrameworkContext(new RegisterCalculatorFactoryDecorator(
+                new DefaultCalculatorFactory()));
 
         startProbe = new ExampleTakeCurrentTimeProbe(simContext);
         endProbe = new ExampleTakeCurrentTimeProbe(simContext);
@@ -75,8 +82,10 @@ public class CalculatorTests {
      */
     @Test
     public void testResponseTimeCalculator() {
+        final StringMeasuringPoint serviceCallAMeasuringPoint = measuringpointFactory.createStringMeasuringPoint();
+        serviceCallAMeasuringPoint.setMeasuringPoint("Operation Call A");
         final Calculator rtCalculator = this.probeFrameworkContext.getCalculatorFactory().buildResponseTimeCalculator(
-                "Test ResponseTime", Arrays.asList((Probe) startProbe, (Probe) endProbe));
+                serviceCallAMeasuringPoint, Arrays.asList((Probe) startProbe, (Probe) endProbe));
 
         rtCalculator.addObserver(new IMeasurementSourceListener() {
 
@@ -102,5 +111,20 @@ public class CalculatorTests {
 
         assertTrue(lastMeasurement != null);
         assertTrue(lastMeasurement.getMetricDesciption() == rtCalculator.getMetricDesciption());
+    }
+
+    /**
+     * Equal calculators are only allowed to be created once.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testRegisterCalculatorFactory() {
+        final StringMeasuringPoint serviceCallAMeasuringPoint = measuringpointFactory.createStringMeasuringPoint();
+        serviceCallAMeasuringPoint.setMeasuringPoint("Operation Call A");
+        
+        this.probeFrameworkContext.getCalculatorFactory().buildResponseTimeCalculator(
+                serviceCallAMeasuringPoint, Arrays.asList((Probe) startProbe, (Probe) endProbe));
+       
+        this.probeFrameworkContext.getCalculatorFactory().buildResponseTimeCalculator(
+                serviceCallAMeasuringPoint, Arrays.asList((Probe) startProbe, (Probe) endProbe));
     }
 }

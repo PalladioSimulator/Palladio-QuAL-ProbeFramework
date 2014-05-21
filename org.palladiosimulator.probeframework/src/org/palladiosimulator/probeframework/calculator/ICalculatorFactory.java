@@ -2,6 +2,7 @@ package org.palladiosimulator.probeframework.calculator;
 
 import java.util.List;
 
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.probeframework.probes.Probe;
 
 /**
@@ -16,106 +17,106 @@ public interface ICalculatorFactory {
     /**
      * Creates a response time calculator object based on the given name and the given probes.
      * 
-     * @param calculatorName
-     *            Name of the calculator, e.g., "Response Time of Operation A".
+     * @param measuringPoint
+     *            The measuring point where this calculator is used, e.g., "Operation A".
      * @param probes
      *            List of two probes for starting point of the operation call and final point of the
      *            operation call.
      * @return A new response time calculator object.
      */
-    public abstract Calculator buildResponseTimeCalculator(final String calculatorName, final List<Probe> probes);
+    public abstract Calculator buildResponseTimeCalculator(final MeasuringPoint measuringPoint, final List<Probe> probes);
 
     /**
      * Creates a demand-based waiting time calculator object based on the given name and the given
      * probes.
      * 
-     * @param calculatorName
-     *            Name of the calculator, e.g., "Demand-based Waiting Time at Passive Resource A".
+     * @param measuringPoint
+     *            The measuring point where this calculator is used, e.g., "Passive Resource A".
      * @param probes
      *            List of three probes for (1) start request for processing, (2) end of processing
      *            event, and (3) the demanded time at the resource.
      * @return A new demand-based waiting time calculator object.
      */
-    public abstract Calculator buildDemandBasedWaitingTimeCalculator(final String calculatorName,
+    public abstract Calculator buildDemandBasedWaitingTimeCalculator(final MeasuringPoint measuringPoint,
             final List<Probe> probes);
 
     /**
      * Creates a waiting time calculator object based on the given name and the given probes.
      * 
-     * @param calculatorName
-     *            Name of the calculator, e.g., "Waiting Time at Passive Resource A".
+     * @param measuringPoint
+     *            The measuring point where this calculator is used, e.g., "Passive Resource A".
      * @param probes
      *            List of two probes for starting point of the waiting time and final point of
      *            waiting time.
      * @return A new waiting time calculator object.
      */
-    public abstract Calculator buildWaitingTimeCalculator(final String calculatorName, final List<Probe> probes);
+    public abstract Calculator buildWaitingTimeCalculator(final MeasuringPoint measuringPoint, final List<Probe> probes);
 
     /**
-     * Creates a hold time calculator object based on the given name and the given probes.
+     * Creates a holding time calculator object based on the given name and the given probes.
      * 
-     * @param calculatorName
-     *            Name of the calculator, e.g., "Hold Time at Passive Resource A".
+     * @param measuringPoint
+     *            The measuring point where this calculator is used, e.g., "Passive Resource A".
      * @param probes
-     *            List of two probes for starting point of hold time and final point of hold time.
-     * @return A new hold time time calculator object.
+     *            List of two probes for starting point of holding time and final point of holding
+     *            time.
+     * @return A new holding time time calculator object.
      */
-    public abstract Calculator buildHoldTimeCalculator(final String calculatorName, final List<Probe> probes);
+    public abstract Calculator buildHoldingTimeCalculator(final MeasuringPoint measuringPoint, final List<Probe> probes);
 
     /**
      * Creates a state calculator object based on the given name and the given probe.
      * 
-     * @param calculatorName
-     *            Name of the calculator, e.g., "Utilization of CPU 1".
+     * @param measuringPoint
+     *            The measuring point where this calculator is used, e.g., "CPU 1".
      * @param probe
      *            A single probe providing the resource state of interest.
      * @return A new state calculator object.
      */
-    public abstract Calculator buildStateCalculator(final String calculatorName, final Probe probe);
+    public abstract Calculator buildStateCalculator(final MeasuringPoint measuringPoint, final Probe probe);
 
     /**
      * Creates an overall utilization calculator object based on the given name and the given probe.
      * 
-     * @param calculatorName
-     *            Name of the calculator, e.g., "Overall Utilization of CPU 1".
+     * @param measuringPoint
+     *            The measuring point where this calculator is used, e.g., "CPU 1".
      * @param probe
      *            A single probe providing the resource state of interest.
      * @return A new overall utilization calculator object.
      */
-    public abstract Calculator buildOverallUtilizationCalculator(final String calculatorName, final Probe probe);
+    public abstract Calculator buildOverallUtilizationCalculator(final MeasuringPoint measuringPoint, final Probe probe);
 
     /**
      * Creates a demand calculator object based on the given name and the given probe.
      * 
-     * @param calculatorName
-     *            Name of the calculator, e.g., "Demand to CPU 1".
+     * @param measuringPoint
+     *            The measuring point where this calculator is used, e.g., "CPU 1".
      * @param probe
      *            A single probe providing the resource demand.
      * @return A new demand calculator object.
      */
-    public abstract Calculator buildDemandCalculator(final String calculatorName, final Probe probe);
+    public abstract Calculator buildDemandCalculator(final MeasuringPoint measuringPoint, final Probe probe);
 
     /**
      * Creates an execution result calculator object based on the given name and the given probe.
      * 
-     * @param calculatorName
-     *            Name of the calculator, e.g., "Execution results of Operation A".
+     * @param measuringPoint
+     *            The measuring point where this calculator is used, e.g., "Operation A".
      * @param probe
      *            A single probe providing the execution results.
      * @return A new execution result calculator object.
      */
-    public abstract Calculator buildExecutionResultCalculator(final String calculatorName, final Probe probe);
+    public abstract Calculator buildExecutionResultCalculator(final MeasuringPoint measuringPoint, final Probe probe);
 
     /**
      * Creates an identity calculator object based on the given name and the given probe.
      * 
-     * @param calculatorName
-     *            Name of the calculator, e.g., "Execution results of Operation A" (an execution
-     *            result calculator can be realized using an identity calculator).
+     * @param measuringPoint
+     *            The measuring point where this calculator is used, e.g., "Operation A".
      * @param probe
      *            A single probe directly providing the result of interest.
      * @return A new identity calculator object.
      */
-    public abstract Calculator buildIdentityCalculator(final String calculatorName, final Probe probe);
+    public abstract Calculator buildIdentityCalculator(final MeasuringPoint measuringPoint, final Probe probe);
 
 }

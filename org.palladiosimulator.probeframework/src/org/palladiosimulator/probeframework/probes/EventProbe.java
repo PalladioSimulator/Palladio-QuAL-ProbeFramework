@@ -1,6 +1,6 @@
 package org.palladiosimulator.probeframework.probes;
 
-import org.palladiosimulator.metricspec.MetricDescription;
+
 
 /**
  * Event probes measure as soon as an event is emitted for which they are registered. Therefore,
@@ -23,11 +23,8 @@ public abstract class EventProbe<EventSourceType> extends Probe {
      * 
      * @param eventSource
      *            The event source object.
-     * @param metricDesciption
-     *            The metric description as needed by the superclass.
      */
-    public EventProbe(final EventSourceType eventSource, final MetricDescription metricDesciption) {
-        super(metricDesciption);
+    public EventProbe(final EventSourceType eventSource) {
         this.eventSource = eventSource;
         registerListener();
     }

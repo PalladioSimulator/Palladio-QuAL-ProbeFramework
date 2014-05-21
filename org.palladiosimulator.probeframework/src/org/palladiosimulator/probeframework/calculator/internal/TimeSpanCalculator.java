@@ -9,9 +9,11 @@ import javax.measure.Measure;
 import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
 
-import org.palladiosimulator.measurementspec.BasicMeasurement;
-import org.palladiosimulator.measurementspec.Measurement;
-import org.palladiosimulator.measurementspec.MeasurementTuple;
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
+import org.palladiosimulator.measurementframework.BasicMeasurement;
+import org.palladiosimulator.measurementframework.Measurement;
+import org.palladiosimulator.measurementframework.TupleMeasurement;
+import org.palladiosimulator.metricspec.BaseMetricDescription;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.metricspec.MetricSetDescription;
 import org.palladiosimulator.probeframework.calculator.Calculator;
@@ -33,11 +35,14 @@ public abstract class TimeSpanCalculator extends Calculator {
      * 
      * @param metricDescription
      *            MetricDescription as needed by the superclass.
+     * @param measuringPoint
+     *            MeasuringPoint as needed by the superclass.
      * @param probes
      *            Probes as needed by the superclass.
      */
-    protected TimeSpanCalculator(final MetricDescription metricDescription, final List<Probe> probes) {
-        super(metricDescription, probes);
+    protected TimeSpanCalculator(final MetricDescription metricDescription, final MeasuringPoint measuringPoint,
+            final List<Probe> probes) {
+        super(metricDescription, measuringPoint, probes);
     }
 
     /**
@@ -62,10 +67,11 @@ public abstract class TimeSpanCalculator extends Calculator {
         final Measurement startTimeMeasurement = probeMeasurements.get(0).getMeasurement()
                 .getMeasurementForMetric(POINT_IN_TIME_METRIC);
         result.add(startTimeMeasurement);
-        final BasicMeasurement<Double, Duration> timeSpanMeasurement = new BasicMeasurement<Double, Duration>(
-                timeSpanMeasure, ((MetricSetDescription) this.getMetricDesciption()).getSubsumedMetrics().get(1));
+        final Measurement timeSpanMeasurement = new BasicMeasurement<Double, Duration>(
+                timeSpanMeasure, (BaseMetricDescription) ((MetricSetDescription) this.getMetricDesciption())
+                        .getSubsumedMetrics().get(1));
         result.add(timeSpanMeasurement);
 
-        return new MeasurementTuple(result, (MetricSetDescription) this.getMetricDesciption());
+        return new TupleMeasurement(result, (MetricSetDescription) this.getMetricDesciption());
     }
 }
