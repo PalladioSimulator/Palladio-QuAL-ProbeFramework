@@ -60,11 +60,11 @@ public class DemandBasedWaitingTimeCalculator extends WaitingTimeCalculator {
     @Override
     protected Measurement calculate(final List<ProbeMeasurement> probeMeasurements) {
         // raw measures
-        final Measure<Double, Duration> startTimeMeasure = probeMeasurements.get(0).getMeasurement()
+        final Measure<Double, Duration> startTimeMeasure = probeMeasurements.get(0).getMeasureProvider()
                 .getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
-        final Measure<Double, Duration> demandMeasure = probeMeasurements.get(0).getMeasurement()
+        final Measure<Double, Duration> demandMeasure = probeMeasurements.get(0).getMeasureProvider()
                 .getMeasureForMetric(MetricDescriptionConstants.RESOURCE_DEMAND_METRIC);
-        final Measure<Double, Duration> endTimeMeasure = probeMeasurements.get(1).getMeasurement()
+        final Measure<Double, Duration> endTimeMeasure = probeMeasurements.get(1).getMeasureProvider()
                 .getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
 
         // time span
@@ -83,7 +83,7 @@ public class DemandBasedWaitingTimeCalculator extends WaitingTimeCalculator {
         final BasicMeasurement<Double, Duration> waitingTimeMeasurement = new BasicMeasurement<Double, Duration>(
                 waitingTimeMeasure, MetricDescriptionConstants.WAITING_TIME_METRIC);
 
-        result.add(probeMeasurements.get(1).getMeasurement()
+        result.add(probeMeasurements.get(1).getBasicMeasurement()
                 .getMeasurementForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC));
         result.add(waitingTimeMeasurement);
 

@@ -54,7 +54,7 @@ public abstract class BasicTriggeredProbe<V, Q extends Quantity> extends Trigger
     protected final ProbeMeasurement doMeasure(final RequestContext measurementContext) {
         final BasicMeasurement<V, Q> resultMeasurement = new BasicMeasurement<V, Q>(
                 getBasicMeasure(measurementContext), (BaseMetricDescription) this.getMetricDesciption());
-        return new ProbeMeasurement(resultMeasurement, this, measurementContext, null);
+        return new ProbeMeasurement(resultMeasurement, this, measurementContext);
     }
 
     /**
@@ -65,17 +65,6 @@ public abstract class BasicTriggeredProbe<V, Q extends Quantity> extends Trigger
      * @return The taken measure.
      */
     protected abstract Measure<V, Q> getBasicMeasure(RequestContext measurementContext);
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void notifyMeasurementSourceListener(final ProbeMeasurement newMeasurement) {
-        if (!isCompatibleWith(newMeasurement.getMeasurement().getMetricDesciption())) {
-            throw new IllegalArgumentException("Taken measurement has an incompatible metric");
-        }
-        super.notifyMeasurementSourceListener(newMeasurement);
-    }
     
     /**
      * {@inheritDoc}

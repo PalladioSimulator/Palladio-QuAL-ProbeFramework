@@ -43,7 +43,8 @@ public class IdentityCalculator extends UnaryCalculator {
      */
     private static MetricDescription getMetricDescriptionFromProbe(final Probe probe) {
         if (!(probe instanceof IMetricEntity)) {
-            throw new IllegalArgumentException("IdentityCalculator can only cope with probes that provide metrics");
+            throw new IllegalArgumentException(
+                    "IdentityCalculator can only cope with probes that provide metrics, i.e., BasicProbes.");
         }
 
         return ((IMetricEntity) probe).getMetricDesciption();
@@ -62,7 +63,7 @@ public class IdentityCalculator extends UnaryCalculator {
      */
     @Override
     protected Measurement calculate(final List<ProbeMeasurement> probeMeasurements) throws CalculatorException {
-        final Measurement measurement = probeMeasurements.get(0).getMeasurement();
+        final Measurement measurement = (Measurement) probeMeasurements.get(0).getMeasureProvider();
         if (measurement instanceof TupleMeasurement) {
             return measurement;
         } else {

@@ -14,6 +14,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.palladiosimulator.measurementframework.BasicMeasurement;
 import org.palladiosimulator.measurementframework.Measurement;
+import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.probeframework.measurement.ProbeAndRequestContext;
 import org.palladiosimulator.probeframework.measurement.ProbeMeasurement;
@@ -40,7 +41,7 @@ public class BasicProbeTests {
 
     /** Stores the last received measurement for the <code>testDemandProbe</code> test case. */
     private ProbeMeasurement lastMeasurement;
-    
+
     /**
      * Initializes the simulation context.
      */
@@ -54,7 +55,6 @@ public class BasicProbeTests {
      * of a simulation in seconds (i.e., it measures a point in time metric). The test lets the
      * simulation run for 100 seconds and then probes.
      */
-    @SuppressWarnings("unchecked")
     @Test
     public void testCurrentTimeProbe() {
         final ExampleTakeCurrentTimeProbe probe = new ExampleTakeCurrentTimeProbe(simContext);
@@ -63,15 +63,13 @@ public class BasicProbeTests {
         simContext.setSimulatedTime(100d);
         final ProbeMeasurement probeMeasurement = probe.takeMeasurement(contextID);
 
-        final Measurement measurement = probeMeasurement.getMeasurement();
+        final Measurement measurement = probeMeasurement.getBasicMeasurement();
         final ProbeAndRequestContext probeAndContext = probeMeasurement.getProbeAndContext();
         assertTrue(probeAndContext.getProbe() == probe);
         assertTrue(measurement.getMetricDesciption() == MetricDescriptionConstants.POINT_IN_TIME_METRIC);
         assertTrue(probeAndContext.getRequestContext() == contextID);
-        assertTrue(measurement instanceof BasicMeasurement<?, ?>);
 
-        final BasicMeasurement<Double, Duration> basicMeasurement = (BasicMeasurement<Double, Duration>) measurement;
-        final Measure<Double, Duration> measure = basicMeasurement
+        final Measure<Double, Duration> measure = measurement
                 .getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
         assertTrue(measure.getUnit().isCompatible(SI.SECOND));
         assertTrue(measure.compareTo(Measure.valueOf(100d, SI.SECOND)) == 0);
@@ -83,7 +81,6 @@ public class BasicProbeTests {
      * CPU state metric). The test creates a test CPU, adds 2 jobs to its scheduler, and then
      * probes.
      */
-    @SuppressWarnings("unchecked")
     @Test
     public void testCPUStateProbe() {
         final RequestContext contextID = new RequestContext("1");
@@ -94,16 +91,13 @@ public class BasicProbeTests {
         cpuResource.setJobs(2);
         final ProbeMeasurement probeMeasurement = probe.takeMeasurement(contextID);
 
-        final Measurement measurement = probeMeasurement.getMeasurement();
+        final Measurement measurement = probeMeasurement.getBasicMeasurement();
         final ProbeAndRequestContext probeAndContext = probeMeasurement.getProbeAndContext();
         assertTrue(probeAndContext.getProbe() == probe);
         assertTrue(measurement.getMetricDesciption() == MetricDescriptionConstants.CPU_STATE_METRIC);
         assertTrue(probeAndContext.getRequestContext() == contextID);
 
-        assertTrue(measurement instanceof BasicMeasurement<?, ?>);
-        final BasicMeasurement<Double, Dimensionless> basicMeasurement = (BasicMeasurement<Double, Dimensionless>) measurement;
-
-        final Measure<Double, Dimensionless> measure = basicMeasurement
+        final Measure<Double, Dimensionless> measure = measurement
                 .getMeasureForMetric(MetricDescriptionConstants.CPU_STATE_METRIC);
         assertTrue(measure.getUnit().isCompatible(Unit.ONE));
         assertTrue(measure.compareTo(Measure.valueOf(2L, Unit.ONE)) == 0);
@@ -136,15 +130,13 @@ public class BasicProbeTests {
         cpuResource.demand(10);
 
         assertTrue(lastMeasurement != null);
-        assertTrue(lastMeasurement.getMeasurement() instanceof BasicMeasurement);
-        assertTrue(lastMeasurement.getMeasurement().getMetricDesciption() == MetricDescriptionConstants.RESOURCE_DEMAND_METRIC);
+        assertTrue(lastMeasurement.isBasicMeasurement());
+        final MetricDescription metricDescription = lastMeasurement.getBasicMeasurement().getMetricDesciption();
+        assertTrue(metricDescription == MetricDescriptionConstants.RESOURCE_DEMAND_METRIC);
 
-        @SuppressWarnings("unchecked")
-        final BasicMeasurement<Double, Duration> result = (BasicMeasurement<Double, Duration>) lastMeasurement
-                .getMeasurement();
+        final BasicMeasurement<Double, Duration> result = lastMeasurement.getBasicMeasurement();
         final Measure<Double, Duration> resultMeasure = result
                 .getMeasureForMetric(MetricDescriptionConstants.RESOURCE_DEMAND_METRIC);
         assertTrue(resultMeasure.compareTo(Measure.valueOf(10.0d, SI.SECOND)) == 0);
     }
-
 }

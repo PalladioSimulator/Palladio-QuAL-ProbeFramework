@@ -16,12 +16,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.palladiosimulator.measurementframework.TupleMeasurement;
-import org.palladiosimulator.metricspec.MetricSetDescription;
+import org.palladiosimulator.measurementframework.measureprovider.MeasurementListMeasureProvider;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.probeframework.measurement.ProbeMeasurement;
 import org.palladiosimulator.probeframework.measurement.RequestContext;
 import org.palladiosimulator.probeframework.probes.EventProbeList;
-import org.palladiosimulator.probeframework.probes.Probe;
+import org.palladiosimulator.probeframework.probes.TriggeredProbe;
 import org.palladiosimulator.probeframework.probes.TriggeredProbeList;
 import org.palladiosimulator.probeframework.probes.example.ExampleTakeCPUDemandProbe;
 import org.palladiosimulator.probeframework.probes.example.ExampleTakeCPUStateProbe;
@@ -50,10 +50,10 @@ public class ProbeListTests {
     private SimpleCPUResource cpuResource;
 
     /** A probe taking the current time of a simulation. */
-    private Probe currentTimeProbe;
+    private TriggeredProbe currentTimeProbe;
 
     /** A probe taking the current CPU state of a simulation (number of jobs in this test). */
-    private Probe currentCPUStateProbe;
+    private TriggeredProbe currentCPUStateProbe;
 
     /**
      * A list of triggered probes, used to store the CPU state as (currentTimeProbe,
@@ -92,12 +92,12 @@ public class ProbeListTests {
         final ProbeMeasurement probeMeasure = probeList.takeMeasurement(requestContext);
 
         assertTrue(probeMeasure != null);
-        assertTrue(probeMeasure.getMeasurement() instanceof TupleMeasurement);
-        assertTrue(probeMeasure.getMeasurement().getMetricDesciption() instanceof MetricSetDescription);
+        assertTrue(probeMeasure.getMeasureProvider() instanceof MeasurementListMeasureProvider);
 
-        final TupleMeasurement tupleMeasurement = (TupleMeasurement) probeMeasure.getMeasurement();
+        final MeasurementListMeasureProvider tupleMeasurement = (MeasurementListMeasureProvider) probeMeasure
+                .getMeasureProvider();
 
-        assertEquals(tupleMeasurement.getSubsumedMeasurements().size(), 2);
+        assertEquals(tupleMeasurement.asList().size(), 2);
         assertEquals(tupleMeasurement.getSubsumedMeasurements().get(0).getMetricDesciption(),
                 MetricDescriptionConstants.POINT_IN_TIME_METRIC);
         assertEquals(tupleMeasurement.getSubsumedMeasurements().get(1).getMetricDesciption(),
@@ -135,19 +135,19 @@ public class ProbeListTests {
         cpuResource.demand(20.0d);
 
         assertTrue(lastMeasurement != null);
-        assertTrue(lastMeasurement.getMeasurement() instanceof TupleMeasurement);
+        assertTrue(lastMeasurement.getMeasureProvider() instanceof TupleMeasurement);
 
-        final Measure<Double, Duration> demandResult = lastMeasurement.getMeasurement().getMeasureForMetric(
+        final Measure<Double, Duration> demandResult = lastMeasurement.getMeasureProvider().getMeasureForMetric(
                 MetricDescriptionConstants.RESOURCE_DEMAND_METRIC);
-        final Measure<Double, Duration> timeResult = lastMeasurement.getMeasurement().getMeasureForMetric(
+        final Measure<Double, Duration> timeResult = lastMeasurement.getMeasureProvider().getMeasureForMetric(
                 MetricDescriptionConstants.POINT_IN_TIME_METRIC);
-        final Measure<Long, Dimensionless> stateResult = lastMeasurement.getMeasurement().getMeasureForMetric(
+        final Measure<Long, Dimensionless> stateResult = lastMeasurement.getMeasureProvider().getMeasureForMetric(
                 MetricDescriptionConstants.CPU_STATE_METRIC);
 
         assertTrue(demandResult != null);
         assertTrue(demandResult.compareTo(Measure.valueOf(20.0d, SI.SECOND)) == 0);
 
-        final TupleMeasurement measurementTuple = (TupleMeasurement) lastMeasurement.getMeasurement();
+        final TupleMeasurement measurementTuple = (TupleMeasurement) lastMeasurement.getMeasureProvider();
 
         assertEquals(measurementTuple.getSubsumedMeasurements().size(), NUMBER_OF_CONFIGURED_METRICS);
         assertEquals(measurementTuple.getSubsumedMeasurements().get(1).getMetricDesciption(),

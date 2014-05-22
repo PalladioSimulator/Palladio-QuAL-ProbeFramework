@@ -4,8 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.palladiosimulator.measurementframework.Measurement;
-import org.palladiosimulator.measurementframework.TupleMeasurement;
-import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
+import org.palladiosimulator.measurementframework.measureprovider.IMeasureProvider;
+import org.palladiosimulator.measurementframework.measureprovider.MeasurementListMeasureProvider;
 import org.palladiosimulator.probeframework.measurement.ProbeMeasurement;
 import org.palladiosimulator.probeframework.measurement.RequestContext;
 
@@ -19,7 +19,7 @@ import org.palladiosimulator.probeframework.measurement.RequestContext;
 public class TriggeredProbeList extends TriggeredProbe {
 
     /** List of subsumed probes. */
-    private final List<Probe> subsumedProbes;
+    private final List<TriggeredProbe> subsumedProbes;
 
     /**
      * Default constructor. Expects the list of subsumed, triggered probes.
@@ -29,32 +29,33 @@ public class TriggeredProbeList extends TriggeredProbe {
      * @throws IllegalArgumentException
      *             If a subsumed probe is not a triggered probe.
      */
-    public TriggeredProbeList(final List<Probe> subsumedProbes) {
+    public TriggeredProbeList(final List<TriggeredProbe> subsumedProbes) {
         super();
-        for (final Probe probe : subsumedProbes) {
-            if (!(probe instanceof TriggeredProbe)) {
-                throw new IllegalArgumentException("In a triggered probe list, all probes must be triggered probes");
-            }
-        }
         this.subsumedProbes = subsumedProbes;
     }
 
     /**
      * {@inheritDoc}
-     * 
-     * FIXME Use is MetricDescriptionConstants.RESPONSE_TIME_METRIC_TUPLE is wrong
      */
     @Override
     protected ProbeMeasurement doMeasure(final RequestContext measurementContext) {
         final List<Measurement> childMeasurements = new LinkedList<Measurement>();
 
-        for (final Probe childProbe : subsumedProbes) {
-            childMeasurements.add(((TriggeredProbe) childProbe).doMeasure(measurementContext).getMeasurement());
+        for (final TriggeredProbe childProbe : subsumedProbes) {
+            final IMeasureProvider subsumedMeasureProvider = childProbe.doMeasure(measurementContext)
+                    .getMeasureProvider();
+
+            if (!(subsumedMeasureProvider instanceof Measurement)) {
+                throw new IllegalArgumentException("Subsumed measure providers have to be measurements");
+            }
+
+            // TODO Actually, we should recursively resolve subsumed measurements here because the
+            // subsumed measurement could be a TupleMeasurement. [Lehrig]            
+            childMeasurements.add((Measurement) subsumedMeasureProvider);
         }
 
-        final Measurement measurementTuple = new TupleMeasurement(childMeasurements,
-                MetricDescriptionConstants.RESPONSE_TIME_METRIC_TUPLE);
-        return new ProbeMeasurement(measurementTuple, this, measurementContext, null);
+        final IMeasureProvider measureProvider = new MeasurementListMeasureProvider(childMeasurements);
+        return new ProbeMeasurement(measureProvider, this, measurementContext);
     }
 
 }
