@@ -15,7 +15,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.palladiosimulator.measurementframework.TupleMeasurement;
 import org.palladiosimulator.measurementframework.measureprovider.MeasurementListMeasureProvider;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.probeframework.measurement.ProbeMeasurement;
@@ -94,20 +93,20 @@ public class ProbeListTests {
         assertTrue(probeMeasure != null);
         assertTrue(probeMeasure.getMeasureProvider() instanceof MeasurementListMeasureProvider);
 
-        final MeasurementListMeasureProvider tupleMeasurement = (MeasurementListMeasureProvider) probeMeasure
+        final MeasurementListMeasureProvider measureProvider = (MeasurementListMeasureProvider) probeMeasure
                 .getMeasureProvider();
 
-        assertEquals(tupleMeasurement.asList().size(), 2);
-        assertEquals(tupleMeasurement.getSubsumedMeasurements().get(0).getMetricDesciption(),
+        assertEquals(measureProvider.asList().size(), 2);
+        assertEquals(measureProvider.getSubsumedMeasurements().get(0).getMetricDesciption(),
                 MetricDescriptionConstants.POINT_IN_TIME_METRIC);
-        assertEquals(tupleMeasurement.getSubsumedMeasurements().get(1).getMetricDesciption(),
+        assertEquals(measureProvider.getSubsumedMeasurements().get(1).getMetricDesciption(),
                 MetricDescriptionConstants.CPU_STATE_METRIC);
     }
 
     /**
      * Test case for an {@link EventProbeList} that takes the demand emitted from an active resource
      * (event source), which is in this case a CPU (i.e., it measures a resource demand metric). It
-     * also adds the result from triggering a (currentTimeProbe, currentCPUStateProbe)-tuple its
+     * also adds the result from triggering a (currentTimeProbe, currentCPUStateProbe)-tuple to its
      * measurement result.
      * 
      * The test lets a simulation with 2 jobs run for 100 seconds and demands 20 seconds of CPU. The
@@ -135,7 +134,7 @@ public class ProbeListTests {
         cpuResource.demand(20.0d);
 
         assertTrue(lastMeasurement != null);
-        assertTrue(lastMeasurement.getMeasureProvider() instanceof TupleMeasurement);
+        assertTrue(lastMeasurement.getMeasureProvider() instanceof MeasurementListMeasureProvider);
 
         final Measure<Double, Duration> demandResult = lastMeasurement.getMeasureProvider().getMeasureForMetric(
                 MetricDescriptionConstants.RESOURCE_DEMAND_METRIC);
@@ -147,13 +146,14 @@ public class ProbeListTests {
         assertTrue(demandResult != null);
         assertTrue(demandResult.compareTo(Measure.valueOf(20.0d, SI.SECOND)) == 0);
 
-        final TupleMeasurement measurementTuple = (TupleMeasurement) lastMeasurement.getMeasureProvider();
+        final MeasurementListMeasureProvider measureProvider = (MeasurementListMeasureProvider) lastMeasurement
+                .getMeasureProvider();
 
-        assertEquals(measurementTuple.getSubsumedMeasurements().size(), NUMBER_OF_CONFIGURED_METRICS);
-        assertEquals(measurementTuple.getSubsumedMeasurements().get(1).getMetricDesciption(),
+        assertEquals(measureProvider.getSubsumedMeasurements().size(), NUMBER_OF_CONFIGURED_METRICS);
+        assertEquals(measureProvider.getSubsumedMeasurements().get(1).getMetricDesciption(),
                 MetricDescriptionConstants.POINT_IN_TIME_METRIC);
         assertTrue(timeResult.compareTo(Measure.valueOf(100.0d, SI.SECOND)) == 0);
-        assertEquals(measurementTuple.getSubsumedMeasurements().get(2).getMetricDesciption(),
+        assertEquals(measureProvider.getSubsumedMeasurements().get(2).getMetricDesciption(),
                 MetricDescriptionConstants.CPU_STATE_METRIC);
         assertTrue(stateResult.compareTo(Measure.valueOf(2L, Unit.ONE)) == 0);
     }
