@@ -57,19 +57,18 @@ public abstract class TimeSpanCalculator extends Calculator {
     protected Measurement calculate(final List<ProbeMeasurement> probeMeasurements) {
         final List<Measurement> result = new ArrayList<Measurement>(2);
 
-        final Measure<Double, Duration> startTimeMeasure = probeMeasurements.get(0).getMeasurement()
+        final Measure<Double, Duration> startTimeMeasure = probeMeasurements.get(0).getMeasureProvider()
                 .getMeasureForMetric(POINT_IN_TIME_METRIC);
-        final Measure<Double, Duration> endTimeMeasure = probeMeasurements.get(1).getMeasurement()
+        final Measure<Double, Duration> endTimeMeasure = probeMeasurements.get(1).getMeasureProvider()
                 .getMeasureForMetric(POINT_IN_TIME_METRIC);
         final double timeSpan = endTimeMeasure.doubleValue(SI.SECOND) - startTimeMeasure.doubleValue(SI.SECOND);
         final Measure<Double, Duration> timeSpanMeasure = Measure.valueOf(timeSpan, SI.SECOND);
 
-        final Measurement startTimeMeasurement = probeMeasurements.get(0).getMeasurement()
+        final Measurement startTimeMeasurement = probeMeasurements.get(0).getBasicMeasurement()
                 .getMeasurementForMetric(POINT_IN_TIME_METRIC);
         result.add(startTimeMeasurement);
-        final Measurement timeSpanMeasurement = new BasicMeasurement<Double, Duration>(
-                timeSpanMeasure, (BaseMetricDescription) ((MetricSetDescription) this.getMetricDesciption())
-                        .getSubsumedMetrics().get(1));
+        final Measurement timeSpanMeasurement = new BasicMeasurement<Double, Duration>(timeSpanMeasure,
+                (BaseMetricDescription) ((MetricSetDescription) this.getMetricDesciption()).getSubsumedMetrics().get(1));
         result.add(timeSpanMeasurement);
 
         return new TupleMeasurement(result, (MetricSetDescription) this.getMetricDesciption());

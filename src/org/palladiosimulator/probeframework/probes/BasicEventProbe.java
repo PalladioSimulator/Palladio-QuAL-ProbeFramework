@@ -64,19 +64,8 @@ public abstract class BasicEventProbe<EventSourceType, V, Q extends Quantity> ex
         final BasicMeasurement<V, Q> basicMeasurement = new BasicMeasurement<V, Q>(eventMeasure,
                 (BaseMetricDescription) this.getMetricDesciption());
         final ProbeMeasurement newMeasurement = new ProbeMeasurement(basicMeasurement, this,
-                RequestContext.EMPTY_REQUEST_CONTEXT, null);
+                RequestContext.EMPTY_REQUEST_CONTEXT);
         this.notifyMeasurementSourceListener(newMeasurement);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void notifyMeasurementSourceListener(final ProbeMeasurement newMeasurement) {
-        if (!isCompatibleWith(newMeasurement.getMeasurement().getMetricDesciption())) {
-            throw new IllegalArgumentException("Taken measurement has an incompatible metric");
-        }
-        super.notifyMeasurementSourceListener(newMeasurement);
     }
 
     /**

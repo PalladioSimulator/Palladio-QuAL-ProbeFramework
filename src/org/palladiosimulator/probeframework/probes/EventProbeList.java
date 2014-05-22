@@ -6,8 +6,8 @@ import java.util.List;
 import javax.measure.quantity.Quantity;
 
 import org.palladiosimulator.measurementframework.Measurement;
-import org.palladiosimulator.measurementframework.TupleMeasurement;
-import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
+import org.palladiosimulator.measurementframework.measureprovider.IMeasureProvider;
+import org.palladiosimulator.measurementframework.measureprovider.MeasurementListMeasureProvider;
 import org.palladiosimulator.probeframework.measurement.ProbeMeasurement;
 import org.palladiosimulator.probeframework.measurement.RequestContext;
 import org.palladiosimulator.probeframework.probes.listener.IProbeListener;
@@ -28,7 +28,7 @@ import org.palladiosimulator.probeframework.probes.listener.IProbeListener;
 public class EventProbeList extends EventProbe<EventProbe<?>> implements IProbeListener {
 
     /** List of subsumed probes. */
-    private final List<Probe> subsumedProbes;
+    private final List<TriggeredProbe> subsumedProbes;
 
     /**
      * Default constructor. Expects one event probe as well as the list of subsumed, triggered
@@ -48,13 +48,8 @@ public class EventProbeList extends EventProbe<EventProbe<?>> implements IProbeL
      *             If a subsumed probe is not a triggered probe.
      */
     public <EventSourceType, V, Q extends Quantity> EventProbeList(final EventProbe<?> eventProbe,
-            final List<Probe> subsumedProbes) {
+            final List<TriggeredProbe> subsumedProbes) {
         super(eventProbe);
-        for (final Probe probe : subsumedProbes) {
-            if (!(probe instanceof TriggeredProbe)) {
-                throw new IllegalArgumentException("Other probes besides the event probe have to be triggered");
-            }
-        }
         this.subsumedProbes = subsumedProbes;
     }
 
@@ -63,8 +58,6 @@ public class EventProbeList extends EventProbe<EventProbe<?>> implements IProbeL
      * by additionally triggering subsumed probes. Finally, informs all its observers about the new
      * measurement.
      * 
-     * FIXME Use is MetricDescriptionConstants.RESPONSE_TIME_METRIC_TUPLE is wrong
-     * 
      * @param measurement
      *            The probe measurement.
      */
@@ -72,17 +65,28 @@ public class EventProbeList extends EventProbe<EventProbe<?>> implements IProbeL
     public void newProbeMeasurementAvailable(final ProbeMeasurement measurement) {
         final List<Measurement> eventAndChildMeasurements = new LinkedList<Measurement>();
 
-        eventAndChildMeasurements.add(measurement.getMeasurement());
-        for (final Probe childProbe : subsumedProbes) {
-            eventAndChildMeasurements.add(((TriggeredProbe) childProbe).doMeasure(RequestContext.EMPTY_REQUEST_CONTEXT)
-                    .getMeasurement());
+        if (!(measurement.getMeasureProvider() instanceof Measurement)) {
+            throw new IllegalArgumentException("Event measure providers have to be measurements");
+        }
+        eventAndChildMeasurements.add((Measurement) measurement.getMeasureProvider());
+
+        for (final TriggeredProbe childProbe : subsumedProbes) {
+            final IMeasureProvider subsumedMeasureProvider = childProbe.doMeasure(RequestContext.EMPTY_REQUEST_CONTEXT)
+                    .getMeasureProvider();
+
+            if (!(subsumedMeasureProvider instanceof Measurement)) {
+                throw new IllegalArgumentException("Subsumed measure providers have to be measurements");
+            }
+
+            // TODO Actually, we should recursively resolve subsumed measurements here because the
+            // subsumed measurement could be a TupleMeasurement. [Lehrig]
+            eventAndChildMeasurements.add((Measurement) subsumedMeasureProvider);
         }
 
-        final Measurement measurementTuple = new TupleMeasurement(eventAndChildMeasurements,
-                MetricDescriptionConstants.RESPONSE_TIME_METRIC_TUPLE
-                );
-        notifyMeasurementSourceListener(new ProbeMeasurement(measurementTuple, this,
-                RequestContext.EMPTY_REQUEST_CONTEXT, null));
+        final IMeasureProvider measureProvider = new MeasurementListMeasureProvider(eventAndChildMeasurements);
+
+        notifyMeasurementSourceListener(new ProbeMeasurement(measureProvider, this,
+                RequestContext.EMPTY_REQUEST_CONTEXT));
     }
 
     /**

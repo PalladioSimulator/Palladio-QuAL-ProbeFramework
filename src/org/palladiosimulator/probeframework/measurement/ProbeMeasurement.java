@@ -1,58 +1,50 @@
 package org.palladiosimulator.probeframework.measurement;
 
+import javax.measure.quantity.Quantity;
+
 import org.palladiosimulator.measurementframework.BasicMeasurement;
-import org.palladiosimulator.measurementframework.Measurement;
+import org.palladiosimulator.measurementframework.measureprovider.IMeasureProvider;
 import org.palladiosimulator.probeframework.probes.Probe;
 
 /**
- * Data class representing a ({@link BasicMeasurement}, ProbeAndRequestContext, String)-tuple, where
- * the String element refers to a measured entity. Therefore, concrete data objects can store a
- * measurement coming from a given ProbeAndRequestContext that probes the given measured entity.
- * 
- * TODO Update JavaDoc
- * 
- * TODO Use MeasuringPoint instead of String
+ * Data class representing a ({@link IMeasureProvider}, {@link ProbeAndRequestContext})-tuple.
+ * Therefore, concrete data objects can store a measureProvider coming from a given
+ * ProbeAndRequestContext.
  * 
  * @author Steffen Becker, Sebastian Lehrig
  */
 public class ProbeMeasurement {
 
-    /** The measurement to be stored. */
-    private final Measurement measurement;
+    /** The measureProvider to be stored. */
+    private final IMeasureProvider measureProvider;
 
     /** The probe and the request context. */
     private final ProbeAndRequestContext probeAndContext;
 
-    /** The measured entity. */
-    private final String measuredEntity;
-
     /**
      * Default constructor. Constructs the object tuple.
      * 
-     * @param measurement
-     *            The measurement to be stored.
+     * @param measureProvider
+     *            The measureProvider to be stored.
      * @param probe
      *            The referred probe.
      * @param requestContext
      *            The referred request context.
-     * @param measuredEntity
-     *            A String representing the probed entity.
      */
-    public ProbeMeasurement(final Measurement measurement, final Probe probe,
-            final RequestContext requestContext, final String measuredEntity) {
+    public ProbeMeasurement(final IMeasureProvider measureProvider, final Probe probe,
+            final RequestContext requestContext) {
         super();
-        this.measurement = measurement;
+        this.measureProvider = measureProvider;
         this.probeAndContext = new ProbeAndRequestContext(probe, requestContext);
-        this.measuredEntity = measuredEntity;
     }
 
     /**
-     * Getter for the measurement.
+     * Getter for the measureProvider.
      * 
-     * @return The measurement.
+     * @return The measureProvider.
      */
-    public final Measurement getMeasurement() {
-        return this.measurement;
+    public final IMeasureProvider getMeasureProvider() {
+        return this.measureProvider;
     }
 
     /**
@@ -65,12 +57,36 @@ public class ProbeMeasurement {
     }
 
     /**
-     * Getter for the measured entity String.
+     * Checks whether the stored {@link IMeasureProvider} object is a {@link BasicMeasurement}. Only
+     * basic probes (e.g., basic triggered probes) are realized as {@link BasicMeasurement}.
      * 
-     * @return The measuredEntity.
+     * @return <code>true</code> if the stored {@link IMeasureProvider} is a
+     *         {@link BasicMeasurement}; <code>false</code> otherwise.
      */
-    public final String getMeasuredEntity() {
-        return this.measuredEntity;
+    public boolean isBasicMeasurement() {
+        return (this.measureProvider instanceof BasicMeasurement);
     }
 
+    /**
+     * Returns a {@link BasicMeasurement} based on the stored {@link IMeasureProvider} object. Only
+     * basic probes (e.g., basic triggered probes) are realized as {@link BasicMeasurement}.
+     * 
+     * @return The {@link BasicMeasurement}
+     * @throws UnsupportedOperationException
+     *             If the stored {@link IMeasureProvider} object is not a {@link BasicMeasurement}.
+     * @param <V>
+     *            Value type of the {@link BasicMeasurement}. Most often used values are Double or
+     *            Long
+     * @param <Q>
+     *            Quantity to be stored, see {@link Quantity}
+     */
+    @SuppressWarnings("unchecked")
+    public <V, Q extends Quantity> BasicMeasurement<V, Q> getBasicMeasurement() {
+        if (isBasicMeasurement()) {
+            return (BasicMeasurement<V, Q>) this.measureProvider;
+        } else {
+            throw new UnsupportedOperationException(
+                    "Operation can only be invoked on probe measurements of basic probes");
+        }
+    }
 }
