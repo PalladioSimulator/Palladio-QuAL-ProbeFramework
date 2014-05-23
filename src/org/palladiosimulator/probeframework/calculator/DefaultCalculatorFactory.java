@@ -1,5 +1,10 @@
 package org.palladiosimulator.probeframework.calculator;
 
+import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.EXECUTION_RESULT_METRIC_TUPLE;
+import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.OVERALL_STATE_OF_ACTIVE_RESOURCE_METRIC;
+import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.RESOURCE_DEMAND_METRIC_TUPLE;
+import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC_TUPLE;
+
 import java.util.List;
 
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
@@ -97,27 +102,27 @@ public class DefaultCalculatorFactory implements ICalculatorFactory {
      * {@inheritDoc}
      */
     @Override
-    public Calculator buildStateCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
+    public Calculator buildStateOfActiveResourceCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
         ensureValidProbe(probe);
-        return new IdentityCalculator(measuringPoint, probe);
+        return new IdentityCalculator(STATE_OF_ACTIVE_RESOURCE_METRIC_TUPLE, measuringPoint, probe);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Calculator buildOverallUtilizationCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
+    public Calculator buildOverallStateOfActiveResourceCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
         ensureValidProbe(probe);
-        return new IdentityCalculator(measuringPoint, probe);
+        return new IdentityCalculator(OVERALL_STATE_OF_ACTIVE_RESOURCE_METRIC, measuringPoint, probe);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Calculator buildDemandCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
+    public Calculator buildResourceDemandCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
         ensureValidProbe(probe);
-        return new IdentityCalculator(measuringPoint, probe);
+        return new IdentityCalculator(RESOURCE_DEMAND_METRIC_TUPLE, measuringPoint, probe);
     }
 
     /**
@@ -126,15 +131,6 @@ public class DefaultCalculatorFactory implements ICalculatorFactory {
     @Override
     public Calculator buildExecutionResultCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
         ensureValidProbe(probe);
-        return new IdentityCalculator(measuringPoint, probe);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Calculator buildIdentityCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
-        ensureValidProbe(probe);
-        return new IdentityCalculator(measuringPoint, probe);
+        return new IdentityCalculator(EXECUTION_RESULT_METRIC_TUPLE, measuringPoint, probe);
     }
 }

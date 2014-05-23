@@ -102,24 +102,24 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
      * {@inheritDoc}
      */
     @Override
-    public Calculator buildStateCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
-        return register(decoratedFactory.buildStateCalculator(measuringPoint, probe));
+    public Calculator buildStateOfActiveResourceCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
+        return register(decoratedFactory.buildStateOfActiveResourceCalculator(measuringPoint, probe));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Calculator buildOverallUtilizationCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
-        return register(decoratedFactory.buildOverallUtilizationCalculator(measuringPoint, probe));
+    public Calculator buildOverallStateOfActiveResourceCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
+        return register(decoratedFactory.buildOverallStateOfActiveResourceCalculator(measuringPoint, probe));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Calculator buildDemandCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
-        return register(decoratedFactory.buildDemandCalculator(measuringPoint, probe));
+    public Calculator buildResourceDemandCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
+        return register(decoratedFactory.buildResourceDemandCalculator(measuringPoint, probe));
     }
 
     /**
@@ -127,14 +127,6 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
      */
     @Override
     public Calculator buildExecutionResultCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
-        return register(decoratedFactory.buildExecutionResultCalculator(measuringPoint, probe));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Calculator buildIdentityCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
         return register(decoratedFactory.buildExecutionResultCalculator(measuringPoint, probe));
     }
 }
