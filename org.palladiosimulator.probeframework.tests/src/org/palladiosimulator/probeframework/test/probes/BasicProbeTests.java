@@ -94,11 +94,11 @@ public class BasicProbeTests {
         final Measurement measurement = probeMeasurement.getBasicMeasurement();
         final ProbeAndRequestContext probeAndContext = probeMeasurement.getProbeAndContext();
         assertTrue(probeAndContext.getProbe() == probe);
-        assertTrue(measurement.getMetricDesciption() == MetricDescriptionConstants.CPU_STATE_METRIC);
+        assertTrue(measurement.getMetricDesciption() == MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC);
         assertTrue(probeAndContext.getRequestContext() == contextID);
 
         final Measure<Double, Dimensionless> measure = measurement
-                .getMeasureForMetric(MetricDescriptionConstants.CPU_STATE_METRIC);
+                .getMeasureForMetric(MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC);
         assertTrue(measure.getUnit().isCompatible(Unit.ONE));
         assertTrue(measure.compareTo(Measure.valueOf(2L, Unit.ONE)) == 0);
     }

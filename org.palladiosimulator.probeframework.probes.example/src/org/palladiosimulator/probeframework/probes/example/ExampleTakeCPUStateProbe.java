@@ -24,7 +24,7 @@ public class ExampleTakeCPUStateProbe extends BasicObjectStateProbe<ASimpleActiv
      *            The observer object is a CPU, thus, allowing to request its current jobs.
      */
     public ExampleTakeCPUStateProbe(final ASimpleActiveResource myCpu) {
-        super(myCpu, MetricDescriptionConstants.CPU_STATE_METRIC);
+        super(myCpu, MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC);
     }
 
     /**

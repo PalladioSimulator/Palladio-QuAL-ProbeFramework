@@ -11,7 +11,7 @@ import org.palladiosimulator.probeframework.probes.listener.IProbeListener;
  * 
  * Because probes are typed by a metric, they inherit from <code>MetricEntity</code>. For example, a
  * probe taking the state of a passive resource would be typed by the
- * <code>PASSIVE_RESOURCE_STATE_METRIC</code>.
+ * <code>STATE_OF_PASSIVE_RESOURCE_METRIC</code>.
  * 
  * Because calculators have to observe such probes, this class also implements the
  * <code>IAbstractObservable</code> interface. Calculators have to implement the

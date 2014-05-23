@@ -73,7 +73,7 @@ public interface ICalculatorFactory {
      *            A single probe providing the resource state of interest.
      * @return A new state calculator object.
      */
-    public abstract Calculator buildStateCalculator(final MeasuringPoint measuringPoint, final Probe probe);
+    public abstract Calculator buildStateOfActiveResourceCalculator(final MeasuringPoint measuringPoint, final Probe probe);
 
     /**
      * Creates an overall utilization calculator object based on the given name and the given probe.
@@ -84,7 +84,7 @@ public interface ICalculatorFactory {
      *            A single probe providing the resource state of interest.
      * @return A new overall utilization calculator object.
      */
-    public abstract Calculator buildOverallUtilizationCalculator(final MeasuringPoint measuringPoint, final Probe probe);
+    public abstract Calculator buildOverallStateOfActiveResourceCalculator(final MeasuringPoint measuringPoint, final Probe probe);
 
     /**
      * Creates a demand calculator object based on the given name and the given probe.
@@ -95,7 +95,7 @@ public interface ICalculatorFactory {
      *            A single probe providing the resource demand.
      * @return A new demand calculator object.
      */
-    public abstract Calculator buildDemandCalculator(final MeasuringPoint measuringPoint, final Probe probe);
+    public abstract Calculator buildResourceDemandCalculator(final MeasuringPoint measuringPoint, final Probe probe);
 
     /**
      * Creates an execution result calculator object based on the given name and the given probe.
@@ -107,16 +107,4 @@ public interface ICalculatorFactory {
      * @return A new execution result calculator object.
      */
     public abstract Calculator buildExecutionResultCalculator(final MeasuringPoint measuringPoint, final Probe probe);
-
-    /**
-     * Creates an identity calculator object based on the given name and the given probe.
-     * 
-     * @param measuringPoint
-     *            The measuring point where this calculator is used, e.g., "Operation A".
-     * @param probe
-     *            A single probe directly providing the result of interest.
-     * @return A new identity calculator object.
-     */
-    public abstract Calculator buildIdentityCalculator(final MeasuringPoint measuringPoint, final Probe probe);
-
 }

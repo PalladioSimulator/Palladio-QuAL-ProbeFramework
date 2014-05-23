@@ -100,7 +100,7 @@ public class ProbeListTests {
         assertEquals(measureProvider.getSubsumedMeasurements().get(0).getMetricDesciption(),
                 MetricDescriptionConstants.POINT_IN_TIME_METRIC);
         assertEquals(measureProvider.getSubsumedMeasurements().get(1).getMetricDesciption(),
-                MetricDescriptionConstants.CPU_STATE_METRIC);
+                MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC);
     }
 
     /**
@@ -141,7 +141,7 @@ public class ProbeListTests {
         final Measure<Double, Duration> timeResult = lastMeasurement.getMeasureProvider().getMeasureForMetric(
                 MetricDescriptionConstants.POINT_IN_TIME_METRIC);
         final Measure<Long, Dimensionless> stateResult = lastMeasurement.getMeasureProvider().getMeasureForMetric(
-                MetricDescriptionConstants.CPU_STATE_METRIC);
+                MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC);
 
         assertTrue(demandResult != null);
         assertTrue(demandResult.compareTo(Measure.valueOf(20.0d, SI.SECOND)) == 0);
@@ -154,7 +154,7 @@ public class ProbeListTests {
                 MetricDescriptionConstants.POINT_IN_TIME_METRIC);
         assertTrue(timeResult.compareTo(Measure.valueOf(100.0d, SI.SECOND)) == 0);
         assertEquals(measureProvider.getSubsumedMeasurements().get(2).getMetricDesciption(),
-                MetricDescriptionConstants.CPU_STATE_METRIC);
+                MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC);
         assertTrue(stateResult.compareTo(Measure.valueOf(2L, Unit.ONE)) == 0);
     }
 }

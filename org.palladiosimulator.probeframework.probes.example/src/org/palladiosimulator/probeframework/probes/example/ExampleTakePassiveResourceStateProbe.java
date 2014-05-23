@@ -25,7 +25,7 @@ public class ExampleTakePassiveResourceStateProbe extends BasicObjectStateProbe<
      *            resources.
      */
     public ExampleTakePassiveResourceStateProbe(final ASimplePassiveResource passiveResource) {
-        super(passiveResource, MetricDescriptionConstants.PASSIVE_RESOURCE_STATE_METRIC);
+        super(passiveResource, MetricDescriptionConstants.STATE_OF_PASSIVE_RESOURCE_METRIC);
     }
 
     /**
