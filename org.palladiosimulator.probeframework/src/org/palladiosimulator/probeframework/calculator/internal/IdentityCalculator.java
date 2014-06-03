@@ -41,8 +41,6 @@ public class IdentityCalculator extends UnaryCalculator {
      * 
      * TODO Update JavaDoc
      * 
-     * FIXME Debug
-     * 
      * @param probeMeasurements
      *            The list of probe measurements is expected to contain a single measurement of type
      *            TupleMeasurement.
@@ -61,7 +59,7 @@ public class IdentityCalculator extends UnaryCalculator {
                     "Measure provider used within identity calculators have to be of type MeasurementListMeasureProvider");
         }        
         final List<Measurement> measurements = ((MeasurementListMeasureProvider) measureProvider).getSubsumedMeasurements();
-        
+                
         return new TupleMeasurement(measurements, metricSetDescription);        
     }
 }
