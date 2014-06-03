@@ -118,6 +118,22 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
      * {@inheritDoc}
      */
     @Override
+    public Calculator buildStateOfPassiveResourceCalculator(MeasuringPoint measuringPoint, Probe probe) {
+        return register(decoratedFactory.buildStateOfPassiveResourceCalculator(measuringPoint, probe));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Calculator buildOverallStateOfPassiveResourceCalculator(MeasuringPoint measuringPoint, Probe probe) {
+        return register(decoratedFactory.buildOverallStateOfPassiveResourceCalculator(measuringPoint, probe));
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Calculator buildResourceDemandCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
         return register(decoratedFactory.buildResourceDemandCalculator(measuringPoint, probe));
     }
@@ -128,5 +144,5 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
     @Override
     public Calculator buildExecutionResultCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
         return register(decoratedFactory.buildExecutionResultCalculator(measuringPoint, probe));
-    }
+    }    
 }

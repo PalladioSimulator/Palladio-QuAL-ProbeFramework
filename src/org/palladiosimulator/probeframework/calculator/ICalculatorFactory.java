@@ -65,7 +65,8 @@ public interface ICalculatorFactory {
     public abstract Calculator buildHoldingTimeCalculator(final MeasuringPoint measuringPoint, final List<Probe> probes);
 
     /**
-     * Creates a state calculator object based on the given name and the given probe.
+     * Creates a state calculator object for an active resource based on the given name and the
+     * given probe.
      * 
      * @param measuringPoint
      *            The measuring point where this calculator is used, e.g., "CPU 1".
@@ -73,10 +74,12 @@ public interface ICalculatorFactory {
      *            A single probe providing the resource state of interest.
      * @return A new state calculator object.
      */
-    public abstract Calculator buildStateOfActiveResourceCalculator(final MeasuringPoint measuringPoint, final Probe probe);
+    public abstract Calculator buildStateOfActiveResourceCalculator(final MeasuringPoint measuringPoint,
+            final Probe probe);
 
     /**
-     * Creates an overall utilization calculator object based on the given name and the given probe.
+     * Creates an overall utilization calculator object for an active resource based on the given
+     * name and the given probe.
      * 
      * @param measuringPoint
      *            The measuring point where this calculator is used, e.g., "CPU 1".
@@ -84,7 +87,34 @@ public interface ICalculatorFactory {
      *            A single probe providing the resource state of interest.
      * @return A new overall utilization calculator object.
      */
-    public abstract Calculator buildOverallStateOfActiveResourceCalculator(final MeasuringPoint measuringPoint, final Probe probe);
+    public abstract Calculator buildOverallStateOfActiveResourceCalculator(final MeasuringPoint measuringPoint,
+            final Probe probe);
+
+    /**
+     * Creates a state calculator object for a passive resource based on the given name and the
+     * given probe.
+     * 
+     * @param measuringPoint
+     *            The measuring point where this calculator is used, e.g., "Connection Pool 1".
+     * @param probe
+     *            A single probe providing the resource state of interest.
+     * @return A new state calculator object.
+     */
+    public abstract Calculator buildStateOfPassiveResourceCalculator(final MeasuringPoint measuringPoint,
+            final Probe probe);
+
+    /**
+     * Creates an overall utilization calculator object for a passive resource based on the given
+     * name and the given probe.
+     * 
+     * @param measuringPoint
+     *            The measuring point where this calculator is used, e.g., "Connection Pool 1".
+     * @param probe
+     *            A single probe providing the resource state of interest.
+     * @return A new overall utilization calculator object.
+     */
+    public abstract Calculator buildOverallStateOfPassiveResourceCalculator(final MeasuringPoint measuringPoint,
+            final Probe probe);
 
     /**
      * Creates a demand calculator object based on the given name and the given probe.

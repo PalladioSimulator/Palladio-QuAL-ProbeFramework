@@ -2,8 +2,10 @@ package org.palladiosimulator.probeframework.calculator;
 
 import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.EXECUTION_RESULT_METRIC_TUPLE;
 import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.OVERALL_STATE_OF_ACTIVE_RESOURCE_METRIC;
+import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.OVERALL_STATE_OF_PASSIVE_RESOURCE_METRIC;
 import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.RESOURCE_DEMAND_METRIC_TUPLE;
 import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC_TUPLE;
+import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.STATE_OF_PASSIVE_RESOURCE_METRIC_TUPLE;
 
 import java.util.List;
 
@@ -116,6 +118,24 @@ public class DefaultCalculatorFactory implements ICalculatorFactory {
         return new IdentityCalculator(OVERALL_STATE_OF_ACTIVE_RESOURCE_METRIC, measuringPoint, probe);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Calculator buildStateOfPassiveResourceCalculator(MeasuringPoint measuringPoint, Probe probe) {
+        ensureValidProbe(probe);
+        return new IdentityCalculator(STATE_OF_PASSIVE_RESOURCE_METRIC_TUPLE, measuringPoint, probe);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Calculator buildOverallStateOfPassiveResourceCalculator(MeasuringPoint measuringPoint, Probe probe) {
+        ensureValidProbe(probe);
+        return new IdentityCalculator(OVERALL_STATE_OF_PASSIVE_RESOURCE_METRIC, measuringPoint, probe);
+    }
+    
     /**
      * {@inheritDoc}
      */
