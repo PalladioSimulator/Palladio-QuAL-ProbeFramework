@@ -64,9 +64,9 @@ public abstract class TimeSpanCalculator extends Calculator {
         final double timeSpan = endTimeMeasure.doubleValue(SI.SECOND) - startTimeMeasure.doubleValue(SI.SECOND);
         final Measure<Double, Duration> timeSpanMeasure = Measure.valueOf(timeSpan, SI.SECOND);
 
-        final Measurement startTimeMeasurement = probeMeasurements.get(0).getBasicMeasurement()
+        final Measurement endTimeMeasurement = probeMeasurements.get(1).getBasicMeasurement()
                 .getMeasurementForMetric(POINT_IN_TIME_METRIC);
-        result.add(startTimeMeasurement);
+        result.add(endTimeMeasurement);
         final Measurement timeSpanMeasurement = new BasicMeasurement<Double, Duration>(timeSpanMeasure,
                 (BaseMetricDescription) ((MetricSetDescription) this.getMetricDesciption()).getSubsumedMetrics().get(1));
         result.add(timeSpanMeasurement);
