@@ -25,14 +25,14 @@ import org.palladiosimulator.probeframework.probes.listener.IProbeListener;
  * This class is the abstract super class for all calculator implementations. All specific
  * calculators have to inherit from this class.
  * </p>
- * 
+ *
  * <p>
  * Because calculators have to observe probes, they implement the IProbeListener interface. They
  * also inherit from MeasurementSource, thus, making them to observable objects on their own. For
  * instance, they can provide newly calculated measurements to recorders (recorders implement the
  * IMeasurementSourceListener interface).
  * </p>
- * 
+ *
  * <p>
  * Furthermore, calculators expect a list of probes to be measured before they can do their
  * calculation. For example, a response time calculator needs a measurement series of two probe
@@ -41,13 +41,13 @@ import org.palladiosimulator.probeframework.probes.listener.IProbeListener;
  * the last sample arrives, calculators start their calculation by invoking the template method
  * {@link Calculator#calculate(List)}.
  * </p>
- * 
+ *
  * <p>
  * When a sample originating from the first probe arrives (after a measurement series has started
  * and before it ended with the last probe), an exception is thrown because the first series of
  * measurements has to be finished first.
  * </p>
- * 
+ *
  * @author Sebastian Lehrig, Steffen Becker
  */
 public abstract class Calculator extends MeasurementSource implements IProbeListener {
@@ -73,7 +73,7 @@ public abstract class Calculator extends MeasurementSource implements IProbeList
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
@@ -83,7 +83,7 @@ public abstract class Calculator extends MeasurementSource implements IProbeList
         if (getClass() != obj.getClass()) {
             return false;
         }
-        Calculator other = (Calculator) obj;
+        final Calculator other = (Calculator) obj;
         if (this.getMetricDesciption() == null) {
             if (other.getMetricDesciption() != null) {
                 return false;
@@ -104,7 +104,7 @@ public abstract class Calculator extends MeasurementSource implements IProbeList
     /**
      * Default constructor. Creates the observed list of probes and initializes the measurement
      * memory.
-     * 
+     *
      * @param computedMetric
      *            Metric calculated by this calculator.
      * @param measuringPoint
@@ -112,7 +112,9 @@ public abstract class Calculator extends MeasurementSource implements IProbeList
      * @param childProbes
      *            List of probes.
      */
-    protected Calculator(final MetricDescription computedMetric, final MeasuringPoint measuringPoint,
+    protected Calculator(
+            final MetricDescription computedMetric,
+            final MeasuringPoint measuringPoint,
             final List<Probe> childProbes) {
         super(computedMetric);
         this.measuringPoint = measuringPoint;
@@ -126,7 +128,7 @@ public abstract class Calculator extends MeasurementSource implements IProbeList
 
     /**
      * Calculates a measurement based on a given set of probe measurements.
-     * 
+     *
      * @param probeMeasurements
      *            Probe measurements conforming to the registered probes of this calculator.
      * @return AbstractMeasureProvider that conforms to the static declaration of the metric of this class of
@@ -138,7 +140,7 @@ public abstract class Calculator extends MeasurementSource implements IProbeList
 
     /**
      * Returns the measuring point serving as the source of measurements.
-     * 
+     *
      * @return The measuring point.
      */
     public MeasuringPoint getMeasuringPoint() {
@@ -163,16 +165,19 @@ public abstract class Calculator extends MeasurementSource implements IProbeList
 
     /**
      * Call-back method to be informed about new probe measurements.
-     * 
+     *
      * @param probeMeasurement
      *            The last ProbeMeasurement that was received from an observed probe.
      * @see org.palladiosimulator.probeframework.probes.listener.IProbeListener#newProbeMeasurementAvailable
      */
     @Override
     public void newProbeMeasurementAvailable(final ProbeMeasurement probeMeasurement) {
+        if (!probes.contains(probeMeasurement.getProbeAndContext().getProbe())) {
+            throw new IllegalArgumentException("Recieved a probe measurement from a probe not known to this calculator");
+        }
         if (isMeasurementFromFirstProbe(probeMeasurement)) {
             if (arrivedMeasurementMemory.containsKey(probeMeasurement.getProbeAndContext().getRequestContext())) {
-                throw new IllegalStateException("First measurement to the same context arrived while"
+                throw new IllegalStateException("First measurement to the same context arrived while "
                         + "previous series of the same context did not complete.");
             }
             arrivedMeasurementMemory.put(probeMeasurement.getProbeAndContext().getRequestContext(),
@@ -190,7 +195,7 @@ public abstract class Calculator extends MeasurementSource implements IProbeList
     /**
      * Triggers the calculation of a measurement based on a given set of probe measurements. Also
      * informs all registered observers about this new measurement.
-     * 
+     *
      * @param probeMeasurements
      *            Probe measurements conforming to the registered probes of this calculator.
      */
@@ -206,7 +211,7 @@ public abstract class Calculator extends MeasurementSource implements IProbeList
 
     /**
      * Checks whether the given measurement comes from the last probe.
-     * 
+     *
      * @param probeMeasurement
      *            The measurement to be investigated.
      * @return <code>true</code> if the measurement comes from the last probe, <code>false</code>
@@ -218,7 +223,7 @@ public abstract class Calculator extends MeasurementSource implements IProbeList
 
     /**
      * Checks whether the given measurement comes from the first probe.
-     * 
+     *
      * @param probeMeasurement
      *            The measurement to be investigated.
      * @return <code>true</code> if the measurement comes from the first probe, <code>false</code>
