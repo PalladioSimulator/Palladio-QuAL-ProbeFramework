@@ -1,10 +1,11 @@
 package org.palladiosimulator.probeframework.calculator;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
+import org.palladiosimulator.edp2.util.MeasuringPointUtility;
 import org.palladiosimulator.probeframework.probes.Probe;
 
 /**
@@ -25,7 +26,7 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
     private final ICalculatorFactory decoratedFactory;
 
     /** Register for calculators. */
-    private final Collection<Calculator> calculatorRegister = new HashSet<Calculator>();
+    private final Set<Calculator> calculatorRegister = new HashSet<Calculator>();
 
     /**
      * Default constructor. Decorates given factory by a register.
@@ -55,11 +56,25 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
      * @param calculator
      *            The calculator to be registered.
      * @return The unmodified calculator (allows for fluent API).
-     * @throws IllegalArgumentException If the given calculator is already registered.
+     * @throws IllegalArgumentException
+     *             If the given calculator is already registered.
      */
     private Calculator register(final Calculator calculator) {
         if (calculatorRegister.contains(calculator)) {
-            throw new IllegalArgumentException("Calculators can only be registered once to the calculator registry");
+            Calculator found = null;
+            for (final Calculator calc : calculatorRegister) {
+                if (calc.equals(calculator)) {
+                    found = calc;
+                    break;
+                }
+            }
+
+            throw new IllegalArgumentException("Calculator \"" + calculator.getClass().getName() + " ["
+                    + MeasuringPointUtility.measuringPointToString(calculator.getMeasuringPoint()) + "; "
+                    + calculator.getMetricDesciption().getName() + "]\" already in calculator registry as \""
+                    + found.getClass().getName() + " ["
+                    + MeasuringPointUtility.measuringPointToString(found.getMeasuringPoint()) + "; "
+                    + found.getMetricDesciption().getName() + "]\"");
         }
         calculatorRegister.add(calculator);
         return calculator;
@@ -129,7 +144,7 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
     public Calculator buildOverallStateOfPassiveResourceCalculator(MeasuringPoint measuringPoint, Probe probe) {
         return register(decoratedFactory.buildOverallStateOfPassiveResourceCalculator(measuringPoint, probe));
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -144,5 +159,5 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
     @Override
     public Calculator buildExecutionResultCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
         return register(decoratedFactory.buildExecutionResultCalculator(measuringPoint, probe));
-    }    
+    }
 }
