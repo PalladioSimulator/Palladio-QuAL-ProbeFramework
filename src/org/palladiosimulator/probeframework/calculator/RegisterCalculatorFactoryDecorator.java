@@ -160,4 +160,12 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
     public Calculator buildExecutionResultCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
         return register(decoratedFactory.buildExecutionResultCalculator(measuringPoint, probe));
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Calculator buildNumberOfResourceContainersCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
+        return register(decoratedFactory.buildNumberOfResourceContainersCalculator(measuringPoint, probe));
+    }
 }
