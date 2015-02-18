@@ -1,6 +1,7 @@
 package org.palladiosimulator.probeframework.calculator;
 
 import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.EXECUTION_RESULT_METRIC_TUPLE;
+import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.NUMBER_OF_RESOURCE_CONTAINERS_OVER_TIME;
 import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.OVERALL_STATE_OF_ACTIVE_RESOURCE_METRIC;
 import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.OVERALL_STATE_OF_PASSIVE_RESOURCE_METRIC;
 import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.RESOURCE_DEMAND_METRIC_TUPLE;
@@ -135,7 +136,7 @@ public class DefaultCalculatorFactory implements ICalculatorFactory {
         ensureValidProbe(probe);
         return new IdentityCalculator(OVERALL_STATE_OF_PASSIVE_RESOURCE_METRIC, measuringPoint, probe);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -152,5 +153,14 @@ public class DefaultCalculatorFactory implements ICalculatorFactory {
     public Calculator buildExecutionResultCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
         ensureValidProbe(probe);
         return new IdentityCalculator(EXECUTION_RESULT_METRIC_TUPLE, measuringPoint, probe);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Calculator buildNumberOfResourceContainersCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
+        ensureValidProbe(probe);
+        return new IdentityCalculator(NUMBER_OF_RESOURCE_CONTAINERS_OVER_TIME, measuringPoint, probe);
     }
 }

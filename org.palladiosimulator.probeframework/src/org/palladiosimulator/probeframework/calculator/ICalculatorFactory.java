@@ -137,4 +137,16 @@ public interface ICalculatorFactory {
      * @return A new execution result calculator object.
      */
     public abstract Calculator buildExecutionResultCalculator(final MeasuringPoint measuringPoint, final Probe probe);
+
+    /**
+     * Creates a number of resource containers calculator object.
+     * 
+     * @param measuringPoint
+     *            The measuring point where this calculator is used, e.g., "Resource Environment A".
+     * @param probe
+     *            A single probe for the total number of resource containers.
+     * @return A new number if resource containers calculator object.
+     */
+    public abstract Calculator buildNumberOfResourceContainersCalculator(final MeasuringPoint measuringPoint,
+            final Probe probe);
 }
