@@ -1,11 +1,14 @@
 package org.palladiosimulator.probeframework.calculator;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.util.MeasuringPointUtility;
+import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.probeframework.probes.Probe;
 
 /**
@@ -18,7 +21,7 @@ import org.palladiosimulator.probeframework.probes.Probe;
  * 
  * @see ICalculatorFactory
  * 
- * @author Steffen Becker, Sebastian Lehrig
+ * @author Steffen Becker, Sebastian Lehrig, Florian Rosenthal
  */
 public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
 
@@ -37,6 +40,48 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
     public RegisterCalculatorFactoryDecorator(final ICalculatorFactory decoratedFactory) {
         super();
         this.decoratedFactory = decoratedFactory;
+    }
+
+    /**
+     * Gets the decorated factory.
+     * 
+     * @return The {@link ICalculatorFactory} that is decorated by this instance.
+     */
+    public ICalculatorFactory getDecoratedFactory() {
+        return this.decoratedFactory;
+    }
+
+    /**
+     * Gets the currently registered calculators.
+     * 
+     * @return An <b>unmodifiable</b> collection containing the currently registered calculators.
+     */
+    public Collection<Calculator> getRegisteredCalculators() {
+        return Collections.unmodifiableCollection(this.calculatorRegister);
+    }
+
+    /**
+     * Convenience method to get the calculator that is associated with the given measuring point and metric.
+     * 
+     * @param mp
+     *            A {@link MeasuringPoint} instance which is associated with a calculator.
+     * @param metric
+     *            A {@link MetricDescription} denoting the metric the calculator is accepting.
+     * @return A {@link Calculator} instance associated with the given measuring point and metric,
+     *         or {@code null} if no matching {@link Calculator} is found.
+     */
+    public Calculator getCalculatorByMeasuringPointAndMetricDescription(MeasuringPoint mp, MetricDescription metric) {
+        Calculator result = null;
+        String measuringPointString = MeasuringPointUtility.measuringPointToString(mp);
+        for (Calculator calc : this.calculatorRegister) {
+            if (calc.isCompatibleWith(metric)
+                    && measuringPointString.equals(MeasuringPointUtility.measuringPointToString(calc
+                            .getMeasuringPoint()))) {
+                result = calc;
+                break;
+            }
+        }
+        return result;
     }
 
     /**
