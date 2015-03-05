@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.measure.quantity.Quantity;
 
-import org.palladiosimulator.measurementframework.Measurement;
+import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.measurementframework.measureprovider.IMeasureProvider;
 import org.palladiosimulator.measurementframework.measureprovider.MeasurementListMeasureProvider;
 import org.palladiosimulator.probeframework.measurement.ProbeMeasurement;
@@ -63,24 +63,24 @@ public class EventProbeList extends EventProbe<EventProbe<?>> implements IProbeL
      */
     @Override
     public void newProbeMeasurementAvailable(final ProbeMeasurement measurement) {
-        final List<Measurement> eventAndChildMeasurements = new LinkedList<Measurement>();
+        final List<MeasuringValue> eventAndChildMeasurements = new LinkedList<MeasuringValue>();
 
-        if (!(measurement.getMeasureProvider() instanceof Measurement)) {
+        if (!(measurement.getMeasureProvider() instanceof MeasuringValue)) {
             throw new IllegalArgumentException("Event measure providers have to be measurements");
         }
-        eventAndChildMeasurements.add((Measurement) measurement.getMeasureProvider());
+        eventAndChildMeasurements.add((MeasuringValue) measurement.getMeasureProvider());
 
         for (final TriggeredProbe childProbe : subsumedProbes) {
             final IMeasureProvider subsumedMeasureProvider = childProbe.doMeasure(RequestContext.EMPTY_REQUEST_CONTEXT)
                     .getMeasureProvider();
 
-            if (!(subsumedMeasureProvider instanceof Measurement)) {
+            if (!(subsumedMeasureProvider instanceof MeasuringValue)) {
                 throw new IllegalArgumentException("Subsumed measure providers have to be measurements");
             }
 
             // TODO Actually, we should recursively resolve subsumed measurements here because the
             // subsumed measurement could be a TupleMeasurement. [Lehrig]
-            eventAndChildMeasurements.add((Measurement) subsumedMeasureProvider);
+            eventAndChildMeasurements.add((MeasuringValue) subsumedMeasureProvider);
         }
 
         final IMeasureProvider measureProvider = new MeasurementListMeasureProvider(eventAndChildMeasurements);

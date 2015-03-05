@@ -10,7 +10,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
-import org.palladiosimulator.measurementframework.Measurement;
+import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.measurementframework.listener.IMeasurementSourceListener;
 import org.palladiosimulator.measurementframework.listener.MeasurementSource;
 import org.palladiosimulator.metricspec.MetricDescription;
@@ -136,7 +136,7 @@ public abstract class Calculator extends MeasurementSource implements IProbeList
      * @throws CalculatorException
      *             In case something during the execution of the calculator went wrong.
      */
-    protected abstract Measurement calculate(List<ProbeMeasurement> probeMeasurements) throws CalculatorException;
+    protected abstract MeasuringValue calculate(List<ProbeMeasurement> probeMeasurements) throws CalculatorException;
 
     /**
      * Returns the measuring point serving as the source of measurements.
@@ -201,7 +201,7 @@ public abstract class Calculator extends MeasurementSource implements IProbeList
      */
     private void fireCalculated(final List<ProbeMeasurement> probeMeasurements) {
         try {
-            final Measurement calculatedMeasures = calculate(probeMeasurements);
+            final MeasuringValue calculatedMeasures = calculate(probeMeasurements);
             notifyMeasurementSourceListener(calculatedMeasures);
         } catch (final CalculatorException e) {
             LOGGER.error(e);

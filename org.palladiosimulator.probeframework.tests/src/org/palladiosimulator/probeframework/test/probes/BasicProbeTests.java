@@ -13,7 +13,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.palladiosimulator.measurementframework.BasicMeasurement;
-import org.palladiosimulator.measurementframework.Measurement;
+import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.probeframework.measurement.ProbeAndRequestContext;
@@ -63,7 +63,7 @@ public class BasicProbeTests {
         simContext.setSimulatedTime(100d);
         final ProbeMeasurement probeMeasurement = probe.takeMeasurement(contextID);
 
-        final Measurement measurement = probeMeasurement.getBasicMeasurement();
+        final MeasuringValue measurement = probeMeasurement.getBasicMeasurement();
         final ProbeAndRequestContext probeAndContext = probeMeasurement.getProbeAndContext();
         assertTrue(probeAndContext.getProbe() == probe);
         assertTrue(measurement.getMetricDesciption() == MetricDescriptionConstants.POINT_IN_TIME_METRIC);
@@ -91,7 +91,7 @@ public class BasicProbeTests {
         cpuResource.setJobs(2);
         final ProbeMeasurement probeMeasurement = probe.takeMeasurement(contextID);
 
-        final Measurement measurement = probeMeasurement.getBasicMeasurement();
+        final MeasuringValue measurement = probeMeasurement.getBasicMeasurement();
         final ProbeAndRequestContext probeAndContext = probeMeasurement.getProbeAndContext();
         assertTrue(probeAndContext.getProbe() == probe);
         assertTrue(measurement.getMetricDesciption() == MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC);

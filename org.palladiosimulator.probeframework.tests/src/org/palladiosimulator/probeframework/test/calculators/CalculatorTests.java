@@ -10,7 +10,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringpointFactory;
 import org.palladiosimulator.edp2.models.measuringpoint.StringMeasuringPoint;
-import org.palladiosimulator.measurementframework.Measurement;
+import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.measurementframework.listener.IMeasurementSourceListener;
 import org.palladiosimulator.probeframework.ProbeFrameworkContext;
 import org.palladiosimulator.probeframework.calculator.Calculator;
@@ -52,7 +52,7 @@ public class CalculatorTests {
      * Stores the last received measurement for the <code>testResponseTimeCalculator</code> test
      * case.
      */
-    private Measurement lastMeasurement;
+    private MeasuringValue lastMeasurement;
 
     /** Default EMF factory for measuring points. */
     private final MeasuringpointFactory measuringpointFactory = MeasuringpointFactory.eINSTANCE;
@@ -90,7 +90,7 @@ public class CalculatorTests {
         rtCalculator.addObserver(new IMeasurementSourceListener() {
 
             @Override
-            public void newMeasurementAvailable(final Measurement measurement) {
+            public void newMeasurementAvailable(final MeasuringValue measurement) {
                 lastMeasurement = measurement;
             }
 

@@ -11,7 +11,7 @@ import javax.measure.unit.SI;
 
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.measurementframework.BasicMeasurement;
-import org.palladiosimulator.measurementframework.Measurement;
+import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.measurementframework.TupleMeasurement;
 import org.palladiosimulator.metricspec.BaseMetricDescription;
 import org.palladiosimulator.metricspec.MetricDescription;
@@ -54,8 +54,8 @@ public abstract class TimeSpanCalculator extends Calculator {
      * @see org.palladiosimulator.probeframework.calculator.Calculator#calculate
      */
     @Override
-    protected Measurement calculate(final List<ProbeMeasurement> probeMeasurements) {
-        final List<Measurement> result = new ArrayList<Measurement>(2);
+    protected MeasuringValue calculate(final List<ProbeMeasurement> probeMeasurements) {
+        final List<MeasuringValue> result = new ArrayList<MeasuringValue>(2);
 
         final Measure<Double, Duration> startTimeMeasure = probeMeasurements.get(0).getMeasureProvider()
                 .getMeasureForMetric(POINT_IN_TIME_METRIC);
@@ -64,10 +64,10 @@ public abstract class TimeSpanCalculator extends Calculator {
         final double timeSpan = endTimeMeasure.doubleValue(SI.SECOND) - startTimeMeasure.doubleValue(SI.SECOND);
         final Measure<Double, Duration> timeSpanMeasure = Measure.valueOf(timeSpan, SI.SECOND);
 
-        final Measurement endTimeMeasurement = probeMeasurements.get(1).getBasicMeasurement()
-                .getMeasurementForMetric(POINT_IN_TIME_METRIC);
+        final MeasuringValue endTimeMeasurement = probeMeasurements.get(1).getBasicMeasurement()
+                .getMeasuringValueForMetric(POINT_IN_TIME_METRIC);
         result.add(endTimeMeasurement);
-        final Measurement timeSpanMeasurement = new BasicMeasurement<Double, Duration>(timeSpanMeasure,
+        final MeasuringValue timeSpanMeasurement = new BasicMeasurement<Double, Duration>(timeSpanMeasure,
                 (BaseMetricDescription) ((MetricSetDescription) this.getMetricDesciption()).getSubsumedMetrics().get(1));
         result.add(timeSpanMeasurement);
 
