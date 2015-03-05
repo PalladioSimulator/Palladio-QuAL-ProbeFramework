@@ -3,7 +3,7 @@ package org.palladiosimulator.probeframework.probes;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.palladiosimulator.measurementframework.Measurement;
+import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.measurementframework.measureprovider.IMeasureProvider;
 import org.palladiosimulator.measurementframework.measureprovider.MeasurementListMeasureProvider;
 import org.palladiosimulator.probeframework.measurement.ProbeMeasurement;
@@ -39,19 +39,19 @@ public class TriggeredProbeList extends TriggeredProbe {
      */
     @Override
     protected ProbeMeasurement doMeasure(final RequestContext measurementContext) {
-        final List<Measurement> childMeasurements = new LinkedList<Measurement>();
+        final List<MeasuringValue> childMeasurements = new LinkedList<MeasuringValue>();
 
         for (final TriggeredProbe childProbe : subsumedProbes) {
             final IMeasureProvider subsumedMeasureProvider = childProbe.doMeasure(measurementContext)
                     .getMeasureProvider();
 
-            if (!(subsumedMeasureProvider instanceof Measurement)) {
+            if (!(subsumedMeasureProvider instanceof MeasuringValue)) {
                 throw new IllegalArgumentException("Subsumed measure providers have to be measurements");
             }
 
             // TODO Actually, we should recursively resolve subsumed measurements here because the
             // subsumed measurement could be a TupleMeasurement. [Lehrig]            
-            childMeasurements.add((Measurement) subsumedMeasureProvider);
+            childMeasurements.add((MeasuringValue) subsumedMeasureProvider);
         }
 
         final IMeasureProvider measureProvider = new MeasurementListMeasureProvider(childMeasurements);

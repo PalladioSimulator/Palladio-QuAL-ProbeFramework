@@ -9,7 +9,7 @@ import javax.measure.unit.SI;
 
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.measurementframework.BasicMeasurement;
-import org.palladiosimulator.measurementframework.Measurement;
+import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.measurementframework.TupleMeasurement;
 import org.palladiosimulator.metricspec.MetricSetDescription;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
@@ -58,7 +58,7 @@ public class DemandBasedWaitingTimeCalculator extends WaitingTimeCalculator {
      * @see org.palladiosimulator.probeframework.calculator.Calculator#calculate
      */
     @Override
-    protected Measurement calculate(final List<ProbeMeasurement> probeMeasurements) {
+    protected MeasuringValue calculate(final List<ProbeMeasurement> probeMeasurements) {
         // raw measures
         final Measure<Double, Duration> startTimeMeasure = probeMeasurements.get(0).getMeasureProvider()
                 .getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
@@ -79,12 +79,12 @@ public class DemandBasedWaitingTimeCalculator extends WaitingTimeCalculator {
         }
         final Measure<Double, Duration> waitingTimeMeasure = Measure.valueOf(waitingTime, SI.SECOND);
 
-        final List<Measurement> result = new ArrayList<Measurement>(2);
+        final List<MeasuringValue> result = new ArrayList<MeasuringValue>(2);
         final BasicMeasurement<Double, Duration> waitingTimeMeasurement = new BasicMeasurement<Double, Duration>(
                 waitingTimeMeasure, MetricDescriptionConstants.WAITING_TIME_METRIC);
 
         result.add(probeMeasurements.get(1).getBasicMeasurement()
-                .getMeasurementForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC));
+                .getMeasuringValueForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC));
         result.add(waitingTimeMeasurement);
 
         return new TupleMeasurement(result, (MetricSetDescription) this.getMetricDesciption());

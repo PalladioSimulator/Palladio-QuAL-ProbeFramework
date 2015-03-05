@@ -3,7 +3,7 @@ package org.palladiosimulator.probeframework.calculator.internal;
 import java.util.List;
 
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
-import org.palladiosimulator.measurementframework.Measurement;
+import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.measurementframework.TupleMeasurement;
 import org.palladiosimulator.measurementframework.measureprovider.IMeasureProvider;
 import org.palladiosimulator.measurementframework.measureprovider.MeasurementListMeasureProvider;
@@ -50,7 +50,7 @@ public class IdentityCalculator extends UnaryCalculator {
      * @see org.palladiosimulator.probeframework.calculator.Calculator#calculate
      */
     @Override
-    protected Measurement calculate(final List<ProbeMeasurement> probeMeasurements) throws CalculatorException {
+    protected MeasuringValue calculate(final List<ProbeMeasurement> probeMeasurements) throws CalculatorException {
         final MetricSetDescription metricSetDescription = (MetricSetDescription) this.getMetricDesciption();
         final IMeasureProvider measureProvider = probeMeasurements.get(0).getMeasureProvider();
 
@@ -58,7 +58,7 @@ public class IdentityCalculator extends UnaryCalculator {
             throw new CalculatorException(
                     "Measure provider used within identity calculators have to be of type MeasurementListMeasureProvider");
         }        
-        final List<Measurement> measurements = ((MeasurementListMeasureProvider) measureProvider).getSubsumedMeasurements();
+        final List<MeasuringValue> measurements = ((MeasurementListMeasureProvider) measureProvider).getSubsumedMeasurements();
                 
         return new TupleMeasurement(measurements, metricSetDescription);        
     }
