@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
-import org.palladiosimulator.edp2.util.MeasuringPointUtility;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.probeframework.probes.Probe;
 
@@ -61,7 +60,8 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
     }
 
     /**
-     * Convenience method to get the calculator that is associated with the given measuring point and metric.
+     * Convenience method to get the calculator that is associated with the given measuring point
+     * and metric.
      * 
      * @param mp
      *            A {@link MeasuringPoint} instance which is associated with a calculator.
@@ -72,11 +72,10 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
      */
     public Calculator getCalculatorByMeasuringPointAndMetricDescription(MeasuringPoint mp, MetricDescription metric) {
         Calculator result = null;
-        String measuringPointString = MeasuringPointUtility.measuringPointToString(mp);
+        String measuringPointString = mp.getStringRepresentation();
         for (Calculator calc : this.calculatorRegister) {
             if (calc.isCompatibleWith(metric)
-                    && measuringPointString.equals(MeasuringPointUtility.measuringPointToString(calc
-                            .getMeasuringPoint()))) {
+                    && measuringPointString.equals(calc.getMeasuringPoint().getStringRepresentation())) {
                 result = calc;
                 break;
             }
@@ -115,10 +114,9 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
             }
 
             throw new IllegalArgumentException("Calculator \"" + calculator.getClass().getName() + " ["
-                    + MeasuringPointUtility.measuringPointToString(calculator.getMeasuringPoint()) + "; "
+                    + calculator.getMeasuringPoint().getStringRepresentation() + "; "
                     + calculator.getMetricDesciption().getName() + "]\" already in calculator registry as \""
-                    + found.getClass().getName() + " ["
-                    + MeasuringPointUtility.measuringPointToString(found.getMeasuringPoint()) + "; "
+                    + found.getClass().getName() + " [" + found.getMeasuringPoint().getStringRepresentation() + "; "
                     + found.getMetricDesciption().getName() + "]\"");
         }
         calculatorRegister.add(calculator);
