@@ -14,6 +14,7 @@ import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.probeframework.calculator.internal.DemandBasedWaitingTimeCalculator;
 import org.palladiosimulator.probeframework.calculator.internal.HoldingTimeCalculator;
 import org.palladiosimulator.probeframework.calculator.internal.IdentityCalculator;
+import org.palladiosimulator.probeframework.calculator.internal.ReconfigurationTimeCalculator;
 import org.palladiosimulator.probeframework.calculator.internal.ResponseTimeCalculator;
 import org.palladiosimulator.probeframework.calculator.internal.WaitingTimeCalculator;
 import org.palladiosimulator.probeframework.probes.Probe;
@@ -25,7 +26,7 @@ import org.palladiosimulator.probeframework.probes.Probe;
  * 
  * @see ICalculatorFactory
  * 
- * @author Steffen Becker, Sebastian Lehrig
+ * @author Steffen Becker, Sebastian Lehrig, Matthias Becker
  */
 public class DefaultCalculatorFactory implements ICalculatorFactory {
 
@@ -162,5 +163,11 @@ public class DefaultCalculatorFactory implements ICalculatorFactory {
     public Calculator buildNumberOfResourceContainersCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
         ensureValidProbe(probe);
         return new IdentityCalculator(NUMBER_OF_RESOURCE_CONTAINERS_OVER_TIME, measuringPoint, probe);
+    }
+
+    @Override
+    public Calculator buildReconfigurationTimeCalculator(MeasuringPoint measuringPoint, List<Probe> probes) {
+        ensureTwoProbes(probes);
+        return new ReconfigurationTimeCalculator(measuringPoint, probes);
     }
 }
