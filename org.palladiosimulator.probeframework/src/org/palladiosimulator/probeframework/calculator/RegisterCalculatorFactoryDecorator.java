@@ -20,7 +20,7 @@ import org.palladiosimulator.probeframework.probes.Probe;
  * 
  * @see ICalculatorFactory
  * 
- * @author Steffen Becker, Sebastian Lehrig, Florian Rosenthal
+ * @author Steffen Becker, Sebastian Lehrig, Matthias Becker, Florian Rosenthal
  */
 public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
 
@@ -210,5 +210,10 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
     @Override
     public Calculator buildNumberOfResourceContainersCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
         return register(decoratedFactory.buildNumberOfResourceContainersCalculator(measuringPoint, probe));
+    }
+
+    @Override
+    public Calculator buildReconfigurationTimeCalculator(MeasuringPoint measuringPoint, List<Probe> probes) {
+        return register(decoratedFactory.buildReconfigurationTimeCalculator(measuringPoint, probes));
     }
 }

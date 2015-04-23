@@ -11,7 +11,7 @@ import org.palladiosimulator.probeframework.probes.Probe;
  * <code>org.palladiosimulator.probeframework.calculator.internal</code> (access without using the
  * factory class is impossible in OSGI because classes of internal packages are not exported).
  * 
- * @author Steffen Becker, Sebastian Lehrig
+ * @author Steffen Becker, Sebastian Lehrig, Matthias Becker
  */
 public interface ICalculatorFactory {
     /**
@@ -149,4 +149,17 @@ public interface ICalculatorFactory {
      */
     public abstract Calculator buildNumberOfResourceContainersCalculator(final MeasuringPoint measuringPoint,
             final Probe probe);
+
+    /**
+     * Creates a response time calculator object based on the given name and the given probes.
+     * 
+     * @param measuringPoint
+     *            The measuring point where this calculator is used, e.g., "Operation A".
+     * @param probes
+     *            List of two probes for starting point of the operation call and final point of the
+     *            operation call.
+     * @return A new response time calculator object.
+     */
+    public abstract Calculator buildReconfigurationTimeCalculator(final MeasuringPoint measuringPoint,
+            final List<Probe> probes);
 }
