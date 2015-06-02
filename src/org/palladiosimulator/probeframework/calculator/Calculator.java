@@ -173,7 +173,7 @@ public abstract class Calculator extends MeasurementSource implements IProbeList
     @Override
     public void newProbeMeasurementAvailable(final ProbeMeasurement probeMeasurement) {
         if (!probes.contains(probeMeasurement.getProbeAndContext().getProbe())) {
-            throw new IllegalArgumentException("Recieved a probe measurement from a probe not known to this calculator");
+            throw new IllegalArgumentException("Received a probe measurement from a probe not known to this calculator");
         }
         if (isMeasurementFromFirstProbe(probeMeasurement)) {
             if (arrivedMeasurementMemory.containsKey(probeMeasurement.getProbeAndContext().getRequestContext())) {
@@ -185,11 +185,25 @@ public abstract class Calculator extends MeasurementSource implements IProbeList
         }
         final List<ProbeMeasurement> measurementMemory = arrivedMeasurementMemory.get(probeMeasurement
                 .getProbeAndContext().getRequestContext());
-        measurementMemory.add(probeMeasurement);
-        if (isMeasurementFromLastProbe(probeMeasurement)) {
-            fireCalculated(measurementMemory);
-            arrivedMeasurementMemory.remove(probeMeasurement.getProbeAndContext().getRequestContext());
-        }
+        
+		// measurementMemory might be null, e.g. if probe contexts could not be
+		// matched (see bug entry by Anne of June 2nd). Fail somewhat gracefully
+		// here.
+		if (measurementMemory == null) {
+			LOGGER.error("Could not match probe measurement "
+					+ probeMeasurement.toString()
+					+ " with existing results in Calculator.java, altough there should be previous "
+					+ "results already available. This may happen if you, for example, have a passive "
+					+ "resource of capacity > 1 that is acquired in one thread and released in another. "
+					+ "In that case, holding time cannot be determined yet.");
+		} else {
+			measurementMemory.add(probeMeasurement);
+			if (isMeasurementFromLastProbe(probeMeasurement)) {
+				fireCalculated(measurementMemory);
+				arrivedMeasurementMemory.remove(probeMeasurement
+						.getProbeAndContext().getRequestContext());
+			}
+		}
     }
 
     /**
