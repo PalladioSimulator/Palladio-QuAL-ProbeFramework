@@ -187,15 +187,18 @@ public abstract class Calculator extends MeasurementSource implements IProbeList
                 .getProbeAndContext().getRequestContext());
         
 		// measurementMemory might be null, e.g. if probe contexts could not be
-		// matched (see bug entry by Anne of June 2nd). Fail somewhat gracefully
-		// here.
+		// matched (see PALLADIO-329). Fail gracefully here.
 		if (measurementMemory == null) {
 			LOGGER.error("Could not match probe measurement "
 					+ probeMeasurement.toString()
 					+ " with existing results in Calculator.java, altough there should be previous "
 					+ "results already available. This may happen if you, for example, have a passive "
 					+ "resource of capacity > 1 that is acquired in one thread and released in another. "
-					+ "In that case, holding time cannot be determined yet.");
+					+ "In that case, holding time cannot be determined as SimuCom does not use something "
+					+ "like coloured tokens. Be advised that the sensor might contain only partial results.");
+			//TODO: disable holding time sensor for this resource as otherwise the acquire measurements will pile up
+			//TODO: if the sensor is disabled here and if some first requests did match before this problem has been detected, the sensor will contain 
+			//only a few entries which might be confusing. Better remove the whole sensor or empty it here if possible?
 		} else {
 			measurementMemory.add(probeMeasurement);
 			if (isMeasurementFromLastProbe(probeMeasurement)) {
