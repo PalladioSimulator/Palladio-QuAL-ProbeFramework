@@ -5,10 +5,6 @@
       version="1.0.0.qualifier"
       provider-name="palladiosimulator.org">
 
-   <includes
-         id="org.palladiosimulator.probeframework.feature"
-         version="0.0.0"/>
-         
    <url>
       <discovery label="Palladio Commons" url="http://sdqweb.ipd.kit.edu/eclipse/commons/nightly/"/>
       <discovery label="Palladio Third Party Wrapper" url="http://sdqweb.ipd.kit.edu/eclipse/thirdpartywrapper/nightly/"/>
@@ -18,6 +14,23 @@
       <discovery label="Eclipse Release" url="http://download.eclipse.org/releases/luna/"/>
       <discovery label="Eclipse Orbit" url="http://download.eclipse.org/tools/orbit/downloads/drops/R20130827064939/repository/"/>
    </url>
+
+   <includes
+         id="org.palladiosimulator.probeframework.feature"
+         version="0.0.0"/>
+
+   <requires>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.junit" version="4.11.0" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.probeframework" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.jscience" version="4.1.3" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.probeframework.probes.example" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.apache.log4j" version="1.2.13" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.metricspec" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.measurementframework" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.metricspec.resources" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.edp2"/>
+   </requires>
 
    <plugin
          id="org.palladiosimulator.probeframework.tests"
