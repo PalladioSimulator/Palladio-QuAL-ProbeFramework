@@ -3,6 +3,7 @@
       id="org.palladiosimulator.probeframework.feature"
       label="ProbeFramework Feature"
       version="2.0.0.qualifier"
+      plugin="org.palladiosimulator.branding"
       license-feature="org.palladiosimulator.license"
       license-feature-version="1.0.0">
 
@@ -11,7 +12,7 @@
 models. The measuring at specified points is supported by the
 ProbeFramework framework.
    </description>
-   
+
    <requires>
       <import plugin="org.eclipse.core.runtime"/>
       <import plugin="org.jscience" version="4.1.3" match="greaterOrEqual"/>
@@ -41,6 +42,13 @@ ProbeFramework framework.
 
    <plugin
          id="org.jscience"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.palladiosimulator.branding"
          download-size="0"
          install-size="0"
          version="0.0.0"
