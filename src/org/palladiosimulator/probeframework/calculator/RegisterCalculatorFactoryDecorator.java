@@ -213,7 +213,7 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
     }
 
     @Override
-    public Calculator buildReconfigurationTimeCalculator(MeasuringPoint measuringPoint, List<Probe> probes) {
-        return register(decoratedFactory.buildReconfigurationTimeCalculator(measuringPoint, probes));
+    public Calculator buildReconfigurationTimeCalculator(MeasuringPoint measuringPoint, Probe probe) {
+        return register(decoratedFactory.buildReconfigurationTimeCalculator(measuringPoint, probe));
     }
 }

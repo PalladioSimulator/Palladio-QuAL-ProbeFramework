@@ -151,15 +151,14 @@ public interface ICalculatorFactory {
             final Probe probe);
 
     /**
-     * Creates a response time calculator object based on the given name and the given probes.
+     * Creates a reconfiguration time calculator object based on the given measuring point and the given probe.
      * 
      * @param measuringPoint
-     *            The measuring point where this calculator is used, e.g., "Operation A".
-     * @param probes
-     *            List of two probes for starting point of the operation call and final point of the
-     *            operation call.
-     * @return A new response time calculator object.
+     *            The {@link MeasuringPoint} where this calculator is used.
+     * @param probe
+     *           The {@link Probe} that provides the measurements.
+     * @return A new reconfiguration time calculator object.
      */
     public abstract Calculator buildReconfigurationTimeCalculator(final MeasuringPoint measuringPoint,
-            final List<Probe> probes);
+            final Probe probe);
 }

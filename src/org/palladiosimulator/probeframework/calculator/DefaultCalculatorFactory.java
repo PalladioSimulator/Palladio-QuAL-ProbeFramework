@@ -4,6 +4,7 @@ import static org.palladiosimulator.metricspec.constants.MetricDescriptionConsta
 import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.NUMBER_OF_RESOURCE_CONTAINERS_OVER_TIME;
 import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.OVERALL_STATE_OF_ACTIVE_RESOURCE_METRIC;
 import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.OVERALL_STATE_OF_PASSIVE_RESOURCE_METRIC;
+import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.RECONFIGURATION_TIME_METRIC_TUPLE;
 import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.RESOURCE_DEMAND_METRIC_TUPLE;
 import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC_TUPLE;
 import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.STATE_OF_PASSIVE_RESOURCE_METRIC_TUPLE;
@@ -14,7 +15,6 @@ import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.probeframework.calculator.internal.DemandBasedWaitingTimeCalculator;
 import org.palladiosimulator.probeframework.calculator.internal.HoldingTimeCalculator;
 import org.palladiosimulator.probeframework.calculator.internal.IdentityCalculator;
-import org.palladiosimulator.probeframework.calculator.internal.ReconfigurationTimeCalculator;
 import org.palladiosimulator.probeframework.calculator.internal.ResponseTimeCalculator;
 import org.palladiosimulator.probeframework.calculator.internal.WaitingTimeCalculator;
 import org.palladiosimulator.probeframework.probes.Probe;
@@ -166,8 +166,8 @@ public class DefaultCalculatorFactory implements ICalculatorFactory {
     }
 
     @Override
-    public Calculator buildReconfigurationTimeCalculator(MeasuringPoint measuringPoint, List<Probe> probes) {
-        ensureTwoProbes(probes);
-        return new ReconfigurationTimeCalculator(measuringPoint, probes);
+    public Calculator buildReconfigurationTimeCalculator(MeasuringPoint measuringPoint, Probe probe) {
+        ensureValidProbe(probe);
+        return new IdentityCalculator(RECONFIGURATION_TIME_METRIC_TUPLE, measuringPoint, probe);
     }
 }
