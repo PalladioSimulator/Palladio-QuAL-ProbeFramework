@@ -33,7 +33,7 @@ import org.palladiosimulator.probeframework.probes.listener.IProbeListener;
  * JUnit tests for probe lists (for both types, triggered probe lists and event probe lists) of the
  * Probe Framework. The tests use the simple example simulator, CPU, and probes from the
  * <code>org.palladiosimulator.probeframework.probes.example</code> package.
- * 
+ *
  * @author Sebastian Lehrig, Steffen Becker
  */
 @RunWith(JUnit4.class)
@@ -73,7 +73,7 @@ public class ProbeListTests {
 
         currentTimeProbe = new ExampleTakeCurrentTimeProbe(simContext);
         currentCPUStateProbe = new ExampleTakeCPUStateProbe(cpuResource);
-        probeList = new TriggeredProbeList(Arrays.asList(currentTimeProbe, currentCPUStateProbe));
+        probeList = new TriggeredProbeList(MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_OVER_TIME_METRIC,Arrays.asList(currentTimeProbe, currentCPUStateProbe));
     }
 
     /**
@@ -108,7 +108,7 @@ public class ProbeListTests {
      * (event source), which is in this case a CPU (i.e., it measures a resource demand metric). It
      * also adds the result from triggering a (currentTimeProbe, currentCPUStateProbe)-tuple to its
      * measurement result.
-     * 
+     *
      * The test lets a simulation with 2 jobs run for 100 seconds and demands 20 seconds of CPU. The
      * event probe list is registered to react on this demand event and stores the received probe
      * measurement in the <code>lastMeasurement</code> member variable.
@@ -120,8 +120,10 @@ public class ProbeListTests {
         cpuResource.setJobs(2);
         final ExampleTakeCPUDemandProbe probe = new ExampleTakeCPUDemandProbe(cpuResource);
 
-        final EventProbeList eventProbeList = new EventProbeList(probe, Arrays.asList(currentTimeProbe,
-                currentCPUStateProbe));
+        final EventProbeList eventProbeList = new EventProbeList(
+                MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_OVER_TIME_METRIC,
+                probe,
+                Arrays.asList(currentTimeProbe, currentCPUStateProbe));
         eventProbeList.addObserver(new IProbeListener() {
 
             @Override

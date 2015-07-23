@@ -1,5 +1,6 @@
 package org.palladiosimulator.probeframework.probes;
 
+import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.probeframework.measurement.ProbeMeasurement;
 import org.palladiosimulator.probeframework.measurement.RequestContext;
 
@@ -10,25 +11,26 @@ import org.palladiosimulator.probeframework.measurement.RequestContext;
  * optionally empty context). After <code>doMeasure</code> computed a new measurement,
  * <code>takeMeasurement</code> further informs all registered observers about the newly available
  * measurement.
- * 
+ *
  * The method <code>doMeasure</code> itself has to be provided by classes inheriting from the this
  * class.
- * 
+ *
  * @author Steffen Becker, Sebastian Lehrig
  */
 public abstract class TriggeredProbe extends Probe {
 
     /**
      * Default constructor.
+     * @param metricDescription The metric of the measurements delivered by this probe.
      */
-    protected TriggeredProbe() {
-        super();
+    protected TriggeredProbe(final MetricDescription metricDescription) {
+        super(metricDescription);
     }
 
     /**
      * Takes a probe measurement. Convenience method for an empty request context; refer to @see
      * #takeMeasurement(RequestContext) for full documentation.
-     * 
+     *
      * @return The taken probe measurement.
      */
     public ProbeMeasurement takeMeasurement() {
@@ -38,10 +40,10 @@ public abstract class TriggeredProbe extends Probe {
     /**
      * Takes a probe measurement for the given request context. This method is externally triggered,
      * thus, being the main characteristic of this type of probe.
-     * 
+     *
      * Internally, the template method <code>doMeasure</code> is used to obtain the concrete
      * measurement. Afterwards, all registered observers are informed about this new measurement.
-     * 
+     *
      * @param measurementContext
      *            The measurement context for this probe.
      * @return The taken probe measurement.
@@ -54,7 +56,7 @@ public abstract class TriggeredProbe extends Probe {
 
     /**
      * Template method for taking the desired probe measurement in a given request context.
-     * 
+     *
      * @param measurementContext
      *            The measurement context for this probe.
      * @return The taken probe measurement.

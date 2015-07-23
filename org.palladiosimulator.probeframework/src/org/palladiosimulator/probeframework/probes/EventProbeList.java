@@ -8,6 +8,7 @@ import javax.measure.quantity.Quantity;
 import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.measurementframework.measureprovider.IMeasureProvider;
 import org.palladiosimulator.measurementframework.measureprovider.MeasurementListMeasureProvider;
+import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.probeframework.measurement.ProbeMeasurement;
 import org.palladiosimulator.probeframework.measurement.RequestContext;
 import org.palladiosimulator.probeframework.probes.listener.IProbeListener;
@@ -22,7 +23,7 @@ import org.palladiosimulator.probeframework.probes.listener.IProbeListener;
  * <code>doMeasure</code> on each subsumed probe (that is possible since only triggered probes are
  * subsumed). Finally, registered listeners (e.g., calculators) are informed about the newly
  * available measurement tuple.
- * 
+ *
  * @author Steffen Becker, Sebastian Lehrig
  */
 public class EventProbeList extends EventProbe<EventProbe<?>> implements IProbeListener {
@@ -33,11 +34,12 @@ public class EventProbeList extends EventProbe<EventProbe<?>> implements IProbeL
     /**
      * Default constructor. Expects one event probe as well as the list of subsumed, triggered
      * probes.
-     * 
+     *
      * @param eventProbe
      *            The event probe.
      * @param subsumedProbes
      *            The list of subsumed probes.
+     * @param metricSetDescription
      * @param <EventSourceType>
      *            The type of the event source .
      * @param <V>
@@ -47,9 +49,11 @@ public class EventProbeList extends EventProbe<EventProbe<?>> implements IProbeL
      * @throws IllegalArgumentException
      *             If a subsumed probe is not a triggered probe.
      */
-    public <EventSourceType, V, Q extends Quantity> EventProbeList(final EventProbe<?> eventProbe,
+    public <EventSourceType, V, Q extends Quantity> EventProbeList(
+            final MetricDescription metricSetDescription,
+            final EventProbe<?> eventProbe,
             final List<TriggeredProbe> subsumedProbes) {
-        super(eventProbe);
+        super(metricSetDescription, eventProbe);
         this.subsumedProbes = subsumedProbes;
     }
 
@@ -57,7 +61,7 @@ public class EventProbeList extends EventProbe<EventProbe<?>> implements IProbeL
      * Receives a probe measurement from the event probe (event source). Calculates its measurement
      * by additionally triggering subsumed probes. Finally, informs all its observers about the new
      * measurement.
-     * 
+     *
      * @param measurement
      *            The probe measurement.
      */

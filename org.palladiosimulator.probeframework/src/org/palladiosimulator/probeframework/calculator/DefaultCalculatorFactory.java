@@ -1,6 +1,5 @@
 package org.palladiosimulator.probeframework.calculator;
 
-import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.EXECUTION_RESULT_METRIC_TUPLE;
 import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.NUMBER_OF_RESOURCE_CONTAINERS_OVER_TIME;
 import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.OVERALL_STATE_OF_ACTIVE_RESOURCE_METRIC;
 import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.OVERALL_STATE_OF_PASSIVE_RESOURCE_METRIC;
@@ -23,9 +22,9 @@ import org.palladiosimulator.probeframework.probes.Probe;
  * Default implementation of ICalculatorFactory. Directly creates calculators, with minimal overhead
  * for other concerns. Therefore, the factory methods only check for valid probe inputs (checks for
  * non-null and correct number of probes).
- * 
+ *
  * @see ICalculatorFactory
- * 
+ *
  * @author Steffen Becker, Sebastian Lehrig, Matthias Becker
  */
 public class DefaultCalculatorFactory implements ICalculatorFactory {
@@ -40,9 +39,9 @@ public class DefaultCalculatorFactory implements ICalculatorFactory {
     /**
      * Ensures that the given list of probes contains exactly two probes. Otherwise, it throws an
      * IllegalArgumentException.
-     * 
+     *
      * TODO Unite with other method (ensureValidProbe)
-     * 
+     *
      * @param probes
      *            The list of probes
      */
@@ -55,7 +54,7 @@ public class DefaultCalculatorFactory implements ICalculatorFactory {
     /**
      * Ensures that the given probe is a valid probe, i.e., not null. Otherwise, it throws an
      * IllegalArgumentException.
-     * 
+     *
      * @param probe
      *            The probe
      */
@@ -124,7 +123,7 @@ public class DefaultCalculatorFactory implements ICalculatorFactory {
      * {@inheritDoc}
      */
     @Override
-    public Calculator buildStateOfPassiveResourceCalculator(MeasuringPoint measuringPoint, Probe probe) {
+    public Calculator buildStateOfPassiveResourceCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
         ensureValidProbe(probe);
         return new IdentityCalculator(STATE_OF_PASSIVE_RESOURCE_METRIC_TUPLE, measuringPoint, probe);
     }
@@ -133,7 +132,7 @@ public class DefaultCalculatorFactory implements ICalculatorFactory {
      * {@inheritDoc}
      */
     @Override
-    public Calculator buildOverallStateOfPassiveResourceCalculator(MeasuringPoint measuringPoint, Probe probe) {
+    public Calculator buildOverallStateOfPassiveResourceCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
         ensureValidProbe(probe);
         return new IdentityCalculator(OVERALL_STATE_OF_PASSIVE_RESOURCE_METRIC, measuringPoint, probe);
     }
@@ -153,7 +152,7 @@ public class DefaultCalculatorFactory implements ICalculatorFactory {
     @Override
     public Calculator buildExecutionResultCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
         ensureValidProbe(probe);
-        return new IdentityCalculator(EXECUTION_RESULT_METRIC_TUPLE, measuringPoint, probe);
+        return new IdentityCalculator(measuringPoint, probe);
     }
 
     /**
@@ -166,7 +165,7 @@ public class DefaultCalculatorFactory implements ICalculatorFactory {
     }
 
     @Override
-    public Calculator buildReconfigurationTimeCalculator(MeasuringPoint measuringPoint, List<Probe> probes) {
+    public Calculator buildReconfigurationTimeCalculator(final MeasuringPoint measuringPoint, final List<Probe> probes) {
         ensureTwoProbes(probes);
         return new ReconfigurationTimeCalculator(measuringPoint, probes);
     }
