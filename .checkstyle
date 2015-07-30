@@ -4,7 +4,7 @@
   <local-check-config name="Palladio Coding Conventions" location="org.palladiosimulator.codeconventions/palladio-checkstyle-rules.xml" type="project" description="">
     <additional-data name="protect-config-file" value="false"/>
   </local-check-config>
-  <fileset name="all" enabled="true" check-config-name="Palladio Code Conventions" local="false">
+  <fileset name="all" enabled="true" check-config-name="Palladio" local="false">
     <file-match-pattern match-pattern="." include-pattern="true"/>
   </fileset>
 </fileset-config>
