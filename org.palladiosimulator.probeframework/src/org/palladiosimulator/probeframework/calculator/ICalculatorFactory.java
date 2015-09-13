@@ -161,4 +161,15 @@ public interface ICalculatorFactory {
      */
     public abstract Calculator buildReconfigurationTimeCalculator(final MeasuringPoint measuringPoint,
             final Probe probe);
+    
+    /**
+     * Creates a cost over time calculator object based on the given measuring point and the given probe.
+     * 
+     * @param measuringPoint
+     *            The {@link MeasuringPoint} where this calculator is used.
+     * @param probe
+     *           The {@link Probe} that provides the measurements. Should be an EventProbeList
+     * @return A new cost over time calculator object.
+     */
+    public abstract Calculator buildCostOverTimeCalculator(MeasuringPoint measuringPoint, final Probe probe);
 }

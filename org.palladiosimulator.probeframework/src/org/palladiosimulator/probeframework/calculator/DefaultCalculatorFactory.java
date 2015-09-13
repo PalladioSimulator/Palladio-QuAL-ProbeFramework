@@ -16,6 +16,7 @@ import org.palladiosimulator.probeframework.calculator.internal.HoldingTimeCalcu
 import org.palladiosimulator.probeframework.calculator.internal.IdentityCalculator;
 import org.palladiosimulator.probeframework.calculator.internal.ResponseTimeCalculator;
 import org.palladiosimulator.probeframework.calculator.internal.WaitingTimeCalculator;
+import org.palladiosimulator.probeframework.calculator.internal.CostOverTimeCalculator;
 import org.palladiosimulator.probeframework.probes.Probe;
 
 /**
@@ -163,10 +164,19 @@ public class DefaultCalculatorFactory implements ICalculatorFactory {
         ensureValidProbe(probe);
         return new IdentityCalculator(NUMBER_OF_RESOURCE_CONTAINERS_OVER_TIME, measuringPoint, probe);
     }
-
-
+    
     public Calculator buildReconfigurationTimeCalculator(MeasuringPoint measuringPoint, Probe probe) {
         ensureValidProbe(probe);
         return new IdentityCalculator(RECONFIGURATION_TIME_METRIC_TUPLE, measuringPoint, probe);
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+	@Override
+	public Calculator buildCostOverTimeCalculator(MeasuringPoint measuringPoint, Probe probe) {
+		return new CostOverTimeCalculator(measuringPoint, probe);
+	}
+
+
 }

@@ -211,9 +211,20 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
     public Calculator buildNumberOfResourceContainersCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
         return register(decoratedFactory.buildNumberOfResourceContainersCalculator(measuringPoint, probe));
     }
-
+    
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Calculator buildReconfigurationTimeCalculator(MeasuringPoint measuringPoint, Probe probe) {
         return register(decoratedFactory.buildReconfigurationTimeCalculator(measuringPoint, probe));
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+	@Override
+	public Calculator buildCostOverTimeCalculator(MeasuringPoint measuringPoint, Probe probe) {
+		return register(decoratedFactory.buildCostOverTimeCalculator(measuringPoint, probe));
+	}
 }
