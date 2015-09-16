@@ -8,7 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.measure.Measure;
+import javax.measure.quantity.Dimensionless;
 import javax.measure.quantity.Duration;
+import javax.measure.unit.Unit;
 
 import org.jscience.economics.money.Money;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
@@ -46,13 +48,11 @@ public class CostOverTimeCalculator extends UnaryCalculator {
                 .getMeasureForMetric(MetricDescriptionConstants.COST_PER_RESOURCE_CONTAINER);
 
         // TODO Include calculation of cost of all resource containers
-        // final Measure<Double, Dimensionless> resourceContainers =
-        // probeMeasurements.get(0).getMeasureProvider()
-        // .getMeasureForMetric(NUMBER_OF_RESOURCE_CONTAINERS);
-        // final double costOfContainers = resourceContainers.doubleValue(ONE) *
-        // costPerContainer.doubleValue(EUR);
+        final Measure<Long, Dimensionless> resourceContainers = probeMeasurements.get(0).getMeasureProvider()
+                .getMeasureForMetric(MetricDescriptionConstants.NUMBER_OF_RESOURCE_CONTAINERS);
+        final double costOfContainers = resourceContainers.longValue(Unit.ONE) * costPerContainer.doubleValue(EUR);
 
-        final double costOfContainers = costPerContainer.doubleValue(EUR);
+        // final double costOfContainers = costPerContainer.doubleValue(EUR);
         final Measure<Double, Money> costOfContainerMeasure = Measure.valueOf(costOfContainers, EUR);
 
         final MeasuringValue pointInTimeMeasurement = new BasicMeasurement<Double, Duration>(pointInTime,
