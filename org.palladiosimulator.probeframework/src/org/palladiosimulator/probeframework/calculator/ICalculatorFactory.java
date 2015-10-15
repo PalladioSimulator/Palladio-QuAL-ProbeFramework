@@ -172,4 +172,13 @@ public interface ICalculatorFactory {
      * @return A new cost over time calculator object.
      */
     public abstract Calculator buildCostOverTimeCalculator(MeasuringPoint measuringPoint, final Probe probe);
+
+    /**
+     * Creates an optimisation algorithm execution time calculator based on the given measuring point 
+     * and given probe.
+     * @param measuringPoint
+     * @param probe
+     * @return
+     */
+    public abstract Calculator buildOptimisationTimeCalculator(MeasuringPoint measuringPoint, Probe probe);
 }

@@ -7,6 +7,7 @@ import static org.palladiosimulator.metricspec.constants.MetricDescriptionConsta
 import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.RESOURCE_DEMAND_METRIC_TUPLE;
 import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC_TUPLE;
 import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.STATE_OF_PASSIVE_RESOURCE_METRIC_TUPLE;
+import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.OPTIMISATION_TIME_METRIC_TUPLE;
 
 import java.util.List;
 
@@ -178,5 +179,12 @@ public class DefaultCalculatorFactory implements ICalculatorFactory {
 		return new CostOverTimeCalculator(measuringPoint, probe);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	public Calculator buildOptimisationTimeCalculator(MeasuringPoint measuringPoint, Probe probe) {
+        ensureValidProbe(probe);
+        return new IdentityCalculator(OPTIMISATION_TIME_METRIC_TUPLE, measuringPoint, probe);
+    }
 
 }
