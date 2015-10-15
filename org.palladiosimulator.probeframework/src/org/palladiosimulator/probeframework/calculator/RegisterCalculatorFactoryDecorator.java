@@ -227,4 +227,9 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
 	public Calculator buildCostOverTimeCalculator(MeasuringPoint measuringPoint, Probe probe) {
 		return register(decoratedFactory.buildCostOverTimeCalculator(measuringPoint, probe));
 	}
+
+    @Override
+    public Calculator buildOptimisationTimeCalculator(MeasuringPoint measuringPoint, Probe probe) {
+        return register(decoratedFactory.buildOptimisationTimeCalculator(measuringPoint, probe));
+    }
 }

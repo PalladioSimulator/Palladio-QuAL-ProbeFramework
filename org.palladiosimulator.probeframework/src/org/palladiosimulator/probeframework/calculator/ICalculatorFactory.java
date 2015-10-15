@@ -180,5 +180,5 @@ public interface ICalculatorFactory {
      * @param probe
      * @return
      */
-    public abstract Calculator buildOptimisationTimeCalculator(MeasuringPoint measuringPoint, Probe probe);
+    public abstract Calculator buildOptimisationTimeCalculator(final MeasuringPoint measuringPoint, final Probe probe);
 }

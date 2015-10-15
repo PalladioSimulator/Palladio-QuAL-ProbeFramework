@@ -182,7 +182,8 @@ public class DefaultCalculatorFactory implements ICalculatorFactory {
 	/**
 	 * {@inheritDoc}
 	 */
-	public Calculator buildOptimisationTimeCalculator(MeasuringPoint measuringPoint, Probe probe) {
+	@Override
+	public Calculator buildOptimisationTimeCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
         ensureValidProbe(probe);
         return new IdentityCalculator(OPTIMISATION_TIME_METRIC_TUPLE, measuringPoint, probe);
     }
