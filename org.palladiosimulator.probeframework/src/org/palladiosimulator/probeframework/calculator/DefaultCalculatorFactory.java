@@ -1,5 +1,6 @@
 package org.palladiosimulator.probeframework.calculator;
 
+import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.COST_OVER_TIME;
 import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.NUMBER_OF_RESOURCE_CONTAINERS_OVER_TIME;
 import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.OVERALL_STATE_OF_ACTIVE_RESOURCE_METRIC;
 import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.OVERALL_STATE_OF_PASSIVE_RESOURCE_METRIC;
@@ -17,7 +18,6 @@ import org.palladiosimulator.probeframework.calculator.internal.HoldingTimeCalcu
 import org.palladiosimulator.probeframework.calculator.internal.IdentityCalculator;
 import org.palladiosimulator.probeframework.calculator.internal.ResponseTimeCalculator;
 import org.palladiosimulator.probeframework.calculator.internal.WaitingTimeCalculator;
-import org.palladiosimulator.probeframework.calculator.internal.CostOverTimeCalculator;
 import org.palladiosimulator.probeframework.probes.Probe;
 
 /**
@@ -116,7 +116,8 @@ public class DefaultCalculatorFactory implements ICalculatorFactory {
      * {@inheritDoc}
      */
     @Override
-    public Calculator buildOverallStateOfActiveResourceCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
+    public Calculator buildOverallStateOfActiveResourceCalculator(final MeasuringPoint measuringPoint,
+            final Probe probe) {
         ensureValidProbe(probe);
         return new IdentityCalculator(OVERALL_STATE_OF_ACTIVE_RESOURCE_METRIC, measuringPoint, probe);
     }
@@ -134,7 +135,8 @@ public class DefaultCalculatorFactory implements ICalculatorFactory {
      * {@inheritDoc}
      */
     @Override
-    public Calculator buildOverallStateOfPassiveResourceCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
+    public Calculator buildOverallStateOfPassiveResourceCalculator(final MeasuringPoint measuringPoint,
+            final Probe probe) {
         ensureValidProbe(probe);
         return new IdentityCalculator(OVERALL_STATE_OF_PASSIVE_RESOURCE_METRIC, measuringPoint, probe);
     }
@@ -161,23 +163,29 @@ public class DefaultCalculatorFactory implements ICalculatorFactory {
      * {@inheritDoc}
      */
     @Override
-    public Calculator buildNumberOfResourceContainersCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
+    public Calculator buildNumberOfResourceContainersCalculator(final MeasuringPoint measuringPoint,
+            final Probe probe) {
         ensureValidProbe(probe);
         return new IdentityCalculator(NUMBER_OF_RESOURCE_CONTAINERS_OVER_TIME, measuringPoint, probe);
     }
-    
-    public Calculator buildReconfigurationTimeCalculator(MeasuringPoint measuringPoint, Probe probe) {
-        ensureValidProbe(probe);
-        return new IdentityCalculator(RECONFIGURATION_TIME_METRIC_TUPLE, measuringPoint, probe);
-    }
-    
+
     /**
      * {@inheritDoc}
      */
-	@Override
-	public Calculator buildCostOverTimeCalculator(MeasuringPoint measuringPoint, Probe probe) {
-		return new CostOverTimeCalculator(measuringPoint, probe);
-	}
+    @Override
+    public Calculator buildReconfigurationTimeCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
+        ensureValidProbe(probe);
+        return new IdentityCalculator(RECONFIGURATION_TIME_METRIC_TUPLE, measuringPoint, probe);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Calculator buildCostOverTimeCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
+        ensureValidProbe(probe);
+        return new IdentityCalculator(COST_OVER_TIME, measuringPoint, probe);
+    }
 
 	/**
 	 * {@inheritDoc}
@@ -187,5 +195,4 @@ public class DefaultCalculatorFactory implements ICalculatorFactory {
         ensureValidProbe(probe);
         return new IdentityCalculator(OPTIMISATION_TIME_METRIC_TUPLE, measuringPoint, probe);
     }
-
 }
