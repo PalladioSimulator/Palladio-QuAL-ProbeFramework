@@ -1,14 +1,15 @@
 package org.palladiosimulator.probeframework.calculator;
 
+import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.AGGREGATED_COST_OVER_TIME;
 import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.COST_OVER_TIME;
 import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.NUMBER_OF_RESOURCE_CONTAINERS_OVER_TIME;
+import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.OPTIMISATION_TIME_METRIC_TUPLE;
 import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.OVERALL_STATE_OF_ACTIVE_RESOURCE_METRIC;
 import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.OVERALL_STATE_OF_PASSIVE_RESOURCE_METRIC;
 import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.RECONFIGURATION_TIME_METRIC_TUPLE;
 import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.RESOURCE_DEMAND_METRIC_TUPLE;
 import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC_TUPLE;
 import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.STATE_OF_PASSIVE_RESOURCE_METRIC_TUPLE;
-import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.OPTIMISATION_TIME_METRIC_TUPLE;
 
 import java.util.List;
 
@@ -187,11 +188,20 @@ public class DefaultCalculatorFactory implements ICalculatorFactory {
         return new IdentityCalculator(COST_OVER_TIME, measuringPoint, probe);
     }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Calculator buildOptimisationTimeCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Calculator buildAggregatedCostOverTimeCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
+        ensureValidProbe(probe);
+        return new IdentityCalculator(AGGREGATED_COST_OVER_TIME, measuringPoint, probe);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Calculator buildOptimisationTimeCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
         ensureValidProbe(probe);
         return new IdentityCalculator(OPTIMISATION_TIME_METRIC_TUPLE, measuringPoint, probe);
     }

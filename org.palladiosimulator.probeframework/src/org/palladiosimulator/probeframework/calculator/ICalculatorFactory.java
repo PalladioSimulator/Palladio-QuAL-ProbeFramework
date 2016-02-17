@@ -10,13 +10,13 @@ import org.palladiosimulator.probeframework.probes.Probe;
  * allowed to be instantiated from within the internal package
  * <code>org.palladiosimulator.probeframework.calculator.internal</code> (access without using the
  * factory class is impossible in OSGI because classes of internal packages are not exported).
- * 
+ *
  * @author Steffen Becker, Sebastian Lehrig, Matthias Becker
  */
 public interface ICalculatorFactory {
     /**
      * Creates a response time calculator object based on the given name and the given probes.
-     * 
+     *
      * @param measuringPoint
      *            The measuring point where this calculator is used, e.g., "Operation A".
      * @param probes
@@ -24,12 +24,13 @@ public interface ICalculatorFactory {
      *            operation call.
      * @return A new response time calculator object.
      */
-    public abstract Calculator buildResponseTimeCalculator(final MeasuringPoint measuringPoint, final List<Probe> probes);
+    public abstract Calculator buildResponseTimeCalculator(final MeasuringPoint measuringPoint,
+            final List<Probe> probes);
 
     /**
      * Creates a demand-based waiting time calculator object based on the given name and the given
      * probes.
-     * 
+     *
      * @param measuringPoint
      *            The measuring point where this calculator is used, e.g., "Passive Resource A".
      * @param probes
@@ -42,7 +43,7 @@ public interface ICalculatorFactory {
 
     /**
      * Creates a waiting time calculator object based on the given name and the given probes.
-     * 
+     *
      * @param measuringPoint
      *            The measuring point where this calculator is used, e.g., "Passive Resource A".
      * @param probes
@@ -50,11 +51,12 @@ public interface ICalculatorFactory {
      *            waiting time.
      * @return A new waiting time calculator object.
      */
-    public abstract Calculator buildWaitingTimeCalculator(final MeasuringPoint measuringPoint, final List<Probe> probes);
+    public abstract Calculator buildWaitingTimeCalculator(final MeasuringPoint measuringPoint,
+            final List<Probe> probes);
 
     /**
      * Creates a holding time calculator object based on the given name and the given probes.
-     * 
+     *
      * @param measuringPoint
      *            The measuring point where this calculator is used, e.g., "Passive Resource A".
      * @param probes
@@ -62,12 +64,13 @@ public interface ICalculatorFactory {
      *            time.
      * @return A new holding time time calculator object.
      */
-    public abstract Calculator buildHoldingTimeCalculator(final MeasuringPoint measuringPoint, final List<Probe> probes);
+    public abstract Calculator buildHoldingTimeCalculator(final MeasuringPoint measuringPoint,
+            final List<Probe> probes);
 
     /**
      * Creates a state calculator object for an active resource based on the given name and the
      * given probe.
-     * 
+     *
      * @param measuringPoint
      *            The measuring point where this calculator is used, e.g., "CPU 1".
      * @param probe
@@ -80,7 +83,7 @@ public interface ICalculatorFactory {
     /**
      * Creates an overall utilization calculator object for an active resource based on the given
      * name and the given probe.
-     * 
+     *
      * @param measuringPoint
      *            The measuring point where this calculator is used, e.g., "CPU 1".
      * @param probe
@@ -93,7 +96,7 @@ public interface ICalculatorFactory {
     /**
      * Creates a state calculator object for a passive resource based on the given name and the
      * given probe.
-     * 
+     *
      * @param measuringPoint
      *            The measuring point where this calculator is used, e.g., "Connection Pool 1".
      * @param probe
@@ -106,7 +109,7 @@ public interface ICalculatorFactory {
     /**
      * Creates an overall utilization calculator object for a passive resource based on the given
      * name and the given probe.
-     * 
+     *
      * @param measuringPoint
      *            The measuring point where this calculator is used, e.g., "Connection Pool 1".
      * @param probe
@@ -118,7 +121,7 @@ public interface ICalculatorFactory {
 
     /**
      * Creates a demand calculator object based on the given name and the given probe.
-     * 
+     *
      * @param measuringPoint
      *            The measuring point where this calculator is used, e.g., "CPU 1".
      * @param probe
@@ -129,7 +132,7 @@ public interface ICalculatorFactory {
 
     /**
      * Creates an execution result calculator object based on the given name and the given probe.
-     * 
+     *
      * @param measuringPoint
      *            The measuring point where this calculator is used, e.g., "Operation A".
      * @param probe
@@ -140,7 +143,7 @@ public interface ICalculatorFactory {
 
     /**
      * Creates a number of resource containers calculator object.
-     * 
+     *
      * @param measuringPoint
      *            The measuring point where this calculator is used, e.g., "Resource Environment A".
      * @param probe
@@ -151,31 +154,36 @@ public interface ICalculatorFactory {
             final Probe probe);
 
     /**
-     * Creates a reconfiguration time calculator object based on the given measuring point and the given probe.
-     * 
+     * Creates a reconfiguration time calculator object based on the given measuring point and the
+     * given probe.
+     *
      * @param measuringPoint
      *            The {@link MeasuringPoint} where this calculator is used.
      * @param probe
-     *           The {@link Probe} that provides the measurements.
+     *            The {@link Probe} that provides the measurements.
      * @return A new reconfiguration time calculator object.
      */
     public abstract Calculator buildReconfigurationTimeCalculator(final MeasuringPoint measuringPoint,
             final Probe probe);
-    
+
     /**
-     * Creates a cost over time calculator object based on the given measuring point and the given probe.
-     * 
+     * Creates a cost over time calculator object based on the given measuring point and the given
+     * probe.
+     *
      * @param measuringPoint
      *            The {@link MeasuringPoint} where this calculator is used.
      * @param probe
-     *           The {@link Probe} that provides the measurements. Should be an EventProbeList
+     *            The {@link Probe} that provides the measurements. Should be an EventProbeList
      * @return A new cost over time calculator object.
      */
     public abstract Calculator buildCostOverTimeCalculator(MeasuringPoint measuringPoint, final Probe probe);
 
+    public abstract Calculator buildAggregatedCostOverTimeCalculator(MeasuringPoint measuringPoint, final Probe probe);
+
     /**
-     * Creates an optimisation algorithm execution time calculator based on the given measuring point 
-     * and given probe.
+     * Creates an optimisation algorithm execution time calculator based on the given measuring
+     * point and given probe.
+     * 
      * @param measuringPoint
      * @param probe
      * @return
