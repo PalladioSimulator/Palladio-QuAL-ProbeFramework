@@ -4,7 +4,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.metricspec.MetricDescription;
@@ -61,7 +63,14 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
 
     /**
      * Convenience method to get the calculator that is associated with the given measuring point
-     * and metric.
+     * and metric.<br>
+     * <br>
+     * <b>Important note</b>: If a base metric such as 'Response Time' is passed here, and an
+     * 'Response Time Tuple' calculator is available at the given measuring point it is <b>NOT</b>
+     * found by the current implementation of this method, since these are different metric (base
+     * metric vs. metric set)!. <br>
+     * In such a case, better use {@link #getCalculatorsForMeasuringPoint(MeasuringPoint)} and
+     * filter the resulting collection manually for the desired base metric.
      *
      * @param mp
      *            A {@link MeasuringPoint} instance which is associated with a calculator.
@@ -69,6 +78,7 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
      *            A {@link MetricDescription} denoting the metric the calculator is accepting.
      * @return A {@link Calculator} instance associated with the given measuring point and metric,
      *         or {@code null} if no matching {@link Calculator} is found.
+     * @see #getCalculatorsForMeasuringPoint(MeasuringPoint)
      */
     public Calculator getCalculatorByMeasuringPointAndMetricDescription(final MeasuringPoint mp,
             final MetricDescription metric) {
@@ -82,6 +92,25 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
             }
         }
         return result;
+    }
+
+    /**
+     * Convenience method to get all calculators associated with the given measuring point.
+     *
+     * @param measuringPoint
+     *            A {@link MeasuringPoint} instance which is associated with a calculator.
+     * @return An UNMODIFIABLE @{@link Collection} of {@link Calculator}s which are associated with
+     *         the given measuring point, might be empty but never {@code null}.
+     * @throws NullPointerException
+     *             In case {@code measuringPoint == null}.
+     * @see #getCalculatorByMeasuringPointAndMetricDescription(MeasuringPoint, MetricDescription)
+     */
+    public Collection<Calculator> getCalculatorsForMeasuringPoint(MeasuringPoint measuringPoint) {
+        String measuringPointString = Objects.requireNonNull(measuringPoint, "Measuring point must not be null")
+                .getStringRepresentation();
+        return this.calculatorRegister.stream()
+                .filter(calc -> calc.getMeasuringPoint().getStringRepresentation().equals(measuringPointString))
+                .collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
     }
 
     /**
