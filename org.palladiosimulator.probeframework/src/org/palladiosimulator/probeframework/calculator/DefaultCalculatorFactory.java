@@ -14,6 +14,7 @@ import static org.palladiosimulator.metricspec.constants.MetricDescriptionConsta
 import java.util.List;
 
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
+import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.probeframework.calculator.internal.DemandBasedWaitingTimeCalculator;
 import org.palladiosimulator.probeframework.calculator.internal.HoldingTimeCalculator;
 import org.palladiosimulator.probeframework.calculator.internal.IdentityCalculator;
@@ -120,7 +121,7 @@ public class DefaultCalculatorFactory implements ICalculatorFactory {
     public Calculator buildOverallStateOfActiveResourceCalculator(final MeasuringPoint measuringPoint,
             final Probe probe) {
         ensureValidProbe(probe);
-        return new IdentityCalculator(OVERALL_STATE_OF_ACTIVE_RESOURCE_METRIC, measuringPoint, probe);
+        return new IdentityCalculator(MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE_TUPLE, measuringPoint, probe);
     }
 
     /**
