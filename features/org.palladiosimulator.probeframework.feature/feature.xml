@@ -24,6 +24,7 @@ ProbeFramework framework.
       <import plugin="org.palladiosimulator.edp2" version="2.0.0" match="greaterOrEqual"/>
       <import plugin="org.palladiosimulator.edp2.util" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.palladiosimulator.probeframework" version="2.0.1" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.branding"/>
    </requires>
 
    <plugin
@@ -35,13 +36,6 @@ ProbeFramework framework.
 
    <plugin
          id="org.palladiosimulator.probeframework.probes.example"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.palladiosimulator.branding"
          download-size="0"
          install-size="0"
          version="0.0.0"
