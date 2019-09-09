@@ -1,4 +1,3 @@
-palladioBuild {
-	webserverDir = 'probeframework'
-	updateSiteLocation = 'releng/org.palladiosimulator.probeframework.updatesite/target/repository'
+PalladioPipeline {
+    deployUpdatesite 'releng/org.palladiosimulator.probeframework.updatesite/target/repository'
 }
