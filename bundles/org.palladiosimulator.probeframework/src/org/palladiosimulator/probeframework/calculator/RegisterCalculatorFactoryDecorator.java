@@ -8,6 +8,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.palladiosimulator.commons.designpatterns.AbstractObservable;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.probeframework.probes.Probe;
@@ -18,13 +19,14 @@ import org.palladiosimulator.probeframework.probes.Probe;
  * a new calculator is instantiated, put into the register, and returned.
  *
  * Furthermore, this class provides convenience methods for cleaning up calculators (detach their
- * probes and cleaning the register; c.f., <code>finish</code> method).
+ * probes and cleaning the register; c.f., <code>finish</code> method). Clients can register with 
+ * this class to be notified upon registrations of new calculators(@see CalculatorRegistryListener).
  *
  * @see ICalculatorFactory
  *
  * @author Steffen Becker, Sebastian Lehrig, Matthias Becker, Florian Rosenthal
  */
-public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
+public class RegisterCalculatorFactoryDecorator extends AbstractObservable<CalculatorRegistryListener> implements ICalculatorFactory {
 
     /** Factory to be decorated by a register. */
     private final ICalculatorFactory decoratedFactory;
@@ -93,7 +95,7 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
         }
         return result;
     }
-
+    
     /**
      * Convenience method to get all calculators associated with the given measuring point.
      *
@@ -150,6 +152,7 @@ public class RegisterCalculatorFactoryDecorator implements ICalculatorFactory {
                     + found.getMetricDesciption().getName() + "]\"");
         }
         this.calculatorRegister.add(calculator);
+        this.getEventDispatcher().notifyCalculatorRegistration(calculator);
         return calculator;
     }
 
