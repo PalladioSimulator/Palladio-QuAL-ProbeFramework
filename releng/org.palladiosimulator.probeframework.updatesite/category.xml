@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-	<feature url="features/org.palladiosimulator.probeframework.feature_2.0.2.qualifier.jar" id="org.palladiosimulator.probeframework.feature" version="2.0.2.qualifier">
+	<feature url="features/org.palladiosimulator.probeframework.feature_4.2.0.qualifier.jar" id="org.palladiosimulator.probeframework.feature" version="4.2.0.qualifier">
 	   <category name="org.palladiosimulator.qual.category"/>
 	</feature>
-	<feature url="features/org.palladiosimulator.probeframework.feature.source_2.0.2.qualifier.jar" id="org.palladiosimulator.probeframework.feature.source" version="2.0.2.qualifier">
+	<feature url="features/org.palladiosimulator.probeframework.feature.source_4.2.0.qualifier.jar" id="org.palladiosimulator.probeframework.feature.source" version="4.2.0.qualifier">
 	   <category name="org.palladiosimulator.qual.source.category"/>
 	</feature>
 	<category-def name="org.palladiosimulator.qual.category" label="Quality Analysis Lab">

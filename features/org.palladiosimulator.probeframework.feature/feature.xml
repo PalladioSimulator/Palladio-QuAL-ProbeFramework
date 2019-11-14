@@ -2,7 +2,7 @@
 <feature
       id="org.palladiosimulator.probeframework.feature"
       label="ProbeFramework Feature"
-      version="2.0.2.qualifier"
+      version="4.2.0.qualifier"
       plugin="org.palladiosimulator.branding"
       license-feature="org.palladiosimulator.license"
       license-feature-version="1.0.0">
