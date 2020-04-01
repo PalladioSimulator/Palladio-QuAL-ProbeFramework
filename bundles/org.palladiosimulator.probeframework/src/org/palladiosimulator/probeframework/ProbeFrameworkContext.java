@@ -1,5 +1,8 @@
 package org.palladiosimulator.probeframework;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.palladiosimulator.probeframework.calculator.ICalculatorFactory;
 import org.palladiosimulator.probeframework.calculator.ICalculatorFactoryLegacyAdapter;
 import org.palladiosimulator.probeframework.calculator.IGenericCalculatorFactory;
@@ -18,11 +21,11 @@ import org.palladiosimulator.probeframework.calculator.RegisterCalculatorFactory
 public class ProbeFrameworkContext {
 
     /** The used calculator factory */
-    private final RegisterCalculatorFactoryDecorator calculatorFactory;
+    private final ICalculatorFactoryLegacyAdapter calculatorFactory;
     
-    /** The legacy adapter */
-    private final ICalculatorFactory legacyFactory;
-
+    /** The actions to perform, once the execution of the enclosing process finishes */
+    private List<Runnable> cleanupTasks = new LinkedList<>();
+    
     /**
      * Default constructor. Expects a calculator factory to be stored as Probe Framework state
      * information. Internally, this factory is decorated by a register to manage the life-cycle of
@@ -36,8 +39,9 @@ public class ProbeFrameworkContext {
         if (calculatorFactory == null) {
             throw new IllegalArgumentException("A valid calculator factory is required.");
         }
-        this.calculatorFactory = new RegisterCalculatorFactoryDecorator(calculatorFactory);
-        this.legacyFactory = ICalculatorFactoryLegacyAdapter.createDelegatingAdapter(calculatorFactory);
+        var decorator = new RegisterCalculatorFactoryDecorator(calculatorFactory); 
+        this.calculatorFactory = ICalculatorFactoryLegacyAdapter.createDelegatingAdapter(decorator);
+        cleanupTasks.add(decorator::finish);
     }
 
     /**
@@ -49,7 +53,7 @@ public class ProbeFrameworkContext {
      */
     @Deprecated
     public ICalculatorFactory getCalculatorFactory() {
-        return legacyFactory;
+        return calculatorFactory;
     }
 
 	/**
@@ -66,7 +70,7 @@ public class ProbeFrameworkContext {
      * Call-back method informing about the end of calculator usage.
      */
     public void finish() {
-        this.calculatorFactory.finish();
+        this.cleanupTasks.forEach(Runnable::run);
     }
 
 }

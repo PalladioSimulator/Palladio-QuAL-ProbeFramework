@@ -4,7 +4,7 @@ import java.util.Optional;
 
 /**
  * The ProbeConfiguration interface captures a set of probes required by a
- * calculator. It replaces the List<Probe> which was passed to a calculator
+ * calculator. It replaces the <code>List<Probe></code> which was passed to a calculator
  * factory method. Probes contained in a configuration can be referred to by a
  * semantic identifier.
  * 
@@ -18,11 +18,11 @@ import java.util.Optional;
  */
 @FunctionalInterface
 public interface ProbeConfiguration {
-	/**
-	 * Gets the probe identified by <code>probeIdentifier</code>
-	 * 
-	 * @param probeIdentifier the identifier of the probe.
-	 * @return
-	 */
-	Optional<Probe> getProbe(String probeIdentifier);
+    /**
+     * Gets the probe identified by <code>probeIdentifier</code>
+     * 
+     * @param probeIdentifier the identifier of the probe.
+     * @return
+     */
+    Optional<Probe> getProbe(String probeIdentifier);
 }

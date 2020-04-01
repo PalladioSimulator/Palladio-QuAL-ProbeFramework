@@ -160,7 +160,7 @@ public class RegisterCalculatorFactoryDecorator extends AbstractObservable<Calcu
      */
     @Override
     public Calculator buildCalculator(MetricDescription metric, MeasuringPoint measuringPoint,
-    		ProbeConfiguration probeConfiguration) {
-    	return register(this.decoratedFactory.buildCalculator(metric, measuringPoint, probeConfiguration));
+            ProbeConfiguration probeConfiguration) {
+        return register(this.decoratedFactory.buildCalculator(metric, measuringPoint, probeConfiguration));
     }
 }
