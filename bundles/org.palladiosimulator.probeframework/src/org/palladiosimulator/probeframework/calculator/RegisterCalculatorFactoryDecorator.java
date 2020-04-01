@@ -3,7 +3,6 @@ package org.palladiosimulator.probeframework.calculator;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -11,7 +10,7 @@ import java.util.stream.Collectors;
 import org.palladiosimulator.commons.designpatterns.AbstractObservable;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.metricspec.MetricDescription;
-import org.palladiosimulator.probeframework.probes.Probe;
+import org.palladiosimulator.probeframework.probes.ProbeConfiguration;
 
 /**
  * Decorates an existing ICalculatorFactory by a register for its calculators. In case a calculator
@@ -22,14 +21,14 @@ import org.palladiosimulator.probeframework.probes.Probe;
  * probes and cleaning the register; c.f., <code>finish</code> method). Clients can register with 
  * this class to be notified upon registrations of new calculators(@see CalculatorRegistryListener).
  *
- * @see ICalculatorFactory
+ * @see IGenericCalculatorFactory
  *
  * @author Steffen Becker, Sebastian Lehrig, Matthias Becker, Florian Rosenthal
  */
-public class RegisterCalculatorFactoryDecorator extends AbstractObservable<CalculatorRegistryListener> implements ICalculatorFactory {
+public class RegisterCalculatorFactoryDecorator extends AbstractObservable<CalculatorRegistryListener> implements IGenericCalculatorFactory {
 
     /** Factory to be decorated by a register. */
-    private final ICalculatorFactory decoratedFactory;
+    private final IGenericCalculatorFactory decoratedFactory;
 
     /** Register for calculators. */
     private final Set<Calculator> calculatorRegister = new HashSet<Calculator>();
@@ -40,7 +39,7 @@ public class RegisterCalculatorFactoryDecorator extends AbstractObservable<Calcu
      * @param decoratedFactory
      *            The calculator factory to be decorated.
      */
-    public RegisterCalculatorFactoryDecorator(final ICalculatorFactory decoratedFactory) {
+    public RegisterCalculatorFactoryDecorator(final IGenericCalculatorFactory decoratedFactory) {
         super();
         this.decoratedFactory = decoratedFactory;
     }
@@ -50,7 +49,7 @@ public class RegisterCalculatorFactoryDecorator extends AbstractObservable<Calcu
      *
      * @return The {@link ICalculatorFactory} that is decorated by this instance.
      */
-    public ICalculatorFactory getDecoratedFactory() {
+    public IGenericCalculatorFactory getDecoratedFactory() {
         return this.decoratedFactory;
     }
 
@@ -160,117 +159,8 @@ public class RegisterCalculatorFactoryDecorator extends AbstractObservable<Calcu
      * {@inheritDoc}
      */
     @Override
-    public Calculator buildResponseTimeCalculator(final MeasuringPoint measuringPoint, final List<Probe> probes) {
-        return register(this.decoratedFactory.buildResponseTimeCalculator(measuringPoint, probes));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Calculator buildDemandBasedWaitingTimeCalculator(final MeasuringPoint measuringPoint,
-            final List<Probe> probes) {
-        return register(this.decoratedFactory.buildDemandBasedWaitingTimeCalculator(measuringPoint, probes));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Calculator buildWaitingTimeCalculator(final MeasuringPoint measuringPoint, final List<Probe> probes) {
-        return register(this.decoratedFactory.buildWaitingTimeCalculator(measuringPoint, probes));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Calculator buildHoldingTimeCalculator(final MeasuringPoint measuringPoint, final List<Probe> probes) {
-        return register(this.decoratedFactory.buildHoldingTimeCalculator(measuringPoint, probes));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Calculator buildStateOfActiveResourceCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
-        return register(this.decoratedFactory.buildStateOfActiveResourceCalculator(measuringPoint, probe));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Calculator buildOverallStateOfActiveResourceCalculator(final MeasuringPoint measuringPoint,
-            final Probe probe) {
-        return register(this.decoratedFactory.buildOverallStateOfActiveResourceCalculator(measuringPoint, probe));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Calculator buildStateOfPassiveResourceCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
-        return register(this.decoratedFactory.buildStateOfPassiveResourceCalculator(measuringPoint, probe));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Calculator buildOverallStateOfPassiveResourceCalculator(final MeasuringPoint measuringPoint,
-            final Probe probe) {
-        return register(this.decoratedFactory.buildOverallStateOfPassiveResourceCalculator(measuringPoint, probe));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Calculator buildResourceDemandCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
-        return register(this.decoratedFactory.buildResourceDemandCalculator(measuringPoint, probe));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Calculator buildExecutionResultCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
-        return register(this.decoratedFactory.buildExecutionResultCalculator(measuringPoint, probe));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Calculator buildNumberOfResourceContainersCalculator(final MeasuringPoint measuringPoint,
-            final Probe probe) {
-        return register(this.decoratedFactory.buildNumberOfResourceContainersCalculator(measuringPoint, probe));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Calculator buildReconfigurationTimeCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
-        return register(this.decoratedFactory.buildReconfigurationTimeCalculator(measuringPoint, probe));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Calculator buildCostOverTimeCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
-        return register(this.decoratedFactory.buildCostOverTimeCalculator(measuringPoint, probe));
-    }
-
-    @Override
-    public Calculator buildOptimisationTimeCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
-        return register(this.decoratedFactory.buildOptimisationTimeCalculator(measuringPoint, probe));
-    }
-
-    @Override
-    public Calculator buildAggregatedCostOverTimeCalculator(final MeasuringPoint measuringPoint, final Probe probe) {
-        return register(this.decoratedFactory.buildAggregatedCostOverTimeCalculator(measuringPoint, probe));
+    public Calculator buildCalculator(MetricDescription metric, MeasuringPoint measuringPoint,
+    		ProbeConfiguration probeConfiguration) {
+    	return register(this.decoratedFactory.buildCalculator(metric, measuringPoint, probeConfiguration));
     }
 }

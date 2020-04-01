@@ -15,6 +15,7 @@ import org.palladiosimulator.measurementframework.listener.IMeasurementSourceLis
 import org.palladiosimulator.probeframework.ProbeFrameworkContext;
 import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.probeframework.calculator.DefaultCalculatorFactory;
+import org.palladiosimulator.probeframework.calculator.ExtensibleCalculatorFactoryDelegatingFactory;
 import org.palladiosimulator.probeframework.calculator.RegisterCalculatorFactoryDecorator;
 import org.palladiosimulator.probeframework.measurement.RequestContext;
 import org.palladiosimulator.probeframework.probes.Probe;
@@ -64,7 +65,7 @@ public class CalculatorTests {
     public void setUp() {
         simContext = new SimpleSimulationContext();
         probeFrameworkContext = new ProbeFrameworkContext(new RegisterCalculatorFactoryDecorator(
-                new DefaultCalculatorFactory()));
+                new ExtensibleCalculatorFactoryDelegatingFactory()));
 
         startProbe = new ExampleTakeCurrentTimeProbe(simContext);
         endProbe = new ExampleTakeCurrentTimeProbe(simContext);

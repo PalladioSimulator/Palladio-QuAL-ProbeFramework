@@ -6,13 +6,18 @@ import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.probeframework.probes.Probe;
 
 /**
- * Factory interface to create calculator objects. This interface covers all calculators that are
- * allowed to be instantiated from within the internal package
- * <code>org.palladiosimulator.probeframework.calculator.internal</code> (access without using the
- * factory class is impossible in OSGI because classes of internal packages are not exported).
+ * Factory interface to create calculator objects. This interface covers all
+ * calculators that are allowed to be instantiated from within the internal
+ * package <code>org.palladiosimulator.probeframework.calculator.internal</code>
+ * (access without using the factory class is impossible in OSGI because classes
+ * of internal packages are not exported).
+ * 
+ * @deprecated This interface has been deprecated since it became cumbersome to
+ *             extend. Please use <code>IGenericCalculatorFactory</code> instead.
  *
  * @author Steffen Becker, Sebastian Lehrig, Matthias Becker
  */
+@Deprecated
 public interface ICalculatorFactory {
     /**
      * Creates a response time calculator object based on the given name and the given probes.

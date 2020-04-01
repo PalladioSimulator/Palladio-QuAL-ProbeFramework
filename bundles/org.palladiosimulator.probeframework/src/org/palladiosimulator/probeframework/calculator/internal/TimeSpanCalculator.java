@@ -28,7 +28,7 @@ import org.palladiosimulator.probeframework.probes.Probe;
  * 
  * @author Sebastian Lehrig, Steffen Becker
  */
-public abstract class TimeSpanCalculator extends Calculator {
+public class TimeSpanCalculator extends Calculator {
 
     /**
      * Default constructor.
@@ -40,7 +40,7 @@ public abstract class TimeSpanCalculator extends Calculator {
      * @param probes
      *            Probes as needed by the superclass.
      */
-    protected TimeSpanCalculator(final MetricDescription metricDescription, final MeasuringPoint measuringPoint,
+    public TimeSpanCalculator(final MetricDescription metricDescription, final MeasuringPoint measuringPoint,
             final List<Probe> probes) {
         super(metricDescription, measuringPoint, probes);
     }

@@ -1,6 +1,8 @@
 package org.palladiosimulator.probeframework;
 
 import org.palladiosimulator.probeframework.calculator.ICalculatorFactory;
+import org.palladiosimulator.probeframework.calculator.ICalculatorFactoryLegacyAdapter;
+import org.palladiosimulator.probeframework.calculator.IGenericCalculatorFactory;
 import org.palladiosimulator.probeframework.calculator.RegisterCalculatorFactoryDecorator;
 
 /**
@@ -17,6 +19,9 @@ public class ProbeFrameworkContext {
 
     /** The used calculator factory */
     private final RegisterCalculatorFactoryDecorator calculatorFactory;
+    
+    /** The legacy adapter */
+    private final ICalculatorFactory legacyFactory;
 
     /**
      * Default constructor. Expects a calculator factory to be stored as Probe Framework state
@@ -26,22 +31,36 @@ public class ProbeFrameworkContext {
      * @param calculatorFactory
      *            The calculator factory to be used by the Probe Framework.
      */
-    public ProbeFrameworkContext(final ICalculatorFactory calculatorFactory) {
+    public ProbeFrameworkContext(final IGenericCalculatorFactory calculatorFactory) {
         super();
         if (calculatorFactory == null) {
             throw new IllegalArgumentException("A valid calculator factory is required.");
         }
         this.calculatorFactory = new RegisterCalculatorFactoryDecorator(calculatorFactory);
+        this.legacyFactory = ICalculatorFactoryLegacyAdapter.createDelegatingAdapter(calculatorFactory);
     }
 
     /**
      * Getter for the calculator factory.
      * 
      * @return The calculator factory.
+     * 
+     * @deprecated Please use <code>getGenericCalculatorFactory</code> instead.
      */
+    @Deprecated
     public ICalculatorFactory getCalculatorFactory() {
-        return calculatorFactory;
+        return legacyFactory;
     }
+
+	/**
+	 * Gets the Calculator Factory registered for the current ProbeFrameworkContext.
+	 * 
+	 * @return the calculator factory
+	 * 
+	 */
+	public IGenericCalculatorFactory getGenericCalculatorFactory() {
+		return calculatorFactory;
+	}
 
     /**
      * Call-back method informing about the end of calculator usage.
