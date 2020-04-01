@@ -25,39 +25,39 @@ import org.palladiosimulator.probeframework.probes.ProbeConfiguration;
  *
  */
 public class ExtensibleCalculatorFactoryDelegatingFactory implements IGenericCalculatorFactory {
-	private final Map<String, IGenericCalculatorFactory> delegateFactories;
-	private final IGenericCalculatorFactory fallbackFactory;
+    private final Map<String, IGenericCalculatorFactory> delegateFactories;
+    private final IGenericCalculatorFactory fallbackFactory;
 
-	/**
-	 * Creates a new instance without any specialized calculators and a probe
-	 * configuration based heuristic for identity and time span calculators.
-	 */
-	public ExtensibleCalculatorFactoryDelegatingFactory() {
-		this(Collections.emptyMap(), new ProbeConfigurationBasedCalculatorFactory());
-	}
+    /**
+     * Creates a new instance without any specialized calculators and a probe
+     * configuration based heuristic for identity and time span calculators.
+     */
+    public ExtensibleCalculatorFactoryDelegatingFactory() {
+        this(Collections.emptyMap(), new ProbeConfigurationBasedCalculatorFactory());
+    }
 
-	/**
-	 * Creates a new instance with the provided specializations and the fallback
-	 * factory.
-	 * 
-	 * @param delegateFactories a map of metric id to specialized factory.
-	 * @param fallbackFactory   the factory which is called if there is no
-	 *                          specialized factory.
-	 */
-	public ExtensibleCalculatorFactoryDelegatingFactory(final Map<String, IGenericCalculatorFactory> delegateFactories,
-			IGenericCalculatorFactory fallbackFactory) {
-		this.delegateFactories = Collections.unmodifiableMap(Objects.requireNonNull(delegateFactories));
-		this.fallbackFactory = Objects.requireNonNull(fallbackFactory);
-	}
+    /**
+     * Creates a new instance with the provided specializations and the fallback
+     * factory.
+     * 
+     * @param delegateFactories a map of metric id to specialized factory.
+     * @param fallbackFactory   the factory which is called if there is no
+     *                          specialized factory.
+     */
+    public ExtensibleCalculatorFactoryDelegatingFactory(final Map<String, IGenericCalculatorFactory> delegateFactories,
+            IGenericCalculatorFactory fallbackFactory) {
+        this.delegateFactories = Collections.unmodifiableMap(Objects.requireNonNull(delegateFactories));
+        this.fallbackFactory = Objects.requireNonNull(fallbackFactory);
+    }
 
-	/**
-	 * { {@inheritDoc} }
-	 */
-	@Override
-	public Calculator buildCalculator(MetricDescription metric, MeasuringPoint measuringPoint,
-			ProbeConfiguration probeConfiguration) {
-		return delegateFactories.getOrDefault(metric.getId(), fallbackFactory).buildCalculator(metric, measuringPoint,
-				probeConfiguration);
-	}
+    /**
+     * { {@inheritDoc} }
+     */
+    @Override
+    public Calculator buildCalculator(MetricDescription metric, MeasuringPoint measuringPoint,
+            ProbeConfiguration probeConfiguration) {
+        return delegateFactories.getOrDefault(metric.getId(), fallbackFactory).buildCalculator(metric, measuringPoint,
+                probeConfiguration);
+    }
 
 }

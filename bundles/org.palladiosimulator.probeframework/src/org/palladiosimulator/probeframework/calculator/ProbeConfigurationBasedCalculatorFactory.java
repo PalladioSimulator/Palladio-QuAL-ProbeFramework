@@ -27,22 +27,22 @@ import org.palladiosimulator.probeframework.probes.ProbeConfigurations;
  */
 public class ProbeConfigurationBasedCalculatorFactory implements IGenericCalculatorFactory {
 
-	@Override
-	public Calculator buildCalculator(MetricDescription metric, MeasuringPoint measuringPoint,
-			ProbeConfiguration probeConfiguration) {
-		if (probeConfiguration.getProbe(ProbeConfigurations.SINGULAR_PROBE).isPresent()) {
-			return new IdentityCalculator(metric, measuringPoint,
-					probeConfiguration.getProbe(ProbeConfigurations.SINGULAR_PROBE).get());
-		} else if (probeConfiguration.getProbe(ProbeConfigurations.START_PROBE).isPresent()
-				&& probeConfiguration.getProbe(ProbeConfigurations.STOP_PROBE).isPresent()) {
-			return new TimeSpanCalculator(metric, measuringPoint,
-					Arrays.asList(new Probe[] { probeConfiguration.getProbe(ProbeConfigurations.START_PROBE).get(),
-							probeConfiguration.getProbe(ProbeConfigurations.STOP_PROBE).get() }));
-		}
-		throw new IllegalArgumentException(String.format(
-				"The %s is not compatible with metrics of type %s. If your metric deviates "
-						+ "from the standard, make sure to provide a suitable calculator factory.",
-				getClass().getName(), metric.getName()));
-	}
+    @Override
+    public Calculator buildCalculator(MetricDescription metric, MeasuringPoint measuringPoint,
+            ProbeConfiguration probeConfiguration) {
+        if (probeConfiguration.getProbe(ProbeConfigurations.SINGULAR_PROBE).isPresent()) {
+            return new IdentityCalculator(metric, measuringPoint,
+                    probeConfiguration.getProbe(ProbeConfigurations.SINGULAR_PROBE).get());
+        } else if (probeConfiguration.getProbe(ProbeConfigurations.START_PROBE).isPresent()
+                && probeConfiguration.getProbe(ProbeConfigurations.STOP_PROBE).isPresent()) {
+            return new TimeSpanCalculator(metric, measuringPoint,
+                    Arrays.asList(new Probe[] { probeConfiguration.getProbe(ProbeConfigurations.START_PROBE).get(),
+                            probeConfiguration.getProbe(ProbeConfigurations.STOP_PROBE).get() }));
+        }
+        throw new IllegalArgumentException(String.format(
+                "The %s is not compatible with metrics of type %s. If your metric deviates "
+                        + "from the standard, make sure to provide a suitable calculator factory.",
+                getClass().getName(), metric.getName()));
+    }
 
 }
