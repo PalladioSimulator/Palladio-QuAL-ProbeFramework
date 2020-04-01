@@ -4,7 +4,6 @@ import static org.palladiosimulator.metricspec.constants.MetricDescriptionConsta
 import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.COST_OVER_TIME;
 import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.NUMBER_OF_RESOURCE_CONTAINERS_OVER_TIME;
 import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.OPTIMISATION_TIME_METRIC_TUPLE;
-import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.OVERALL_STATE_OF_ACTIVE_RESOURCE_METRIC;
 import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.OVERALL_STATE_OF_PASSIVE_RESOURCE_METRIC;
 import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.RECONFIGURATION_TIME_METRIC_TUPLE;
 import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.RESOURCE_DEMAND_METRIC_TUPLE;
@@ -31,6 +30,7 @@ import org.palladiosimulator.probeframework.probes.Probe;
  *
  * @author Steffen Becker, Sebastian Lehrig, Matthias Becker
  */
+@Deprecated
 public class DefaultCalculatorFactory implements ICalculatorFactory {
 
     /**
