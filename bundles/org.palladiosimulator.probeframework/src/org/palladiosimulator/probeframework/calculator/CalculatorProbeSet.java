@@ -11,7 +11,7 @@ import org.palladiosimulator.probeframework.probes.Probe;
  * semantic identifier.
  * 
  * Usually it is not necessary to implement this interface directly, instead use
- * an appropriate factory method of <code>ProbeConfigurations</code>. The only
+ * an appropriate factory method of <code>DefaultCalculatorProbeSets</code>. The only
  * exception is an extension which contributes a new type of calculator, to
  * which the current kinds of configurations are not suitable.
  * 
