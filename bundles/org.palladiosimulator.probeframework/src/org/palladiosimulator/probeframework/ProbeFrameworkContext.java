@@ -6,6 +6,7 @@ import java.util.List;
 import org.palladiosimulator.probeframework.calculator.ICalculatorFactory;
 import org.palladiosimulator.probeframework.calculator.ICalculatorFactoryLegacyAdapter;
 import org.palladiosimulator.probeframework.calculator.IGenericCalculatorFactory;
+import org.palladiosimulator.probeframework.calculator.IObservableCalculatorRegistry;
 import org.palladiosimulator.probeframework.calculator.RegisterCalculatorFactoryDecorator;
 
 /**
@@ -23,8 +24,11 @@ public class ProbeFrameworkContext {
     /** The used calculator factory */
     private final ICalculatorFactoryLegacyAdapter calculatorFactory;
     
+    /** The calculator registry */
+    private final IObservableCalculatorRegistry calculatorRegistry;
+    
     /** The actions to perform, once the execution of the enclosing process finishes */
-    private List<Runnable> cleanupTasks = new LinkedList<>();
+    private final List<Runnable> cleanupTasks = new LinkedList<>();
     
     /**
      * Default constructor. Expects a calculator factory to be stored as Probe Framework state
@@ -41,6 +45,7 @@ public class ProbeFrameworkContext {
         }
         var decorator = new RegisterCalculatorFactoryDecorator(calculatorFactory); 
         this.calculatorFactory = ICalculatorFactoryLegacyAdapter.createDelegatingAdapter(decorator);
+        this.calculatorRegistry = decorator;
         cleanupTasks.add(decorator::finish);
     }
 
@@ -56,15 +61,24 @@ public class ProbeFrameworkContext {
         return calculatorFactory;
     }
 
-	/**
-	 * Gets the Calculator Factory registered for the current ProbeFrameworkContext.
-	 * 
-	 * @return the calculator factory
-	 * 
-	 */
-	public IGenericCalculatorFactory getGenericCalculatorFactory() {
-		return calculatorFactory;
-	}
+    /**
+     * Gets the Calculator Factory registered for the current ProbeFrameworkContext.
+     * 
+     * @return the calculator factory
+     * 
+     */
+    public IGenericCalculatorFactory getGenericCalculatorFactory() {
+        return calculatorFactory;
+    }
+
+    /**
+     * Gets the Calculator registry for the current context.
+     * 
+     * @return the calculator registry.
+     */
+    public IObservableCalculatorRegistry getCalculatorRegistry() {
+        return calculatorRegistry;
+    }
 
     /**
      * Call-back method informing about the end of calculator usage.

@@ -12,10 +12,12 @@ import org.palladiosimulator.edp2.models.measuringpoint.MeasuringpointFactory;
 import org.palladiosimulator.edp2.models.measuringpoint.StringMeasuringPoint;
 import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.measurementframework.listener.IMeasurementSourceListener;
+import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.probeframework.ProbeFrameworkContext;
 import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.probeframework.calculator.DefaultCalculatorFactory;
 import org.palladiosimulator.probeframework.calculator.ExtensibleCalculatorFactoryDelegatingFactory;
+import org.palladiosimulator.probeframework.calculator.DefaultCalculatorProbeSets;
 import org.palladiosimulator.probeframework.calculator.RegisterCalculatorFactoryDecorator;
 import org.palladiosimulator.probeframework.measurement.RequestContext;
 import org.palladiosimulator.probeframework.probes.Probe;
@@ -85,8 +87,11 @@ public class CalculatorTests {
     public void testResponseTimeCalculator() {
         final StringMeasuringPoint serviceCallAMeasuringPoint = measuringpointFactory.createStringMeasuringPoint();
         serviceCallAMeasuringPoint.setMeasuringPoint("Operation Call A");
-        final Calculator rtCalculator = this.probeFrameworkContext.getCalculatorFactory().buildResponseTimeCalculator(
-                serviceCallAMeasuringPoint, Arrays.asList((Probe) startProbe, (Probe) endProbe));
+        final Calculator rtCalculator = this.probeFrameworkContext.getGenericCalculatorFactory()
+                .buildCalculator(
+                        MetricDescriptionConstants.RESPONSE_TIME_METRIC_TUPLE, 
+                        serviceCallAMeasuringPoint,
+                        DefaultCalculatorProbeSets.createStartStopProbeConfiguration(startProbe, endProbe));
 
         rtCalculator.addObserver(new IMeasurementSourceListener() {
 
@@ -121,11 +126,13 @@ public class CalculatorTests {
     public void testRegisterCalculatorFactory() {
         final StringMeasuringPoint serviceCallAMeasuringPoint = measuringpointFactory.createStringMeasuringPoint();
         serviceCallAMeasuringPoint.setMeasuringPoint("Operation Call A");
-        
-        this.probeFrameworkContext.getCalculatorFactory().buildResponseTimeCalculator(
-                serviceCallAMeasuringPoint, Arrays.asList((Probe) startProbe, (Probe) endProbe));
-       
-        this.probeFrameworkContext.getCalculatorFactory().buildResponseTimeCalculator(
-                serviceCallAMeasuringPoint, Arrays.asList((Probe) startProbe, (Probe) endProbe));
+
+        this.probeFrameworkContext.getGenericCalculatorFactory().buildCalculator(
+                MetricDescriptionConstants.RESPONSE_TIME_METRIC_TUPLE, serviceCallAMeasuringPoint,
+                DefaultCalculatorProbeSets.createStartStopProbeConfiguration(startProbe, endProbe));
+
+        this.probeFrameworkContext.getGenericCalculatorFactory().buildCalculator(
+                MetricDescriptionConstants.RESPONSE_TIME_METRIC_TUPLE, serviceCallAMeasuringPoint,
+                DefaultCalculatorProbeSets.createStartStopProbeConfiguration(startProbe, endProbe));
     }
 }

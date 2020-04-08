@@ -4,9 +4,9 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 
+import org.eclipse.core.runtime.Platform;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.metricspec.MetricDescription;
-import org.palladiosimulator.probeframework.probes.ProbeConfiguration;
 
 /**
  * This factory allows to use specialized factories for Calculators of dedicated
@@ -14,12 +14,12 @@ import org.palladiosimulator.probeframework.probes.ProbeConfiguration;
  * metric. In case no dedicated factory is registered, a fallback factory can be
  * provided.
  * 
- * By default the factory uses the <code>CalculatorFactorRegistry</code> to look
- * up specialized factories and uses
- * <code>ProbeConfigurationBasedCalculatorFactory</code> as fallback. Therefore,
- * without providing additional registrations, the factory provides support for
- * either probe measurements which are passed through directly, and time span
- * measurements.
+ * By default the factory uses the
+ * <code>CalculatorFactoryRegistryExtensionPoint</code> to look up specialized
+ * factories and uses <code>ProbeConfigurationBasedCalculatorFactory</code> as
+ * fallback. Therefore, without providing additional registrations, the factory
+ * provides support for either probe measurements which are passed through
+ * directly, and time span measurements.
  * 
  * @author Sebastian Krach
  *
@@ -29,11 +29,12 @@ public class ExtensibleCalculatorFactoryDelegatingFactory implements IGenericCal
     private final IGenericCalculatorFactory fallbackFactory;
 
     /**
-     * Creates a new instance without any specialized calculators and a probe
-     * configuration based heuristic for identity and time span calculators.
+     * Creates a new instance using the eclipse extension point (if available) and a
+     * calculator probe set based heuristic for identity and time span calculators.
      */
     public ExtensibleCalculatorFactoryDelegatingFactory() {
-        this(Collections.emptyMap(), new ProbeConfigurationBasedCalculatorFactory());
+        this(Platform.isRunning() ? CalculatorFactoryRegistryExtensionPoint.INSTANCE.getCalculatorFactories()
+                : Collections.emptyMap(), new CalculatorProbeSetBasedInferingCalculatorFactory());
     }
 
     /**
@@ -55,7 +56,7 @@ public class ExtensibleCalculatorFactoryDelegatingFactory implements IGenericCal
      */
     @Override
     public Calculator buildCalculator(MetricDescription metric, MeasuringPoint measuringPoint,
-            ProbeConfiguration probeConfiguration) {
+            CalculatorProbeSet probeConfiguration) {
         return delegateFactories.getOrDefault(metric.getId(), fallbackFactory).buildCalculator(metric, measuringPoint,
                 probeConfiguration);
     }
