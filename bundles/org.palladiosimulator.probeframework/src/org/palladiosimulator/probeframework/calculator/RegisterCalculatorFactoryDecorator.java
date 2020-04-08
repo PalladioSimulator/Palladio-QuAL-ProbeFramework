@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 import org.palladiosimulator.commons.designpatterns.AbstractObservable;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.metricspec.MetricDescription;
-import org.palladiosimulator.probeframework.probes.ProbeConfiguration;
 
 /**
  * Decorates an existing ICalculatorFactory by a register for its calculators. In case a calculator
@@ -25,7 +24,7 @@ import org.palladiosimulator.probeframework.probes.ProbeConfiguration;
  *
  * @author Steffen Becker, Sebastian Lehrig, Matthias Becker, Florian Rosenthal
  */
-public class RegisterCalculatorFactoryDecorator extends AbstractObservable<CalculatorRegistryListener> implements IGenericCalculatorFactory {
+public class RegisterCalculatorFactoryDecorator extends AbstractObservable<CalculatorRegistryListener> implements IGenericCalculatorFactory, IObservableCalculatorRegistry {
 
     /** Factory to be decorated by a register. */
     private final IGenericCalculatorFactory decoratedFactory;
@@ -53,34 +52,20 @@ public class RegisterCalculatorFactoryDecorator extends AbstractObservable<Calcu
         return this.decoratedFactory;
     }
 
+    
     /**
-     * Gets the currently registered calculators.
-     *
-     * @return An <b>unmodifiable</b> collection containing the currently registered calculators.
+     * {@inheritDoc}
      */
+    @Override
     public Collection<Calculator> getRegisteredCalculators() {
         return Collections.unmodifiableCollection(this.calculatorRegister);
     }
 
+
     /**
-     * Convenience method to get the calculator that is associated with the given measuring point
-     * and metric.<br>
-     * <br>
-     * <b>Important note</b>: If a base metric such as 'Response Time' is passed here, and an
-     * 'Response Time Tuple' calculator is available at the given measuring point it is <b>NOT</b>
-     * found by the current implementation of this method, since these are different metric (base
-     * metric vs. metric set)!. <br>
-     * In such a case, better use {@link #getCalculatorsForMeasuringPoint(MeasuringPoint)} and
-     * filter the resulting collection manually for the desired base metric.
-     *
-     * @param mp
-     *            A {@link MeasuringPoint} instance which is associated with a calculator.
-     * @param metric
-     *            A {@link MetricDescription} denoting the metric the calculator is accepting.
-     * @return A {@link Calculator} instance associated with the given measuring point and metric,
-     *         or {@code null} if no matching {@link Calculator} is found.
-     * @see #getCalculatorsForMeasuringPoint(MeasuringPoint)
+     * {@inheritDoc}
      */
+    @Override
     public Calculator getCalculatorByMeasuringPointAndMetricDescription(final MeasuringPoint mp,
             final MetricDescription metric) {
         Calculator result = null;
@@ -96,15 +81,7 @@ public class RegisterCalculatorFactoryDecorator extends AbstractObservable<Calcu
     }
     
     /**
-     * Convenience method to get all calculators associated with the given measuring point.
-     *
-     * @param measuringPoint
-     *            A {@link MeasuringPoint} instance which is associated with a calculator.
-     * @return An UNMODIFIABLE @{@link Collection} of {@link Calculator}s which are associated with
-     *         the given measuring point, might be empty but never {@code null}.
-     * @throws NullPointerException
-     *             In case {@code measuringPoint == null}.
-     * @see #getCalculatorByMeasuringPointAndMetricDescription(MeasuringPoint, MetricDescription)
+     * {@inheritDoc}
      */
     public Collection<Calculator> getCalculatorsForMeasuringPoint(MeasuringPoint measuringPoint) {
         String measuringPointString = Objects.requireNonNull(measuringPoint, "Measuring point must not be null")
@@ -160,7 +137,7 @@ public class RegisterCalculatorFactoryDecorator extends AbstractObservable<Calcu
      */
     @Override
     public Calculator buildCalculator(MetricDescription metric, MeasuringPoint measuringPoint,
-            ProbeConfiguration probeConfiguration) {
+            CalculatorProbeSet probeConfiguration) {
         return register(this.decoratedFactory.buildCalculator(metric, measuringPoint, probeConfiguration));
     }
 }

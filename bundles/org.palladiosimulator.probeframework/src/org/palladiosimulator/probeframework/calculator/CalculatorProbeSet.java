@@ -1,9 +1,11 @@
-package org.palladiosimulator.probeframework.probes;
+package org.palladiosimulator.probeframework.calculator;
 
 import java.util.Optional;
 
+import org.palladiosimulator.probeframework.probes.Probe;
+
 /**
- * The ProbeConfiguration interface captures a set of probes required by a
+ * The CalculatorProbeSet interface captures a set of probes required by a
  * calculator. It replaces the <code>List<Probe></code> which was passed to a calculator
  * factory method. Probes contained in a configuration can be referred to by a
  * semantic identifier.
@@ -17,7 +19,7 @@ import java.util.Optional;
  *
  */
 @FunctionalInterface
-public interface ProbeConfiguration {
+public interface CalculatorProbeSet {
     /**
      * Gets the probe identified by <code>probeIdentifier</code>
      * 
