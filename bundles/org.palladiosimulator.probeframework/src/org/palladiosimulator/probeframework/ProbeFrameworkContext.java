@@ -43,10 +43,16 @@ public class ProbeFrameworkContext {
         if (calculatorFactory == null) {
             throw new IllegalArgumentException("A valid calculator factory is required.");
         }
-        var decorator = new RegisterCalculatorFactoryDecorator(calculatorFactory); 
-        this.calculatorFactory = ICalculatorFactoryLegacyAdapter.createDelegatingAdapter(decorator);
-        this.calculatorRegistry = decorator;
-        cleanupTasks.add(decorator::finish);
+        // Do not decorate an already registering factory
+        if (calculatorFactory instanceof IObservableCalculatorRegistry) {
+            this.calculatorRegistry = (IObservableCalculatorRegistry) calculatorFactory;
+            this.calculatorFactory = ICalculatorFactoryLegacyAdapter.createDelegatingAdapter(calculatorFactory);
+        } else {
+            var decorator = new RegisterCalculatorFactoryDecorator(calculatorFactory);
+            this.calculatorRegistry = decorator;
+            this.calculatorFactory = ICalculatorFactoryLegacyAdapter.createDelegatingAdapter(decorator);
+            cleanupTasks.add(decorator::finish);
+        }
     }
 
     /**
