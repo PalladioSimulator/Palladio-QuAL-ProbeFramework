@@ -3,6 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: ProbeFramework Test Plug-in
 Bundle-SymbolicName: org.palladiosimulator.probeframework.tests
 Bundle-Version: 4.3.0.qualifier
+Fragment-Host: org.palladiosimulator.probeframework
 Require-Bundle: org.eclipse.core.runtime,
  org.junit;bundle-version="4.11.0",
  org.palladiosimulator.probeframework;bundle-version="2.0.1",
@@ -12,7 +13,9 @@ Require-Bundle: org.eclipse.core.runtime,
  org.palladiosimulator.metricspec;bundle-version="1.0.1",
  org.palladiosimulator.measurementframework;bundle-version="1.0.1",
  org.palladiosimulator.metricspec.resources;bundle-version="1.0.0",
- org.palladiosimulator.edp2
+ org.palladiosimulator.edp2,
+ org.junit,
+ org.junit.jupiter.api
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-Vendor: palladiosimulator.org
