@@ -13,7 +13,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.palladiosimulator.edp2;bundle-version="2.0.0",
  org.palladiosimulator.edp2.util;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Export-Package: org.palladiosimulator.probeframework,
  org.palladiosimulator.probeframework.calculator,
  org.palladiosimulator.probeframework.exceptions,
