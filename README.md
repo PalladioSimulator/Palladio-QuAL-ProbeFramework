@@ -4,7 +4,7 @@ Measurements can either originate from simulations or real measurements on runni
 It offers fast, typed persistence of measurements, specification and implementation of measurement probes, and visualisation and analysis method.
 
 ## Documentation
-For comprehensive documentation, please visit our [wiki page](https://sdqweb.ipd.kit.edu/wiki/QuAL).
+For comprehensive documentation, please consult the [user manual](https://github.com/user-attachments/files/15522175/QualityAnalysisLab.pdf).
 
 ## Support
 For support
