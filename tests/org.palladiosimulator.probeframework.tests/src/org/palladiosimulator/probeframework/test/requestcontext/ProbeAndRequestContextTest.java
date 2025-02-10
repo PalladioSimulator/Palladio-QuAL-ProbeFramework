@@ -3,7 +3,7 @@ package org.palladiosimulator.probeframework.test.requestcontext;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
-import javax.measure.quantity.Duration;
+import jakarta.measure.quantity.Duration;
 
 import org.junit.Before;
 import org.junit.Test;

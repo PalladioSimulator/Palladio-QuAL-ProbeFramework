@@ -1,6 +1,6 @@
 package org.palladiosimulator.probeframework.measurement;
 
-import javax.measure.quantity.Quantity;
+import jakarta.measure.quantity.Quantity;
 
 import org.palladiosimulator.measurementframework.BasicMeasurement;
 import org.palladiosimulator.measurementframework.measureprovider.IMeasureProvider;

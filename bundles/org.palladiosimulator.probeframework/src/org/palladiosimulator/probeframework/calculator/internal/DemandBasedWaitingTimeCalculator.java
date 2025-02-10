@@ -3,9 +3,9 @@ package org.palladiosimulator.probeframework.calculator.internal;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.measure.Measure;
-import javax.measure.quantity.Duration;
-import javax.measure.unit.SI;
+import jakarta.measure.Measure;
+import jakarta.measure.quantity.Duration;
+import jakarta.measure.unit.SI;
 
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.measurementframework.BasicMeasurement;

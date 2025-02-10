@@ -3,7 +3,7 @@ package org.palladiosimulator.probeframework.probes;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.measure.quantity.Quantity;
+import jakarta.measure.quantity.Quantity;
 
 import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.measurementframework.measureprovider.IMeasureProvider;

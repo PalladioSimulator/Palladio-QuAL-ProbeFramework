@@ -1,6 +1,6 @@
 package org.palladiosimulator.probeframework.probes;
 
-import javax.measure.quantity.Quantity;
+import jakarta.measure.quantity.Quantity;
 
 import org.palladiosimulator.metricspec.BaseMetricDescription;
 
