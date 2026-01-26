@@ -4,23 +4,23 @@
 		<location type="Target" uri="mvn:org.palladiosimulator:palladio-target-platforms:0.1.0:target:palladio-2023-03"/>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit">
 			<unit id="org.palladiosimulator.thirdpartywrapper.feature.feature.group" version="0.0.0"/>
-			<repository location="https://updatesite.palladio-simulator.com/palladio-thirdparty-wrapper/releases/5.2.2/"/>
+			<repository location="https://updatesite.palladio-simulator.com/palladio-thirdparty-wrapper/nightly/"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit">
 			<unit id="org.palladiosimulator.commons.feature.feature.group" version="0.0.0"/>
-			<repository location="https://updatesite.palladio-simulator.com/palladio-core-commons/releases/5.2.2/"/>
+			<repository location="https://updatesite.palladio-simulator.com/palladio-core-commons/nightly/"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit">
 			<unit id="org.palladiosimulator.metricspec.feature.feature.group" version="0.0.0"/>
-			<repository location="https://updatesite.palladio-simulator.com/palladio-qual-metricspecification/releases/5.2.2/"/>
+			<repository location="https://updatesite.palladio-simulator.com/palladio-qual-metricspecification/nightly/"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit">
 			<unit id="org.palladiosimulator.measurementframework.feature.feature.group" version="0.0.0"/>
-			<repository location="https://updatesite.palladio-simulator.com/palladio-qual-measurementframework/releases/5.2.2/"/>
+			<repository location="https://updatesite.palladio-simulator.com/palladio-qual-measurementframework/nightly/"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit">
 			<unit id="org.palladiosimulator.edp2.feature.feature.group" version="0.0.0"/>
-			<repository location="https://updatesite.palladio-simulator.com/palladio-qual-edp2/releases/5.2.2/"/>
+			<repository location="https://updatesite.palladio-simulator.com/palladio-qual-edp2/nightly/"/>
 		</location>
 	</locations>
 </target>
